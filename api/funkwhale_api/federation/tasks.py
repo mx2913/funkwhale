@@ -1,6 +1,7 @@
 import datetime
 import json
 import logging
+import os
 
 from django.conf import settings
 from django.utils import timezone
@@ -106,6 +107,12 @@ def clean_music_cache():
     too_old = set(candidates) - set(listenings)
 
     to_remove = models.LibraryTrack.objects.filter(
-        local_track_file__track__pk__in=too_old).only('audio_file')
+        local_track_file__track__pk__in=too_old
+        ).exclude(audio_file='').only('audio_file')
     for lt in to_remove:
+        file_lt = lt.audio_file
+        file_lt_path = file_lt.url.replace(settings.MEDIA_URL, '', 1)
+        file_lt_path = os.path.join(settings.MEDIA_ROOT, file_lt_path)
+        if os.path.isfile(file_lt_path):
+            os.remove(file_lt_path)
         lt.audio_file.delete()
