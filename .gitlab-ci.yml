@@ -7,10 +7,48 @@ variables:
 
 
 stages:
+  - review
   - lint
   - test
   - build
   - deploy
+
+review:
+  stage: review
+  image: node:9
+  before_script:
+    - cd front
+  script:
+    - yarn install
+    - yarn run unit
+    - mkdir -p /static/$CI_BUILD_REF_SLUG
+    - echo "Hello world" > /static/$CI_BUILD_REF_SLUG/index.html
+  cache:
+    key: "$CI_PROJECT_ID__front_dependencies"
+    paths:
+      - front/node_modules
+      - front/yarn.lock
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    url: http://$CI_BUILD_REF_SLUG.$REVIEW_DOMAIN
+    on_stop: stop_review
+  only:
+    - branches@funkwhale/funkwhale
+  tags:
+    - funkwhale-review
+
+stop_review:
+  stage: review
+  script:
+    - rm -rf /static/$CI_BUILD_REF_SLUG/
+  variables:
+    GIT_STRATEGY: none
+  when: manual
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    action: stop
+  tags:
+    - funkwhale-review
 
 black:
   image: python:3.6
