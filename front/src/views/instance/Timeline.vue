@@ -79,7 +79,7 @@ export default {
       const bridge = new WebSocketBridge()
       this.bridge = bridge
       bridge.connect(
-        `/api/v1/instance/activity?token=${token}`,
+        this.$store.getters['instance/absoluteUrl'](`api/v1/instance/activity?token=${token}`),
         null,
         {reconnectInterval: 5000})
       bridge.listen(function (event) {
