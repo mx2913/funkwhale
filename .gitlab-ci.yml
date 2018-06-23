@@ -7,10 +7,24 @@ variables:
 
 
 stages:
+  - review
   - lint
   - test
   - build
   - deploy
+
+review:
+  stage: review
+  script:
+    - echo "Hello world" > /static/hello
+  environment:
+    name: review/$CI_BUILD_REF_NAME
+    url: http://$CI_BUILD_REF_SLUG.$REVIEW_DOMAIN
+  only:
+    - branches@funkwhale/funkwhale
+  tags:
+    - funkwhale-review
+
 
 black:
   image: python:3.6
