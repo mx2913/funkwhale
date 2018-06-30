@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:59+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1323,11 +1323,11 @@ msgstr ""
 
 #: front/src/views/admin/library/RequestsList.vue:4
 msgid "Import requests"
-msgstr ""
+msgstr "Requêtes d'import"
 
 #: front/src/views/admin/library/FilesList.vue:4
 msgid "Library files"
-msgstr ""
+msgstr "Fichier de la bibliothèque"
 
 #: front/src/views/admin/library/Base.vue:6
 msgid "Files"
