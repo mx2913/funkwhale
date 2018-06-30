@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:55+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1251,7 +1251,7 @@ msgstr ""
 
 #: front/src/components/Home.vue:118
 msgid "Your music, your way"
-msgstr ""
+msgstr "Votre musique, à votre façon"
 
 #: front/src/components/Home.vue:131
 msgid "We do not track you or bother you with ads"
@@ -1259,11 +1259,11 @@ msgstr ""
 
 #: front/src/views/instance/Timeline.vue:5
 msgid "Loading timeline..."
-msgstr ""
+msgstr "Chargement de la timeline ..."
 
 #: front/src/views/instance/Timeline.vue:8
 msgid "Recent activity on this instance"
-msgstr ""
+msgstr "Activités récentes sur cette instance"
 
 #: front/src/views/playlists/Detail.vue:30
 msgid "Edit..."
