@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:53+0000\n"
-"Last-Translator: anonymous <noreply@weblate.org>\n"
+"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1239,7 +1239,7 @@ msgstr ""
 
 #: front/src/components/Home.vue:89
 msgid "Covers, lyrics, our goal is to have them all ;)"
-msgstr "Pochette, parole, notre but est de toutes les attraper ;)"
+msgstr "Pochettes d'albums, paroles, notre but est de tout implémenter ;)"
 
 #: front/src/components/Home.vue:99
 msgid "Funkwhale is dead simple to use."
