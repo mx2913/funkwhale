@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 18:00+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1331,19 +1331,19 @@ msgstr "Fichiers de la bibliothèque"
 
 #: front/src/views/admin/library/Base.vue:6
 msgid "Files"
-msgstr ""
+msgstr "Fichiers"
 
 #: front/src/views/admin/users/UsersDetail.vue:30
 msgid "Email address"
-msgstr ""
+msgstr "Adresse email"
 
 #: front/src/views/admin/users/UsersDetail.vue:55
 msgid "Account active"
-msgstr ""
+msgstr "Compte actif"
 
 #: front/src/views/admin/users/UsersDetail.vue:85
 msgid "Refresh"
-msgstr ""
+msgstr "Rafraichir"
 
 #: front/src/views/admin/users/InvitationsList.vue:4
 msgid "Invitations"
