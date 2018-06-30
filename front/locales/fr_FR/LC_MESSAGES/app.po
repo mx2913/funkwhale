@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 17:09+0000\n"
-"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
+"PO-Revision-Date: 2018-06-30 17:12+0000\n"
+"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -650,7 +650,7 @@ msgstr "Changer le mot de passe ?"
 msgid "You will be logged out from this session and have to log out with the new one"
 msgstr ""
 "Vous allez être déconnecté de cette session et vous allez devoir vous "
-"connecter avec une nouvelle"
+"connecter avec votre nouveau mot de passe"
 
 #: front/src/components/auth/Settings.vue:72
 msgid "Disable access"
@@ -706,7 +706,7 @@ msgstr "Rechercher"
 
 #: front/src/components/library/radios/Builder.vue:6
 msgid "Builder"
-msgstr ""
+msgstr "Éditeur"
 
 #: front/src/components/library/radios/Builder.vue:12
 msgid "Radio name"
