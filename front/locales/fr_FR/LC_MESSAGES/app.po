@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 17:06+0000\n"
-"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
+"PO-Revision-Date: 2018-06-30 17:08+0000\n"
+"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -367,7 +367,7 @@ msgstr[1] "Afficher %{ count } pistes de plus"
 #: front/src/components/manage/users/InvitationsTable.vue:76
 #: front/src/components/manage/users/UsersTable.vue:87
 msgid "Showing results %{ start }-%{ end } on %{ total }"
-msgstr "Afficher les résultats %{ start }-%{ end } sur %{ total }"
+msgstr "Affichage des résultats %{ start }-%{ end } sur %{ total }"
 
 #: front/src/App.vue:38
 msgid "Source code"
