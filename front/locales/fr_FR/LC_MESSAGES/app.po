@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 15:00+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -371,19 +371,19 @@ msgstr ""
 
 #: front/src/App.vue:38
 msgid "Source code"
-msgstr ""
+msgstr "Code source"
 
 #: front/src/App.vue:37
 msgid "Source code (%{version})"
-msgstr ""
+msgstr "Code source (%{version})"
 
 #: front/src/views/admin/Settings.vue:81
 msgid "Statistics"
-msgstr ""
+msgstr "Statistiques"
 
 #: front/src/views/admin/Settings.vue:80
 msgid "Subsonic"
-msgstr ""
+msgstr "Subsonic"
 
 #: front/src/App.vue:56
 msgid "The funkwhale logo was kindly designed and provided by Francis Gading."
