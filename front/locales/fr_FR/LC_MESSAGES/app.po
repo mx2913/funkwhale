@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 16:07+0000\n"
+"PO-Revision-Date: 2018-06-30 16:08+0000\n"
 "Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -632,19 +632,19 @@ msgstr "Changer mon mot de passe"
 
 #: front/src/components/auth/Settings.vue:44
 msgid "Cannot change your password"
-msgstr "Impossible de mettre à jour le mot de passe"
+msgstr "Mot de passe ne peut pas être changé"
 
 #: front/src/components/auth/Settings.vue:51
 msgid "Old password"
-msgstr ""
+msgstr "Ancien mot de passe"
 
 #: front/src/components/auth/Settings.vue:63
 msgid "Change password"
-msgstr ""
+msgstr "Changer le mot de passe"
 
 #: front/src/components/auth/Settings.vue:64
 msgid "Change your password?"
-msgstr ""
+msgstr "Changer le mot de passe ?"
 
 #: front/src/components/auth/Settings.vue:68
 msgid "You will be logged out from this session and have to log out with the new one"
@@ -652,11 +652,11 @@ msgstr ""
 
 #: front/src/components/auth/Settings.vue:72
 msgid "Disable access"
-msgstr ""
+msgstr "Désactiver l'accès"
 
 #: front/src/components/favorites/List.vue:6
 msgid "Loading your favorites..."
-msgstr ""
+msgstr "Chargement de vos favoris ..."
 
 #: front/src/components/favorites/List.vue:34
 #: src/components/library/Radios.vue:29
@@ -669,15 +669,15 @@ msgstr ""
 #: src/components/library/Radios.vue:37
 #: front/src/views/federation/LibraryList.vue:34
 msgid "Results per page"
-msgstr ""
+msgstr "Résultats par page"
 
 #: front/src/components/admin/SettingsGroup.vue:6
 msgid "Error while saving settings"
-msgstr ""
+msgstr "Erreur pendant l'enregistrement des paramètres"
 
 #: front/src/components/admin/SettingsGroup.vue:12
 msgid "Settings updated successfully."
-msgstr "Paramètres modifiés avec succès."
+msgstr "Paramètres modifiés avec succès !"
 
 #: front/src/components/admin/SettingsGroup.vue:64
 #: front/src/components/library/radios/Builder.vue:20
