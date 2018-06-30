@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 14:53+0000\n"
+"PO-Revision-Date: 2018-06-30 15:00+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -334,23 +334,23 @@ msgstr "Résultat %{ current }/%{ total }"
 #: front/src/components/common/ActionTable.vue:61
 msgid "Select all %{ total } elements"
 msgid_plural "Select all %{ total } elements"
-msgstr[0] "Selectionner l'ensemble des %{ total } éléments"
+msgstr[0] "Selectionner l'ensemble des %{ total } élément"
 msgstr[1] "Selectionner l'ensemble des %{ total } éléments"
 
 #: front/src/components/federation/LibraryCard.vue:43
 msgid "Send a follow request"
-msgstr ""
+msgstr "Envoyer une demande d'abonnement"
 
 #: front/src/components/manage/users/UsersTable.vue:179
 #: front/src/views/admin/users/UsersDetail.vue:160
 msgid "Settings"
-msgstr ""
+msgstr "Paramètres"
 
 #: front/src/components/audio/artist/Card.vue:30
 msgid "Show 1 more album"
 msgid_plural "Show %{ count } more albums"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Montrer 1 album supplémentaire"
+msgstr[1] "Montrer %{ count } albums supplémentaires"
 
 #: front/src/components/audio/album/Card.vue:40
 msgid "Show 1 more track"
