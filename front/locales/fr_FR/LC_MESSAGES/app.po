@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 15:00+0000\n"
+"PO-Revision-Date: 2018-06-30 15:01+0000\n"
 "Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -388,6 +388,7 @@ msgstr "Subsonic"
 #: front/src/App.vue:56
 msgid "The funkwhale logo was kindly designed and provided by Francis Gading."
 msgstr ""
+"Le logo de Funkwhale a été généreusement dessiné et fourni par Francis Gading"
 
 #: front/src/components/audio/PlayButton.vue:50
 msgid "This track is not imported and cannot be played"
