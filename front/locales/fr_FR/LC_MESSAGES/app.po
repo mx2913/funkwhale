@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:53+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1243,7 +1243,7 @@ msgstr "Pochettes d'albums, paroles, notre but est de tout implémenter ;)"
 
 #: front/src/components/Home.vue:99
 msgid "Funkwhale is dead simple to use."
-msgstr ""
+msgstr "Funkwhale est très simple à utiliser"
 
 #: front/src/components/Home.vue:104
 msgid "No add-ons, no plugins : you only need a web library"
