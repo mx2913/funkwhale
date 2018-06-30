@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:12+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -880,15 +880,17 @@ msgstr "Rechercher une ressource que vous voulez importer :"
 
 #: front/src/components/library/import/Main.vue:94
 msgid "Or"
-msgstr ""
+msgstr "Ou"
 
 #: front/src/components/library/import/Main.vue:104
 msgid "You will import:"
-msgstr ""
+msgstr "Vous allez importer :"
 
 #: front/src/components/library/import/Main.vue:150
 msgid "This import will be associated with the music request below. After the import is finished, the request will be marked as fulfilled."
 msgstr ""
+"Cet import sera associé à la requête ci dessous. Après la fin de l'import, "
+"la requête sera notée comme remplie."
 
 #: front/src/components/library/import/BatchList.vue:23
 #: front/src/components/federation/LibraryTrackTable.vue:12
