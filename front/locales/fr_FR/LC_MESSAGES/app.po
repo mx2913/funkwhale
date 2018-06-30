@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 14:37+0000\n"
+"PO-Revision-Date: 2018-06-30 14:47+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -162,43 +162,47 @@ msgstr "Voulez-vous supprimer la playlist \"%{ playlist }\" ?"
 #: front/src/components/common/ActionTable.vue:29
 msgid "Do you want to launch %{ action } on %{ count } element?"
 msgid_plural "Do you want to launch %{ action } on %{ count } elements?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Voulez-vous effectuer l'action \"%{ action } sur %{ count } élément ?"
+msgstr[1] "Voulez-vous effectuer l'action \"%{ action } sur %{ count } éléments ?"
 
 #: front/src/views/admin/Settings.vue:82
 msgid "Error reporting"
-msgstr ""
+msgstr "Rapports d'erreur"
 
 #: front/src/components/playlists/Form.vue:84
 msgid "Everyone"
-msgstr ""
+msgstr "Tout le monde"
 
 #: front/src/components/playlists/Form.vue:80
 msgid "Everyone on this instance"
-msgstr ""
+msgstr "Tout le monde sur cette instance"
 
 #: front/src/components/manage/users/UsersTable.vue:175
 #: front/src/views/admin/Settings.vue:79
 #: src/views/admin/users/UsersDetail.vue:156
 msgid "Federation"
-msgstr ""
+msgstr "Fédération"
 
 #: front/src/components/federation/LibraryCard.vue:44
 msgid "Follow"
-msgstr ""
+msgstr "Suivre"
 
 #: front/src/components/activity/Like.vue:12
 #: src/components/activity/Listen.vue:12
 msgid "from %{ album } by %{ artist }"
-msgstr ""
+msgstr "de l'album %{ album } par %{ artist }"
 
 #: front/src/components/library/Track.vue:13
 msgid "From album %{ album } by %{ artist }"
-msgstr ""
+msgstr "De l'album %{ album } par %{ artist }"
 
 #: front/src/App.vue:53
 msgid "Funkwhale is a free and open-source project run by volunteers. You can help us improve the platform by reporting bugs, suggesting features and share the project with your friends!"
 msgstr ""
+"Funkwale est un projet open-source et gratuit, animé par des bénévoles. Vous "
+"pouvez nous aider à améliorer le service en remontant les problèmes que vous "
+"rencontrez, en suggérant des améliorations et en parlant du projet autour de "
+"vous !"
 
 #: front/src/components/Home.vue:77
 msgid ""
@@ -207,25 +211,29 @@ msgid ""
 "                MusicBrainz\n"
 "              </a>"
 msgstr ""
+"Obtenez des métadonnées de qualité grâce à              <a href=\""
+"https://musicbrainz.org\" target=\"_blank\">\n"
+"                MusicBrainz\n"
+"              </a>"
 
 #: front/src/components/federation/LibraryTrackTable.vue:159
 #: front/src/components/library/Library.vue:18
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #: front/src/components/federation/LibraryTrackTable.vue:42
 msgid "Import #%{ id } launched"
-msgstr ""
+msgstr "Import #%{ id } démarré"
 
 #: front/src/components/library/import/Main.vue:38
 msgid "Import %{ count } track"
 msgid_plural "Import %{ count } tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Importer %{ count } piste"
+msgstr[1] "Importer %{ count } pistes"
 
 #: front/src/views/admin/Settings.vue:77
 msgid "Imports"
-msgstr ""
+msgstr "Imports"
 
 #: front/src/components/favorites/TrackFavoriteIcon.vue:3
 msgid "In favorites"
