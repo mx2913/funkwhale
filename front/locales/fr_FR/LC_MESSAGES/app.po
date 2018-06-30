@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 14:35+0000\n"
+"PO-Revision-Date: 2018-06-30 14:37+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -157,7 +157,7 @@ msgstr "Voulez-vous vider la playlist \"%{ playlist }\" ?"
 
 #: front/src/views/playlists/Detail.vue:34
 msgid "Do you want to delete the playlist \"%{ playlist }\"?"
-msgstr ""
+msgstr "Voulez-vous supprimer la playlist \"%{ playlist }\" ?"
 
 #: front/src/components/common/ActionTable.vue:29
 msgid "Do you want to launch %{ action } on %{ count } element?"
