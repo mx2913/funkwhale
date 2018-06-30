@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 14:49+0000\n"
+"PO-Revision-Date: 2018-06-30 14:51+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -269,7 +269,7 @@ msgstr "Marquer comme fermé"
 
 #: front/src/components/manage/library/RequestsTable.vue:191
 msgid "Mark as imported"
-msgstr ""
+msgstr "Marquer comme importé"
 
 #: front/src/components/library/import/Main.vue:115
 msgid ""
@@ -279,32 +279,41 @@ msgid ""
 "            </a>\n"
 "            project, which you can think about as the Wikipedia of music."
 msgstr ""
+"Les métadonnées sont les informations relatives à la musique que vous "
+"souhaitez importer. Cela inclut notamment toutes les informations concernant "
+"les artistes, albums et pistes. Afin d'avoir des métadonnées de qualité, il "
+"est recommandé d'utiliser les métadonnées du projet            <a href=\""
+"https://musicbrainz.org\" target=\"_blank\">\n"
+"              MusicBrainz\n"
+"            </a>\n"
+"            qui est une base de données musicale fonctionnant sur le même "
+"modèle que Wikipédia."
 
 #: front/src/components/playlists/Form.vue:76
 msgid "Nobody except me"
-msgstr ""
+msgstr "Personne à part moi"
 
 #: front/src/App.vue:60
 msgid "Options"
-msgstr ""
+msgstr "Options"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:95
 msgid "Password updated"
-msgstr ""
+msgstr "Mot de passe mis à jour"
 
 #: front/src/components/audio/PlayButton.vue:47
 msgid "Play immediatly"
-msgstr ""
+msgstr "Jouer immédiatement"
 
 #: front/src/views/playlists/Detail.vue:11
 msgid "Playlist containing %{ count } track, by %{ username }"
 msgid_plural "Playlist containing %{ count } tracks, by %{ username }"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Playlist contenant %{ count } piste, par %{ username }"
+msgstr[1] "Playlist contenant %{ count } pistes, par %{ username }"
 
 #: front/src/views/admin/Settings.vue:78 src/components/library/Library.vue:14
 msgid "Playlists"
-msgstr ""
+msgstr "Playlists"
 
 #: front/src/components/audio/Player.vue:183
 msgid "Queue shuffled!"
