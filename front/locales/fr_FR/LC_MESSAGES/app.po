@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:37+0000\n"
-"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
+"Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1189,7 +1189,7 @@ msgstr "Dernière activité"
 
 #: front/src/components/manage/users/UsersTable.vue:54
 msgid "Active"
-msgstr ""
+msgstr "Actif"
 
 #: front/src/components/common/ActionTable.vue:22
 msgid "Go"
