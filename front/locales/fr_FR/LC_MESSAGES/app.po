@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:37+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1169,23 +1169,23 @@ msgstr "Propriétaire"
 
 #: front/src/components/manage/users/InvitationsTable.vue:41
 msgid "Creation date"
-msgstr ""
+msgstr "Date de création"
 
 #: front/src/components/manage/users/InvitationsTable.vue:50
 msgid "Used"
-msgstr ""
+msgstr "Utilisé"
 
 #: front/src/components/manage/users/InvitationsTable.vue:52
 msgid "Not used"
-msgstr ""
+msgstr "Pas utilisé"
 
 #: front/src/components/manage/users/UsersTable.vue:40
 msgid "Account status"
-msgstr ""
+msgstr "Statut du compte"
 
 #: front/src/components/manage/users/UsersTable.vue:42
 msgid "Last activity"
-msgstr ""
+msgstr "Dernière activité"
 
 #: front/src/components/manage/users/UsersTable.vue:54
 msgid "Active"
