@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 14:51+0000\n"
+"PO-Revision-Date: 2018-06-30 14:52+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -317,7 +317,7 @@ msgstr "Playlists"
 
 #: front/src/components/audio/Player.vue:183
 msgid "Queue shuffled!"
-msgstr ""
+msgstr "La queue a été mélangée"
 
 #: front/src/components/auth/Profile.vue:11
 msgid "Registered since %{ date }"
