@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 15:54+0000\n"
+"PO-Revision-Date: 2018-06-30 15:55+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -586,7 +586,7 @@ msgstr ""
 
 #: front/src/components/auth/Login.vue:5
 msgid "Log in to your Funkwhale account"
-msgstr ""
+msgstr "Connexion à votre compte Funkwhale"
 
 #: front/src/components/auth/Login.vue:10
 msgid "Please double-check your username/password couple is correct"
