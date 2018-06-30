@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 16:18+0000\n"
+"PO-Revision-Date: 2018-06-30 17:06+0000\n"
 "Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -355,8 +355,8 @@ msgstr[1] "Montrer %{ count } albums supplémentaires"
 #: front/src/components/audio/album/Card.vue:40
 msgid "Show 1 more track"
 msgid_plural "Show %{ count } more tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Afficher 1 piste de plus"
+msgstr[1] "Afficher %{ count } pistes de plus"
 
 #: front/src/components/federation/LibraryFollowTable.vue:97
 #: front/src/components/federation/LibraryTrackTable.vue:83
@@ -367,7 +367,7 @@ msgstr[1] ""
 #: front/src/components/manage/users/InvitationsTable.vue:76
 #: front/src/components/manage/users/UsersTable.vue:87
 msgid "Showing results %{ start }-%{ end } on %{ total }"
-msgstr ""
+msgstr "Afficher les résultats %{ start }-%{ end } sur %{ total }"
 
 #: front/src/App.vue:38
 msgid "Source code"
