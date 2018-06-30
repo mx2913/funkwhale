@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 15:27+0000\n"
-"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
+"PO-Revision-Date: 2018-06-30 15:54+0000\n"
+"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -582,6 +582,7 @@ msgstr "Demander un mot de passe"
 #: front/src/components/auth/SubsonicTokenForm.vue:52
 msgid "This will completely disable access to the Subsonic API using from account."
 msgstr ""
+"Cela désactivera complétement l'accès à l'API Subsonic depuis votre compte."
 
 #: front/src/components/auth/Login.vue:5
 msgid "Log in to your Funkwhale account"
@@ -610,7 +611,7 @@ msgstr ""
 
 #: front/src/components/auth/Logout.vue:6
 msgid "Are you sure you want to log out?"
-msgstr ""
+msgstr "Êtes-vous sûr·e de vouloir vous déconnecter ?"
 
 #: front/src/components/auth/Logout.vue:9
 msgid "Yes, log me out!"
@@ -630,7 +631,7 @@ msgstr ""
 
 #: front/src/components/auth/Settings.vue:44
 msgid "Cannot change your password"
-msgstr ""
+msgstr "Impossible de mettrà jour le mot de passe"
 
 #: front/src/components/auth/Settings.vue:51
 msgid "Old password"
@@ -675,7 +676,7 @@ msgstr ""
 
 #: front/src/components/admin/SettingsGroup.vue:12
 msgid "Settings updated successfully."
-msgstr ""
+msgstr "Paramètres modifiés avec succès."
 
 #: front/src/components/admin/SettingsGroup.vue:64
 #: front/src/components/library/radios/Builder.vue:20
@@ -755,11 +756,11 @@ msgstr ""
 
 #: front/src/components/library/Artists.vue:24 src/views/playlists/List.vue:26
 msgid "Ordering direction"
-msgstr ""
+msgstr "Direction"
 
 #: front/src/components/library/Artist.vue:45
 msgid "Albums by this artist"
-msgstr ""
+msgstr "Albums de cet·te artiste"
 
 #: front/src/components/library/import/FileUpload.vue:5
 msgid "Ensure your music files are properly tagged before uploading them."
