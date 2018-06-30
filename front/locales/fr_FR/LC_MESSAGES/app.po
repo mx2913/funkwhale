@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 15:14+0000\n"
+"PO-Revision-Date: 2018-06-30 15:26+0000\n"
 "Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -472,98 +472,104 @@ msgstr "Vider la playlist"
 #: front/src/components/playlists/Editor.vue:45
 msgid "This will remove all tracks from this playlist and cannot be undone."
 msgstr ""
+"Cela supprimera toutes les pistes de la playlist et cela ne pourra pas être "
+"modifiée."
 
 #: front/src/components/playlists/PlaylistModal.vue:4
 msgid "Manage playlists"
-msgstr ""
+msgstr "Gérer les playlists"
 
 #: front/src/components/playlists/PlaylistModal.vue:27
 msgid "Available playlists"
-msgstr ""
+msgstr "Playlists disponibles"
 
 #: front/src/components/playlists/PlaylistModal.vue:32
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: front/src/components/playlists/PlaylistModal.vue:34
 #: front/src/components/library/Album.vue:44
 msgid "Tracks"
-msgstr ""
+msgstr "Pistes"
 
 #: front/src/components/playlists/PlaylistModal.vue:64
 #: front/src/components/common/DangerousButton.vue:18
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #: front/src/components/playlists/Form.vue:3
 msgid "Create a new playlist"
-msgstr ""
+msgstr "Créer une nouvelle playlist"
 
 #: front/src/components/playlists/Form.vue:10
 msgid "Playlist created"
-msgstr ""
+msgstr "Playlist créée"
 
 #: front/src/components/playlists/Form.vue:26
 msgid "Playlist visibility"
-msgstr ""
+msgstr "Visibilité de la playlist"
 
 #: front/src/components/playlists/Form.vue:35
 msgid "Create playlist"
-msgstr ""
+msgstr "Créer une playlist"
 
 #: front/src/components/auth/Signup.vue:5
 msgid "Create a funkwhale account"
-msgstr ""
+msgstr "Créer un compte funkwhale"
 
 #: front/src/components/auth/Signup.vue:14
 msgid "We cannot create your account"
-msgstr ""
+msgstr "Nous ne pour créer votre compte"
 
 #: front/src/components/auth/Signup.vue:20
 #: front/src/components/manage/users/UsersTable.vue:38
 msgid "Username"
-msgstr ""
+msgstr "Nom d'utilisateur"
 
 #: front/src/components/auth/Signup.vue:30
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: front/src/components/auth/Signup.vue:39
 msgid "Password"
-msgstr ""
+msgstr "Mot de passe"
 
 #: front/src/components/auth/Signup.vue:44
 msgid "Invitation code (optional)"
-msgstr ""
+msgstr "Code d'invitation (optionnel)"
 
 #: front/src/components/auth/Signup.vue:52
 msgid "Create my account"
-msgstr ""
+msgstr "Créer votre compte"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:3
 msgid "Subsonic API password"
-msgstr ""
+msgstr "Mot de passe de l'API subsonique"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:8
 msgid "Funkwhale is compatible with other music players that support the Subsonic API."
 msgstr ""
+"Funkwhale est compatible avec d'autres lecteurs de musique qui supportent "
+"l'API subsonique."
 
 #: front/src/components/auth/SubsonicTokenForm.vue:9
 msgid "You can use those to enjoy your playlist and music in offline mode, on your smartphone or tablet, for instance."
 msgstr ""
+"Vous pouvez les utiliser pour profiter de vos playlists et de la musique en "
+"étant déconnecté, sur votre smatphone ou tablette, par exemple."
 
 #: front/src/components/auth/SubsonicTokenForm.vue:15
 msgid "Discover how to use Funkwhale from other apps"
-msgstr ""
+msgstr "Découvrez comment utiliser Funkwhale sur d'autres applications"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:21
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:35
 #: front/src/components/auth/SubsonicTokenForm.vue:38
 msgid "Request a new password"
-msgstr ""
+msgstr "Demander un nouveau mot de passe"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:36
 msgid "Request a new Subsonic API password?"
