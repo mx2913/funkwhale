@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 15:01+0000\n"
+"PO-Revision-Date: 2018-06-30 15:12+0000\n"
 "Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -388,75 +388,78 @@ msgstr "Subsonic"
 #: front/src/App.vue:56
 msgid "The funkwhale logo was kindly designed and provided by Francis Gading."
 msgstr ""
-"Le logo de Funkwhale a été généreusement dessiné et fourni par Francis Gading"
+"Le logo de Funkwhale a été généreusement dessiné et fourni par Francis "
+"Gading."
 
 #: front/src/components/audio/PlayButton.vue:50
 msgid "This track is not imported and cannot be played"
-msgstr ""
+msgstr "Cette piste n'est pas importée et ne peut pas être jouée"
 
 #: front/src/App.vue:130
 msgid "This will erase your local data and disconnect you, do you want to continue?"
 msgstr ""
+"Cela va effacer vos données locales et vous déconnecter, voulez-vous "
+"continuer ?"
 
 #: front/src/components/metadata/Search.vue:133
 #: front/src/components/library/import/BatchDetail.vue:85
 msgid "Track"
-msgstr ""
+msgstr "Piste"
 
 #: front/src/components/manage/users/UsersTable.vue:167
 #: front/src/views/admin/users/UsersDetail.vue:148
 msgid "Upload"
-msgstr ""
+msgstr "Envoi"
 
 #: front/src/views/admin/Settings.vue:76 src/views/admin/users/UsersList.vue:4
 #: front/src/views/admin/users/Base.vue:6
 msgid "Users"
-msgstr ""
+msgstr "Utilisateur·ice·s"
 
 #: front/src/components/auth/Logout.vue:7
 msgid "You are currently logged in as %{ username }"
-msgstr ""
+msgstr "Vous êtes actuellement connecté·e en tant que %{ username }"
 
 #: front/src/App.vue:5
 msgid "Choose your instance"
-msgstr ""
+msgstr "Choisissez votre instance"
 
 #: front/src/App.vue:7
 msgid "You need to select an instance in order to continue"
-msgstr ""
+msgstr "Vous devez choisir une instance pour continuer"
 
 #: front/src/App.vue:33
 msgid "About this instance"
-msgstr ""
+msgstr "A propos de cette instance"
 
 #: front/src/App.vue:36
 msgid "Documentation"
-msgstr ""
+msgstr "Documentation"
 
 #: front/src/App.vue:43
 msgid "Use another instance"
-msgstr ""
+msgstr "Utiliser une autre instance"
 
 #: front/src/components/radios/Button.vue:5
 msgid "Start"
-msgstr ""
+msgstr "Démarrer"
 
 #: front/src/components/discussion/Comment.vue:15
 msgid "Expand"
-msgstr ""
+msgstr "Ouvrir"
 
 #: front/src/components/instance/Stats.vue:6
 msgid "User activity"
-msgstr ""
+msgstr "Activité des utilisateur·ice·s"
 
 #: front/src/components/instance/Stats.vue:43
 #: src/components/library/Library.vue:8
 msgid "Artists"
-msgstr ""
+msgstr "Artistes"
 
 #: front/src/components/instance/Stats.vue:55
 msgid "tracks"
-msgstr ""
+msgstr "Pistes"
 
 #: front/src/components/playlists/Editor.vue:22
 msgid "Changes synced with server"
