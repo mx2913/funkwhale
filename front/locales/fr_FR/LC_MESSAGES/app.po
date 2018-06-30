@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:35+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1140,16 +1140,16 @@ msgstr "Date d'import"
 
 #: front/src/components/manage/users/InvitationForm.vue:5
 msgid "Error while creating invitation"
-msgstr ""
+msgstr "Erreur lors de la création de l'invitation"
 
 #: front/src/components/manage/users/InvitationForm.vue:12
 msgid "Invitation code"
-msgstr ""
+msgstr "Code d'invitation"
 
 #: front/src/components/manage/users/InvitationForm.vue:27
 #: front/src/components/manage/users/InvitationsTable.vue:43
 msgid "Code"
-msgstr ""
+msgstr "Code"
 
 #: front/src/components/manage/users/InvitationForm.vue:38
 msgid "Clear"
@@ -1157,7 +1157,7 @@ msgstr ""
 
 #: front/src/components/manage/users/InvitationsTable.vue:20
 msgid "All"
-msgstr ""
+msgstr "Tout"
 
 #: front/src/components/manage/users/InvitationsTable.vue:22
 msgid "Expired/used"
@@ -1165,7 +1165,7 @@ msgstr ""
 
 #: front/src/components/manage/users/InvitationsTable.vue:39
 msgid "Owner"
-msgstr ""
+msgstr "Gestionnaire"
 
 #: front/src/components/manage/users/InvitationsTable.vue:41
 msgid "Creation date"
