@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:57+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1271,7 +1271,7 @@ msgstr ""
 
 #: front/src/views/playlists/Detail.vue:38
 msgid "Delete playlist"
-msgstr ""
+msgstr "Supprimer la playlist"
 
 #: front/src/views/playlists/List.vue:4
 msgid "Browsing playlists"
@@ -1279,7 +1279,7 @@ msgstr ""
 
 #: front/src/views/playlists/List.vue:9
 msgid "Manage your playlists"
-msgstr ""
+msgstr "Gérer vos playlists"
 
 #: front/src/views/playlists/List.vue:29
 msgid "Descending"
@@ -1287,33 +1287,33 @@ msgstr ""
 
 #: front/src/views/auth/PasswordReset.vue:5
 msgid "Reset your password"
-msgstr ""
+msgstr "Réinitialiser votre mot de passe"
 
 #: front/src/views/auth/PasswordReset.vue:15
 msgid "Account's email"
-msgstr ""
+msgstr "Email du compte"
 
 #: front/src/views/auth/PasswordReset.vue:25
 #: front/src/views/auth/PasswordResetConfirm.vue:19
 #: front/src/views/auth/EmailConfirm.vue:18
 msgid "Back to login"
-msgstr ""
+msgstr "Retour à la page de connexion"
 
 #: front/src/views/auth/PasswordResetConfirm.vue:5
 msgid "Change your password"
-msgstr ""
+msgstr "Changer votre mot de passe"
 
 #: front/src/views/auth/PasswordResetConfirm.vue:29
 msgid "Password updated successfully"
-msgstr ""
+msgstr "Mot de passe modifié avec succès"
 
 #: front/src/views/auth/PasswordResetConfirm.vue:32
 msgid "Proceed to login"
-msgstr ""
+msgstr "Poursuivre vers la page de connexion"
 
 #: front/src/views/auth/EmailConfirm.vue:5
 msgid "Confirm your email"
-msgstr ""
+msgstr "confirmer votre email"
 
 #: front/src/views/auth/EmailConfirm.vue:25
 msgid "Your email address was confirmed, you can now use the service without limitations."
