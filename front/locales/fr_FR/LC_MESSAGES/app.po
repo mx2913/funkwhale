@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 16:12+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -682,15 +682,15 @@ msgstr "Paramètres modifiés avec succès."
 #: front/src/components/admin/SettingsGroup.vue:64
 #: front/src/components/library/radios/Builder.vue:20
 msgid "Save"
-msgstr ""
+msgstr "Enregistrer"
 
 #: front/src/components/library/Radios.vue:5
 msgid "Browsing radios"
-msgstr ""
+msgstr "Parcourir les radios"
 
 #: front/src/components/library/Radios.vue:8
 msgid "Create your own radio"
-msgstr ""
+msgstr "Créer votre propre radio"
 
 #: front/src/components/library/Radios.vue:14
 #: front/src/components/federation/LibraryTrackTable.vue:6
@@ -700,7 +700,7 @@ msgstr ""
 #: front/src/components/manage/users/UsersTable.vue:6
 #: front/src/views/federation/LibraryList.vue:15
 msgid "Search"
-msgstr ""
+msgstr "Rechercher"
 
 #: front/src/components/library/radios/Builder.vue:6
 msgid "Builder"
@@ -708,40 +708,40 @@ msgstr ""
 
 #: front/src/components/library/radios/Builder.vue:12
 msgid "Radio name"
-msgstr ""
+msgstr "Nom de la radio"
 
 #: front/src/components/library/radios/Builder.vue:17
 msgid "Display publicly"
-msgstr ""
+msgstr "Afficher publiquement"
 
 #: front/src/components/library/radios/Builder.vue:27
 msgid "Add filters to customize your radio"
-msgstr ""
+msgstr "Ajouter des filtres pour personnaliser votre radio"
 
 #: front/src/components/library/radios/Builder.vue:37
 msgid "Add filter"
-msgstr ""
+msgstr "Ajouter des filtres"
 
 #: front/src/components/library/radios/Builder.vue:47
 msgid "Filter name"
-msgstr ""
+msgstr "Nom du filtre"
 
 #: front/src/components/library/radios/Builder.vue:49
 msgid "Config"
-msgstr ""
+msgstr "Configuration"
 
 #: front/src/components/library/radios/Builder.vue:51
 #: front/src/components/common/ActionTable.vue:9
 msgid "Actions"
-msgstr ""
+msgstr "Actions"
 
 #: front/src/components/library/Library.vue:5
 msgid "Browse"
-msgstr ""
+msgstr "Parcourir"
 
 #: front/src/components/library/Library.vue:11
 msgid "Radios"
-msgstr ""
+msgstr "Radios"
 
 #: front/src/components/library/Library.vue:21
 msgid "Import batches"
@@ -749,11 +749,11 @@ msgstr ""
 
 #: front/src/components/library/Artists.vue:5
 msgid "Browsing artists"
-msgstr ""
+msgstr "Parcourir les artistes"
 
 #: front/src/components/library/Artists.vue:16 src/views/playlists/List.vue:18
 msgid "Ordering"
-msgstr ""
+msgstr "Ordre"
 
 #: front/src/components/library/Artists.vue:24 src/views/playlists/List.vue:26
 msgid "Ordering direction"
@@ -766,18 +766,22 @@ msgstr "Albums de cet·te artiste"
 #: front/src/components/library/import/FileUpload.vue:5
 msgid "Ensure your music files are properly tagged before uploading them."
 msgstr ""
+"Vérifier que vos fichiers musicaux sont correctement taggués avant de les "
+"envoyer."
 
 #: front/src/components/library/import/FileUpload.vue:6
 msgid "We recommend using Picard for that purpose."
-msgstr ""
+msgstr "Nous recommandons d'utiliser le logiciel Picard pour cela."
 
 #: front/src/components/library/import/FileUpload.vue:37
 msgid "Once all your files are uploaded, simply click the following button to check the import status."
 msgstr ""
+"Une fois que tous vos fichiers sont chargés, cliquez sur le bouton suivant "
+"pour vérifier le statut d'import."
 
 #: front/src/components/library/import/FileUpload.vue:44
 msgid "File name"
-msgstr ""
+msgstr "Nom du fichier"
 
 #: front/src/components/library/import/FileUpload.vue:46
 #: front/src/components/library/import/BatchDetail.vue:67
@@ -788,13 +792,13 @@ msgstr ""
 #: front/src/components/manage/library/RequestsTable.vue:25
 #: front/src/components/manage/users/UsersTable.vue:44
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 #: front/src/components/library/import/FileUpload.vue:57
 #: front/src/components/library/import/BatchDetail.vue:72
 #: front/src/components/library/import/BatchList.vue:17
 msgid "Success"
-msgstr ""
+msgstr "Succès "
 
 #: front/src/components/library/import/FileUpload.vue:60
 #: front/src/components/library/import/BatchDetail.vue:34
@@ -804,20 +808,20 @@ msgstr ""
 #: front/src/components/manage/library/RequestsTable.vue:28
 #: front/src/components/manage/library/RequestsTable.vue:64
 msgid "Pending"
-msgstr ""
+msgstr "En attente"
 
 #: front/src/components/library/import/ArtistImport.vue:8
 msgid "Filter album types"
-msgstr ""
+msgstr "Filtrer le type d'album"
 
 #: front/src/components/library/import/TrackImport.vue:18
 #: front/src/components/library/import/BatchDetail.vue:83
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 #: front/src/components/library/import/TrackImport.vue:43
 msgid "Search query"
-msgstr ""
+msgstr "Requête de recherche"
 
 #: front/src/components/library/import/TrackImport.vue:45
 msgid "Imported URL"
