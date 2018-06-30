@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 14:31+0000\n"
+"PO-Revision-Date: 2018-06-30 14:35+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -76,80 +76,84 @@ msgstr[1] "%{ count } albums"
 #: front/src/components/favorites/List.vue:10
 msgid "1 favorite"
 msgid_plural "%{ count } favorites"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 favoris"
+msgstr[1] "%{ count } favoris"
 
 #: front/src/components/audio/album/Card.vue:54
 #: front/src/components/federation/LibraryCard.vue:25
 msgid "1 track"
 msgid_plural "%{ count } tracks"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "1 piste"
+msgstr[1] "%{ count } pistes"
 
 #: front/src/App.vue:51
 msgid "About Funkwhale"
-msgstr ""
+msgstr "À propos de Funkwhale"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:111
 msgid "Access disabled"
-msgstr ""
+msgstr "Accès désactivé"
 
 #: front/src/components/common/ActionTable.vue:82
 msgid "Action %{ action } was launched successfully on %{ count } element"
 msgid_plural "Action %{ action } was launched successfully on %{ count } elements"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "L'action %{ action } a été lancée avec succès sur %{ count } élément"
+msgstr[1] "L'action %{ action } a été lancée avec succès sur %{ count } éléments"
 
 #: front/src/components/favorites/TrackFavoriteIcon.vue:4
 #: front/src/components/favorites/TrackFavoriteIcon.vue:21
 msgid "Add to favorites"
-msgstr ""
+msgstr "Ajouter aux favoris"
 
 #: front/src/components/metadata/Search.vue:129
 #: front/src/components/audio/track/Table.vue:9
 #: front/src/components/manage/library/FilesTable.vue:40
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: front/src/components/library/import/ReleaseImport.vue:3
 msgid "Album %{ title } (%{ count } track) by %{ artist }"
 msgid_plural "Album %{ title } (%{ count } tracks) by %{ artist }"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Album %{ title } (%{ count } piste) par %{ artist }"
+msgstr[1] "Album %{ title } (%{ count } pistes) by %{ artist }"
 
 #: front/src/components/library/Album.vue:12
 msgid "Album containing %{ count } track, by %{ artist }"
 msgid_plural "Album containing %{ count } tracks, by %{ artist }"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Album incluant %{ count } piste, de %{ artist }"
+msgstr[1] "Album incluant %{ count } pistes, de %{ artist }"
 
 #: front/src/components/metadata/Search.vue:125
 #: front/src/components/federation/LibraryTrackTable.vue:34
 #: front/src/components/manage/library/RequestsTable.vue:50
 msgid "Artist"
-msgstr ""
+msgstr "Artiste"
 
 #: front/src/components/audio/album/Card.vue:13
 msgid "By %{ artist }"
-msgstr ""
+msgstr "De %{ artist }"
 
 #: front/src/components/federation/LibraryFollowTable.vue:57
 msgid "By confirming, %{ username } will be denied access to your library."
 msgstr ""
+"Si vous confirmez, %{ username } se verra refuser l'accès à votre "
+"bibliothèque."
 
 #: front/src/components/federation/LibraryFollowTable.vue:73
 msgid "By confirming, %{ username } will be granted access to your library."
 msgstr ""
+"Si vous confirmez, %{ username } se verra accorder l'accès à votre "
+"bitliothèque."
 
 #: front/src/components/manage/library/FilesTable.vue:184
 #: front/src/components/manage/library/RequestsTable.vue:190
 #: front/src/components/manage/users/InvitationsTable.vue:161
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #: front/src/components/playlists/Editor.vue:42
 msgid "Do you want to clear the playlist \"%{ playlist }\"?"
-msgstr ""
+msgstr "Voulez-vous vider la playlist \"%{ playlist }\" ?"
 
 #: front/src/views/playlists/Detail.vue:34
 msgid "Do you want to delete the playlist \"%{ playlist }\"?"
