@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 16:07+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -586,40 +586,41 @@ msgstr ""
 
 #: front/src/components/auth/Login.vue:5
 msgid "Log in to your Funkwhale account"
-msgstr "Connexion à votre compte Funkwhale"
+msgstr "Connectez vous à votre compte Funkwhale"
 
 #: front/src/components/auth/Login.vue:10
 msgid "Please double-check your username/password couple is correct"
 msgstr ""
+"Merci de vérifier que votre nom d'utilisateur et mot de passe sont corrects"
 
 #: front/src/components/auth/Login.vue:16
 msgid "Username or email"
-msgstr ""
+msgstr "Nom d'utilisateur ou email"
 
 #: front/src/components/auth/Login.vue:18
 msgid "Create an account"
-msgstr ""
+msgstr "Créer un compte"
 
 #: front/src/components/auth/Profile.vue:16
 msgid "This is you!"
-msgstr ""
+msgstr "C'est vous !"
 
 #: front/src/components/auth/Profile.vue:20
 #: front/src/components/manage/users/UsersTable.vue:71
 msgid "Staff member"
-msgstr ""
+msgstr "Membre de l'équipe"
 
 #: front/src/components/auth/Logout.vue:6
 msgid "Are you sure you want to log out?"
-msgstr "Êtes-vous sûr·e de vouloir vous déconnecter ?"
+msgstr "Êtes-vous sur de vouloir vous déconnecter ?"
 
 #: front/src/components/auth/Logout.vue:9
 msgid "Yes, log me out!"
-msgstr ""
+msgstr "Oui, déconnectez-moi !"
 
 #: front/src/components/auth/Settings.vue:6
 msgid "Account settings"
-msgstr ""
+msgstr "Paramètres du compte"
 
 #: front/src/components/auth/Settings.vue:28
 msgid "Update settings"
@@ -627,7 +628,7 @@ msgstr ""
 
 #: front/src/components/auth/Settings.vue:35
 msgid "Change my password"
-msgstr ""
+msgstr "Changer mon mot de passe"
 
 #: front/src/components/auth/Settings.vue:44
 msgid "Cannot change your password"
