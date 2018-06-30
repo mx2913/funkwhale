@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 16:15+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -825,7 +825,7 @@ msgstr "Recherche"
 
 #: front/src/components/library/import/TrackImport.vue:45
 msgid "Imported URL"
-msgstr ""
+msgstr "URL importée"
 
 #: front/src/components/library/import/BatchDetail.vue:11
 msgid "Import batch"
@@ -834,7 +834,7 @@ msgstr "Lot d'import"
 #: front/src/components/library/import/BatchDetail.vue:19
 #: front/src/components/library/import/BatchList.vue:36
 msgid "Launch date"
-msgstr ""
+msgstr "Date de sortie"
 
 #: front/src/components/library/import/BatchDetail.vue:38
 msgid "Skipped"
