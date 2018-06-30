@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:20+0000\n"
-"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
+"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -997,15 +997,15 @@ msgstr "Acteur·rice"
 
 #: front/src/components/federation/LibraryFollowTable.vue:39
 msgid "Approved"
-msgstr ""
+msgstr "Approuvé"
 
 #: front/src/components/federation/LibraryFollowTable.vue:43
 msgid "Refused"
-msgstr ""
+msgstr "Refusé"
 
 #: front/src/components/federation/LibraryFollowTable.vue:64
 msgid "Deny"
-msgstr ""
+msgstr "Refusé"
 
 #: front/src/components/federation/LibraryTrackTable.vue:14
 #: front/src/components/federation/LibraryTrackTable.vue:53
