@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 16:01+0000\n"
+"PO-Revision-Date: 2018-06-30 16:07+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -472,7 +472,7 @@ msgstr "Vider la playlist"
 #: front/src/components/playlists/Editor.vue:45
 msgid "This will remove all tracks from this playlist and cannot be undone."
 msgstr ""
-"Cela supprimera toutes les pistes de la playlist et cela ne pourra pas être "
+"Cela supprimera toutes les pistes de la playlist et ne pourra pas être "
 "annulé."
 
 #: front/src/components/playlists/PlaylistModal.vue:4
@@ -519,7 +519,7 @@ msgstr "Créer un compte funkwhale"
 
 #: front/src/components/auth/Signup.vue:14
 msgid "We cannot create your account"
-msgstr "Nous ne pour créer votre compte"
+msgstr "Nous ne pouvons pas créer votre compte"
 
 #: front/src/components/auth/Signup.vue:20
 #: front/src/components/manage/users/UsersTable.vue:38
@@ -544,19 +544,19 @@ msgstr "Créer votre compte"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:3
 msgid "Subsonic API password"
-msgstr "Mot de passe de l'API subsonique"
+msgstr "Mot de passe de l'API Subsonic"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:8
 msgid "Funkwhale is compatible with other music players that support the Subsonic API."
 msgstr ""
 "Funkwhale est compatible avec d'autres lecteurs de musique qui supportent "
-"l'API subsonique."
+"l'API Subsonic."
 
 #: front/src/components/auth/SubsonicTokenForm.vue:9
 msgid "You can use those to enjoy your playlist and music in offline mode, on your smartphone or tablet, for instance."
 msgstr ""
-"Vous pouvez les utiliser pour profiter de vos playlists et de la musique en "
-"étant déconnecté, sur votre smatphone ou tablette, par exemple."
+"Vous pouvez les utiliser pour profiter de vos playlists et de votre musique "
+"en mode hors-ligne sur votre smatphone ou tablette, par exemple."
 
 #: front/src/components/auth/SubsonicTokenForm.vue:15
 msgid "Discover how to use Funkwhale from other apps"
@@ -573,7 +573,7 @@ msgstr "Demander un nouveau mot de passe"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:36
 msgid "Request a new Subsonic API password?"
-msgstr "Demander un nouveau mot de passe API Subsonic ?"
+msgstr "Demander un nouveau mot de passe pour l'API Subsonic ?"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:44
 msgid "Request a password"
@@ -631,7 +631,7 @@ msgstr ""
 
 #: front/src/components/auth/Settings.vue:44
 msgid "Cannot change your password"
-msgstr "Impossible de mettrà jour le mot de passe"
+msgstr "Impossible de mettre à jour le mot de passe"
 
 #: front/src/components/auth/Settings.vue:51
 msgid "Old password"
