@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
 "PO-Revision-Date: 2018-06-30 17:26+0000\n"
-"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
+"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1069,7 +1069,7 @@ msgid "There is currently no way to download directly multiple tracks from funkw
 msgstr ""
 "Il n'est pas possible pour le moment de télécharger un ensemble de pistes "
 "sous forme d'archive. Cependant, vous pouvez utiliser un outil en ligne de "
-"commande tel que cURL pour télécharger facilement une liste de pistes"
+"commande tel que cURL pour télécharger facilement une liste de pistes."
 
 #: front/src/components/audio/Search.vue:3
 msgid "Search for some music"
