@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 14:52+0000\n"
+"PO-Revision-Date: 2018-06-30 14:53+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -317,25 +317,25 @@ msgstr "Playlists"
 
 #: front/src/components/audio/Player.vue:183
 msgid "Queue shuffled!"
-msgstr "La queue a été mélangée"
+msgstr "La queue a été mélangée !"
 
 #: front/src/components/auth/Profile.vue:11
 msgid "Registered since %{ date }"
-msgstr ""
+msgstr "Inscrit depuis le %{ date }"
 
 #: front/src/components/favorites/TrackFavoriteIcon.vue:19
 msgid "Remove from favorites"
-msgstr ""
+msgstr "Retirer des favoris"
 
 #: front/src/components/library/import/TrackImport.vue:31
 msgid "Result %{ current }/%{ total }"
-msgstr ""
+msgstr "Résultat %{ current }/%{ total }"
 
 #: front/src/components/common/ActionTable.vue:61
 msgid "Select all %{ total } elements"
 msgid_plural "Select all %{ total } elements"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Selectionner l'ensemble des %{ total } éléments"
+msgstr[1] "Selectionner l'ensemble des %{ total } éléments"
 
 #: front/src/components/federation/LibraryCard.vue:43
 msgid "Send a follow request"
