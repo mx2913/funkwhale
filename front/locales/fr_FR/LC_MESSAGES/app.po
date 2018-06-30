@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 14:47+0000\n"
+"PO-Revision-Date: 2018-06-30 14:49+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -237,35 +237,35 @@ msgstr "Imports"
 
 #: front/src/components/favorites/TrackFavoriteIcon.vue:3
 msgid "In favorites"
-msgstr ""
+msgstr "Dans les favoris"
 
 #: front/src/components/playlists/Editor.vue:31
 msgid "Insert from queue (%{ count } track)"
 msgid_plural "Insert from queue (%{ count } tracks)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Insérer depuis la queue (%{ count } piste)"
+msgstr[1] "Insérer depuis la queue (%{ count } pistes)"
 
 #: front/src/views/admin/Settings.vue:75
 msgid "Instance information"
-msgstr ""
+msgstr "Informations relatives à cette instance"
 
 #: front/src/components/manage/users/UsersTable.vue:171
 #: front/src/views/admin/users/UsersDetail.vue:152
 #: src/components/Sidebar.vue:70
 msgid "Library"
-msgstr ""
+msgstr "Bibliothèque"
 
 #: front/src/App.vue:29
 msgid "Links"
-msgstr ""
+msgstr "Liens"
 
 #: front/src/components/Sidebar.vue:38
 msgid "Logged in as %{ username }"
-msgstr ""
+msgstr "Connecté en tant que %{ username }"
 
 #: front/src/components/manage/library/RequestsTable.vue:192
 msgid "Mark as closed"
-msgstr ""
+msgstr "Marquer comme fermé"
 
 #: front/src/components/manage/library/RequestsTable.vue:191
 msgid "Mark as imported"
