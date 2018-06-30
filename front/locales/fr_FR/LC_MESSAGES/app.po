@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 17:19+0000\n"
+"PO-Revision-Date: 2018-06-30 17:20+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -993,7 +993,7 @@ msgstr "En attente de validation"
 
 #: front/src/components/federation/LibraryFollowTable.vue:22
 msgid "Actor"
-msgstr "Acteur·ice"
+msgstr "Acteur·rice"
 
 #: front/src/components/federation/LibraryFollowTable.vue:39
 msgid "Approved"
