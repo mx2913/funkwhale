@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 17:31+0000\n"
-"Last-Translator: Audrey <audreypicaudou@yahoo.fr>\n"
+"PO-Revision-Date: 2018-06-30 17:33+0000\n"
+"Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
 "Language: fr_FR\n"
@@ -1090,8 +1090,8 @@ msgstr "Retourner à la page d'accueil"
 #: front/src/components/About.vue:16
 msgid "Unfortunately, owners of this instance did not yet take the time to complete this page."
 msgstr ""
-"Zut, les gestionnaires de cette instance n'ont pas encore pris le temps de "
-"compléter cette page"
+"Malheureusement, les gestionnaires de cette instance n'ont pas encore pris "
+"le temps de compléter cette page."
 
 #: front/src/components/Sidebar.vue:21
 msgid "Queue"
@@ -1103,7 +1103,7 @@ msgstr ""
 
 #: front/src/components/Sidebar.vue:43
 msgid "Logout"
-msgstr ""
+msgstr "Déconnexion"
 
 #: front/src/components/Sidebar.vue:44
 msgid "Login"
