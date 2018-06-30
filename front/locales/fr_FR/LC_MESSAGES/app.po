@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-06-30 16:25+0200\n"
-"PO-Revision-Date: 2018-06-30 17:37+0000\n"
+"PO-Revision-Date: 2018-06-30 17:47+0000\n"
 "Last-Translator: anonymous <noreply@weblate.org>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -1193,27 +1193,29 @@ msgstr "Actif"
 
 #: front/src/components/common/ActionTable.vue:22
 msgid "Go"
-msgstr ""
+msgstr "Aller "
 
 #: front/src/components/common/ActionTable.vue:40
 msgid "Launch"
-msgstr ""
+msgstr "Démarrer"
 
 #: front/src/components/Home.vue:6
 msgid "Welcome on Funkwhale"
-msgstr ""
+msgstr "Bienvenue sur Funkwhale"
 
 #: front/src/components/Home.vue:14
 msgid "Get me to the library"
-msgstr ""
+msgstr "Amenez moi à la bibliothèque"
 
 #: front/src/components/Home.vue:25
 msgid "Why funkwhale?"
-msgstr ""
+msgstr "Pourquoi Funkwhale ?"
 
 #: front/src/components/Home.vue:40
 msgid "Funkwhale is designed to make it easy to listen to music you like, or to discover new artists."
 msgstr ""
+"Funkwhale est créé pour facilité l'écoute des musiques que vous aimez ou "
+"découvrir de nouveaux artistes."
 
 #: front/src/components/Home.vue:45
 msgid "Click once, listen for hours using built-in radios"
