@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-01 15:30+0200\n"
-"PO-Revision-Date: 2018-07-01 15:47+0000\n"
+"PO-Revision-Date: 2018-07-01 15:53+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -967,11 +967,11 @@ msgstr "ID de la tâche"
 
 #: front/src/components/library/import/BatchList.vue:36
 msgid "Jobs"
-msgstr ""
+msgstr "Tâches"
 
 #: front/src/components/Home.vue:50
 msgid "Keep a track of your favorite songs"
-msgstr ""
+msgstr "Gardez une trace de vos chansons favorites"
 
 #: front/src/components/manage/users/UsersTable.vue:41
 #: front/src/views/admin/users/UsersDetail.vue:45
@@ -980,11 +980,11 @@ msgstr "Dernière activité"
 
 #: front/src/views/federation/LibraryDetail.vue:101
 msgid "Last fetched"
-msgstr ""
+msgstr "Dernière récupération"
 
 #: front/src/components/playlists/PlaylistModal.vue:32
 msgid "Last modification"
-msgstr ""
+msgstr "Dernière modification"
 
 #: front/src/components/library/Home.vue:9
 msgid "Latest artists"
@@ -1004,12 +1004,10 @@ msgid "Launch scan"
 msgstr "Démarrer le scan"
 
 #: front/src/components/Home.vue:10
-#, fuzzy
 msgid "Learn more about this instance"
-msgstr "A propos de cette instance"
+msgstr "En apprendre plus à propos de cette instance"
 
 #: front/src/components/requests/Form.vue:10
-#, fuzzy
 msgid "Leave this field empty if you're requesting the whole discography."
 msgstr "Laisser ce champ vide si vous voulez suggérer toute la discographie."
 
@@ -1029,9 +1027,8 @@ msgid "Library files"
 msgstr "Fichiers de la bibliothèque"
 
 #: front/src/components/federation/LibraryForm.vue:20
-#, fuzzy
 msgid "Library name"
-msgstr "Taille de la bibliothèque"
+msgstr "Nom de la bibliothèque"
 
 #: front/src/views/federation/LibraryDetail.vue:84
 msgid "Library size"
@@ -1067,7 +1064,7 @@ msgstr "Déconnexion"
 
 #: front/src/components/library/Track.vue:94
 msgid "Lyrics"
-msgstr ""
+msgstr "Paroles"
 
 #: front/src/components/playlists/PlaylistModal.vue:3
 msgid "Manage playlists"
@@ -1108,7 +1105,6 @@ msgid "Music"
 msgstr "Musique"
 
 #: front/src/components/library/import/Main.vue:147
-#, fuzzy
 msgid "Music request"
 msgstr "Requête musicale"
 
@@ -1117,9 +1113,8 @@ msgid "Music requests"
 msgstr "Requête musicale"
 
 #: front/src/components/Sidebar.vue:34
-#, fuzzy
 msgid "My account"
-msgstr "Créer votre compte"
+msgstr "Mon compte"
 
 #: front/src/components/library/Track.vue:64
 #: src/components/library/Track.vue:75
@@ -1142,9 +1137,8 @@ msgstr "Nom"
 
 #: front/src/views/auth/PasswordResetConfirm.vue:14
 #: front/src/components/auth/Settings.vue:56
-#, fuzzy
 msgid "New password"
-msgstr "Ancien mot de passe"
+msgstr "Nouveau mot de passe"
 
 #: front/src/components/Sidebar.vue:157
 msgid "New tracks will be appended here automatically."
@@ -1156,15 +1150,17 @@ msgstr "Prochaine étape"
 
 #: front/src/components/Sidebar.vue:124
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: front/src/components/Home.vue:103
 msgid "No add-ons, no plugins : you only need a web library"
 msgstr ""
+"Pas d'addons ou d'extension à installer, il vous suffit d'une bibliothèque "
+"sur le web"
 
 #: front/src/components/library/Track.vue:102
 msgid "No lyrics available for this track."
-msgstr ""
+msgstr "Pas de paroles disponibles pour cette piste."
 
 #: front/src/components/playlists/Form.vue:76
 msgid "Nobody except me"
@@ -1172,7 +1168,7 @@ msgstr "Personne à part moi"
 
 #: front/src/views/federation/LibraryDetail.vue:32
 msgid "Not following"
-msgstr ""
+msgstr "Non abonné·e"
 
 #: front/src/components/federation/LibraryTrackTable.vue:13
 #: front/src/components/federation/LibraryTrackTable.vue:52
@@ -1185,7 +1181,7 @@ msgstr "Pas utilisé"
 
 #: front/src/App.vue:34
 msgid "Official website"
-msgstr ""
+msgstr "Site officiel"
 
 #: front/src/components/library/import/FileUpload.vue:36
 msgid "Once all your files are uploaded, simply click the following button to check the import status."
@@ -1194,7 +1190,7 @@ msgstr "Une fois que tous vos fichiers sont chargés, cliquez sur le bouton suiv
 #: front/src/components/federation/LibraryCard.vue:21
 #: front/src/components/manage/users/InvitationsTable.vue:20
 msgid "Open"
-msgstr ""
+msgstr "Accès libre"
 
 #: front/src/App.vue:60
 msgid "Options"
@@ -1265,7 +1261,7 @@ msgstr "Requêtes en attente"
 #: front/src/components/manage/users/UsersTable.vue:42
 #: front/src/views/admin/users/UsersDetail.vue:68
 msgid "Permissions"
-msgstr ""
+msgstr "Permissions"
 
 #: front/src/components/audio/PlayButton.vue:8
 #: src/components/library/Track.vue:30
