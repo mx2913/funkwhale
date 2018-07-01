@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-01 15:30+0200\n"
-"PO-Revision-Date: 2018-07-01 15:46+0000\n"
+"PO-Revision-Date: 2018-07-01 15:47+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -940,7 +940,7 @@ msgstr "Dans la bibliothèque"
 
 #: front/src/components/library/import/Main.vue:96
 msgid "Input a MusicBrainz ID manually:"
-msgstr "Saisir manuellement un ID MusicBrainz:"
+msgstr "Saisir manuellement un ID MusicBrainz :"
 
 #: front/src/components/playlists/Editor.vue:31
 msgid "Insert from queue (%{ count } track)"
@@ -958,9 +958,8 @@ msgid "Invitations"
 msgstr "Invitations"
 
 #: front/src/App.vue:40
-#, fuzzy
 msgid "Issue tracker"
-msgstr "1 piste"
+msgstr "Issue tracker"
 
 #: front/src/components/library/import/BatchDetail.vue:80
 msgid "Job ID"
