@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-01 15:30+0200\n"
-"PO-Revision-Date: 2018-07-01 16:07+0000\n"
+"PO-Revision-Date: 2018-07-01 16:22+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -1892,12 +1892,12 @@ msgstr "Nous pensons que l'accès à la musique devrait être simple."
 
 #: front/src/components/PageNotFound.vue:10
 msgid "We're sorry, the page you asked for does not exist:"
-msgstr "Désolés, la page demandée n’existe pas :"
+msgstr "Désolé, la page demandée n’existe pas :"
 
 #: front/src/components/requests/Form.vue:21
-#, fuzzy
 msgid "We've received your request, you'll get some groove soon ;)"
-msgstr "Nous avons bien reçu votre requête, vous aurez bientôt de nos nouvelles ;)"
+msgstr ""
+"Nous avons bien reçu votre requête, vous aurez bientôt de nos nouvelles ;)"
 
 #: front/src/components/Home.vue:5
 msgid "Welcome on Funkwhale"
@@ -1913,7 +1913,7 @@ msgstr "Pourquoi Funkwhale ?"
 
 #: front/src/components/Sidebar.vue:123
 msgid "Yes"
-msgstr ""
+msgstr "Oui"
 
 #: front/src/components/auth/Logout.vue:8
 msgid "Yes, log me out!"
@@ -1926,14 +1926,20 @@ msgstr "Vous êtes actuellement connecté·e en tant que %{ username }"
 #: front/src/components/library/import/Main.vue:111
 msgid "You can also skip this step and enter metadata manually."
 msgstr ""
+"Vous pouvez également sauter cette étape et entrer les métadonnées "
+"manuellement."
 
 #: front/src/components/Home.vue:136
 msgid "You can invite friends and family to your instance so they can enjoy your music"
 msgstr ""
+"Vous pouvez inviter vos ami·es et votre famille sur votre instance pour "
+"qu'ils·elles puissent profiter de votre musique"
 
 #: front/src/components/library/radios/Builder.vue:7
 msgid "You can use this interface to build your own custom radio, which will play tracks according to your criteria."
 msgstr ""
+"Vous pouvez utiliser cette interface pour réaliser votre propre radio "
+"personnalisée, qui jouera les pistes correspondant aux critères indiqués."
 
 #: front/src/components/auth/SubsonicTokenForm.vue:8
 msgid "You can use those to enjoy your playlist and music in offline mode, on your smartphone or tablet, for instance."
@@ -1941,7 +1947,7 @@ msgstr "Vous pouvez les utiliser pour profiter de vos playlists et de votre musi
 
 #: front/src/components/Sidebar.vue:155
 msgid "You have a radio playing"
-msgstr ""
+msgstr "Vous écoutez une radio"
 
 #: front/src/App.vue:6
 msgid "You need to select an instance in order to continue"
@@ -1954,6 +1960,8 @@ msgstr "Vous allez être déconnecté de cette session et vous allez devoir vous
 #: front/src/components/auth/Settings.vue:38
 msgid "You will have to update your password on your clients that use this password."
 msgstr ""
+"Vous devrez mettre à jour votre mot de passe sur l'ensemble des clients "
+"utilisant ce mot de passe."
 
 #: front/src/components/library/import/Main.vue:103
 msgid "You will import:"
@@ -1968,13 +1976,15 @@ msgid "Your music, your way"
 msgstr "Votre musique, à votre façon"
 
 #: front/src/views/auth/PasswordResetConfirm.vue:29
-#, fuzzy
 msgid "Your password has been updated successfully."
-msgstr "Mot de passe modifié avec succès"
+msgstr "Votre mot de passe a été mis à jour avec succès."
 
 #: front/src/components/auth/Settings.vue:68
 msgid "Your Subsonic password will be changed to a new, random one, logging you out from devices that used the old Subsonic password"
 msgstr ""
+"Votre mot de passe Subsonic sera remplacé par un nouveau mot de passe "
+"aléatoire, ce qui vous déconnectera de tous les appareils utilisant l'ancien "
+"mot de passe"
 
 #: front/src/components/auth/Signup.vue:5
 msgid "Create a funkwhale account"
@@ -1990,7 +2000,7 @@ msgstr "Merci de vérifier que votre nom d'utilisateur et mot de passe sont corr
 
 #: front/src/components/auth/Settings.vue:66
 msgid "Changing your password will have the following consequences"
-msgstr ""
+msgstr "Modifier votre mot de passe aura les conséquences suivantes"
 
 #: front/src/components/audio/PlayButton.vue:145
 msgid "%{ count } track was added to your queue"
@@ -2008,10 +2018,11 @@ msgid "Page not found!</translate>"
 msgstr "Page non trouvée !"
 
 #: front/src/components/manage/users/UsersTable.vue:55
-#, fuzzy
 msgid "Inactive"
 msgstr "Actif"
 
 #: front/src/components/common/ActionTable.vue:38
 msgid "This may affect a lot of elements, please double check this is really what you want."
 msgstr ""
+"Cette opération peut affecter de nombreux éléments, merci de vérifier que "
+"c'est bien ce que vous souhaitez."
