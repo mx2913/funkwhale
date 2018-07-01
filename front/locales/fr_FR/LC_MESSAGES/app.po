@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-01 15:30+0200\n"
-"PO-Revision-Date: 2018-07-01 14:45+0000\n"
+"PO-Revision-Date: 2018-07-01 15:43+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -407,7 +407,7 @@ msgstr "Choisissez votre instance"
 
 #: front/src/components/Home.vue:64
 msgid "Clean library"
-msgstr "Vider la bibliothèque"
+msgstr "Une bibliothèque musicale de qualité"
 
 #: front/src/components/manage/users/InvitationForm.vue:37
 msgid "Clear"
@@ -609,11 +609,11 @@ msgstr "Adresse email"
 
 #: front/src/views/auth/EmailConfirm.vue:23
 msgid "Email confirmed"
-msgstr ""
+msgstr "Email confirmé"
 
 #: front/src/views/playlists/Detail.vue:28
 msgid "End edition"
-msgstr ""
+msgstr "Terminer l'édition"
 
 #: front/src/components/library/import/FileUpload.vue:4
 msgid "Ensure your music files are properly tagged before uploading them."
@@ -628,24 +628,20 @@ msgid "Error reporting"
 msgstr "Rapports d'erreur"
 
 #: front/src/components/common/ActionTable.vue:75
-#, fuzzy
 msgid "Error while applying action"
-msgstr "Erreur lors de la création de l'invitation"
+msgstr "Erreur lors du traitement de l'action"
 
 #: front/src/views/auth/PasswordReset.vue:7
-#, fuzzy
 msgid "Error while asking for a password reset"
-msgstr "Erreur pendant l'enregistrement des paramètres"
+msgstr "Erreur pendant la demande de réinitialisation de mot de passe"
 
 #: front/src/views/auth/PasswordResetConfirm.vue:7
-#, fuzzy
 msgid "Error while changing your password"
-msgstr "Erreur lors du scan de la bibliothèque"
+msgstr "Erreur pendant le changement de mot de passe"
 
 #: front/src/views/auth/EmailConfirm.vue:7
-#, fuzzy
 msgid "Error while confirming your email"
-msgstr "Confirmer votre email"
+msgstr "Erreur lors de la confirmation de votre email"
 
 #: front/src/components/manage/users/InvitationForm.vue:4
 msgid "Error while creating invitation"
@@ -675,21 +671,19 @@ msgstr "Tout le monde sur cette instance"
 
 #: front/src/components/library/radios/Builder.vue:47
 msgid "Exclude"
-msgstr ""
+msgstr "Exclure"
 
 #: front/src/components/discussion/Comment.vue:14
 msgid "Expand"
 msgstr "Ouvrir"
 
 #: front/src/components/manage/users/InvitationsTable.vue:41
-#, fuzzy
 msgid "Expiration date"
-msgstr "Date de création"
+msgstr "Date d'expiration"
 
 #: front/src/components/manage/users/InvitationsTable.vue:50
-#, fuzzy
 msgid "Expired"
-msgstr "Expirée/utilisée"
+msgstr "Expirée"
 
 #: front/src/components/manage/users/InvitationsTable.vue:21
 msgid "Expired/used"
@@ -700,9 +694,8 @@ msgid "External source. Supported backends"
 msgstr "Source externe. Services supportés"
 
 #: front/src/components/Sidebar.vue:50
-#, fuzzy
 msgid "Favorites"
-msgstr "Dans les favoris"
+msgstr "Favoris"
 
 #: front/src/components/federation/LibraryForm.vue:3
 msgid "Federate with a new instance"
@@ -722,9 +715,8 @@ msgid "File name"
 msgstr "Nom du fichier"
 
 #: front/src/components/library/import/Main.vue:76
-#, fuzzy
 msgid "File upload"
-msgstr "Nom du fichier"
+msgstr "Envoi de fichier"
 
 #: front/src/views/admin/library/Base.vue:5
 msgid "Files"
@@ -744,36 +736,32 @@ msgstr "Terminé"
 
 #: front/src/components/library/import/Main.vue:59
 msgid "First, choose where you want to import the music from"
-msgstr ""
+msgstr "Tout d'abord, choisissez le mode d'import de la musique"
 
 #: front/src/components/federation/LibraryCard.vue:44
 msgid "Follow"
 msgstr "Suivre"
 
 #: front/src/components/federation/LibraryCard.vue:36
-#, fuzzy
 msgid "Follow request pending approval"
-msgstr "En attente de validation"
+msgstr "Abonnement en attente de validation"
 
 #: front/src/views/federation/LibraryDetail.vue:21
-#, fuzzy
 msgid "Follow status"
-msgstr "Abonnés"
+msgstr "Statut de l'abonnement"
 
 #: front/src/views/federation/Base.vue:13
 msgid "Followers"
 msgstr "Abonnés"
 
 #: front/src/components/federation/LibraryCard.vue:18
-#, fuzzy
 msgid "Followers only"
-msgstr "Abonnés"
+msgstr "Abonné·es seulement"
 
 #: front/src/components/federation/LibraryCard.vue:15
 #: front/src/views/federation/LibraryDetail.vue:29
-#, fuzzy
 msgid "Following"
-msgstr "Suivre"
+msgstr "Abonné"
 
 #: front/src/components/activity/Like.vue:12
 #: src/components/activity/Listen.vue:12
@@ -801,9 +789,8 @@ msgid "Funkwhale is designed to make it easy to listen to music you like, or to 
 msgstr "Funkwhale est conçu pour faciliter l'écoute des musiques que vous aimez et découvrir de nouveaux artistes."
 
 #: front/src/components/Home.vue:119
-#, fuzzy
 msgid "Funkwhale is free and gives you control on your music."
-msgstr "Funkwhale prend soin de votre musique"
+msgstr "Funkwhale est gratuit et vous donne le contrôle sur votre musique"
 
 #: front/src/components/Home.vue:66
 msgid "Funkwhale takes care of handling your music"
