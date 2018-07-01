@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-01 15:30+0200\n"
-"PO-Revision-Date: 2018-07-01 15:43+0000\n"
+"PO-Revision-Date: 2018-07-01 15:46+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -790,16 +790,15 @@ msgstr "Funkwhale est conçu pour faciliter l'écoute des musiques que vous aime
 
 #: front/src/components/Home.vue:119
 msgid "Funkwhale is free and gives you control on your music."
-msgstr "Funkwhale est gratuit et vous donne le contrôle sur votre musique"
+msgstr "Funkwhale est gratuit et vous donne le contrôle sur votre musique."
 
 #: front/src/components/Home.vue:66
 msgid "Funkwhale takes care of handling your music"
 msgstr "Funkwhale prend soin de votre musique"
 
 #: front/src/components/manage/users/InvitationForm.vue:16
-#, fuzzy
 msgid "Get a new invitation"
-msgstr "Informations relatives à cette instance"
+msgstr "Obtenir une nouvelle invitation"
 
 #: front/src/components/Home.vue:13
 msgid "Get me to the library"
@@ -827,23 +826,28 @@ msgstr "Retourner à la page d'accueil"
 
 #: front/src/components/library/import/Main.vue:13
 msgid "Grab corresponding metadata"
-msgstr ""
+msgstr "Récupérer les métadonnées correspondantes"
 
 #: front/src/components/instance/Stats.vue:36
 msgid "Hours of music"
-msgstr ""
+msgstr "Heures de musique"
 
 #: front/src/components/auth/SubsonicTokenForm.vue:11
 msgid "However, accessing Funkwhale from those clients require a separate password you can set below."
 msgstr ""
+"Cependant, accéder à Funkwhale depuis ces clients requiert un mot de passe "
+"distinct que vous pouvez configurer ci-dessous."
 
 #: front/src/components/library/import/BatchList.vue:34
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: front/src/views/auth/PasswordResetConfirm.vue:24
 msgid "If the email address provided in the previous step is valid and binded to a user account, you should receive an email with reset instructions in the next couple of minutes."
 msgstr ""
+"Si l'adresse email que vous avez fournie est valide et associée à un compte "
+"utilisateur, vous allez recevoir un email contenant les instructions de "
+"réinitialisation au cours des prochaines minutes."
 
 #: front/src/components/federation/LibraryTrackTable.vue:159
 #: front/src/components/library/Library.vue:17
@@ -874,14 +878,12 @@ msgid "Import date"
 msgstr "Date d'import"
 
 #: front/src/components/library/import/FileUpload.vue:38
-#, fuzzy
 msgid "Import detail page"
-msgstr "Date d'import"
+msgstr "Page de détail de l'import"
 
 #: front/src/components/Sidebar.vue:80
-#, fuzzy
 msgid "Import music"
-msgstr "Imports"
+msgstr "Importer de la musique"
 
 #: front/src/components/Home.vue:71
 msgid "Import music from various platforms, such as YouTube or SoundCloud"
@@ -889,9 +891,8 @@ msgstr "Importez de la musique de différentes plate-formes, comme YouTube ou So
 
 #: front/src/components/federation/LibraryTrackTable.vue:14
 #: front/src/components/federation/LibraryTrackTable.vue:51
-#, fuzzy
 msgid "Import pending"
-msgstr "Importé"
+msgstr "Import en attente"
 
 #: front/src/views/admin/library/Base.vue:9
 #: front/src/views/admin/library/RequestsList.vue:3
@@ -904,19 +905,16 @@ msgid "Import source"
 msgstr "Source de l'import"
 
 #: front/src/components/federation/LibraryTrackTable.vue:9
-#, fuzzy
 msgid "Import status"
-msgstr "Date d'import"
+msgstr "Status de l'import"
 
 #: front/src/components/library/import/ReleaseImport.vue:14
-#, fuzzy
 msgid "Import this release"
-msgstr "Lots d'imports"
+msgstr "Importer cet album"
 
 #: front/src/components/library/import/TrackImport.vue:11
-#, fuzzy
 msgid "Import this track"
-msgstr "Import %{ count } track"
+msgstr "Importer cette piste"
 
 #: front/src/components/federation/LibraryTrackTable.vue:12
 #: front/src/components/manage/library/RequestsTable.vue:29
@@ -942,7 +940,7 @@ msgstr "Dans la bibliothèque"
 
 #: front/src/components/library/import/Main.vue:96
 msgid "Input a MusicBrainz ID manually:"
-msgstr ""
+msgstr "Saisir manuellement un ID MusicBrainz:"
 
 #: front/src/components/playlists/Editor.vue:31
 msgid "Insert from queue (%{ count } track)"
