@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-01 15:30+0200\n"
-"PO-Revision-Date: 2018-07-01 15:54+0000\n"
+"PO-Revision-Date: 2018-07-01 15:56+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -1306,12 +1306,11 @@ msgstr "Éditeur de playlist"
 
 #: front/src/components/playlists/Form.vue:21
 msgid "Playlist name"
-msgstr "Playlist name"
+msgstr "Nom de la playlist"
 
 #: front/src/components/playlists/Form.vue:6
-#, fuzzy
 msgid "Playlist updated"
-msgstr "Playlist créée"
+msgstr "Playlist mise à jour"
 
 #: front/src/components/playlists/Form.vue:25
 msgid "Playlist visibility"
@@ -1327,13 +1326,12 @@ msgid "Playlists? We got them"
 msgstr "Les playlists ? Elles sont là !"
 
 #: front/src/components/auth/Settings.vue:46
-#, fuzzy
 msgid "Please double-check your password is correct"
-msgstr "Merci de vérifier que votre nom d'utilisateur et mot de passe sont corrects"
+msgstr "Merci de vérifier que votre mot de passe est correct"
 
 #: front/src/components/library/import/Main.vue:26
 msgid "Previous step"
-msgstr ""
+msgstr "Étape précédente"
 
 #: front/src/views/auth/EmailConfirm.vue:26
 #: front/src/views/auth/PasswordResetConfirm.vue:31
@@ -1346,7 +1344,7 @@ msgstr "Date de sortie"
 
 #: front/src/components/library/import/ArtistImport.vue:17
 msgid "Query template"
-msgstr ""
+msgstr "Template de recherche"
 
 #: front/src/components/Sidebar.vue:20
 msgid "Queue"
@@ -1370,9 +1368,8 @@ msgid "Recent activity on this instance"
 msgstr "Activité récente sur cette instance"
 
 #: front/src/components/library/import/BatchDetail.vue:81
-#, fuzzy
 msgid "Recording MusicBrainz ID"
-msgstr "Voir sur MusicBrainz"
+msgstr "ID MusicBrainz de l'enregistrement"
 
 #: front/src/views/admin/users/UsersDetail.vue:84
 #: front/src/views/federation/LibraryDetail.vue:122
@@ -1390,14 +1387,16 @@ msgstr "Inscrit·e depuis le %{ date }"
 #: front/src/components/auth/Signup.vue:9
 msgid "Registration are closed on this instance, you will need an invitation code to signup."
 msgstr ""
+"Les inscriptions sont fermées sur cette instance, vous aurez besoin d'un "
+"code d'invitation pour vous inscrire."
 
 #: front/src/components/manage/users/UsersTable.vue:71
 msgid "regular user"
-msgstr ""
+msgstr "utilisateur·rice standard·e"
 
 #: front/src/components/library/radios/Filter.vue:59
 msgid "Remove"
-msgstr ""
+msgstr "Retirer"
 
 #: front/src/components/favorites/TrackFavoriteIcon.vue:19
 msgid "Remove from favorites"
@@ -1439,7 +1438,7 @@ msgstr "Enregistrer"
 
 #: front/src/views/federation/LibraryDetail.vue:112
 msgid "Scan triggered!"
-msgstr ""
+msgstr "Scan démarré !"
 
 #: front/src/components/federation/LibraryTrackTable.vue:5
 #: front/src/components/library/Artists.vue:10
@@ -1464,9 +1463,8 @@ msgid "Search for some music"
 msgstr "Rechercher de la musique"
 
 #: front/src/components/library/Track.vue:105
-#, fuzzy
 msgid "Search on lyrics.wikia.com"
-msgstr "Rechercher sur Wikipédia"
+msgstr "Rechercher sur lyrics.wikia.com"
 
 #: front/src/components/library/Album.vue:33
 #: src/components/library/Artist.vue:31
@@ -1479,9 +1477,8 @@ msgid "Search query"
 msgstr "Recherche"
 
 #: front/src/views/admin/Settings.vue:15
-#, fuzzy
 msgid "Sections"
-msgstr "Actions"
+msgstr "Sections"
 
 #: front/src/components/library/radios/Builder.vue:31
 msgid "Select a filter"
