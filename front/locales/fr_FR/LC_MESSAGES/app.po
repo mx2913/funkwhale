@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: front 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-01 15:30+0200\n"
-"PO-Revision-Date: 2018-07-01 15:53+0000\n"
+"PO-Revision-Date: 2018-07-01 15:54+0000\n"
 "Last-Translator: Eliot Berriot <contact@eliotberriot.com>\n"
 "Language-Team: French <https://translate.funkwhale.audio/projects/funkwhale/"
 "front/fr/>\n"
@@ -1275,9 +1275,8 @@ msgid "Play all"
 msgstr "Tout lire"
 
 #: front/src/components/library/Artist.vue:26
-#, fuzzy
 msgid "Play all albums"
-msgstr "Tout lire"
+msgstr "Lire tous les albums"
 
 #: front/src/components/audio/PlayButton.vue:47
 msgid "Play immediatly"
@@ -1302,14 +1301,12 @@ msgid "Playlist created"
 msgstr "Playlist créée"
 
 #: front/src/components/playlists/Editor.vue:4
-#, fuzzy
 msgid "Playlist editor"
-msgstr "Playlist créée"
+msgstr "Éditeur de playlist"
 
 #: front/src/components/playlists/Form.vue:21
-#, fuzzy
 msgid "Playlist name"
-msgstr "Playlist créée"
+msgstr "Playlist name"
 
 #: front/src/components/playlists/Form.vue:6
 #, fuzzy
