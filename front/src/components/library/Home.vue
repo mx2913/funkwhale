@@ -1,32 +1,38 @@
 <template>
   <div v-title="labels.title">
     <div class="ui vertical stripe segment">
-      <search :autofocus="true"></search>
-    </div>
-    <div class="ui vertical stripe segment">
       <div class="ui stackable three column grid">
         <div class="column">
-          <h2 class="ui header">
-            <translate>Latest artists</translate>
-          </h2>
-          <div :class="['ui', {'active': isLoadingArtists}, 'inline', 'loader']"></div>
-          <div v-if="artists.length > 0" v-for="artist in artists.slice(0, 3)" :key="artist.id" class="ui cards">
-            <artist-card :artist="artist"></artist-card>
-          </div>
+          <track-widget :url="'history/listenings/'" :filters="{scope: 'user', ordering: '-creation_date'}">
+            <template slot="title"><translate>Recently listened</translate></template>
+          </track-widget>
         </div>
         <div class="column">
-          <h2 class="ui header">
+          <track-widget :url="'favorites/tracks/'" :filters="{scope: 'user', ordering: '-creation_date'}">
+            <template slot="title"><translate>Recently favorited</translate></template>
+          </track-widget>
+        </div>
+        <div class="column">
+          <h3 class="ui header">
             <translate>Radios</translate>
-          </h2>
+          </h3>
           <radio-card :type="'favorites'"></radio-card>
           <radio-card :type="'random'"></radio-card>
           <radio-card :type="'less-listened'"></radio-card>
         </div>
-        <div class="column">
+        <!-- <div class="column">
           <h2 class="ui header">
             <translate>Music requests</translate>
           </h2>
           <request-form v-if="$store.state.auth.authenticated"></request-form>
+        </div> -->
+      </div>
+      <div class="ui section hidden divider"></div>
+      <div class="ui grid">
+        <div class="ui row">
+          <album-widget :filters="{ordering: '-creation_date'}">
+            <template slot="title"><translate>Recently added</translate></template>
+          </album-widget>
         </div>
       </div>
     </div>
@@ -40,6 +46,8 @@ import logger from '@/logging'
 import ArtistCard from '@/components/audio/artist/Card'
 import RadioCard from '@/components/radios/Card'
 import RequestForm from '@/components/requests/Form'
+import TrackWidget from '@/components/audio/track/Widget'
+import AlbumWidget from '@/components/audio/album/Widget'
 
 const ARTISTS_URL = 'artists/'
 
@@ -49,6 +57,8 @@ export default {
     Search,
     ArtistCard,
     RadioCard,
+    TrackWidget,
+    AlbumWidget,
     RequestForm
   },
   data () {
