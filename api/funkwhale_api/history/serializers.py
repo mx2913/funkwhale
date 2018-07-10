@@ -1,8 +1,9 @@
 from rest_framework import serializers
 
 from funkwhale_api.activity import serializers as activity_serializers
-from funkwhale_api.music.serializers import TrackActivitySerializer
-from funkwhale_api.users.serializers import UserActivitySerializer
+from funkwhale_api.music import models as music_models
+from funkwhale_api.music.serializers import TrackActivitySerializer, TrackSerializer
+from funkwhale_api.users.serializers import UserActivitySerializer, UserBasicSerializer
 
 from . import models
 
@@ -25,6 +26,20 @@ class ListeningActivitySerializer(activity_serializers.ModelSerializer):
 
 
 class ListeningSerializer(serializers.ModelSerializer):
+    track = TrackSerializer(read_only=True)
+    user = UserBasicSerializer(read_only=True)
+
+    class Meta:
+        model = models.Listening
+        fields = ("id", "user", "track", "creation_date")
+
+    def create(self, validated_data):
+        validated_data["user"] = self.context["user"]
+
+        return super().create(validated_data)
+
+
+class ListeningWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Listening
         fields = ("id", "user", "track", "creation_date")
