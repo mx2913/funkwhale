@@ -34,7 +34,7 @@
         <h2 class="ui header">
           <translate>Avatar</translate>
         </h2>
-        <form class="ui form" @submit.prevent="submitAvatar()">
+        <div class="ui form">
           <div v-if="avatarErrors.length > 0" class="ui negative message">
             <div class="header"><translate>We cannot save your avatar</translate></div>
             <ul class="list">
@@ -47,17 +47,20 @@
               <p><translate>PNG, GIF or JPG. At most 2MB. Will be downscaled to 400x400px.</translate></p>
               <input class="ui input" ref="avatar" type="file" />
               <div class="ui hidden divider"></div>
-              <button :class="['ui', {'loading': isLoadingAvatar}, 'button']" type="submit">
+              <button @click="submitAvatar" :class="['ui', {'loading': isLoadingAvatar}, 'button']">
                 <translate>Update avatar</translate>
               </button>
             </div>
             <div class="ui six wide column">
               <h3 class="ui header"><translate>Current avatar</translate></h3>
-              <img class="ui image" v-if="currentAvatar" :src="$store.getters['instance/absoluteUrl'](currentAvatar.medium_square_crop)" />
-
+              <img class="ui circular image" v-if="currentAvatar && currentAvatar.square_crop" :src="$store.getters['instance/absoluteUrl'](currentAvatar.medium_square_crop)" />
+              <div class="ui hidden divider"></div>
+              <button @click="removeAvatar" v-if="currentAvatar && currentAvatar.square_crop" :class="['ui', {'loading': isLoadingAvatar}, ,'yellow', 'button']">
+                <translate>Remove avatar</translate>
+              </button>
             </div>
           </div>
-        </form>
+        </div>
       </div>
       <div class="ui hidden divider"></div>
       <div class="ui small text container">
@@ -199,6 +202,23 @@ export default {
       ).then(response => {
         this.isLoadingAvatar = false
         self.currentAvatar = response.data.avatar
+        self.$store.commit('auth/avatar', self.currentAvatar)
+      }, error => {
+        self.isLoadingAvatar = false
+        self.avatarErrors = error.backendErrors
+      })
+    },
+    removeAvatar () {
+      this.isLoadingAvatar = true
+      let self = this
+      this.avatar = null
+      axios.patch(
+        `users/users/${this.$store.state.auth.username}/`,
+        {avatar: null}
+      ).then(response => {
+        this.isLoadingAvatar = false
+        self.currentAvatar = {}
+        self.$store.commit('auth/avatar', self.currentAvatar)
       }, error => {
         self.isLoadingAvatar = false
         self.avatarErrors = error.backendErrors
