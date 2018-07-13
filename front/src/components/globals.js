@@ -8,6 +8,10 @@ import Username from '@/components/common/Username'
 
 Vue.component('username', Username)
 
+import UserLink from '@/components/common/UserLink'
+
+Vue.component('user-link', UserLink)
+
 import DangerousButton from '@/components/common/DangerousButton'
 
 Vue.component('dangerous-button', DangerousButton)
