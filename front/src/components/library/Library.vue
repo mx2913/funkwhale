@@ -72,10 +72,21 @@ export default {
       .segment-content {
         background-color: rgba(0, 0, 0, 0.5)
       }
-
     }
   }
+}
 
+.ui.secondary.pointing.menu {
+  border: none;
+  box-shadow: inset 0px -2px 0px 0px rgba(34, 36, 38, 0.15);
+  .ui.item {
+    border: none;
+    border-bottom-style: none;
+    margin-bottom: 0px;
+    &.active {
+      box-shadow: inset 0px -2px 0px 0px #000;
+    }
+  }
 }
 
 </style>
