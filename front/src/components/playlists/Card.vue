@@ -12,6 +12,9 @@
       <div class="meta">
         <human-date :date="playlist.modification_date" />
       </div>
+      <div class="meta">
+        <duration :seconds="playlist.duration" />
+      </div>
     </div>
     <div class="extra content">
       <user-link :user="playlist.user" class="left floated" />
@@ -30,7 +33,6 @@
 
 <script>
 import PlayButton from '@/components/audio/PlayButton'
-import {hashCode, intToRGB} from '@/utils/color'
 
 export default {
   props: ['playlist'],
@@ -44,11 +46,8 @@ export default {
         url = self.$store.getters['instance/absoluteUrl'](url)
         return `url("${url}")`
       }).slice(0, 4)
-      let bgColor = intToRGB(hashCode(this.playlist.name + this.playlist.user.username))
-
       return {
-        'background-image': urls.join(', '),
-        'background-color': `#${bgColor}`
+        'background-image': urls.join(', ')
       }
     }
   }
@@ -59,6 +58,7 @@ export default {
 <style scoped>
 
 .attached.button {
+  background-color: rgb(243, 244, 245);
   background-size: 25% ;
   background-repeat: no-repeat;
   background-origin: border-box;
