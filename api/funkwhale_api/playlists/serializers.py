@@ -65,6 +65,7 @@ class PlaylistTrackWriteSerializer(serializers.ModelSerializer):
 
 class PlaylistSerializer(serializers.ModelSerializer):
     tracks_count = serializers.SerializerMethodField(read_only=True)
+    album_covers = serializers.SerializerMethodField(read_only=True)
     user = UserBasicSerializer(read_only=True)
 
     class Meta:
@@ -72,11 +73,12 @@ class PlaylistSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
-            "tracks_count",
             "user",
             "modification_date",
             "creation_date",
             "privacy_level",
+            "tracks_count",
+            "album_covers",
         )
         read_only_fields = ["id", "modification_date", "creation_date"]
 
@@ -86,6 +88,26 @@ class PlaylistSerializer(serializers.ModelSerializer):
         except AttributeError:
             # no annotation?
             return obj.playlist_tracks.count()
+
+    def get_album_covers(self, obj):
+        try:
+            plts = obj.plts_for_cover
+        except AttributeError:
+            return []
+
+        covers = []
+        max_covers = 5
+        for plt in plts:
+            url = plt.track.album.cover.url
+            if url in covers:
+                continue
+            if url.startswith("/") and "request" in self.context:
+                url = self.context["request"].build_absolute_uri(url)
+            covers.append(url)
+            if len(covers) >= max_covers:
+                break
+
+        return covers
 
 
 class PlaylistAddManySerializer(serializers.Serializer):
