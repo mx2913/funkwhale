@@ -89,3 +89,14 @@ def test_playlist_serializer_include_covers(factories, api_request):
 
     serializer = serializers.PlaylistSerializer(qs.get(), context={"request": request})
     assert serializer.data["album_covers"] == expected
+
+
+def test_playlist_serializer_include_duration(factories, api_request):
+    playlist = factories["playlists.Playlist"]()
+    tf1 = factories["music.TrackFile"](duration=15)
+    tf2 = factories["music.TrackFile"](duration=30)
+    playlist.insert_many([tf1.track, tf2.track])
+    qs = playlist.__class__.objects.with_duration().with_tracks_count()
+
+    serializer = serializers.PlaylistSerializer(qs.get())
+    assert serializer.data["duration"] == 45

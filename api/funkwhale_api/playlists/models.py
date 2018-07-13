@@ -10,6 +10,11 @@ class PlaylistQuerySet(models.QuerySet):
     def with_tracks_count(self):
         return self.annotate(_tracks_count=models.Count("playlist_tracks"))
 
+    def with_duration(self):
+        return self.annotate(
+            duration=models.Sum("playlist_tracks__track__files__duration")
+        )
+
     def with_covers(self):
         album_prefetch = models.Prefetch(
             "album", queryset=music_models.Album.objects.only("cover")

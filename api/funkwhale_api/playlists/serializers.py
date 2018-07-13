@@ -65,6 +65,7 @@ class PlaylistTrackWriteSerializer(serializers.ModelSerializer):
 
 class PlaylistSerializer(serializers.ModelSerializer):
     tracks_count = serializers.SerializerMethodField(read_only=True)
+    duration = serializers.SerializerMethodField(read_only=True)
     album_covers = serializers.SerializerMethodField(read_only=True)
     user = UserBasicSerializer(read_only=True)
 
@@ -79,6 +80,7 @@ class PlaylistSerializer(serializers.ModelSerializer):
             "privacy_level",
             "tracks_count",
             "album_covers",
+            "duration",
         )
         read_only_fields = ["id", "modification_date", "creation_date"]
 
@@ -88,6 +90,13 @@ class PlaylistSerializer(serializers.ModelSerializer):
         except AttributeError:
             # no annotation?
             return obj.playlist_tracks.count()
+
+    def get_duration(self, obj):
+        try:
+            return obj.duration
+        except AttributeError:
+            # no annotation?
+            return 0
 
     def get_album_covers(self, obj):
         try:
