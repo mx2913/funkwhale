@@ -2,7 +2,6 @@
 from rest_framework import serializers
 
 from funkwhale_api.activity import serializers as activity_serializers
-from funkwhale_api.music import models as music_models
 from funkwhale_api.music.serializers import TrackActivitySerializer, TrackSerializer
 from funkwhale_api.users.serializers import UserActivitySerializer, UserBasicSerializer
 
@@ -24,12 +23,6 @@ class TrackFavoriteActivitySerializer(activity_serializers.ModelSerializer):
 
     def get_type(self, obj):
         return "Like"
-
-
-class UserTrackFavoriteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.TrackFavorite
-        fields = ("id", "track", "creation_date")
 
 
 class UserTrackFavoriteSerializer(serializers.ModelSerializer):
