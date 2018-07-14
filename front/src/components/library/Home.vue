@@ -17,20 +17,6 @@
             <template slot="title"><translate>Playlists</translate></template>
           </playlist-widget>
         </div>
-        <!-- <div class="column">
-          <h3 class="ui header">
-            <translate>Radios</translate>
-          </h3>
-          <radio-card :type="'favorites'"></radio-card>
-          <radio-card :type="'random'"></radio-card>
-          <radio-card :type="'less-listened'"></radio-card>
-        </div> -->
-        <!-- <div class="column">
-          <h2 class="ui header">
-            <translate>Music requests</translate>
-          </h2>
-          <request-form v-if="$store.state.auth.authenticated"></request-form>
-        </div> -->
       </div>
       <div class="ui section hidden divider"></div>
       <div class="ui grid">
@@ -49,8 +35,6 @@ import axios from 'axios'
 import Search from '@/components/audio/Search'
 import logger from '@/logging'
 import ArtistCard from '@/components/audio/artist/Card'
-import RadioCard from '@/components/radios/Card'
-import RequestForm from '@/components/requests/Form'
 import TrackWidget from '@/components/audio/track/Widget'
 import AlbumWidget from '@/components/audio/album/Widget'
 import PlaylistWidget from '@/components/playlists/Widget'
@@ -62,11 +46,9 @@ export default {
   components: {
     Search,
     ArtistCard,
-    RadioCard,
     TrackWidget,
     AlbumWidget,
-    PlaylistWidget,
-    RequestForm
+    PlaylistWidget
   },
   data () {
     return {
