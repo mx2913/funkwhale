@@ -1,5 +1,5 @@
 <template>
-  <div :title="title" :class="['ui', {'tiny': discrete}, {'buttons': !dropdownOnly && !iconOnly}]">
+  <span :title="title" :class="['ui', {'tiny': discrete}, {'buttons': !dropdownOnly && !iconOnly}]">
     <button
       v-if="!dropdownOnly"
       :title="labels.addToQueue"
@@ -17,7 +17,7 @@
         <div class="item" :disabled="!playable" @click="addNext(true)"><i class="arrow down icon"></i><translate>Play now</translate></div>
       </div>
     </div>
-  </div>
+  </span>
 </template>
 
 <script>

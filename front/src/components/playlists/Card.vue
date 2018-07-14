@@ -1,31 +1,35 @@
 <template>
-  <div class="ui card">
+  <div class="ui playlist card">
     <div class="ui top attached icon button" :style="coversStyle">
-      <play-button class="orange" :playlist="playlist"><translate>Play all</translate></play-button>
     </div>
     <div class="content">
       <div class="header">
-        <router-link class="discrete link" :to="{name: 'library.playlists.detail', params: {id: playlist.id }}">
-          {{ playlist.name }}
+        <div class="right floated">
+          <play-button :icon-only="true" class="ui inline" :button-class="['ui', 'circular', 'large', {orange: playlist.tracks_count > 0}, 'icon', 'button', {disabled: playlist.tracks_count === 0}]" :playlist="playlist"></play-button>
+          <play-button class="basic inline icon" :dropdown-only="true" :dropdown-icon-class="['ellipsis', 'vertical', 'large', {disabled: playlist.tracks_count === 0}, 'grey']" :playlist="playlist"></play-button>
+        </div>
+        <router-link :title="playlist.name" class="discrete link" :to="{name: 'library.playlists.detail', params: {id: playlist.id }}">
+          {{ playlist.name | truncate(30) }}
         </router-link>
       </div>
       <div class="meta">
-        <human-date :date="playlist.modification_date" />
-      </div>
-      <div class="meta">
+        <i class="hourglass outline icon" />
         <duration :seconds="playlist.duration" />
-      </div>
-    </div>
-    <div class="extra content">
-      <user-link :user="playlist.user" class="left floated" />
-      <span class="right floated">
+         |
+        <i class="sound icon"></i>
         <translate
           translate-plural="%{ count } tracks"
           :translate-n="playlist.tracks_count"
           :translate-params="{count: playlist.tracks_count}">
           %{ count} track
         </translate>&nbsp;
-        <i class="sound icon"></i>
+      </div>
+    </div>
+    <div class="extra content">
+      <user-link :user="playlist.user" class="left floated" />
+      <span class="right floated">
+        <i class="clock outline icon" />
+        <human-date :date="playlist.modification_date" />
       </span>
     </div>
   </div>
@@ -55,8 +59,15 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 
+.playlist.card .header .ellipsis.vertical.large.grey {
+  font-size: 1.2em;
+  margin-right: 0;
+}
+
+</style>
+<style scoped>
 .attached.button {
   background-color: rgb(243, 244, 245);
   background-size: 25% ;
@@ -65,8 +76,8 @@ export default {
   background-position: 0 0, 33.33% 0, 66.67% 0, 100% 0;
   /* background-position: 0 0, 50% 0, 100% 0; */
   /* background-position: 0 0, 25% 0, 50% 0, 75% 0, 100% 0; */
-  font-size: 2em;
-  box-shadow: none !important;
+  font-size: 4em;
+  box-shadow: 0px 0px 0px 1px rgba(34, 36, 38, 0.15) inset !important;
 }
 
 </style>
