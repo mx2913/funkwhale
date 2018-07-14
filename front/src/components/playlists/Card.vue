@@ -5,8 +5,8 @@
     <div class="content">
       <div class="header">
         <div class="right floated">
-          <play-button :icon-only="true" class="ui inline" :button-class="['ui', 'circular', 'large', {orange: playlist.tracks_count > 0}, 'icon', 'button', {disabled: playlist.tracks_count === 0}]" :playlist="playlist"></play-button>
-          <play-button class="basic inline icon" :dropdown-only="true" :dropdown-icon-class="['ellipsis', 'vertical', 'large', {disabled: playlist.tracks_count === 0}, 'grey']" :playlist="playlist"></play-button>
+          <play-button :icon-only="true" class="ui inline" :button-classes="['ui', 'circular', 'large', {orange: playlist.tracks_count > 0}, 'icon', 'button', {disabled: playlist.tracks_count === 0}]" :playlist="playlist"></play-button>
+          <play-button class="basic inline icon" :dropdown-only="true" :dropdown-icon-classes="['ellipsis', 'vertical', 'large', {disabled: playlist.tracks_count === 0}, 'grey']" :playlist="playlist"></play-button>
         </div>
         <router-link :title="playlist.name" class="discrete link" :to="{name: 'library.playlists.detail', params: {id: playlist.id }}">
           {{ playlist.name | truncate(30) }}
@@ -29,7 +29,7 @@
       <user-link :user="playlist.user" class="left floated" />
       <span class="right floated">
         <i class="clock outline icon" />
-        <human-date :date="playlist.modification_date" />
+        <human-date :date="playlist.creation_date" />
       </span>
     </div>
   </div>

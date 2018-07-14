@@ -5,12 +5,12 @@
       :title="labels.addToQueue"
       @click="addNext(true)"
       :disabled="!playable"
-      :class="['ui', {loading: isLoading}, {'mini': discrete}, {disabled: !playable}, buttonClass]">
+      :class="buttonClasses.concat(['ui', {loading: isLoading}, {'mini': discrete}, {disabled: !playable}])">
       <i :class="[playIconClass, 'icon']"></i>
       <template v-if="!discrete && !iconOnly"><slot><translate>Play</translate></slot></template>
     </button>
     <div v-if="!discrete && !iconOnly" :class="['ui', {disabled: !playable}, 'floating', 'dropdown', {'icon': !dropdownOnly}, {'button': !dropdownOnly}]">
-      <i :class="[dropdownIconClass, 'icon']"></i>
+      <i :class="dropdownIconClasses.concat(['icon'])"></i>
       <div class="menu">
         <div class="item" :disabled="!playable" @click="add"><i class="plus icon"></i><translate>Add to queue</translate></div>
         <div class="item" :disabled="!playable" @click="addNext()"><i class="step forward icon"></i><translate>Play next</translate></div>
@@ -29,9 +29,9 @@ export default {
     // we can either have a single or multiple tracks to play when clicked
     tracks: {type: Array, required: false},
     track: {type: Object, required: false},
-    dropdownIconClass: {type: String, required: false, default: 'dropdown'},
+    dropdownIconClasses: {type: Array, required: false, default: () => { return ['dropdown'] }},
     playIconClass: {type: String, required: false, default: 'play icon'},
-    buttonClass: {type: String, required: false, default: 'button'},
+    buttonClasses: {type: Array, required: false, default: () => { return ['button'] }},
     playlist: {type: Object, required: false},
     discrete: {type: Boolean, default: false},
     dropdownOnly: {type: Boolean, default: false},

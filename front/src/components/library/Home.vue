@@ -13,13 +13,18 @@
           </track-widget>
         </div>
         <div class="column">
+          <playlist-widget :url="'playlists/'" :filters="{scope: 'user', listenable: true, ordering: '-creation_date'}">
+            <template slot="title"><translate>Playlists</translate></template>
+          </playlist-widget>
+        </div>
+        <!-- <div class="column">
           <h3 class="ui header">
             <translate>Radios</translate>
           </h3>
           <radio-card :type="'favorites'"></radio-card>
           <radio-card :type="'random'"></radio-card>
           <radio-card :type="'less-listened'"></radio-card>
-        </div>
+        </div> -->
         <!-- <div class="column">
           <h2 class="ui header">
             <translate>Music requests</translate>
@@ -48,6 +53,7 @@ import RadioCard from '@/components/radios/Card'
 import RequestForm from '@/components/requests/Form'
 import TrackWidget from '@/components/audio/track/Widget'
 import AlbumWidget from '@/components/audio/album/Widget'
+import PlaylistWidget from '@/components/playlists/Widget'
 
 const ARTISTS_URL = 'artists/'
 
@@ -59,6 +65,7 @@ export default {
     RadioCard,
     TrackWidget,
     AlbumWidget,
+    PlaylistWidget,
     RequestForm
   },
   data () {

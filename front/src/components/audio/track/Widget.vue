@@ -15,7 +15,7 @@
         <div class="ui tiny image">
           <img v-if="object.track.album.cover" v-lazy="$store.getters['instance/absoluteUrl'](object.track.album.cover)">
           <img v-else src="../../../assets/audio/default-cover.png">
-          <play-button class="play-overlay" :icon-only="true" :button-class="'ui circular tiny orange icon button'" :track="object.track"></play-button>
+          <play-button class="play-overlay" :icon-only="true" :button-classes="['ui', 'circular', 'tiny', 'orange', 'icon', 'button']" :track="object.track"></play-button>
         </div>
         <div class="middle aligned content">
           <div class="ui unstackable grid">
@@ -38,7 +38,7 @@
               </div>
             </div>
             <div class="one wide stretched column">
-              <play-button class="basic icon" :dropdown-only="true" :dropdown-icon-class="'ellipsis vertical large grey'" :track="object.track"></play-button>
+              <play-button class="basic icon" :dropdown-only="true" :dropdown-icon-classes="['ellipsis', 'vertical', 'large', 'grey']" :track="object.track"></play-button>
             </div>
           </div>
         </div>
