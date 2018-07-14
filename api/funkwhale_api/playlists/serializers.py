@@ -116,10 +116,10 @@ class PlaylistSerializer(serializers.ModelSerializer):
 
         full_urls = []
         for url in covers:
-            if url.startswith("/") and "request" in self.context:
+            if "request" in self.context:
                 url = self.context["request"].build_absolute_uri(url)
             full_urls.append(url)
-        return covers
+        return full_urls
 
 
 class PlaylistAddManySerializer(serializers.Serializer):
