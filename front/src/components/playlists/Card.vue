@@ -13,7 +13,6 @@
         </router-link>
       </div>
       <div class="meta">
-        <i class="hourglass outline icon" />
         <duration :seconds="playlist.duration" />
          |
         <i class="sound icon"></i>
