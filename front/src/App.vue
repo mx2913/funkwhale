@@ -92,6 +92,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 import {mapState} from 'vuex'
+import {Howl} from 'howler'
 
 import translations from '@/translations'
 
@@ -128,6 +129,11 @@ export default {
       this.$store.dispatch('instance/fetchSettings')
       this.fetchNodeInfo()
     }
+  },
+  mounted () {
+    this.dummySound = new Howl({
+      src: ['sound.webm', 'sound.mp3']
+    })
   },
   methods: {
     fetchNodeInfo () {
