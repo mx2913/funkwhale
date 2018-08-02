@@ -287,11 +287,7 @@ class Lyrics(models.Model):
 
 class License(models.Model):
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid.uuid4)
-    name = models.URLField(unique=True)
-    version = models.FloatField(null=True, blank=True)
-    content = models.TextField(null=True, blank=True)
-    is_copyright = models.BooleanField(default=True)
-    copyright_type = models.TextField(null=True, blank=True)
+    name = models.CharField(unique=True, primary_key=True)
 
 
 class TrackQuerySet(models.QuerySet):
@@ -320,7 +316,7 @@ class Track(APIModelMixin):
         Work, related_name="tracks", null=True, blank=True, on_delete=models.CASCADE
     )
     license = models.ForeignKey(
-        License, related_name="tracks", null=True, blank=True, on_delete=models.CASCADE
+        License, related_name="tracks", null=True, blank=True, on_delete=models.SET_NULL
     )
 
     musicbrainz_model = "recording"
