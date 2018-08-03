@@ -18,7 +18,7 @@
         </div>
         <a v-if="profile.is_staff"
           class="ui yellow label"
-          href="$store.getters['instance/absoluteUrl']('/api/admin')"
+          :href="$store.getters['instance/absoluteUrl']('/api/admin')"
           target="_blank">
           <i class="star icon"></i>
           <translate>Staff member</translate>
