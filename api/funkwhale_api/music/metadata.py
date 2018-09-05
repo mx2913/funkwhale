@@ -2,6 +2,7 @@ import datetime
 import mutagen
 import pendulum
 from django import forms
+from . import licenses
 
 NODEFAULT = object()
 
@@ -87,6 +88,15 @@ def convert_track_number(v):
     try:
         return int(v.split("/")[0])
     except (ValueError, AttributeError, IndexError):
+        pass
+
+def get_license(l):
+    # License can either be a url, label or name
+    # search through music/licenses.py to find the right label
+    try:
+        if licenses.LICENSES[l]:
+            return l
+    except (KeyError, IndexError):
         pass
 
 

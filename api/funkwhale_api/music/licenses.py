@@ -1,4 +1,4 @@
-LICENCES = {
+LICENSES = {
 		'cc0': {
 			'name': 'Public domain',
 			'allow_modifications': True,
@@ -40,11 +40,5 @@ LICENCES = {
 			'allow_modifications': False,
 			'allow_redistribution': True,
 			'url': 'https://creativecommons.org/licenses/by-nc-nd/4.0/',
-			},
-		'copyright': {
-			'name': 'Copyright',
-			'allow_modifications': False,
-			'allow_redistribution': False,
-			'url': '',
 			},
 		}
