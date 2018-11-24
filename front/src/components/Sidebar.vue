@@ -28,6 +28,7 @@
       </a>
     </div>
   </div>
+  CECI EST UN TEST
   <div class="tabs">
     <section class="ui bottom attached active tab" data-tab="library" :aria-label="labels.mainMenu">
       <nav class="ui inverted vertical large fluid menu" role="navigation" :aria-label="labels.mainMenu">
