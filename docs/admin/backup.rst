@@ -3,8 +3,7 @@ Backup your Funkwhale instance
 
 .. note::
 
-    Before upgrading your instance, we strongly advise you to make at least a database backup. Ideally, you should make a full backup, including
-    the database and the media files.
+    Before upgrading your instance, we strongly advise you to make at least a database backup. Ideally, you should make a full backup, including the database and the media files.
 
 
 Docker setup
@@ -27,12 +26,12 @@ On docker setups, you have to ``pg_dumpall`` in container ``funkwhale_postgres_1
 Backup the media files
 ^^^^^^^^^^^^^^^^^^^^^^
 
-To backup docker data volumes, you can create a new container to load the volumes from ``funkwhale_api_1``:
+To backup docker data volumes, as the volumes are bound mounted to the host, the ``rsync`` way would go like this:
 
 .. code-block:: shell
 
-   docker run --rm --volumes-from funkwhale_api_1 -v /path/to/your/backup:/backup alpine tar cvf /backup/backup.tar /media
-   docker run --rm --volumes-from funkwhale_api_1 -v /path/to/your/backup:/backup alpine tar cvf /backup/backup.tar /music
+    rsync -avzhP /srv/funkwhale/data/media /path/to/your/backup/media
+    rsync -avzhP /srv/funkwhale/data/music /path/to/your/backup/music
 
 
 Backup the configuration files
