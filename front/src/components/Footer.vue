@@ -79,12 +79,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-footer p {
-  color: grey;
-}
-
-footer#footer div.item:hover {
-  color: rgba(0, 0, 0, 0.87);
-}
-</style>
