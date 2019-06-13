@@ -13,7 +13,24 @@ $link-color: rgb(255, 144, 0);
 
 .theme-dark {
   background-color: $background-color;
+  .ui.labeled.input {
+    input, .label {
+      background-color: $input-background-color;
+      &::placeholder {
+        color: $light-background-color;
 
+      }
+
+    }
+  }
+  .ui.statistics .statistic {
+    > .label, > .value {
+      color: $text-color;
+    }
+  }
+  .ui.link.list.list .active.item, .ui.link.list.list .active.item a:not(.ui) {
+    color: inherit;
+  }
   .ui.form textarea, .ui.form select, .ui.selection.dropdown, .ui.dropdown.selected, .ui.dropdown .menu .selected.item, .ui.form input:not([type]), .ui.form input[type="date"], .ui.form input[type="datetime-local"], .ui.form input[type="email"], .ui.form input[type="number"], .ui.form input[type="password"], .ui.form input[type="search"], .ui.form input[type="tel"], .ui.form input[type="time"], .ui.form input[type="text"], .ui.form input[type="file"], .ui.form input[type="url"] {
     background-color: $input-background-color;
     &::placeholder {
@@ -184,5 +201,13 @@ $link-color: rgb(255, 144, 0);
   }
   .ui.link.list.list a.item:hover, .ui.link.list.list .item a:not(.ui):not(.button):hover {
     color: $link-color;
+  }
+  [data-tooltip]::after {
+    background-color: $light-background-color;
+    color: $text-color;
+  }
+  .ui.progress > .label {
+    color: $text-color;
+
   }
 }
