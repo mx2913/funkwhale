@@ -6,6 +6,7 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   linkActiveClass: 'active',
+  base: process.env.ROUTER_BASE_URL || '/',
   routes: [
     {
       path: '/',

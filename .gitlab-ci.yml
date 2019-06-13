@@ -22,6 +22,7 @@ review_front:
   allow_failure: true
   variables:
     BASE_URL: /-/$CI_PROJECT_NAME/-/jobs/$CI_JOB_ID/artifacts/front-review/
+    ROUTER_BASE_URL: /-/$CI_PROJECT_NAME/-/jobs/$CI_JOB_ID/artifacts/front-review/
     VUE_APP_INSTANCE_URL: $REVIEW_INSTANCE_URL
   before_script:
     - curl -L -o /usr/local/bin/jq https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
