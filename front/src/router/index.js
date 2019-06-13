@@ -553,6 +553,10 @@ export default new Router({
       ]
     },
     {
+      path: '*/index.html',
+      redirect: '/'
+    },
+    {
       path: '*',
       component: () =>
         import(/* webpackChunkName: "core" */ "@/components/PageNotFound"),
