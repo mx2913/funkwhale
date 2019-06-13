@@ -254,8 +254,9 @@ export default {
     '$store.state.ui.theme': {
       immediate: true,
       handler (newValue, oldValue) {
+        let oldTheme = oldValue || 'light'
         let body = document.getElementById('body')
-        body.classList.remove(`theme-${oldValue}`)
+        body.classList.remove(`theme-${oldTheme}`)
         body.classList.add(`theme-${newValue}`)
       },
     },
