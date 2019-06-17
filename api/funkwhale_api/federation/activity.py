@@ -122,6 +122,7 @@ def receive(activity, on_behalf_of):
     from . import serializers
     from . import tasks
     from .routes import inbox
+    from funkwhale_api.moderation import mrf
 
     # we ensure the activity has the bare minimum structure before storing
     # it in our database
@@ -129,22 +130,21 @@ def receive(activity, on_behalf_of):
         data=activity, context={"actor": on_behalf_of, "local_recipients": True}
     )
     serializer.is_valid(raise_exception=True)
-    if not inbox.get_matching_handlers(activity):
-        # discard unhandlable activity
-        return
 
-    if should_reject(
-        fid=serializer.validated_data.get("id"),
-        actor_id=serializer.validated_data["actor"].fid,
-        payload=activity,
-    ):
+    payload, updated = mrf.inbox.apply(activity, sender_id=on_behalf_of.fid)
+    if not payload:
         logger.info(
-            "[federation] Discarding activity due to instance policies %s",
+            "[federation] Discarding activity due mrf %s",
             serializer.validated_data.get("id"),
         )
         return
+
+    if not inbox.get_matching_handlers(payload):
+        # discard unhandlable activity
+        return
+
     try:
-        copy = serializer.save()
+        copy = serializer.save(payload=payload, type=payload["type"])
     except IntegrityError:
         logger.warning(
             "[federation] Discarding already elivered activity %s",

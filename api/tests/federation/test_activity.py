@@ -11,12 +11,16 @@ from funkwhale_api.federation import (
     serializers,
     tasks,
 )
+from funkwhale_api.moderation import mrf
 
 
-def test_receive_validates_basic_attributes_and_stores_activity(factories, now, mocker):
+def test_receive_validates_basic_attributes_and_stores_activity(
+    mrf_inbox_registry, factories, now, mocker
+):
     mocker.patch.object(
         activity.InboxRouter, "get_matching_handlers", return_value=True
     )
+    mrf_inbox_registry_apply = mocker.spy(mrf_inbox_registry, "apply")
     mocked_dispatch = mocker.patch("funkwhale_api.common.utils.on_commit")
     local_to_actor = factories["users.User"]().create_actor()
     local_cc_actor = factories["users.User"]().create_actor()
@@ -31,6 +35,7 @@ def test_receive_validates_basic_attributes_and_stores_activity(factories, now, 
     }
 
     copy = activity.receive(activity=a, on_behalf_of=remote_actor)
+    mrf_inbox_registry_apply.assert_called_once_with(a, sender_id=a["actor"])
 
     assert copy.payload == a
     assert copy.creation_date >= now
@@ -47,6 +52,63 @@ def test_receive_validates_basic_attributes_and_stores_activity(factories, now, 
         assert ii.type == t
         assert ii.activity == copy
         assert ii.is_read is False
+
+
+def test_receive_uses_mrf_returned_payload(mrf_inbox_registry, factories, now, mocker):
+    mocker.patch.object(
+        activity.InboxRouter, "get_matching_handlers", return_value=True
+    )
+
+    def patched_apply(payload, **kwargs):
+        payload["type"] = "SomethingElse"
+        return payload, True
+
+    mrf_inbox_registry_apply = mocker.patch.object(
+        mrf_inbox_registry, "apply", side_effect=patched_apply
+    )
+    mocked_dispatch = mocker.patch("funkwhale_api.common.utils.on_commit")
+    local_to_actor = factories["users.User"]().create_actor()
+    remote_actor = factories["federation.Actor"]()
+    a = {
+        "@context": [],
+        "actor": remote_actor.fid,
+        "type": "Noop",
+        "id": "https://test.activity",
+        "to": [local_to_actor.fid],
+    }
+
+    copy = activity.receive(activity=a, on_behalf_of=remote_actor)
+    mrf_inbox_registry_apply.assert_called_once_with(a, sender_id=a["actor"])
+
+    expected = a.copy()
+    expected["type"] = "SomethingElse"
+    assert copy.payload == expected
+    assert copy.creation_date >= now
+    assert copy.actor == remote_actor
+    assert copy.fid == a["id"]
+    assert copy.type == "SomethingElse"
+    mocked_dispatch.assert_called_once_with(
+        tasks.dispatch_inbox.delay, activity_id=copy.pk
+    )
+
+
+def test_receive_mrf_skip(mrf_inbox_registry, factories, now, mocker):
+    mocker.patch.object(
+        activity.InboxRouter, "get_matching_handlers", return_value=True
+    )
+    mocker.patch.object(mrf_inbox_registry, "apply", return_value=(None, False))
+    local_to_actor = factories["users.User"]().create_actor()
+    remote_actor = factories["federation.Actor"]()
+    a = {
+        "@context": [],
+        "actor": remote_actor.fid,
+        "type": "Noop",
+        "id": "https://test.activity",
+        "to": [local_to_actor.fid],
+    }
+
+    copy = activity.receive(activity=a, on_behalf_of=remote_actor)
+    assert copy is None
 
 
 def test_receive_calls_should_reject(factories, now, mocker):
