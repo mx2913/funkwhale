@@ -5,13 +5,13 @@ from funkwhale_api.moderation import mrf_policies
 
 
 @pytest.mark.parametrize(
-    "enabled, payload, actor_id, allowed_domains, expected",
+    "enabled, payload, kwargs, allowed_domains, expected",
     [
         # allow listing enabled, domain on allowed list
         (
             True,
             {"id": "http://allowed.domain"},
-            "http://allowed.domain/actor",
+            {"sender_id": "http://allowed.domain/actor"},
             ["allowed.domain"],
             None,
         ),
@@ -19,7 +19,7 @@ from funkwhale_api.moderation import mrf_policies
         (
             True,
             {"id": "http://allowed.domain"},
-            "http://allowed.domain/actor",
+            {"sender_id": "http://allowed.domain/actor"},
             [],
             mrf.Discard,
         ),
@@ -27,7 +27,7 @@ from funkwhale_api.moderation import mrf_policies
         (
             False,
             {"id": "http://allowed.domain"},
-            "http://allowed.domain/actor",
+            {"sender_id": "http://allowed.domain/actor"},
             [],
             mrf.Skip,
         ),
@@ -35,7 +35,7 @@ from funkwhale_api.moderation import mrf_policies
         (
             True,
             {"id": "http://allowed.domain"},
-            "http://notallowed.domain/actor",
+            {"sender_id": "http://notallowed.domain/actor"},
             ["allowed.domain"],
             mrf.Discard,
         ),
@@ -43,14 +43,14 @@ from funkwhale_api.moderation import mrf_policies
         (
             True,
             {"id": "http://allowed.domain"},
-            "http://anotherallowed.domain/actor",
+            {"sender_id": "http://anotherallowed.domain/actor"},
             ["allowed.domain", "anotherallowed.domain"],
             None,
         ),
     ],
 )
 def test_allow_list_policy(
-    enabled, payload, actor_id, expected, allowed_domains, preferences, factories
+    enabled, payload, kwargs, expected, allowed_domains, preferences, factories
 ):
     preferences["moderation__allow_list_enabled"] = enabled
     for d in allowed_domains:
@@ -58,6 +58,6 @@ def test_allow_list_policy(
 
     if expected:
         with pytest.raises(expected):
-            mrf_policies.check_allow_list(payload, actor_id=actor_id)
+            mrf_policies.check_allow_list(payload, **kwargs)
     else:
-        assert mrf_policies.check_allow_list(payload, actor_id=actor_id) == expected
+        assert mrf_policies.check_allow_list(payload, **kwargs) == expected

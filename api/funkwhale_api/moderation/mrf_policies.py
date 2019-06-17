@@ -7,7 +7,7 @@ from funkwhale_api.moderation import mrf
 
 
 @mrf.inbox.register(name="allow_list")
-def check_allow_list(payload, actor_id):
+def check_allow_list(payload, **kwargs):
     """
     A MRF policy that only works when the moderation__allow_list_enabled
     setting is on.
@@ -25,8 +25,8 @@ def check_allow_list(payload, actor_id):
     )
 
     relevant_ids = [
-        actor_id,
-        payload.get("id"),
+        payload.get("actor"),
+        kwargs.get("sender_id", payload.get("id")),
         utils.recursive_getattr(payload, "object.id", permissive=True),
     ]
 

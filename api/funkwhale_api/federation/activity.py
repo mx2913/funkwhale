@@ -1,5 +1,6 @@
 import uuid
 import logging
+import urllib.parse
 
 from django.core.cache import cache
 from django.conf import settings
@@ -283,8 +284,18 @@ class OutboxRouter(Router):
         and may yield data that should be persisted in the Activity model
         for further delivery.
         """
+        from funkwhale_api.common import preferences
         from . import models
         from . import tasks
+
+        allow_list_enabled = preferences.get("moderation__allow_list_enabled")
+        allowed_domains = None
+        if allow_list_enabled:
+            allowed_domains = set(
+                models.Domain.objects.filter(allowed=True).values_list(
+                    "name", flat=True
+                )
+            )
 
         for route, handler in self.routes:
             if not match_route(route, routing):
@@ -314,10 +325,10 @@ class OutboxRouter(Router):
                 a = models.Activity(**activity_data)
                 a.uuid = uuid.uuid4()
                 to_inbox_items, to_deliveries, new_to = prepare_deliveries_and_inbox_items(
-                    to, "to"
+                    to, "to", allowed_domains=allowed_domains
                 )
                 cc_inbox_items, cc_deliveries, new_cc = prepare_deliveries_and_inbox_items(
-                    cc, "cc"
+                    cc, "cc", allowed_domains=allowed_domains
                 )
                 if not any(
                     [to_inbox_items, to_deliveries, cc_inbox_items, cc_deliveries]
@@ -374,7 +385,7 @@ def match_route(route, payload):
     return True
 
 
-def prepare_deliveries_and_inbox_items(recipient_list, type):
+def prepare_deliveries_and_inbox_items(recipient_list, type, allowed_domains=None):
     """
     Given a list of recipients (
         either actor instances, public adresses, a dictionnary with a "type" and "target"
@@ -384,10 +395,12 @@ def prepare_deliveries_and_inbox_items(recipient_list, type):
     """
     from . import models
 
+    if allowed_domains is not None:
+        allowed_domains = set(allowed_domains)
+        allowed_domains.add(settings.FEDERATION_HOSTNAME)
     local_recipients = set()
     remote_inbox_urls = set()
     urls = []
-
     for r in recipient_list:
         if isinstance(r, models.Actor):
             if r.is_local:
@@ -432,7 +445,19 @@ def prepare_deliveries_and_inbox_items(recipient_list, type):
             values = actors.values("shared_inbox_url", "inbox_url")
             for v in values:
                 remote_inbox_urls.add(v["shared_inbox_url"] or v["inbox_url"])
-    deliveries = [models.Delivery(inbox_url=url) for url in remote_inbox_urls]
+
+    deliveries = [
+        models.Delivery(inbox_url=url)
+        for url in remote_inbox_urls
+        if allowed_domains is None
+        or urllib.parse.urlparse(url).hostname in allowed_domains
+    ]
+    urls = [
+        url
+        for url in urls
+        if allowed_domains is None
+        or urllib.parse.urlparse(url).hostname in allowed_domains
+    ]
     inbox_items = [
         models.InboxItem(actor=actor, type=type) for actor in local_recipients
     ]

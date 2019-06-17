@@ -11,7 +11,6 @@ from funkwhale_api.federation import (
     serializers,
     tasks,
 )
-from funkwhale_api.moderation import mrf
 
 
 def test_receive_validates_basic_attributes_and_stores_activity(
@@ -349,7 +348,7 @@ def test_route_matching(route, payload, expected):
     assert activity.match_route(route, payload) is expected
 
 
-def test_outbox_router_dispatch(mocker, factories, now):
+def test_outbox_router_dispatch(mocker, factories, preferences, now):
     router = activity.OutboxRouter()
     actor = factories["federation.Actor"]()
     r1 = factories["federation.Actor"]()
@@ -393,7 +392,39 @@ def test_outbox_router_dispatch(mocker, factories, now):
         assert delivery.is_delivered is False
 
 
-def test_prepare_deliveries_and_inbox_items(factories):
+def test_outbox_router_dispatch_allow_list(mocker, factories, preferences, now):
+    preferences["moderation__allow_list_enabled"] = True
+    router = activity.OutboxRouter()
+    actor = factories["federation.Actor"]()
+    r1 = factories["federation.Actor"](domain__allowed=True)
+    r2 = factories["federation.Actor"]()
+    prepare_deliveries_and_inbox_items = mocker.spy(
+        activity, "prepare_deliveries_and_inbox_items"
+    )
+
+    def handler(context):
+        yield {
+            "payload": {
+                "type": "Noop",
+                "actor": actor.fid,
+                "summary": context["summary"],
+                "to": [r1],
+                "cc": [r2],
+            },
+            "actor": actor,
+        }
+
+    router.connect({"type": "Noop"}, handler)
+    router.dispatch({"type": "Noop"}, {"summary": "hello"})
+    prepare_deliveries_and_inbox_items.assert_any_call(
+        [r1], "to", allowed_domains=set([r1.domain_id])
+    )
+    prepare_deliveries_and_inbox_items.assert_any_call(
+        [r2], "cc", allowed_domains=set([r1.domain_id])
+    )
+
+
+def test_prepare_deliveries_and_inbox_items(factories, preferences):
     local_actor1 = factories["federation.Actor"](
         local=True, shared_inbox_url="https://testlocal.inbox"
     )
@@ -447,7 +478,7 @@ def test_prepare_deliveries_and_inbox_items(factories):
     ]
 
     inbox_items, deliveries, urls = activity.prepare_deliveries_and_inbox_items(
-        recipients, "to"
+        recipients, "to", allowed_domains=None
     )
     expected_inbox_items = sorted(
         [
@@ -498,6 +529,32 @@ def test_prepare_deliveries_and_inbox_items(factories):
         assert inbox_item.type == "to"
 
 
+def test_prepare_deliveries_and_inbox_items_allow_list(factories, preferences):
+    preferences["moderation__allow_list_enabled"] = True
+    remote_actor1 = factories["federation.Actor"](domain__allowed=True)
+    remote_actor2 = factories["federation.Actor"](domain__allowed=False)
+
+    recipients = [remote_actor1, remote_actor2]
+
+    inbox_items, deliveries, urls = activity.prepare_deliveries_and_inbox_items(
+        recipients, "to", allowed_domains=set([remote_actor1.domain_id])
+    )
+    expected_inbox_items = []
+
+    expected_deliveries = [models.Delivery(inbox_url=remote_actor1.inbox_url)]
+
+    expected_urls = [remote_actor1.fid]
+
+    assert urls == expected_urls
+    assert len(expected_inbox_items) == len(inbox_items)
+    assert len(expected_deliveries) == len(deliveries)
+
+    for delivery, expected_delivery in zip(
+        sorted(deliveries, key=lambda v: v.inbox_url), expected_deliveries
+    ):
+        assert delivery.inbox_url == expected_delivery.inbox_url
+
+
 def test_prepare_deliveries_and_inbox_items_instances_with_followers(factories):
 
     domain1 = factories["federation.Domain"](with_service_actor=True)
@@ -522,7 +579,7 @@ def test_prepare_deliveries_and_inbox_items_instances_with_followers(factories):
     recipients = [activity.PUBLIC_ADDRESS, {"type": "instances_with_followers"}]
 
     inbox_items, deliveries, urls = activity.prepare_deliveries_and_inbox_items(
-        recipients, "to"
+        recipients, "to", allowed_domains=None
     )
 
     expected_deliveries = sorted(
@@ -569,7 +626,9 @@ def test_schedule_key_rotation(cache, mocker):
     assert cache.get(activity.ACTOR_KEY_ROTATION_LOCK_CACHE_KEY.format(actor_id), True)
 
 
-def test_outbox_dispatch_rotate_key_on_delete(mocker, factories, cache, settings):
+def test_outbox_dispatch_rotate_key_on_delete(
+    mocker, factories, cache, settings, preferences
+):
     router = activity.OutboxRouter()
     actor = factories["federation.Actor"]()
     r1 = factories["federation.Actor"]()
