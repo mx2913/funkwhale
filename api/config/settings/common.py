@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 from __future__ import absolute_import, unicode_literals
 
 import datetime
-import logging
+import logging.config
+
 
 from urllib.parse import urlsplit
 
@@ -20,13 +21,45 @@ from celery.schedules import crontab
 
 from funkwhale_api import __version__
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("funkwhale_api.config")
 ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 APPS_DIR = ROOT_DIR.path("funkwhale_api")
 
 env = environ.Env()
+
+
+LOGLEVEL = env("LOGLEVEL", default="info").upper()
+LOGGING_CONFIG = None
+logging.config.dictConfig(
+    {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "console": {"format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"}
+        },
+        "handlers": {
+            "console": {"class": "logging.StreamHandler", "formatter": "console"},
+            # # Add Handler for Sentry for `warning` and above
+            # 'sentry': {
+            #     'level': 'WARNING',
+            #     'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            # },
+        },
+        "loggers": {
+            "funkwhale_api": {
+                "level": LOGLEVEL,
+                "handlers": ["console"],
+                # required to avoid double logging with root logger
+                "propagate": False,
+            },
+            "": {"level": "WARNING", "handlers": ["console"]},
+        },
+    }
+)
+
 env_file = env("ENV_FILE", default=None)
 if env_file:
+    logger.info("Loading specified env file at %s", env_file)
     # we have an explicitely specified env file
     # so we try to load and it fail loudly if it does not exist
     env.read_env(env_file)
@@ -146,7 +179,8 @@ if RAVEN_ENABLED:
         "release": __version__,
     }
     THIRD_PARTY_APPS += ("raven.contrib.django.raven_compat",)
-
+    logging.getLogger("").addHandler("sentry")
+    logging.getLogger("funkwhale_api").addHandler("sentry")
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
@@ -169,7 +203,9 @@ LOCAL_APPS = (
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = (
+    DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + tuple(env.list("CUSTOM_APPS", default=[]))
+)
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------

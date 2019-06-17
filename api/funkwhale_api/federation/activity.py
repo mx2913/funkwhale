@@ -135,7 +135,7 @@ def receive(activity, on_behalf_of):
     payload, updated = mrf.inbox.apply(activity, sender_id=on_behalf_of.fid)
     if not payload:
         logger.info(
-            "[federation] Discarding activity due mrf %s",
+            "[federation] Discarding activity due to mrf %s",
             serializer.validated_data.get("id"),
         )
         return
@@ -148,7 +148,7 @@ def receive(activity, on_behalf_of):
         copy = serializer.save(payload=payload, type=payload["type"])
     except IntegrityError:
         logger.warning(
-            "[federation] Discarding already elivered activity %s",
+            "[federation] Discarding already delivered activity %s",
             serializer.validated_data.get("id"),
         )
         return
