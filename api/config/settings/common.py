@@ -210,7 +210,7 @@ LOCAL_APPS = (
 
 PLUGINS = [p for p in env.list("FUNKWHALE_PLUGINS", default=[]) if p]
 if PLUGINS:
-    logger.info("Running with the following plugins enabled: %s", ', '.join(PLUGINS))
+    logger.info("Running with the following plugins enabled: %s", ", ".join(PLUGINS))
 else:
     logger.info("Running with no plugins")
 
