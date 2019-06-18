@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db.models import Q
 
 from funkwhale_api.common import session
-from funkwhale_api.moderation import models as moderation_models
 from funkwhale_api.moderation import mrf
 
 from . import exceptions
@@ -65,8 +64,6 @@ def slugify_username(username):
 def retrieve_ap_object(
     fid, actor, serializer_class=None, queryset=None, apply_instance_policies=True
 ):
-    from . import activity
-
     # we have a duplicate check here because it's less expensive to do those checks
     # twice than to trigger a HTTP request
     payload, updated = mrf.inbox.apply({"id": fid})

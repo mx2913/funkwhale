@@ -44,7 +44,11 @@ class Command(BaseCommand):
         parser.add_argument(
             "input",
             nargs="?",
-            help="The path to a file containing JSON data. Use - to read from stdin. If no input is provided, registered MRF policies will be listed instead.",
+            help=(
+                "The path to a file containing JSON data. Use - to read from stdin. "
+                "If no input is provided, registered MRF policies will be listed "
+                "instead.",
+            ),
         )
         parser.add_argument(
             "--policy",
