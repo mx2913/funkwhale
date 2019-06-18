@@ -32,27 +32,40 @@ class Registry(persisting_theory.Registry):
         super().__init__()
 
     def apply(self, payload, **kwargs):
+        policy_names = kwargs.pop("policies", [])
+        if not policy_names:
+            policies = self.items()
+        else:
+            logger.debug(
+                "[MRF.%s] Running restricted list of policies %s…",
+                self.name,
+                ", ".join(policy_names),
+            )
+            policies = [(name, self[name]) for name in policy_names]
         updated = False
-        for rule_name, rule in self.items():
-            logger.debug("[MRF.%s] Applying mrf rule %s…", self.name, rule_name)
+        for policy_name, policy in policies:
+            logger.debug("[MRF.%s] Applying mrf policy '%s'…", self.name, policy_name)
             try:
-                new_payload = rule(payload, **kwargs)
+                new_payload = policy(payload, **kwargs)
             except Skip as e:
                 logger.debug(
-                    "[MRF.%s] Skipped rule %s because %s", self.name, rule_name, str(e)
+                    "[MRF.%s] Skipped policy %s because '%s'",
+                    self.name,
+                    policy_name,
+                    str(e),
                 )
                 continue
             except Discard as e:
                 logger.info(
-                    "[MRF.%s] Discarded message per rule %s because %s",
+                    "[MRF.%s] Discarded message per policy '%s' because '%s'",
                     self.name,
-                    rule_name,
+                    policy_name,
                     str(e),
                 )
                 return (None, False)
             except Exception:
                 logger.exception(
-                    "[MRF.%s] Error while applying rule %s!", self.name, rule_name
+                    "[MRF.%s] Error while applying policy '%s'!", self.name, policy_name
                 )
                 continue
             if new_payload:
