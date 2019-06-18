@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 import datetime
 import logging.config
-
+import sys
 
 from urllib.parse import urlsplit
 
@@ -26,7 +26,6 @@ ROOT_DIR = environ.Path(__file__) - 3  # (/a/b/myfile.py - 3 = /)
 APPS_DIR = ROOT_DIR.path("funkwhale_api")
 
 env = environ.Env()
-
 
 LOGLEVEL = env("LOGLEVEL", default="info").upper()
 LOGGING_CONFIG = None
@@ -81,6 +80,11 @@ else:
         env.read_env(env_path)
         logger.info("Loaded env file at %s/.env", path)
         break
+
+FUNKWHALE_PLUGINS_PATH = env(
+    "FUNKWHALE_PLUGINS_PATH", default="/srv/funkwhale/plugins/"
+)
+sys.path.append(FUNKWHALE_PLUGINS_PATH)
 
 FUNKWHALE_HOSTNAME = None
 FUNKWHALE_HOSTNAME_SUFFIX = env("FUNKWHALE_HOSTNAME_SUFFIX", default=None)
@@ -203,8 +207,18 @@ LOCAL_APPS = (
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 
+
+PLUGINS = [p for p in env.list("FUNKWHALE_PLUGINS", default=[]) if p]
+if PLUGINS:
+    logger.info("Running with the following plugins enabled: %s", ', '.join(PLUGINS))
+else:
+    logger.info("Running with no plugins")
+
 INSTALLED_APPS = (
-    DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + tuple(env.list("CUSTOM_APPS", default=[]))
+    DJANGO_APPS
+    + THIRD_PARTY_APPS
+    + LOCAL_APPS
+    + tuple([".".join([p, "apps.Plugin"]) for p in PLUGINS])
 )
 
 # MIDDLEWARE CONFIGURATION
