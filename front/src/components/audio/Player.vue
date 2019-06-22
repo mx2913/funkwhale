@@ -210,8 +210,11 @@
         @keydown.ctrl.right.prevent.exact="next"
         @keydown.ctrl.down.prevent.exact="$store.commit('player/incrementVolume', -0.1)"
         @keydown.ctrl.up.prevent.exact="$store.commit('player/incrementVolume', 0.1)"
+        @keydown.m.prevent.exact="toggleMute"
         @keydown.l.prevent.exact="$store.commit('player/toggleLooping')"
         @keydown.s.prevent.exact="shuffle"
+        @keydown.f.prevent.exact="$store.dispatch('favorites/toggle', currentTrack.id)"
+        @keydown.q.prevent.exact="clean"
         />
     </div>
   </section>
@@ -294,6 +297,7 @@ export default {
       mute: "player/mute",
       unmute: "player/unmute",
       clean: "queue/clean",
+      toggleMute: "player/toggleMute",
     }),
     async getTrackData (trackData) {
       let data = null

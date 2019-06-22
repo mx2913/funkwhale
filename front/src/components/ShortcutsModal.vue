@@ -48,8 +48,11 @@ export default {
         // ctrl.right.prevent.exact="next"
         // ctrl.down.prevent.exact="$store.commit('player/incrementVolume', -0.1)"
         // ctrl.up.prevent.exact="$store.commit('player/incrementVolume', 0.1)"
+        // m.prevent.exact="toggleMute"
         // l.prevent.exact="$store.commit('player/toggleLooping')"
         // s.prevent.exact="shuffle"
+        // q.prevent.exact="clean"
+        // f.prevent.exact="$store.dispatch('favorites/toggle', currentTrack.id)"
 
         {
           title: this.$pgettext('Popup/Keyboard shortcuts/Title', 'Audio player shortcuts'),
@@ -75,12 +78,24 @@ export default {
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Decrease volume')
             },
             {
+              key: 'm',
+              summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Toggle mute')
+            },
+            {
               key: 'l',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Toggle queue looping')
             },
             {
               key: 's',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Shuffle queue')
+            },
+            {
+              key: 'q',
+              summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Clear queue')
+            },
+            {
+              key: 'f',
+              summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Toggle favorite')
             },
           ]
         }
