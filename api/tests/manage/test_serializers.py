@@ -186,8 +186,6 @@ def test_manage_domain_action_allow_list_add(factories, mocker):
         assert domain.allowed is True
 
 
-
-
 def test_manage_domain_action_allow_list_remove(factories, mocker):
     domains = factories["federation.Domain"].create_batch(size=3, allowed=True)
     s = serializers.ManageDomainActionSerializer(queryset=None)
