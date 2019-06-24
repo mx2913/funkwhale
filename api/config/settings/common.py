@@ -183,8 +183,6 @@ if RAVEN_ENABLED:
         "release": __version__,
     }
     THIRD_PARTY_APPS += ("raven.contrib.django.raven_compat",)
-    logging.getLogger("").addHandler("sentry")
-    logging.getLogger("funkwhale_api").addHandler("sentry")
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
