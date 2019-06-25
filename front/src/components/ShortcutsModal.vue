@@ -40,12 +40,22 @@ export default {
             {
               key: 'h',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Show available keyboard shortcuts')
-            }
+            },
+            {
+              key: 'shift f',
+              summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Focus searchbar')
+            },
+            {
+              key: 'esc',
+              summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Unfocus searchbar')
+            },
           ]
         },
         // space.prevent.exact="togglePlay"
         // ctrl.left.prevent.exact="previous"
         // ctrl.right.prevent.exact="next"
+        // right.prevent.exact="$store.dispatch('player/updateProgress', (currentTime + 1))"
+        // left.prevent.exact="$store.dispatch('player/updateProgress', (currentTime - 1))"
         // ctrl.down.prevent.exact="$store.commit('player/incrementVolume', -0.1)"
         // ctrl.up.prevent.exact="$store.commit('player/incrementVolume', 0.1)"
         // m.prevent.exact="toggleMute"
@@ -62,19 +72,27 @@ export default {
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Pause/play the current track')
             },
             {
-              key: 'ctrl left',
+              key: 'shift left',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Play previous track')
             },
             {
-              key: 'ctrl right',
+              key: 'shift right',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Play next track')
             },
             {
-              key: 'ctrl up',
+              key: 'left',
+              summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Seek backwards')
+            },
+            {
+              key: 'right',
+              summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Seek forwards')
+            },
+            {
+              key: 'shift up',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Increase volume')
             },
             {
-              key: 'ctrl down',
+              key: 'shift down',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Decrease volume')
             },
             {

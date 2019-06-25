@@ -206,10 +206,12 @@
       </div>
       <GlobalEvents
         @keydown.space.prevent.exact="togglePlay"
-        @keydown.ctrl.left.prevent.exact="previous"
-        @keydown.ctrl.right.prevent.exact="next"
-        @keydown.ctrl.down.prevent.exact="$store.commit('player/incrementVolume', -0.1)"
-        @keydown.ctrl.up.prevent.exact="$store.commit('player/incrementVolume', 0.1)"
+        @keydown.shift.left.prevent.exact="previous"
+        @keydown.shift.right.prevent.exact="next"
+        @keydown.shift.down.prevent.exact="$store.commit('player/incrementVolume', -0.1)"
+        @keydown.shift.up.prevent.exact="$store.commit('player/incrementVolume', 0.1)"
+        @keydown.right.prevent.exact="$store.dispatch('player/updateProgress', (currentTime + 1))"
+        @keydown.left.prevent.exact="$store.dispatch('player/updateProgress', (currentTime - 1))"
         @keydown.m.prevent.exact="toggleMute"
         @keydown.l.prevent.exact="$store.commit('player/toggleLooping')"
         @keydown.s.prevent.exact="shuffle"
