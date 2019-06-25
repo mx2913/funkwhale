@@ -210,8 +210,8 @@
         @keydown.shift.right.prevent.exact="next"
         @keydown.shift.down.prevent.exact="$store.commit('player/incrementVolume', -0.1)"
         @keydown.shift.up.prevent.exact="$store.commit('player/incrementVolume', 0.1)"
-        @keydown.right.prevent.exact="$store.dispatch('player/updateProgress', (currentTime + 1))"
-        @keydown.left.prevent.exact="$store.dispatch('player/updateProgress', (currentTime - 1))"
+        @keydown.right.prevent.exact="seekRight"
+        @keydown.left.prevent.exact="seekLeft"
         @keydown.m.prevent.exact="toggleMute"
         @keydown.l.prevent.exact="$store.commit('player/toggleLooping')"
         @keydown.s.prevent.exact="shuffle"
@@ -493,6 +493,21 @@ export default {
           this.getSound(toPreload)
           this.nextTrackPreloaded = true
         }
+      }
+    },
+    seekLeft () {
+      if (this.currentTime >= 1) {
+        this.$store.dispatch('player/updateProgress', (this.currentTime - 1))
+      }
+      else {
+        this.setCurrentTime (0)
+      }
+    },
+    seekRight (){
+      if (this.currentTime < this.duration) {
+        this.$store.dispatch('player/updateProgress', (this.currentTime + 1))
+      } else {
+        this.next
       }
     },
     observeProgress: function (enable) {

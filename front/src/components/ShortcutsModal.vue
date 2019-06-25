@@ -4,18 +4,34 @@
       <translate translate-context="*/*/*/Noun">Keyboard shortcuts</translate>
     </header>
     <section class="scrolling content">
-      <table
-        class="ui compact collapsing basic table"
-        v-for="section in sections"
-        :key="section.title">
-      <caption>{{ section.title }}</caption>
-      <tbody>
-        <tr v-for="shortcut in section.shortcuts" :key="shortcut.summary">
-          <td>{{ shortcut.summary }}</td>
-          <td><span class="ui label">{{ shortcut.key }}</span></td>
-        </tr>
-      </tbody>
-      </table>
+      <div class="floatLeft">
+        <table
+          class="ui compact basic table"
+          v-for="section in general"
+          :key="section.title">
+        <caption>{{ section.title }}</caption>
+        <tbody>
+          <tr v-for="shortcut in section.shortcuts" :key="shortcut.summary">
+            <td>{{ shortcut.summary }}</td>
+            <td><span class="ui label">{{ shortcut.key }}</span></td>
+          </tr>
+        </tbody>
+        </table>
+      </div>
+      <div class="floatRight">
+        <table
+          class="ui compact basic table"
+          v-for="section in player"
+          :key="section.title">
+        <caption>{{ section.title }}</caption>
+        <tbody>
+          <tr v-for="shortcut in section.shortcuts" :key="shortcut.summary">
+            <td>{{ shortcut.summary }}</td>
+            <td><span class="ui label">{{ shortcut.key }}</span></td>
+          </tr>
+        </tbody>
+        </table>
+      </div>
     </section>
     <footer class="actions">
       <div class="ui cancel button"><translate translate-context="Popup/Keyboard shortcuts/Button.Label/Verb">Close</translate></div>
@@ -32,7 +48,7 @@ export default {
     Modal,
   },
   computed: {
-    sections () {
+    general () {
       return [
         {
           title: this.$pgettext('Popup/Keyboard shortcuts/Title', 'General shortcuts'),
@@ -42,7 +58,7 @@ export default {
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Show available keyboard shortcuts')
             },
             {
-              key: 'shift f',
+              key: 'shift + f',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Focus searchbar')
             },
             {
@@ -51,6 +67,8 @@ export default {
             },
           ]
         },
+      ]
+    },
         // space.prevent.exact="togglePlay"
         // ctrl.left.prevent.exact="previous"
         // ctrl.right.prevent.exact="next"
@@ -63,7 +81,8 @@ export default {
         // s.prevent.exact="shuffle"
         // q.prevent.exact="clean"
         // f.prevent.exact="$store.dispatch('favorites/toggle', currentTrack.id)"
-
+    player () {
+      return [
         {
           title: this.$pgettext('Popup/Keyboard shortcuts/Title', 'Audio player shortcuts'),
           shortcuts: [
@@ -72,11 +91,11 @@ export default {
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Pause/play the current track')
             },
             {
-              key: 'shift left',
+              key: 'shift + left',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Play previous track')
             },
             {
-              key: 'shift right',
+              key: 'shift + right',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Play next track')
             },
             {
@@ -88,11 +107,11 @@ export default {
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Seek forwards')
             },
             {
-              key: 'shift up',
+              key: 'shift + up',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Increase volume')
             },
             {
-              key: 'shift down',
+              key: 'shift + down',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Decrease volume')
             },
             {
@@ -125,4 +144,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.floatLeft {
+  width: 50%;
+  float: left;
+}
+
+.floatRight {
+  width: 50%;
+  float: right;
+}
 </style>
