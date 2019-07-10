@@ -58,9 +58,15 @@ export default {
   },
   computed: {
     iframeSrc () {
-      return this.$store.getters['instance/absoluteUrl'](
-        `/front/embed.html?&type=${this.type}&id=${this.id}`
-      )
+      let base = process.env.BASE_URL
+      let instanceUrl = this.$store.state.instance.instanceUrl
+      let b = ''
+      if (!window.location.href.startsWith(instanceUrl)) {
+        // the frontend is running on a separate domain, so we need to provide
+        // the b= parameter in the iframe
+        b = `&b=${instanceUrl}`
+      }
+      return  `${base}embed.html?&type=${this.type}&id=${this.id}${b}`
     },
     frameWidth () {
       if (this.width) {
