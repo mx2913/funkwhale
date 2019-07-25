@@ -1,6 +1,6 @@
 <template>
   <div class="flat inline card">
-    <div :class="['ui', 'image', 'with-overlay', {'default-cover': !cover.original}]" v-lazy:background-image="imageUrl">
+    <div :class="['ui', 'image', 'artist', 'with-overlay', {'default-cover': !cover.original}]" v-lazy:background-image="imageUrl">
       <play-button class="play-overlay" :icon-only="true" :is-playable="artist.is_playable" :button-classes="['ui', 'circular', 'large', 'orange', 'icon', 'button']" :artist="artist"></play-button>
     </div>
     <div class="content">
