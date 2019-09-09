@@ -232,6 +232,7 @@ MIDDLEWARE = (
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "funkwhale_api.users.middleware.RecordActivityMiddleware",
+    "funkwhale_api.common.middleware.ThrottleStatusMiddleware",
 )
 
 # DEBUG
@@ -615,7 +616,17 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
     ),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    "DEFAULT_THROTTLE_CLASSES": env.list(
+        "THROTTLE_CLASSES",
+        default=["funkwhale_api.common.throttling.FunkwhaleThrottle"],
+    ),
 }
+
+THROTTLING_SCOPES = {
+    "*": {"anonymous": "anonymous-wildcard", "authenticated": "authenticated-wildcard"}
+}
+
+THROTTLING_RATES = {"anonymous-wildcard": None, "authenticated-wildcard": None}
 
 BROWSABLE_API_ENABLED = env.bool("BROWSABLE_API_ENABLED", default=False)
 if BROWSABLE_API_ENABLED:

@@ -1,4 +1,7 @@
+import time
 import pytest
+
+from django.http import HttpResponse
 
 from funkwhale_api.common import middleware
 
@@ -185,3 +188,28 @@ def test_get_custom_css(preferences, custom_css, expected):
     preferences["ui__custom_css"] = custom_css
 
     assert middleware.get_custom_css() == expected
+
+
+def test_throttle_status_middleware_includes_info_in_response_headers(mocker):
+    get_response = mocker.Mock()
+    response = HttpResponse()
+    get_response.return_value = response
+    request = mocker.Mock(
+        path="/",
+        _api_request=mocker.Mock(
+            _throttle_status={
+                "num_requests": 42,
+                "duration": 3600,
+                "scope": "hello",
+                "history": [time.time() - 1600],
+            }
+        ),
+    )
+    m = middleware.ThrottleStatusMiddleware(get_response)
+
+    assert m(request) == response
+    assert response["X-RateLimit-Limit"] == "42"
+    assert response["X-RateLimit-Remaining"] == "41"
+    assert response["X-RateLimit-Duration"] == "3600"
+    assert response["X-RateLimit-Scope"] == "hello"
+    assert response["X-RateLimit-Reset"] == str(int(time.time()) + 2000)
