@@ -4,6 +4,7 @@ import pytest
 from django.http import HttpResponse
 
 from funkwhale_api.common import middleware
+from funkwhale_api.common import throttling
 
 
 def test_spa_fallback_middleware_no_404(mocker):
@@ -213,3 +214,12 @@ def test_throttle_status_middleware_includes_info_in_response_headers(mocker):
     assert response["X-RateLimit-Duration"] == "3600"
     assert response["X-RateLimit-Scope"] == "hello"
     assert response["X-RateLimit-Reset"] == str(int(time.time()) + 2000)
+
+
+def test_throttle_status_middleware_returns_proper_response(mocker):
+    get_response = mocker.Mock(side_effect=throttling.TooManyRequests())
+    request = mocker.Mock(path="/", _api_request=None, _throttle_status=None)
+    m = middleware.ThrottleStatusMiddleware(get_response)
+
+    response = m(request)
+    assert response.status_code == 429

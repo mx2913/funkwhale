@@ -616,11 +616,13 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
     ),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
-    "DEFAULT_THROTTLE_CLASSES": env.list(
+}
+THROTTLING_ENABLED = env.bool("THROTTLING_ENABLED", default=True)
+if THROTTLING_ENABLED:
+    REST_FRAMEWORK["DEFAULT_THROTTLE_CLASSES"] = env.list(
         "THROTTLE_CLASSES",
         default=["funkwhale_api.common.throttling.FunkwhaleThrottle"],
-    ),
-}
+    )
 
 THROTTLING_SCOPES = {
     "*": {"anonymous": "anonymous-wildcard", "authenticated": "authenticated-wildcard"}

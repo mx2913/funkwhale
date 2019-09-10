@@ -74,3 +74,30 @@ class FunkwhaleThrottle(rest_throttling.SimpleRateThrottle):
     def throttle_failure(self):
         self.attach_info()
         return super().throttle_failure()
+
+
+class TooManyRequests(Exception):
+    pass
+
+
+DummyView = collections.namedtuple("DummyView", "action throttling_scopes")
+
+
+def check_request(request, scope):
+    """
+    A simple wrapper around FunkwhaleThrottle for views that aren't API views
+    or cannot use rest_framework automatic throttling.
+
+    Raise TooManyRequests if limit is reached.
+    """
+    if not settings.THROTTLING_ENABLED:
+        return True
+
+    view = DummyView(
+        action=scope,
+        throttling_scopes={scope: {"anonymous": scope, "authenticated": scope}},
+    )
+    throttle = FunkwhaleThrottle()
+    if not throttle.allow_request(request, view):
+        raise TooManyRequests()
+    return True

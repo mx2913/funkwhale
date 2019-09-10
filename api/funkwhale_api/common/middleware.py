@@ -10,6 +10,7 @@ from django import urls
 from rest_framework import views
 
 from . import preferences
+from . import throttling
 from . import utils
 
 EXCLUDED_PATHS = ["/api", "/federation", "/.well-known"]
@@ -209,12 +210,18 @@ class ThrottleStatusMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        response = self.get_response(request)
         try:
-            api_request = request._api_request
+            response = self.get_response(request)
+        except throttling.TooManyRequests:
+            # manual throttling in non rest_framework view, we have to return
+            # the proper response ourselves
+            response = http.HttpResponse(status=429)
+        request_to_check = request
+        try:
+            request_to_check = request._api_request
         except AttributeError:
-            return response
-        throttle_status = getattr(api_request, "_throttle_status", None)
+            pass
+        throttle_status = getattr(request_to_check, "_throttle_status", None)
         if throttle_status:
             response["X-RateLimit-Limit"] = str(throttle_status["num_requests"])
             response["X-RateLimit-Scope"] = str(throttle_status["scope"])

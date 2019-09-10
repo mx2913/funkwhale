@@ -266,3 +266,33 @@ def test_throttle_calls_attach_info(method, mocker):
     func()
 
     attach_info.assert_called_once_with()
+
+
+def test_allow_request(api_request, settings, mocker):
+    settings.THROTTLING_RATES = {"test": "2/s"}
+    ip = "92.92.92.92"
+    request = api_request.get("/", HTTP_X_FORWARDED_FOR=ip)
+    allow_request = mocker.spy(throttling.FunkwhaleThrottle, "allow_request")
+    action = "test"
+    throttling_scopes = {"test": {"anonymous": "test", "authenticated": "test"}}
+    throttling.check_request(request, action)
+    throttling.check_request(request, action)
+    with pytest.raises(throttling.TooManyRequests):
+        throttling.check_request(request, action)
+
+    assert allow_request.call_count == 3
+    assert allow_request.call_args[0][1] == request
+    assert allow_request.call_args[0][2] == throttling.DummyView(
+        action=action, throttling_scopes=throttling_scopes
+    )
+
+
+def test_allow_request_throttling_disabled(api_request, settings):
+    settings.THROTTLING_RATES = {"test": "1/s"}
+    settings.THROTTLING_ENABLED = False
+    ip = "92.92.92.92"
+    request = api_request.get("/", HTTP_X_FORWARDED_FOR=ip)
+    action = "test"
+    throttling.check_request(request, action)
+    # even exceeding request doesn't raise any exception
+    throttling.check_request(request, action)
