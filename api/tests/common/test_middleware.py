@@ -202,7 +202,7 @@ def test_throttle_status_middleware_includes_info_in_response_headers(mocker):
                 "num_requests": 42,
                 "duration": 3600,
                 "scope": "hello",
-                "history": [time.time() - 1600],
+                "history": [time.time() - 1600, time.time() - 1800],
             }
         ),
     )
@@ -210,10 +210,13 @@ def test_throttle_status_middleware_includes_info_in_response_headers(mocker):
 
     assert m(request) == response
     assert response["X-RateLimit-Limit"] == "42"
-    assert response["X-RateLimit-Remaining"] == "41"
+    assert response["X-RateLimit-Remaining"] == "40"
     assert response["X-RateLimit-Duration"] == "3600"
     assert response["X-RateLimit-Scope"] == "hello"
     assert response["X-RateLimit-Reset"] == str(int(time.time()) + 2000)
+    assert response["X-RateLimit-ResetSeconds"] == str(2000)
+    assert response["X-RateLimit-Available"] == str(int(time.time()) + 1800)
+    assert response["X-RateLimit-AvailableSeconds"] == str(1800)
 
 
 def test_throttle_status_middleware_returns_proper_response(mocker):

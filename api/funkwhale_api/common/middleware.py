@@ -230,9 +230,16 @@ class ThrottleStatusMiddleware:
             )
             response["X-RateLimit-Duration"] = str(throttle_status["duration"])
             if throttle_status["history"]:
-                latest_request = throttle_status["history"][0]
                 now = int(time.time())
+                # At this point, the client can send additional requests
+                oldtest_request = throttle_status["history"][-1]
+                remaining = throttle_status["duration"] - (now - int(oldtest_request))
+                response["X-RateLimit-Available"] = str(now + remaining)
+                response["X-RateLimit-AvailableSeconds"] = str(remaining)
+                # At this point, all Rate Limit is reset to 0
+                latest_request = throttle_status["history"][0]
                 remaining = throttle_status["duration"] - (now - int(latest_request))
                 response["X-RateLimit-Reset"] = str(now + remaining)
+                response["X-RateLimit-ResetSeconds"] = str(remaining)
 
         return response
