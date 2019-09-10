@@ -11,6 +11,7 @@ from funkwhale_api.music import views
 from funkwhale_api.playlists import views as playlists_views
 from funkwhale_api.subsonic.views import SubsonicViewSet
 from funkwhale_api.tags import views as tags_views
+from funkwhale_api.users import jwt_views
 
 router = common_routers.OptionalSlashRouter()
 router.register(r"settings", GlobalPreferencesViewSet, basename="settings")
