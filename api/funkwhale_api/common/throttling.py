@@ -1,5 +1,6 @@
 import collections
 
+from django.core.cache import cache
 from rest_framework import throttling as rest_throttling
 
 from django.conf import settings
@@ -32,6 +33,53 @@ def get_scope_for_action_and_ident_type(action, ident_type, view_conf={}):
         return
 
 
+def get_status(ident, now):
+    data = []
+    throttle = FunkwhaleThrottle()
+    for key in sorted(settings.THROTTLING_RATES.keys()):
+        conf = settings.THROTTLING_RATES[key]
+        row_data = {"id": key, "rate": conf["rate"], "description": conf["description"]}
+        if conf["rate"]:
+            num_requests, duration = throttle.parse_rate(conf["rate"])
+            history = cache.get(get_cache_key(key, ident)) or []
+
+            relevant_history = [h for h in history if h > now - duration]
+            row_data["limit"] = num_requests
+            row_data["duration"] = duration
+            row_data["remaining"] = num_requests - len(relevant_history)
+            if relevant_history and len(relevant_history) >= num_requests:
+                # At this point, the endpoint becomes available again
+                now_request = relevant_history[-1]
+                remaining = duration - (now - int(now_request))
+                row_data["available"] = int(now + remaining) or None
+                row_data["available_seconds"] = int(remaining) or None
+            else:
+                row_data["available"] = None
+                row_data["available_seconds"] = None
+
+            if relevant_history:
+                # At this point, all Rate Limit is reset to 0
+                latest_request = relevant_history[0]
+                remaining = duration - (now - int(latest_request))
+                row_data["reset"] = int(now + remaining)
+                row_data["reset_seconds"] = int(remaining)
+            else:
+                row_data["reset"] = None
+                row_data["reset_seconds"] = None
+        else:
+            row_data["limit"] = None
+            row_data["duration"] = None
+            row_data["remaining"] = None
+            row_data["available"] = None
+            row_data["available_seconds"] = None
+            row_data["reset"] = None
+            row_data["reset_seconds"] = None
+
+        data.append(row_data)
+
+    return data
+
+
 class FunkwhaleThrottle(rest_throttling.SimpleRateThrottle):
     def __init__(self):
         pass
@@ -51,7 +99,7 @@ class FunkwhaleThrottle(rest_throttling.SimpleRateThrottle):
         )
         if not self.scope or self.scope not in settings.THROTTLING_RATES:
             return True
-        self.rate = settings.THROTTLING_RATES[self.scope]
+        self.rate = settings.THROTTLING_RATES[self.scope].get("rate")
         self.num_requests, self.duration = self.parse_rate(self.rate)
         self.request = request
 

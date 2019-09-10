@@ -2,7 +2,6 @@ from django.conf.urls import include, url
 from dynamic_preferences.api.viewsets import GlobalPreferencesViewSet
 from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
-from rest_framework_jwt import views as jwt_views
 
 from funkwhale_api.activity import views as activity_views
 from funkwhale_api.common import views as common_views
@@ -84,6 +83,7 @@ v1_patterns += [
     ),
     url(r"^token/?$", jwt_views.obtain_jwt_token, name="token"),
     url(r"^token/refresh/?$", jwt_views.refresh_jwt_token, name="token_refresh"),
+    url(r"^rate-limit/?$", common_views.RateLimitView.as_view(), name="rate-limit"),
 ]
 
 urlpatterns = [

@@ -98,7 +98,7 @@ def test_get_rate_for_scope_and_ident_type(
                 "action": "retrieve",
                 "throttling_scopes": {"retrieve": {"anonymous": "test"}},
             },
-            {"test": "3/s"},
+            {"test": {"rate": "3/s"}},
             2,
             True,
         ),
@@ -108,7 +108,7 @@ def test_get_rate_for_scope_and_ident_type(
                 "action": "retrieve",
                 "throttling_scopes": {"retrieve": {"anonymous": "test"}},
             },
-            {"test": "3/s"},
+            {"test": {"rate": "3/s"}},
             3,
             False,
         ),
@@ -159,7 +159,7 @@ def test_throttle_anonymous(
                 "action": "retrieve",
                 "throttling_scopes": {"retrieve": {"authenticated": "test"}},
             },
-            {"test": "3/s"},
+            {"test": {"rate": "3/s"}},
             2,
             True,
         ),
@@ -169,7 +169,7 @@ def test_throttle_anonymous(
                 "action": "retrieve",
                 "throttling_scopes": {"retrieve": {"authenticated": "test"}},
             },
-            {"test": "3/s"},
+            {"test": {"rate": "3/s"}},
             3,
             False,
         ),
@@ -214,7 +214,7 @@ def test_throttle_authenticated(
 
 
 def throttle_successive(settings, mocker, api_request):
-    settings.THROTTLING_RATES = {"test": "3/s"}
+    settings.THROTTLING_RATES = {"test": {"rate": "3/s"}}
     settings.THROTTLING_SCOPES = {}
     ip = "92.92.92.92"
     request = api_request.get("/", HTTP_X_FORWARDED_FOR=ip)
@@ -269,7 +269,7 @@ def test_throttle_calls_attach_info(method, mocker):
 
 
 def test_allow_request(api_request, settings, mocker):
-    settings.THROTTLING_RATES = {"test": "2/s"}
+    settings.THROTTLING_RATES = {"test": {"rate": "2/s"}}
     ip = "92.92.92.92"
     request = api_request.get("/", HTTP_X_FORWARDED_FOR=ip)
     allow_request = mocker.spy(throttling.FunkwhaleThrottle, "allow_request")
@@ -288,7 +288,7 @@ def test_allow_request(api_request, settings, mocker):
 
 
 def test_allow_request_throttling_disabled(api_request, settings):
-    settings.THROTTLING_RATES = {"test": "1/s"}
+    settings.THROTTLING_RATES = {"test": {"rate": "1/s"}}
     settings.THROTTLING_ENABLED = False
     ip = "92.92.92.92"
     request = api_request.get("/", HTTP_X_FORWARDED_FOR=ip)
@@ -296,3 +296,42 @@ def test_allow_request_throttling_disabled(api_request, settings):
     throttling.check_request(request, action)
     # even exceeding request doesn't raise any exception
     throttling.check_request(request, action)
+
+
+def test_get_throttling_status_for_ident(settings, cache):
+    settings.THROTTLING_RATES = {
+        "test-1": {"rate": "30/d", "description": "description 1"},
+        "test-2": {"rate": "20/h", "description": "description 2"},
+    }
+    ident = {"type": "anonymous", "id": "92.92.92.92"}
+    test1_cache_key = throttling.get_cache_key("test-1", ident)
+    now = int(time.time())
+    cache.set(test1_cache_key, [now - 1, now - 2, now - 99999999])
+
+    expected = [
+        {
+            "id": "test-1",
+            "limit": 30,
+            "rate": "30/d",
+            "description": "description 1",
+            "duration": 24 * 3600,
+            "remaining": 28,
+            "reset": now + (24 * 3600) - 1,
+            "reset_seconds": (24 * 3600) - 1,
+            "available": None,
+            "available_seconds": None,
+        },
+        {
+            "id": "test-2",
+            "limit": 20,
+            "rate": "20/h",
+            "description": "description 2",
+            "duration": 3600,
+            "remaining": 20,
+            "reset": None,
+            "reset_seconds": None,
+            "available": None,
+            "available_seconds": None,
+        },
+    ]
+    assert throttling.get_status(ident, now) == expected
