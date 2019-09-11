@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from django.views.generic import TemplateView
 from rest_auth import views as rest_auth_views
-from rest_auth.registration import views as registration_views
 
 from . import views
 
