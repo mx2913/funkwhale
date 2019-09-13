@@ -6,7 +6,7 @@ Funkwhale includes a report feature you can use to contact your pod's moderators
 If you think some action, such as removal, should be taken toward an account or specific content (like an artist or a library), we encourage you to use
 this feature. This is especially recommended if you find illegal or abusive content, or anything that could be in infraction with your pods rules.
 
-After submission, your pod moderators will be notified and act on your report.
+After submission, your pod moderators will be notified and :doc:`act on your report </moderator/reports>`.
 
 Submit a report
 ---------------
