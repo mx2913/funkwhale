@@ -30,7 +30,7 @@ export default new Router({
       path: "/login",
       name: "login",
       component: () =>
-        import(/* webpackChunkName: "core" */ "@/components/auth/Login"),
+        import(/* webpackChunkName: "core" */ "@/views/auth/Login"),
       props: route => ({ next: route.query.next || "/library" })
     },
     {
@@ -87,7 +87,7 @@ export default new Router({
       path: "/signup",
       name: "signup",
       component: () =>
-        import(/* webpackChunkName: "core" */ "@/components/auth/Signup"),
+        import(/* webpackChunkName: "core" */ "@/views/auth/Signup"),
       props: route => ({
         defaultInvitation: route.query.invitation
       })
