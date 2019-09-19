@@ -8,6 +8,17 @@ export default new Router({
   mode: "history",
   linkActiveClass: "active",
   base: process.env.VUE_APP_ROUTER_BASE_URL || "/",
+  scrollBehavior(to, from, savedPosition) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        if (to.hash) {
+          resolve({ selector: to.hash });
+        }
+        let pos = savedPosition || { x: 0, y: 0 };
+        resolve(pos);
+      }, 100);
+    });
+  },
   routes: [
     {
       path: "/",
