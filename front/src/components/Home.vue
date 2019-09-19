@@ -1,17 +1,17 @@
 <template>
   <main class="main pusher" v-title="labels.title">
-     <section :class="['ui', 'head', {'with-background': banner}, 'vertical', 'center', 'aligned', 'stripe', 'segment']" :style="headerStyle">
-        <div class="segment-content">
-          <h1 class="ui center aligned large header">
-            <translate translate-context="Content/Home/Header"
-              :translate-params="{podName: podName}">
-              Welcome to %{ podName }!
-            </translate>
-            <div v-if="shortDescription" class="sub header">
-              {{ shortDescription }}
-            </div>
-          </h1>
-        </div>
+    <section :class="['ui', 'head', {'with-background': banner}, 'vertical', 'center', 'aligned', 'stripe', 'segment']" :style="headerStyle">
+      <div class="segment-content">
+        <h1 class="ui center aligned large header">
+          <translate translate-context="Content/Home/Header"
+            :translate-params="{podName: podName}">
+            Welcome to %{ podName }!
+          </translate>
+          <div v-if="shortDescription" class="sub header">
+            {{ shortDescription }}
+          </div>
+        </h1>
+      </div>
     </section>
     <section class="ui vertical stripe segment">
       <div class="ui stackable grid">
@@ -103,7 +103,15 @@
           <h3 class="header">
             <translate translate-context="*/Signup/Title">Sign up</translate>
           </h3>
-          <signup-form v-if="openRegistrations" button-classes="basic green" :show-login="false"></signup-form>
+          <template v-if="openRegistrations">
+            <p>
+              <translate translate-context="Content/Home/Paragraph">Sign up now to keep a track of your favorites, create playlists, discover new content and much more!</translate>
+            </p>
+            <p v-if="defaultUploadQuota">
+              <translate translate-context="Content/Home/Paragraph" :translate-params="{quota: humanSize(defaultUploadQuota * 1000 * 1000)}">Users on this pod also get %{ quota } of free storage to upload their own content!</translate>
+            </p>
+            <signup-form button-classes="basic green" :show-login="false"></signup-form>
+          </template>
           <div v-else>
             <p translate-context="Content/Home/Paragraph">Registrations are closed on this pod. You can signup on another pod using the link below.</p>
             <a target="_blank" rel="noopener" href="https://funkwhale.audio/#get-started">
@@ -175,6 +183,7 @@ import showdown from 'showdown'
 import AlbumWidget from "@/components/audio/album/Widget"
 import LoginForm from "@/components/auth/LoginForm"
 import SignupForm from "@/components/auth/SignupForm"
+import {humanSize } from '@/filters'
 
 export default {
   components: {
@@ -185,7 +194,8 @@ export default {
   data () {
     return {
       markdown: new showdown.Converter(),
-      excerptLength: 2, // html nodes
+      excerptLength: 2, // html nodes,
+      humanSize
     }
   },
   computed: {
@@ -241,6 +251,10 @@ export default {
     },
     contactEmail () {
       return _.get(this.nodeinfo, 'metadata.contactEmail')
+    },
+    defaultUploadQuota () {
+      return 1000
+      return _.get(this.nodeinfo, 'metadata.defaultUploadQuota')
     },
     anonymousCanListen () {
       return _.get(this.nodeinfo, 'metadata.library.anonymousCanListen')
