@@ -18,7 +18,10 @@ export default new Router({
     {
       path: "/front",
       name: "front",
-      redirect: "/"
+      redirect: to => {
+        const { hash, params, query } = to
+        return { name: 'index', hash, query }
+      }
     },
     {
       path: "/about",

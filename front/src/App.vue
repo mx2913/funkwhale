@@ -77,7 +77,12 @@ export default {
       // used to redraw ago dates every minute
       self.$store.commit('ui/computeLastDate')
     }, 1000 * 60)
-    if (!this.$store.state.instance.instanceUrl) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const serverUrl = urlParams.get('_server')
+    if (serverUrl) {
+      this.$store.commit('instance/instanceUrl', serverUrl)
+    }
+    else if (!this.$store.state.instance.instanceUrl) {
       // we have several way to guess the API server url. By order of precedence:
       // 1. use the url provided in settings.json, if any
       // 2. use the url specified when building via VUE_APP_INSTANCE_URL
