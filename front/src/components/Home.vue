@@ -253,7 +253,6 @@ export default {
       return _.get(this.nodeinfo, 'metadata.contactEmail')
     },
     defaultUploadQuota () {
-      return 1000
       return _.get(this.nodeinfo, 'metadata.defaultUploadQuota')
     },
     anonymousCanListen () {
