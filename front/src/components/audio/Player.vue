@@ -262,7 +262,7 @@ export default {
       sourceErrors: 0,
       progressInterval: null,
       maxPreloaded: 3,
-      preloadDelay: 15,
+      preloadDelay: 5,
       soundsCache: [],
       soundId: null,
       playTimeout: null,
@@ -374,12 +374,18 @@ export default {
       this.$store.commit("player/isLoadingAudio", false)
       this.$store.dispatch("player/trackErrored")
     },
-    getSound (trackData) {
+    getSound (trackData, skippedFormats = []) {
       let cached = this.getSoundFromCache(trackData)
       if (cached) {
         return cached.sound
       }
-      let srcs = this.getSrcs(trackData)
+      let srcs = this.getSrcs(trackData).filter((s) => {
+        return skippedFormats.indexOf(s.type) === -1
+      })
+      let srcsByUrl = {}
+      srcs.forEach(s => {
+        srcsByUrl[s.url] = s
+      })
       let self = this
       let sound = new Howl({
         src: srcs.map((s) => { return s.url }),
@@ -413,12 +419,23 @@ export default {
           self.$store.commit('player/errored', false)
           self.$store.commit('player/duration', this.duration())
         },
-        onloaderror: function (sound, error) {
+        onloaderror: async function (sound, error) {
           self.removeFromCache(this)
           if (this != self.currentSound) {
             return
           }
+          if (error === 4) {
+            console.log('Error while decoding:', sound, error)
+            if (skippedFormats.length === 0 && srcs.length > 1) {
+              skippedFormats.push(srcs[0].type)
+              console.log(`Playing ${srcs[0].type} failed, loading next format ${srcs[1].type}`)
+              await self.loadSound(trackData, null, skippedFormats)
+              console.log('Replacing current sound with alternative format')
+              return
+            }
+          } else {
           console.log('Error while playing:', sound, error)
+          }
           self.handleError({sound, error})
         },
       })
@@ -579,8 +596,10 @@ export default {
         if (toKeep.length < self.maxPreloaded) {
           toKeep.push(e)
         } else {
+          if (e.sound) {
           let src = e.sound._src
           e.sound.unload()
+        }
         }
       })
       this.soundsCache = _.reverse(toKeep)
@@ -596,7 +615,7 @@ export default {
       })
       this.soundsCache = toKeep
     },
-    async loadSound (newValue, oldValue) {
+    async loadSound (newValue, oldValue, skippedFormats = []) {
       let trackData = newValue
       let oldSound = this.currentSound
       if (oldSound && trackData !== oldValue) {
@@ -611,7 +630,7 @@ export default {
         if (trackData === null) {
           this.handleError({})
         }
-        this.currentSound = this.getSound(trackData)
+        this.currentSound = this.getSound(trackData, skippedFormats)
         this.$store.commit('player/isLoadingAudio', true)
         if (this.playing) {
           this.soundId = this.currentSound.play()
