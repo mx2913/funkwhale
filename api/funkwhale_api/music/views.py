@@ -418,10 +418,12 @@ def handle_serve(upload, user, format=None, max_bitrate=None, proxy_media=True):
         response = Response(status=302)
         response["Location"] = f.audio_file.url
         return response
+
     if mt:
-        response = Response(content_type=mt)
+        # we need a non-empty response otherwise rest_framework removes our content-type
+        response = Response(b"noop", content_type=mt)
     else:
-        response = Response()
+        response = Response(b"noop")
     filename = f.filename
     mapping = {"nginx": "X-Accel-Redirect", "apache2": "X-Sendfile"}
     file_header = mapping[settings.REVERSE_PROXY_TYPE]

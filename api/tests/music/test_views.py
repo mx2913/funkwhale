@@ -451,13 +451,16 @@ def test_handle_serve_create_mp3_version(factories, now):
 
 def test_listen_transcode(factories, now, logged_in_api_client, mocker, settings):
     upload = factories["music.Upload"](
-        import_status="finished", library__actor__user=logged_in_api_client.user
+        import_status="finished",
+        library__actor__user=logged_in_api_client.user,
+        mimetype="audio/mpeg",
     )
     url = reverse("api:v1:listen-detail", kwargs={"uuid": upload.track.uuid})
     handle_serve = mocker.spy(views, "handle_serve")
     response = logged_in_api_client.get(url, {"to": "mp3"})
 
     assert response.status_code == 200
+    assert response["Content-Type"] == "audio/mpeg"
 
     handle_serve.assert_called_once_with(
         upload,
