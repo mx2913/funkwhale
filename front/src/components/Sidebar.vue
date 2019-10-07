@@ -6,13 +6,91 @@
         <i class="logo bordered inverted orange big icon">
           <logo class="logo"></logo>
         </i>
-      </router-link><span
+      </router-link>
+      <span
         slot="after"
         @click="isCollapsed = !isCollapsed"
         :class="['ui', 'basic', 'big', {'inverted': isCollapsed}, 'orange', 'icon', 'collapse', 'button']">
           <i class="sidebar icon"></i></span>
     </search-bar>
   </header>
+  <nav class="top ui compact right aligned grey text menu">
+    <div class="item">
+      <div class="ui inline user-dropdown dropdown" v-if="$store.state.auth.authenticated">
+        <div class="text">
+          <img class="ui avatar image" v-if="$store.state.auth.profile.avatar.square_crop" v-lazy="$store.getters['instance/absoluteUrl']($store.state.auth.profile.avatar.square_crop)" />
+          <actor-avatar v-else :actor="{full_username: $store.state.auth.username}" />
+          {{ $store.state.auth.username }}
+        </div>
+        <div class="menu">
+          <router-link class="item" :to="{name: 'profile', params: {username: $store.state.auth.username}}"><translate translate-context="*/*/*/Noun">Profile</translate></router-link>
+          <router-link class="item" :to="{path: '/settings'}"></i><translate translate-context="*/*/*/Noun">Settings</translate></router-link>
+          <router-link class="item" :to="{name: 'logout'}"></i><translate translate-context="Sidebar/Login/List item.Link/Verb">Logout</translate></router-link>
+        </div>
+      </div>
+    </div>
+    <div class="right menu">
+
+      <div class="item" :title="labels.administration" v-if="$store.state.auth.availablePermissions['settings'] || $store.state.auth.availablePermissions['moderation']">
+        <div class="item ui inline admin-dropdown dropdown">
+          <i class="wrench icon"></i>
+          <div
+            v-if="$store.state.ui.notifications.pendingReviewEdits + $store.state.ui.notifications.pendingReviewReports > 0"
+            :class="['ui', 'teal', 'mini', 'bottom floating', 'circular', 'label']">{{ $store.state.ui.notifications.pendingReviewEdits + $store.state.ui.notifications.pendingReviewReports }}</div>
+          <div class="menu">
+            <div class="header">
+              <translate translate-context="Sidebar/Admin/Title/Noun">Administration</translate>
+            </div>
+            <div class="divider"></div>
+            <router-link
+              v-if="$store.state.auth.availablePermissions['library']"
+              class="item"
+              :to="{name: 'manage.library.edits', query: {q: 'is_approved:null'}}">
+              <div
+                v-if="$store.state.ui.notifications.pendingReviewEdits > 0"
+                :title="labels.pendingReviewEdits"
+                :class="['ui', 'circular', 'mini', 'right floated', 'teal', 'label']">
+                {{ $store.state.ui.notifications.pendingReviewEdits }}</div>
+              <translate translate-context="*/*/*/Noun">Library</translate>
+            </router-link>
+            <router-link
+              v-if="$store.state.auth.availablePermissions['moderation']"
+              class="item"
+              :to="{name: 'manage.moderation.reports.list', query: {q: 'resolved:no'}}">
+              <div
+                v-if="$store.state.ui.notifications.pendingReviewReports > 0"
+                :title="labels.pendingReviewReports"
+                :class="['ui', 'circular', 'mini', 'right floated', 'teal', 'label']">{{ $store.state.ui.notifications.pendingReviewReports }}</div>
+              <translate translate-context="*/Moderation/*">Moderation</translate>
+            </router-link>
+            <router-link
+              v-if="$store.state.auth.availablePermissions['settings']"
+              class="item"
+              :to="{name: 'manage.users.users.list'}">
+              <translate translate-context="*/*/*/Noun">Users</translate>
+            </router-link>
+            <router-link
+              v-if="$store.state.auth.availablePermissions['settings']"
+              class="item"
+              :to="{path: '/manage/settings'}">
+              <translate translate-context="*/*/*/Noun">Settings</translate>
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+    <router-link
+      class="item"
+      v-if="$store.state.auth.authenticated"
+      :title="labels.addContent"
+      :to="{name: 'content.index'}"><i class="upload icon"></i></router-link>
+
+    <router-link class="item" v-if="$store.state.auth.authenticated" :title="labels.notifications" :to="{name: 'notifications'}">
+      <i class="bell icon"></i><div
+        v-if="$store.state.ui.notifications.inbox + additionalNotifications > 0"
+        :class="['ui', 'teal', 'mini', 'bottom floating', 'circular', 'label']">{{ $store.state.ui.notifications.inbox + additionalNotifications }}</div>
+    </router-link>
+  </nav>
 
   <div class="menu-area">
     <div class="ui compact fluid two item inverted menu">
@@ -34,24 +112,7 @@
         <div class="item">
           <header class="header"><translate translate-context="Sidebar/Profile/Title">My account</translate></header>
           <div class="menu">
-            <router-link class="item" v-if="$store.state.auth.authenticated" :to="{name: 'profile', params: {username: $store.state.auth.username}}">
-              <i class="user icon"></i>
-              <translate translate-context="Sidebar/Profile/List item.Link" :translate-params="{username: $store.state.auth.username}">
-                Logged in as %{ username }
-              </translate>
-              <img class="ui right floated circular tiny avatar image" v-if="$store.state.auth.profile.avatar.square_crop" v-lazy="$store.getters['instance/absoluteUrl']($store.state.auth.profile.avatar.square_crop)" />
-            </router-link>
-            <router-link class="item" v-if="$store.state.auth.authenticated" :to="{path: '/settings'}"><i class="setting icon"></i><translate translate-context="*/*/*/Noun">Settings</translate></router-link>
-            <router-link class="item" v-if="$store.state.auth.authenticated" :to="{name: 'notifications'}">
-              <i class="feed icon"></i>
-              <translate translate-context="*/Notifications/*">Notifications</translate>
-              <div
-                v-if="$store.state.ui.notifications.inbox + additionalNotifications > 0"
-                :class="['ui', 'teal', 'label']">
-                {{ $store.state.ui.notifications.inbox + additionalNotifications }}</div>
-            </router-link>
-            <router-link class="item" v-if="$store.state.auth.authenticated" :to="{name: 'logout'}"><i class="sign out icon"></i><translate translate-context="Sidebar/Login/List item.Link/Verb">Logout</translate></router-link>
-            <template v-else>
+            <template>
               <router-link class="item" :to="{name: 'login'}"><i class="sign in icon"></i><translate translate-context="*/Login/*/Verb">Login</translate></router-link>
               <router-link class="item" :to="{path: '/signup'}">
                 <i class="corner add icon"></i>
@@ -71,47 +132,6 @@
               class="item">
               <i class="list icon"></i><translate translate-context="*/*/*">Playlists</translate>
             </a>
-            <router-link
-              v-if="$store.state.auth.authenticated"
-              class="item" :to="{name: 'content.index'}"><i class="upload icon"></i><translate translate-context="*/Library/*/Verb">Add content</translate></router-link>
-          </div>
-        </div>
-        <div class="item" v-if="$store.state.auth.availablePermissions['settings'] || $store.state.auth.availablePermissions['moderation']">
-          <header class="header"><translate translate-context="Sidebar/Admin/Title/Noun">Administration</translate></header>
-          <div class="menu">
-            <router-link
-              v-if="$store.state.auth.availablePermissions['library']"
-              class="item"
-              :to="{name: 'manage.library.edits', query: {q: 'is_approved:null'}}">
-              <i class="book icon"></i><translate translate-context="*/*/*/Noun">Library</translate>
-              <div
-                v-if="$store.state.ui.notifications.pendingReviewEdits > 0"
-                :title="labels.pendingReviewEdits"
-                :class="['ui', 'teal', 'label']">
-                {{ $store.state.ui.notifications.pendingReviewEdits }}</div>
-            </router-link>
-            <router-link
-              v-if="$store.state.auth.availablePermissions['moderation']"
-              class="item"
-              :to="{name: 'manage.moderation.reports.list', query: {q: 'resolved:no'}}">
-              <i class="shield icon"></i><translate translate-context="*/Moderation/*">Moderation</translate>
-              <div
-                v-if="$store.state.ui.notifications.pendingReviewReports > 0"
-                :title="labels.pendingReviewReports"
-                :class="['ui', 'teal', 'label']">{{ $store.state.ui.notifications.pendingReviewReports }}</div>
-            </router-link>
-            <router-link
-              v-if="$store.state.auth.availablePermissions['settings']"
-              class="item"
-              :to="{name: 'manage.users.users.list'}">
-              <i class="users icon"></i><translate translate-context="*/*/*/Noun">Users</translate>
-            </router-link>
-            <router-link
-              v-if="$store.state.auth.availablePermissions['settings']"
-              class="item"
-              :to="{path: '/manage/settings'}">
-              <i class="settings icon"></i><translate translate-context="*/*/*/Noun">Settings</translate>
-            </router-link>
           </div>
         </div>
       </nav>
@@ -235,7 +255,10 @@ export default {
         pendingFollows,
         mainMenu,
         selectTrack,
-        pendingReviewEdits
+        pendingReviewEdits,
+        addContent: this.$pgettext("*/Library/*/Verb", 'Add content'),
+        notifications: this.$pgettext("*/Notifications/*", 'Notifications'),
+        administration: this.$pgettext("Sidebar/Admin/Title/Noun", 'Administration'),
       }
     },
     tracks: {
@@ -322,6 +345,23 @@ export default {
     },
     "$store.state.moderation.lastUpdate": function () {
       this.applyContentFilters()
+    },
+    "$store.state.auth.authenticated": {
+      immediate: true,
+      handler (v) {
+        this.$nextTick(() => {
+          $(this.$el).find('.user-dropdown').dropdown()
+        })
+      }
+    },
+    "$store.state.auth.availablePermissions": {
+      immediate: true,
+      handler (v) {
+        this.$nextTick(() => {
+          $(this.$el).find('.admin-dropdown').dropdown()
+        })
+      },
+      deep: true,
     }
   }
 }
@@ -463,10 +503,28 @@ $sidebar-color: #3d3e3f;
 .ui.mini.image {
   width: 100%;
 }
+nav.top {
+  align-items: self-end;
+  padding: 0.5em 0;
+  > .item, > .right.menu > .item {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 1.2em;
+    &:hover, > .dropdown > .icon {
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
+    > .label, > .dropdown > .label {
+      font-size: 0.5em;
+      right: 1.7em;
+      bottom: -0.5em;
+      z-index: 0 !important;
+    }
+  }
+}
 </style>
 
 <style lang="scss">
-.sidebar {
+aside.ui.sidebar {
+  overflow-y: visible !important;
   .ui.search .input {
     flex: 1;
     .prompt {
