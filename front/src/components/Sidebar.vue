@@ -14,9 +14,9 @@
           <i class="sidebar icon"></i></span>
     </search-bar>
   </header>
-  <nav class="top ui compact right aligned grey text menu">
+  <nav class="top ui compact right aligned grey text menu" v-if="$store.state.auth.authenticated">
     <div class="item">
-      <div class="ui inline user-dropdown dropdown" v-if="$store.state.auth.authenticated">
+      <div class="ui inline user-dropdown dropdown" >
         <div class="text">
           <img class="ui avatar image" v-if="$store.state.auth.profile.avatar.square_crop" v-lazy="$store.getters['instance/absoluteUrl']($store.state.auth.profile.avatar.square_crop)" />
           <actor-avatar v-else :actor="{full_username: $store.state.auth.username}" />
@@ -91,8 +91,18 @@
         :class="['ui', 'teal', 'mini', 'bottom floating', 'circular', 'label']">{{ $store.state.ui.notifications.inbox + additionalNotifications }}</div>
     </router-link>
   </nav>
+  <div v-else class="ui two column centered grid">
+    <div class="column">
+      <router-link class="ui fluid tiny primary button" :to="{name: 'login'}"><translate translate-context="*/Login/*/Verb">Login</translate></router-link>
+    </div>
+    <div class="column">
+      <router-link class="ui fluid tiny button" :to="{path: '/signup'}">
+        <translate translate-context="*/Signup/Link/Verb">Create an account</translate>
+      </router-link>
+    </div>
+  </div>
 
-  <div class="menu-area">
+  <!-- <div class="menu-area">
     <div class="ui compact fluid two item inverted menu">
       <a :class="[{active: selectedTab === 'library'}, 'item']" role="button" @click.prevent.stop="selectedTab = 'library'" data-tab="library"><translate translate-context="*/Library/*/Verb">Browse</translate></a>
       <a :class="[{active: selectedTab === 'queue'}, 'item']" role="button" @click.prevent.stop="selectedTab = 'queue'" data-tab="queue">
@@ -105,33 +115,26 @@
          </translate>
       </a>
     </div>
-  </div>
+  </div> -->
   <div class="tabs">
     <section :class="['ui', 'bottom', 'attached', {active: selectedTab === 'library'}, 'tab']" :aria-label="labels.mainMenu">
       <nav class="ui inverted vertical large fluid menu" role="navigation" :aria-label="labels.mainMenu">
-        <div class="item">
-          <header class="header"><translate translate-context="Sidebar/Profile/Title">My account</translate></header>
+        <router-link class="item" :to="{path: '/library'}"><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Explore</translate></router-link>
+        <div class="item" v-if="$store.state.auth.authenticated" >
+          <header class="header">
+            <translate translate-context="*/*/*/Noun">My Library</translate>
+          </header>
           <div class="menu">
-            <template>
-              <router-link class="item" :to="{name: 'login'}"><i class="sign in icon"></i><translate translate-context="*/Login/*/Verb">Login</translate></router-link>
-              <router-link class="item" :to="{path: '/signup'}">
-                <i class="corner add icon"></i>
-                <translate translate-context="*/Signup/Link/Verb">Create an account</translate>
-              </router-link>
-            </template>
-          </div>
-        </div>
-        <div class="item">
-          <header class="header"><translate translate-context="*/*/*/Noun">Music</translate></header>
-          <div class="menu">
-            <router-link class="item" :to="{path: '/library'}"><i class="sound icon"></i><translate translate-context="Sidebar/Library/List item.Link/Verb">Browse library</translate></router-link>
-            <router-link class="item" v-if="$store.state.auth.authenticated" :to="{path: '/favorites'}"><i class="heart icon"></i><translate translate-context="Sidebar/Favorites/List item.Link/Noun">Favorites</translate></router-link>
+            <router-link class="item" :to="{path: '/library', query: {scope: 'me'}}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
             <a
               @click="$store.commit('playlists/chooseTrack', null)"
-              v-if="$store.state.auth.authenticated"
               class="item">
               <i class="list icon"></i><translate translate-context="*/*/*">Playlists</translate>
             </a>
+            <router-link class="item" :to="{path: '/favorites'}"><i class="heart icon"></i><translate translate-context="Sidebar/Favorites/List item.Link/Noun">Favorites</translate></router-link>
+            <router-link class="item" :to="{name: 'library.albums.browse', query: {scope: 'me'}}"><i class="headphones icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
+            <router-link class="item" :to="{name: 'library.artists.browse', query: {scope: 'me'}}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
+            <router-link class="item" :to="{name: 'library.radios.browse', query: {scope: 'me'}}"><i class="feed icon"></i><translate translate-context="*/*/*">Radios</translate></router-link>
           </div>
         </div>
       </nav>
