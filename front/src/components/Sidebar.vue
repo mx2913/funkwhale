@@ -122,22 +122,37 @@
     <div class="ui small hidden divider"></div>
     <section :class="['ui', 'bottom', 'attached', {active: selectedTab === 'library'}, 'tab']" :aria-label="labels.mainMenu">
       <nav class="ui inverted vertical large fluid menu" role="navigation" :aria-label="labels.mainMenu">
-        <router-link class="item" :to="{path: '/library'}"><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Explore</translate></router-link>
-        <div class="item" v-if="$store.state.auth.authenticated" >
-          <header class="header">
-            <translate translate-context="*/*/*/Noun">My Library</translate>
+        <div class="item">
+          <header class="header" @click="exploreExpanded = !exploreExpanded">
+            <translate translate-context="*/*/*/Verb">Explore</translate>
+            <i class="angle down icon" v-if="exploreExpanded"></i>
+            <i class="angle right icon" v-else></i>
           </header>
-          <div class="menu">
-            <router-link class="item" :to="{path: '/library', query: {scope: 'me'}}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
+          <div class="menu" v-if="exploreExpanded">
+            <router-link class="item" :exact="true" :to="{path: '/library'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
+            <router-link class="item" :to="{name: 'library.albums.browse'}"><i class="headphones icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
+            <router-link class="item" :to="{name: 'library.artists.browse'}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
+            <router-link class="item" :to="{name: 'library.playlists.browse'}"><i class="list icon"></i><translate translate-context="*/*/*">Playlists</translate></router-link>
+            <router-link class="item" :to="{name: 'library.radios.browse'}"><i class="feed icon"></i><translate translate-context="*/*/*">Radios</translate></router-link>
+          </div>
+        </div>
+        <div class="item" v-if="$store.state.auth.authenticated" >
+          <header class="header" @click="myLibraryExpanded = !myLibraryExpanded">
+            <translate translate-context="*/*/*/Noun">My Library</translate>
+            <i class="angle down icon" v-if="myLibraryExpanded"></i>
+            <i class="angle right icon" v-else></i>
+          </header>
+          <div class="menu" v-if="myLibraryExpanded">
+            <router-link class="item" :exact="true" :to="{path: '/library/me'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
             <a
               @click="$store.commit('playlists/chooseTrack', null)"
               class="item">
               <i class="list icon"></i><translate translate-context="*/*/*">Playlists</translate>
             </a>
             <router-link class="item" :to="{path: '/favorites'}"><i class="heart icon"></i><translate translate-context="Sidebar/Favorites/List item.Link/Noun">Favorites</translate></router-link>
-            <router-link class="item" :to="{name: 'library.albums.browse', query: {scope: 'me'}}"><i class="headphones icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
-            <router-link class="item" :to="{name: 'library.artists.browse', query: {scope: 'me'}}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
-            <router-link class="item" :to="{name: 'library.radios.browse', query: {scope: 'me'}}"><i class="feed icon"></i><translate translate-context="*/*/*">Radios</translate></router-link>
+            <router-link class="item" :to="{name: 'library.albums.me'}"><i class="headphones icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
+            <router-link class="item" :to="{name: 'library.artists.me'}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
+            <router-link class="item" :to="{name: 'library.radios.me'}"><i class="feed icon"></i><translate translate-context="*/*/*">Radios</translate></router-link>
           </div>
         </div>
       </nav>
@@ -236,7 +251,9 @@ export default {
       backend: backend,
       tracksChangeBuffer: null,
       isCollapsed: true,
-      fetchInterval: null
+      fetchInterval: null,
+      exploreExpanded: false,
+      myLibraryExpanded: false,
     }
   },
   destroy() {
@@ -355,6 +372,13 @@ export default {
     "$store.state.auth.authenticated": {
       immediate: true,
       handler (v) {
+        if (v) {
+          this.myLibraryExpanded = true
+          this.exploreExpanded = false
+        } else {
+          this.myLibraryExpanded = false
+          this.exploreExpanded = true
+        }
         this.$nextTick(() => {
           $(this.$el).find('.user-dropdown').dropdown({action: 'hide'})
         })
@@ -464,6 +488,10 @@ $sidebar-color: #3d3e3f;
   td:nth-child(2) {
     width: 55px;
   }
+}
+.item .header .angle.icon {
+  float: right;
+  margin: 0;
 }
 .tab[data-tab="library"] {
   flex-direction: column;
