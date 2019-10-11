@@ -1,25 +1,78 @@
 <template>
-  <section class="ui inverted segment player-wrapper" :aria-label="labels.audioPlayer" :style="style">
-    <div class="player">
+  <section class="player-wrapper" >
+    <div class="ui queue-item inverted vertical segment" v-if="currentTrack" :title="labels.expandQueue">
+      <div class="ui tiny image">
+        <img ref="cover" @load="updateBackground" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
+        <img v-else src="../../assets/audio/default-cover.png">
+      </div>
+      <div class="position">
+        <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
+          %{ index } of %{ length }
+        </translate>
+      </div>
+      <div class="queue-controls">
+        <span
+          role="button"
+          v-if="looping === 0"
+          :title="labels.loopingDisabled"
+          :aria-label="labels.loopingDisabled"
+          @click.prevent.stop="$store.commit('player/looping', 1)"
+          :disabled="!currentTrack">
+          <i :class="['ui', {'disabled': !currentTrack}, 'step', 'repeat', 'icon']"></i>
+        </span>
+        <span
+          role="button"
+          @click.prevent.stop="$store.commit('player/looping', 2)"
+          :title="labels.loopingSingle"
+          :aria-label="labels.loopingSingle"
+          v-if="looping === 1"
+          class="looping"
+          :disabled="!currentTrack">
+          <i
+            class="repeat icon">
+            <span class="ui circular tiny orange label">1</span>
+          </i>
+        </span>
+        <span
+          role="button"
+          :title="labels.loopingWhole"
+          :aria-label="labels.loopingWhole"
+          v-if="looping === 2"
+          :disabled="!currentTrack"
+          @click.prevent.stop="$store.commit('player/looping', 0)">
+          <i
+            class="repeat orange icon">
+          </i>
+        </span>
+        <span
+          role="button"
+          :disabled="queue.tracks.length === 0"
+          :title="labels.shuffle"
+          :aria-label="labels.shuffle"
+          v-if="!showVolume"
+          @click.prevent.stop="shuffle()">
+          <div v-if="isShuffling" class="ui inline shuffling inverted tiny active loader"></div>
+          <i v-else :class="['ui', 'random', {'disabled': queue.tracks.length === 0}, 'icon']" ></i>
+        </span>
+      </div>
+    </div>
+    <div class="ui inverted vertical segment player" :aria-label="labels.audioPlayer" :style="style">
       <div v-if="currentTrack" class="track-area ui unstackable items">
         <div class="ui inverted item">
-          <div class="ui tiny image">
-            <img ref="cover" @load="updateBackground" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
-            <img v-else src="../../assets/audio/default-cover.png">
-          </div>
           <div class="middle aligned content">
-            <router-link class="small header discrete link track" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
-              {{ currentTrack.title }}
+            <router-link class="small header discrete link track" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
+              {{ currentTrack.title | truncate(25) }}
             </router-link>
             <div class="meta">
-              <router-link class="artist" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
-                {{ currentTrack.artist.name }}
+              <router-link class="artist" :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
+                {{ currentTrack.artist.name | truncate(20) }}
               </router-link> /
-              <router-link class="album" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
-                {{ currentTrack.album.title }}
+              <router-link class="album" :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
+                {{ currentTrack.album.title | truncate(20) }}
               </router-link>
             </div>
-            <div class="description">
+            <div class="ui hidden divider"></div>
+            <div class="secondary-controls">
               <track-favorite-icon
                 v-if="$store.state.auth.authenticated"
                 :class="{'inverted': !$store.getters['favorites/isFavorite'](currentTrack.id)}"
@@ -36,20 +89,16 @@
                 :title="labels.addArtistContentFilter">
                 <i :class="['eye slash outline', 'basic', 'icon']"></i>
               </button>
+
+              <div class="progress" v-if="!isLoadingAudio">
+                <span role="button" class="timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</span>
+                / <span class="timer total">{{durationFormatted}}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="progress-area" v-if="currentTrack && !errored">
-        <div class="ui grid">
-          <div class="left floated four wide column">
-            <p class="timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</p>
-          </div>
-
-          <div v-if="!isLoadingAudio" class="right floated four wide column">
-            <p class="timer total">{{durationFormatted}}</p>
-          </div>
-        </div>
         <div
           ref="progress"
           :class="['ui', 'small', 'orange', 'inverted', {'indicating': isLoadingAudio}, 'progress']"
@@ -70,45 +119,9 @@
           <translate translate-context="Sidebar/Player/Error message.Paragraph">You may have a connectivity issue.</translate>
         </p>
       </div>
-      <div class="two wide column controls ui grid">
-        <span
-          role="button"
-          :title="labels.previousTrack"
-          :aria-label="labels.previousTrack"
-          class="two wide column control"
-          @click.prevent.stop="previous"
-          :disabled="emptyQueue">
-            <i :class="['ui', 'backward step', {'disabled': emptyQueue}, 'icon']"></i>
-        </span>
-        <span
-          role="button"
-          v-if="!playing"
-          :title="labels.play"
-          :aria-label="labels.play"
-          @click.prevent.stop="togglePlay"
-          class="two wide column control">
-            <i :class="['ui', 'play', {'disabled': !currentTrack}, 'icon']"></i>
-        </span>
-        <span
-          role="button"
-          v-else
-          :title="labels.pause"
-          :aria-label="labels.pause"
-          @click.prevent.stop="togglePlay"
-          class="two wide column control">
-            <i :class="['ui', 'pause', {'disabled': !currentTrack}, 'icon']"></i>
-        </span>
-        <span
-          role="button"
-          :title="labels.next"
-          :aria-label="labels.next"
-          class="two wide column control"
-          @click.prevent.stop="next"
-          :disabled="!hasNext">
-            <i :class="['ui', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
-        </span>
+      <div class="controls">
         <div
-          class="wide column control volume-control"
+          class="control volume-control"
           v-on:mouseover="showVolume = true"
           v-on:mouseleave="showVolume = false"
           v-bind:class="{ active : showVolume }">
@@ -144,64 +157,52 @@
             v-model="sliderVolume"
             v-if="showVolume" />
         </div>
-        <div class="two wide column control looping" v-if="!showVolume">
-          <span
-            role="button"
-            v-if="looping === 0"
-            :title="labels.loopingDisabled"
-            :aria-label="labels.loopingDisabled"
-            @click.prevent.stop="$store.commit('player/looping', 1)"
-            :disabled="!currentTrack">
-            <i :class="['ui', {'disabled': !currentTrack}, 'step', 'repeat', 'icon']"></i>
-          </span>
-          <span
-            role="button"
-            @click.prevent.stop="$store.commit('player/looping', 2)"
-            :title="labels.loopingSingle"
-            :aria-label="labels.loopingSingle"
-            v-if="looping === 1"
-            :disabled="!currentTrack">
-            <i
-              class="repeat icon">
-              <span class="ui circular tiny orange label">1</span>
-            </i>
-          </span>
-          <span
-            role="button"
-            :title="labels.loopingWhole"
-            :aria-label="labels.loopingWhole"
-            v-if="looping === 2"
-            :disabled="!currentTrack"
-            @click.prevent.stop="$store.commit('player/looping', 0)">
-            <i
-              class="repeat orange icon">
-            </i>
-          </span>
-        </div>
         <span
           role="button"
-          :disabled="queue.tracks.length === 0"
-          :title="labels.shuffle"
-          :aria-label="labels.shuffle"
-          v-if="!showVolume"
-          @click.prevent.stop="shuffle()"
-          class="two wide column control">
-          <div v-if="isShuffling" class="ui inline shuffling inverted tiny active loader"></div>
-          <i v-else :class="['ui', 'random', {'disabled': queue.tracks.length === 0}, 'icon']" ></i>
+          :title="labels.previousTrack"
+          :aria-label="labels.previousTrack"
+          class="control"
+          @click.prevent.stop="previous"
+          :disabled="emptyQueue">
+            <i :class="['ui', 'backward step', {'disabled': emptyQueue}, 'icon']"></i>
         </span>
-        <div class="one wide column" v-if="!showVolume"></div>
         <span
           role="button"
-          :disabled="queue.tracks.length === 0"
-          :title="labels.clear"
-          :aria-label="labels.clear"
-          v-if="!showVolume"
-          @click.prevent.stop="clean()"
-          class="two wide column control">
-          <i class="icons">
-            <i :class="['ui', 'trash', {'disabled': queue.tracks.length === 0}, 'icon']" ></i>
-            <i :class="['ui corner inverted', 'list', {'disabled': queue.tracks.length === 0}, 'icon']" ></i>
-          </i>
+          v-if="!playing"
+          :title="labels.play"
+          :aria-label="labels.play"
+          @click.prevent.stop="togglePlay"
+          class="control">
+            <i :class="['ui', 'play', {'disabled': !currentTrack}, 'icon']"></i>
+        </span>
+        <span
+          role="button"
+          v-else
+          :title="labels.pause"
+          :aria-label="labels.pause"
+          @click.prevent.stop="togglePlay"
+          class="control">
+            <i :class="['ui', 'pause', {'disabled': !currentTrack}, 'icon']"></i>
+        </span>
+        <span
+          role="button"
+          :title="labels.next"
+          :aria-label="labels.next"
+          class="control"
+          @click.prevent.stop="next"
+          :disabled="!hasNext">
+            <i :class="['ui', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
+        </span>
+
+
+        <span
+          role="button"
+          :title="labels.info"
+          :aria-label="labels.info"
+          class="control"
+          @click.prevent.stop="info"
+          :disabled="!currentTrack">
+            <i :class="['ui', {'disabled': !currentTrack}, 'circle info', 'icon']" ></i>
         </span>
       </div>
       <GlobalEvents
@@ -655,6 +656,7 @@ export default {
       let next = this.$pgettext('Sidebar/Player/Icon.Tooltip', "Next track")
       let unmute = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Unmute")
       let mute = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Mute")
+      let expandQueue = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Expand queue")
       let loopingDisabled = this.$pgettext('Sidebar/Player/Icon.Tooltip',
         "Looping disabled. Click to switch to single-track looping."
       )
@@ -680,6 +682,7 @@ export default {
         loopingWhole,
         shuffle,
         clear,
+        expandQueue,
         addArtistContentFilter,
       }
     },
@@ -781,7 +784,7 @@ export default {
   }
 }
 
-.ui.inverted.item > .content > .description {
+.ui.inverted.item > .content > .secondary-controls {
   color: rgba(255, 255, 255, 0.9) !important;
 }
 
@@ -806,10 +809,22 @@ export default {
     color: white !important;
   }
 }
+.controls {
+  display: flex;
+  justify-content: space-between;
+}
 .controls a {
   color: white;
 }
 
+.secondary-controls {
+  display: flex;
+  justify-content: space-between;
+  > * {
+    margin: 0 !important;
+    padding: 0 0.3em !important;
+  }
+}
 .controls .icon.big {
   cursor: pointer;
   font-size: 2em !important;
@@ -900,15 +915,18 @@ export default {
   width: 60% !important;
 }
 
-.looping.control {
+.looping {
   i {
     position: relative;
   }
-  .label {
+  .ui.circular.label {
     position: absolute;
-    font-size: 0.7rem;
+    font-size: 0.5em !important;
     bottom: -0.7rem;
     right: -0.7rem;
+    padding: 0.4em !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
   }
 }
 .ui.feed.icon {
@@ -918,6 +936,33 @@ export default {
   margin: 0;
 }
 
+.ui.queue-item.segment {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &:hover {
+    background-color: rgba(55, 55, 55, 0.9)
+  }
+  .position {
+    flex-grow: 1;
+    padding: 0 1em;
+  }
+  span, i {
+    font-size: 1.1em !important;
+  }
+  > .ui.image {
+    width: 4em;
+  }
+  .queue-controls {
+    display: flex;
+    flex-grow: 0.5;
+    justify-content: space-between;
+  }
+}
+.ui.vertical.segment {
+  padding: 1em;
+}
 @keyframes MOVE-BG {
   from {
     transform: translateX(0px);

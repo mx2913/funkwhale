@@ -381,6 +381,7 @@ export default {
         }
         this.$nextTick(() => {
           $(this.$el).find('.user-dropdown').dropdown({action: 'hide'})
+          $(this.$el).find('.admin-dropdown').dropdown({action: 'hide'})
         })
       }
     },
