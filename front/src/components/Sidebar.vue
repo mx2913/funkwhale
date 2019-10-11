@@ -6,7 +6,12 @@
         <logo class="logo"></logo>
       </i>
     </router-link>
-    <nav class="top ui compact right aligned grey text menu" v-if="$store.state.auth.authenticated">
+    <nav class="top ui compact left aligned text menu title-menu" v-if="!$store.state.auth.authenticated">
+      <router-link class="item" :to="{name: logoUrl}">
+        Funkwhale
+      </router-link>
+    </nav>
+    <nav class="top ui compact right aligned grey text menu" v-else>
       <div class="right menu">
         <div class="item" :title="labels.administration" v-if="$store.state.auth.availablePermissions['settings'] || $store.state.auth.availablePermissions['moderation']">
           <div class="item ui inline admin-dropdown dropdown">
@@ -489,7 +494,12 @@ $sidebar-color: #3d3e3f;
 .fluid.category.search {
   height: 4em;
 }
-
+nav.top.title-menu {
+  flex-grow: 1;
+  .item {
+    font-size: 1.5em;
+  }
+}
 
 .logo {
   cursor: pointer;
