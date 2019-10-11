@@ -79,8 +79,8 @@
 // see https://github.com/webpack/webpack/issues/215
 @import "./vendor/media";
 
-$desktop-sidebar-width: 300px;
-$widedesktop-sidebar-width: 350px;
+$desktop-sidebar-width: 200px;
+$widedesktop-sidebar-width: 250px;
 
 html,
 body {
@@ -392,5 +392,8 @@ input + .help {
   max-width: 100% !important;
 }
 
+.ui.small.divider {
+  margin: 0.5rem 0;
+}
 @import "./themes/_light.scss";
 @import "./themes/_dark.scss";
