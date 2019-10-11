@@ -499,6 +499,15 @@ export default new Router({
           name: "library.index"
         },
         {
+          path: "me",
+          component: () =>
+            import(/* webpackChunkName: "core" */ "@/components/library/Home"),
+          name: "library.me",
+          props: route => ({
+            scope: 'me',
+          })
+        },
+        {
           path: "artists/",
           name: "library.artists.browse",
           component: () =>
@@ -506,6 +515,24 @@ export default new Router({
               /* webpackChunkName: "core" */ "@/components/library/Artists"
             ),
           props: route => ({
+            defaultOrdering: route.query.ordering,
+            defaultQuery: route.query.query,
+            defaultTags: Array.isArray(route.query.tag || [])
+              ? route.query.tag
+              : [route.query.tag],
+            defaultPaginateBy: route.query.paginateBy,
+            defaultPage: route.query.page
+          })
+        },
+        {
+          path: "me/artists",
+          name: "library.artists.me",
+          component: () =>
+            import(
+              /* webpackChunkName: "core" */ "@/components/library/Artists"
+            ),
+          props: route => ({
+            scope: 'me',
             defaultOrdering: route.query.ordering,
             defaultQuery: route.query.query,
             defaultTags: Array.isArray(route.query.tag || [])
@@ -533,6 +560,24 @@ export default new Router({
           })
         },
         {
+          path: "me/albums",
+          name: "library.albums.me",
+          component: () =>
+            import(
+              /* webpackChunkName: "core" */ "@/components/library/Albums"
+            ),
+          props: route => ({
+            scope: 'me',
+            defaultOrdering: route.query.ordering,
+            defaultQuery: route.query.query,
+            defaultTags: Array.isArray(route.query.tag || [])
+              ? route.query.tag
+              : [route.query.tag],
+            defaultPaginateBy: route.query.paginateBy,
+            defaultPage: route.query.page
+          })
+        },
+        {
           path: "radios/",
           name: "library.radios.browse",
           component: () =>
@@ -540,6 +585,21 @@ export default new Router({
               /* webpackChunkName: "core" */ "@/components/library/Radios"
             ),
           props: route => ({
+            defaultOrdering: route.query.ordering,
+            defaultQuery: route.query.query,
+            defaultPaginateBy: route.query.paginateBy,
+            defaultPage: route.query.page
+          })
+        },
+        {
+          path: "me/radios/",
+          name: "library.radios.me",
+          component: () =>
+            import(
+              /* webpackChunkName: "core" */ "@/components/library/Radios"
+            ),
+          props: route => ({
+            scope: 'me',
             defaultOrdering: route.query.ordering,
             defaultQuery: route.query.query,
             defaultPaginateBy: route.query.paginateBy,
