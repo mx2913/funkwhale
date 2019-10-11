@@ -118,7 +118,6 @@ body {
 .footer {
   @include media(">desktop") {
     margin-left: $desktop-sidebar-width !important;
-    margin-top: 50px;
   }
 
   @include media(">widedesktop") {
