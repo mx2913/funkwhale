@@ -1,6 +1,9 @@
 <template>
   <section class="player-wrapper" >
-    <div class="ui queue-item inverted vertical segment" v-if="currentTrack" :title="labels.expandQueue">
+    <div
+      class="ui queue-item inverted vertical segment"
+      @click="$store.commit('ui/queueExpanded', !$store.state.ui.queueExpanded)"
+      v-if="currentTrack" :title="labels.expandQueue">
       <div class="ui tiny image">
         <img ref="cover" @load="updateBackground" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
         <img v-else src="../../assets/audio/default-cover.png">
