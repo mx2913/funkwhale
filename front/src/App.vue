@@ -12,9 +12,11 @@
       <sidebar></sidebar>
       <set-instance-modal @update:show="showSetInstanceModal = $event" :show="showSetInstanceModal"></set-instance-modal>
       <service-messages v-if="messages.length > 0"/>
-      <router-view :key="$route.fullPath"></router-view>
-      <div class="ui fitted divider"></div>
+      <queue v-if="$store.state.ui.queueExpanded"></queue>
+      <router-view :class="[{hidden: $store.state.ui.queueExpanded}]" :key="$route.fullPath"></router-view>
+      <div v-if="!$store.state.ui.queueExpanded" class="ui fitted divider"></div>
       <app-footer
+        v-if="!$store.state.ui.queueExpanded"
         :version="version"
         @show:shortcuts-modal="showShortcutsModal = !showShortcutsModal"
         @show:set-instance-modal="showSetInstanceModal = !showSetInstanceModal"
@@ -37,6 +39,7 @@ import { WebSocketBridge } from 'django-channels'
 import GlobalEvents from '@/components/utils/global-events'
 import Sidebar from '@/components/Sidebar'
 import AppFooter from '@/components/Footer'
+import Queue from '@/components/Queue'
 import ServiceMessages from '@/components/ServiceMessages'
 import moment from  'moment'
 import locales from './locales'
@@ -58,6 +61,7 @@ export default {
     GlobalEvents,
     ServiceMessages,
     SetInstanceModal,
+    Queue,
   },
   data () {
     return {
