@@ -177,50 +177,6 @@
         </div>
       </div>
     </div>
-    <section :class="['ui', 'bottom', 'attached', {active: selectedTab === 'queue'}, 'tab']">
-      <table class="ui compact inverted very basic fixed single line unstackable table">
-        <draggable v-model="tracks" tag="tbody" @update="reorder">
-          <tr
-              @click="$store.dispatch('queue/currentIndex', index)"
-              v-for="(track, index) in tracks"
-              :key="index"
-              :class="[{'active': index === queue.currentIndex}]">
-              <td class="right aligned">{{ index + 1}}</td>
-              <td class="center aligned">
-                  <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
-                  <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
-              </td>
-              <td colspan="4">
-                  <button class="title reset ellipsis" :title="track.title" :aria-label="labels.selectTrack">
-                    <strong>{{ track.title }}</strong><br />
-                    <span>
-                      {{ track.artist.name }}
-                    </span>
-                  </button>
-              </td>
-              <td>
-                <template v-if="$store.getters['favorites/isFavorite'](track.id)">
-                  <i class="pink heart icon"></i>
-                </template>
-              </td>
-              <td>
-                  <button :title="labels.removeFromQueue" @click.stop="cleanTrack(index)" :class="['ui', {'inverted': index != queue.currentIndex}, 'really', 'tiny', 'basic', 'circular', 'icon', 'button']">
-                    <i class="trash icon"></i>
-                  </button>
-              </td>
-            </tr>
-          </draggable>
-      </table>
-      <div v-if="$store.state.radios.running" class="ui black message">
-        <div class="content">
-          <div class="header">
-            <i class="feed icon"></i> <translate translate-context="Sidebar/Player/Title">You have a radio playing</translate>
-          </div>
-          <p><translate translate-context="Sidebar/Player/Paragraph">New tracks will be appended here automatically.</translate></p>
-          <div @click="$store.dispatch('radios/stop')" class="ui basic inverted red button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
-        </div>
-      </div>
-    </section>
   </nav>
   <player @next="scrollToCurrent" @previous="scrollToCurrent"></player>
 </aside>
@@ -233,7 +189,6 @@ import Player from "@/components/audio/Player"
 import Logo from "@/components/Logo"
 import SearchBar from "@/components/audio/SearchBar"
 import backend from "@/audio/backend"
-import draggable from "vuedraggable"
 
 import $ from "jquery"
 
@@ -242,14 +197,12 @@ export default {
   components: {
     Player,
     SearchBar,
-    Logo,
-    draggable
+    Logo
   },
   data() {
     return {
       selectedTab: "library",
       backend: backend,
-      tracksChangeBuffer: null,
       isCollapsed: true,
       fetchInterval: null,
       exploreExpanded: false,
@@ -284,14 +237,6 @@ export default {
         administration: this.$pgettext("Sidebar/Admin/Title/Noun", 'Administration'),
       }
     },
-    tracks: {
-      get() {
-        return this.$store.state.queue.tracks
-      },
-      set(value) {
-        this.tracksChangeBuffer = value
-      }
-    },
     logoUrl() {
       if (this.$store.state.auth.authenticated) {
         return "library.index"
@@ -304,13 +249,6 @@ export default {
     ...mapActions({
       cleanTrack: "queue/cleanTrack"
     }),
-    reorder: function(event) {
-      this.$store.commit("queue/reorder", {
-        tracks: this.tracksChangeBuffer,
-        oldIndex: event.oldIndex,
-        newIndex: event.newIndex
-      })
-    },
     scrollToCurrent() {
       let current = $(this.$el).find('[data-tab="queue"] .active')[0]
       if (!current) {
