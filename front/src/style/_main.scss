@@ -126,6 +126,9 @@ body {
   transform: none !important;
 }
 
+.main.pusher.hidden {
+  display: none;
+}
 .main.pusher > .ui.secondary.menu {
   margin-left: 0;
   margin-right: 0;
