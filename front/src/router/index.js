@@ -644,6 +644,19 @@ export default new Router({
           })
         },
         {
+          path: "me/playlists/",
+          name: "library.playlists.me",
+          component: () =>
+            import(/* webpackChunkName: "core" */ "@/views/playlists/List"),
+          props: route => ({
+            scope: 'me',
+            defaultOrdering: route.query.ordering,
+            defaultQuery: route.query.query,
+            defaultPaginateBy: route.query.paginateBy,
+            defaultPage: route.query.page
+          })
+        },
+        {
           path: "playlists/:id",
           name: "library.playlists.detail",
           component: () =>
