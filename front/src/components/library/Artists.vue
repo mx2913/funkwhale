@@ -100,6 +100,7 @@ export default {
   props: {
     defaultQuery: { type: String, required: false, default: "" },
     defaultTags: { type: Array, required: false, default: () => { return [] } },
+    scope: { type: String, required: false, default: "all" },
   },
   components: {
     ArtistCard,
@@ -158,6 +159,7 @@ export default {
       this.isLoading = true
       let url = FETCH_URL
       let params = {
+        scope: this.scope,
         page: this.page,
         page_size: this.paginateBy,
         name__icontains: this.query,

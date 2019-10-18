@@ -130,7 +130,7 @@
           </header>
           <div class="menu" v-if="exploreExpanded">
             <router-link class="item" :exact="true" :to="{path: '/library'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
-            <router-link class="item" :to="{name: 'library.albums.browse'}"><i class="headphones icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
+            <router-link class="item" :to="{name: 'library.albums.browse'}"><i class="compact disc icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
             <router-link class="item" :to="{name: 'library.artists.browse'}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
             <router-link class="item" :to="{name: 'library.playlists.browse'}"><i class="list icon"></i><translate translate-context="*/*/*">Playlists</translate></router-link>
             <router-link class="item" :to="{name: 'library.radios.browse'}"><i class="feed icon"></i><translate translate-context="*/*/*">Radios</translate></router-link>
@@ -144,13 +144,9 @@
           </header>
           <div class="menu" v-if="myLibraryExpanded">
             <router-link class="item" :exact="true" :to="{path: '/library/me'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
-            <a
-              @click="$store.commit('playlists/chooseTrack', null)"
-              class="item">
-              <i class="list icon"></i><translate translate-context="*/*/*">Playlists</translate>
-            </a>
+            <router-link class="item" :to="{name: 'library.playlists.me'}"><i class="list icon"></i><translate translate-context="*/*/*">Playlists</translate></router-link>
             <router-link class="item" :to="{path: '/favorites'}"><i class="heart icon"></i><translate translate-context="Sidebar/Favorites/List item.Link/Noun">Favorites</translate></router-link>
-            <router-link class="item" :to="{name: 'library.albums.me'}"><i class="headphones icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
+            <router-link class="item" :to="{name: 'library.albums.me'}"><i class="compact disc icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
             <router-link class="item" :to="{name: 'library.artists.me'}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
             <router-link class="item" :to="{name: 'library.radios.me'}"><i class="feed icon"></i><translate translate-context="*/*/*">Radios</translate></router-link>
           </div>
