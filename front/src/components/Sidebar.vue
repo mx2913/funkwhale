@@ -129,7 +129,7 @@
             <i class="angle right icon" v-else></i>
           </header>
           <div class="menu" v-if="exploreExpanded">
-            <router-link class="item" :exact="true" :to="{path: '/library'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
+            <router-link class="item" :exact="true" :to="{name: 'library.index'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
             <router-link class="item" :to="{name: 'library.albums.browse'}"><i class="compact disc icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
             <router-link class="item" :to="{name: 'library.artists.browse'}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
             <router-link class="item" :to="{name: 'library.playlists.browse'}"><i class="list icon"></i><translate translate-context="*/*/*">Playlists</translate></router-link>
@@ -143,12 +143,12 @@
             <i class="angle right icon" v-else></i>
           </header>
           <div class="menu" v-if="myLibraryExpanded">
-            <router-link class="item" :exact="true" :to="{path: '/library/me'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
-            <router-link class="item" :to="{name: 'library.playlists.me'}"><i class="list icon"></i><translate translate-context="*/*/*">Playlists</translate></router-link>
-            <router-link class="item" :to="{path: '/favorites'}"><i class="heart icon"></i><translate translate-context="Sidebar/Favorites/List item.Link/Noun">Favorites</translate></router-link>
+            <router-link class="item" :exact="true" :to="{name: 'library.me'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
             <router-link class="item" :to="{name: 'library.albums.me'}"><i class="compact disc icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
             <router-link class="item" :to="{name: 'library.artists.me'}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
+            <router-link class="item" :to="{name: 'library.playlists.me'}"><i class="list icon"></i><translate translate-context="*/*/*">Playlists</translate></router-link>
             <router-link class="item" :to="{name: 'library.radios.me'}"><i class="feed icon"></i><translate translate-context="*/*/*">Radios</translate></router-link>
+            <router-link class="item" :to="{name: 'favorites'}"><i class="heart icon"></i><translate translate-context="Sidebar/Favorites/List item.Link/Noun">Favorites</translate></router-link>
           </div>
         </div>
       </nav>
@@ -327,6 +327,28 @@ export default {
         })
       },
       deep: true,
+    },
+    "$route.name": {
+      immediate: true,
+      handler (n) {
+        let mapping = {
+          "library.index": 'exploreExpanded',
+          "library.albums.browse": 'exploreExpanded',
+          "library.artists.browse": 'exploreExpanded',
+          "library.playlists.browse": 'exploreExpanded',
+          "library.radios.browse": 'exploreExpanded',
+          'library.me': "myLibraryExpanded",
+          'library.albums.me': "myLibraryExpanded",
+          'library.artists.me': "myLibraryExpanded",
+          'library.playlists.me': "myLibraryExpanded",
+          'library.radios.me': "myLibraryExpanded",
+          'favorites': "myLibraryExpanded",
+        }
+        if (mapping[n]) {
+          // expand the menu block of the new route automatically, if applicable
+          this[mapping[n]] = true
+        }
+      }
     }
   }
 }

@@ -144,11 +144,12 @@ export default new Router({
       path: "/@:username",
       name: "profile",
       component: () =>
-        import(/* webpackChunkName: "core" */ "@/components/auth/Profile"),
+      import(/* webpackChunkName: "core" */ "@/components/auth/Profile"),
       props: true
     },
     {
       path: "/favorites",
+      name: "favorites",
       component: () =>
         import(/* webpackChunkName: "core" */ "@/components/favorites/List"),
       props: route => ({
