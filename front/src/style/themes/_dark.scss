@@ -281,6 +281,11 @@ $link-color: rgb(255, 144, 0);
       color: $text-color;
     }
   }
+
+  .ui.fixed-header.segment {
+    background-color: $background-color;
+    box-shadow: inset 0px -2px 0px 0px rgba(34, 36, 38, 0.15);
+  }
 }
 
 /* purgecss end ignore */

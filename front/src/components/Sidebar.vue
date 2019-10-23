@@ -174,7 +174,7 @@
       </div>
     </div>
   </nav>
-  <player @next="scrollToCurrent" @previous="scrollToCurrent"></player>
+  <player></player>
 </aside>
 </template>
 
@@ -245,23 +245,6 @@ export default {
     ...mapActions({
       cleanTrack: "queue/cleanTrack"
     }),
-    scrollToCurrent() {
-      let current = $(this.$el).find('[data-tab="queue"] .active')[0]
-      if (!current) {
-        return
-      }
-      let container = $(this.$el).find(".tabs")[0]
-      // Position container at the top line then scroll current into view
-      container.scrollTop = 0
-      current.scrollIntoView(true)
-      // Scroll back nothing if element is at bottom of container else do it
-      // for half the height of the containers display area
-      var scrollBack =
-        container.scrollHeight - container.scrollTop <= container.clientHeight
-          ? 0
-          : container.clientHeight / 2
-      container.scrollTop = container.scrollTop - scrollBack
-    },
     applyContentFilters () {
       let artistIds = this.$store.getters['moderation/artistFilters']().map((f) => {
         return f.target.id
@@ -289,16 +272,6 @@ export default {
   watch: {
     url: function() {
       this.isCollapsed = true
-    },
-    selectedTab: function(newValue) {
-      if (newValue === "queue") {
-        this.scrollToCurrent()
-      }
-    },
-    "$store.state.queue.currentIndex": function() {
-      if (this.selectedTab !== "queue") {
-        this.scrollToCurrent()
-      }
     },
     "$store.state.moderation.lastUpdate": function () {
       this.applyContentFilters()
