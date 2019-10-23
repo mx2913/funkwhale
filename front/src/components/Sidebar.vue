@@ -504,6 +504,9 @@ nav.top {
     }
   }
 }
+.ui.user-dropdown > .text > .label {
+  margin-right: 0;
+}
 </style>
 
 <style lang="scss">
