@@ -1,10 +1,10 @@
 <template>
   <section class="main pusher" :aria-label="labels.queue">
-    <div class="ui vertical stripe segment">
+    <div class="ui vertical stripe queue segment">
       <div class="ui container">
         <div class="ui stackable grid" id="queue-grid">
           <div class="ui text container">
-            <div class="ui sticky basic clearing segment">
+            <div class="ui sticky basic clearing fixed-header segment">
               <div class="ui two column grid">
                 <div class="ui column">
 
@@ -46,7 +46,7 @@
                   @click="$store.dispatch('queue/currentIndex', index)"
                   v-for="(track, index) in tracks"
                   :key="index"
-                  :class="[{'active': index === queue.currentIndex}]">
+                  :class="['queue-item', {'active': index === queue.currentIndex}]">
                   <td class="image-cell">
                     <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
                     <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
@@ -169,6 +169,17 @@ export default {
         newIndex: event.newIndex
       })
     },
+    scrollToCurrent() {
+      let current = $(this.$el).find('.queue-item.active')[0]
+      if (!current) {
+        return
+      }
+      const elementRect = current.getBoundingClientRect();
+      const absoluteElementTop = elementRect.top + window.pageYOffset;
+      const middle = absoluteElementTop - (window.innerHeight / 2);
+      window.scrollTo(0, middle);
+
+    },
   },
   watch: {
     '$route.fullPath': {
@@ -180,6 +191,14 @@ export default {
         this.$store.commit('ui/queueExpanded', false)
       },
       deep: true
+    },
+    '$store.state.queue.currentIndex': {
+      handler () {
+        this.$nextTick(() => {
+          this.scrollToCurrent()
+        })
+      },
+      immediate: true
     }
   }
 }
