@@ -342,6 +342,7 @@ $sidebar-color: #3d3e3f;
   }
   > nav {
     flex-grow: 1;
+    overflow-y: auto;
   }
   @include media(">desktop") {
     .collapse.button {
