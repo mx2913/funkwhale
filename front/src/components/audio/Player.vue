@@ -52,7 +52,6 @@
           :disabled="queue.tracks.length === 0"
           :title="labels.shuffle"
           :aria-label="labels.shuffle"
-          v-if="!showVolume"
           @click.prevent.stop="shuffle()">
           <div v-if="isShuffling" class="ui inline shuffling inverted tiny active loader"></div>
           <i v-else :class="['ui', 'random', {'disabled': queue.tracks.length === 0}, 'icon']" ></i>
@@ -93,9 +92,14 @@
                 <i :class="['eye slash outline', 'basic', 'icon']"></i>
               </button>
 
-              <div class="progress" v-if="!isLoadingAudio">
-                <span role="button" class="timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</span>
-                / <span class="timer total">{{durationFormatted}}</span>
+              <div class="progress">
+                <template v-if="!isLoadingAudio">
+                  <span role="button" class="timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</span>
+                  / <span class="timer total">{{durationFormatted}}</span>
+                </template>
+                <template v-else>
+                  00:00 / 00:00
+                </template>
               </div>
             </div>
           </div>
@@ -160,53 +164,56 @@
             v-model="sliderVolume"
             v-if="showVolume" />
         </div>
-        <span
-          role="button"
-          :title="labels.previousTrack"
-          :aria-label="labels.previousTrack"
-          class="control"
-          @click.prevent.stop="previous"
-          :disabled="emptyQueue">
-            <i :class="['ui', 'backward step', {'disabled': emptyQueue}, 'icon']"></i>
-        </span>
-        <span
-          role="button"
-          v-if="!playing"
-          :title="labels.play"
-          :aria-label="labels.play"
-          @click.prevent.stop="togglePlay"
-          class="control">
-            <i :class="['ui', 'play', {'disabled': !currentTrack}, 'icon']"></i>
-        </span>
-        <span
-          role="button"
-          v-else
-          :title="labels.pause"
-          :aria-label="labels.pause"
-          @click.prevent.stop="togglePlay"
-          class="control">
-            <i :class="['ui', 'pause', {'disabled': !currentTrack}, 'icon']"></i>
-        </span>
-        <span
-          role="button"
-          :title="labels.next"
-          :aria-label="labels.next"
-          class="control"
-          @click.prevent.stop="next"
-          :disabled="!hasNext">
-            <i :class="['ui', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
-        </span>
+        <template v-if="!showVolume">
+          <span
+            role="button"
+            :title="labels.previousTrack"
+            :aria-label="labels.previousTrack"
+            class="control"
+            @click.prevent.stop="previous"
+            :disabled="emptyQueue">
+              <i :class="['ui', 'backward step', {'disabled': emptyQueue}, 'icon']"></i>
+          </span>
+
+          <span
+            role="button"
+            v-if="!playing"
+            :title="labels.play"
+            :aria-label="labels.play"
+            @click.prevent.stop="togglePlay"
+            class="control">
+              <i :class="['ui', 'play', {'disabled': !currentTrack}, 'icon']"></i>
+          </span>
+          <span
+            role="button"
+            v-else
+            :title="labels.pause"
+            :aria-label="labels.pause"
+            @click.prevent.stop="togglePlay"
+            class="control">
+              <i :class="['ui', 'pause', {'disabled': !currentTrack}, 'icon']"></i>
+          </span>
+          <span
+            role="button"
+            :title="labels.next"
+            :aria-label="labels.next"
+            class="control"
+            @click.prevent.stop="next"
+            :disabled="!hasNext">
+              <i :class="['ui', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
+          </span>
 
 
-        <span
-          role="button"
-          :title="labels.info"
-          :aria-label="labels.info"
-          class="control"
-          @click.prevent.stop="info"
-          :disabled="!currentTrack">
-            <i :class="['ui', {'disabled': !currentTrack}, 'circle info', 'icon']" ></i>
-        </span>
+          <span
+            role="button"
+            :title="labels.info"
+            :aria-label="labels.info"
+            class="control"
+            @click.prevent.stop="info"
+            :disabled="!currentTrack">
+              <i :class="['ui', {'disabled': !currentTrack}, 'circle info', 'icon']" ></i>
+          </span>
+        </template>
       </div>
       <GlobalEvents
         @keydown.space.prevent.exact="togglePlay"
@@ -852,9 +859,7 @@ export default {
   position: relative;
   width: 12.5% !important;
   [type="range"] {
-    max-width: 70%;
     position: absolute;
-    bottom: 1.1rem;
     left: 25%;
     cursor: pointer;
     background-color: transparent;
