@@ -355,7 +355,8 @@ $sidebar-color: #3d3e3f;
     &.collapsed {
       .menu-area,
       .player-wrapper,
-      .tabs {
+      .search,
+      nav.secondary {
         display: none;
       }
     }
