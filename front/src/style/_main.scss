@@ -81,6 +81,7 @@
 
 $desktop-sidebar-width: 275px;
 $widedesktop-sidebar-width: 275px;
+$mobile-player-height: 4em;
 
 html,
 body {
@@ -95,6 +96,9 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  @include media("<tablet") {
+    padding-bottom: $mobile-player-height + 0.5em;
+  }
 }
 
 #app > main, #app > .main {
@@ -396,6 +400,10 @@ input + .help {
 
 .ui.small.divider {
   margin: 0.5rem 0;
+}
+
+.mobile-player {
+  height: $mobile-player-height;
 }
 @import "./themes/_light.scss";
 @import "./themes/_dark.scss";
