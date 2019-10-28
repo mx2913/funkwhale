@@ -15,6 +15,70 @@
       <queue v-if="$store.state.ui.queueExpanded"></queue>
       <router-view :class="[{hidden: $store.state.ui.queueExpanded}]" :key="$route.fullPath"></router-view>
       <div v-if="!$store.state.ui.queueExpanded" class="ui fitted divider"></div>
+
+      <div v-if="currentTrack" class="ui mobile-player inverted segment">
+        <div
+          :class="['ui', 'top attached', 'small', 'orange', 'inverted', {'indicating': isLoadingAudio}, 'progress']">
+          <div class="buffer bar" :data-percent="bufferProgress" :style="{ 'width': bufferProgress + '%' }"></div>
+          <div class="position bar" :data-percent="progress" :style="{ 'width': progress + '%' }"></div>
+        </div>
+
+        <div class="ui tiny image">
+          <img ref="cover" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
+          <img v-else src="./assets/audio/default-cover.png">
+        </div>
+        <div class="middle aligned content ellipsis">
+          <strong>
+            <router-link class="header" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
+              {{ currentTrack.title }}
+            </router-link>
+          </strong>
+          <div class="meta">
+            <router-link :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
+              {{ currentTrack.artist.name }}
+            </router-link> /
+            <router-link :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
+              {{ currentTrack.album.title }}
+            </router-link>
+          </div>
+        </div>
+        <div class="controls">
+          <span
+            role="button"
+            v-if="!playing"
+            :title="labels.play"
+            :aria-label="labels.play"
+            @click.prevent.stop="togglePlay"
+            class="control">
+              <i :class="['ui', 'big', 'play', {'disabled': !currentTrack}, 'icon']"></i>
+          </span>
+          <span
+            role="button"
+            v-else
+            :title="labels.pause"
+            :aria-label="labels.pause"
+            @click.prevent.stop="togglePlay"
+            class="control">
+              <i :class="['ui', 'big', 'pause', {'disabled': !currentTrack}, 'icon']"></i>
+          </span>
+          <span
+            role="button"
+            :title="labels.next"
+            :aria-label="labels.next"
+            class="control"
+            @click.prevent.stop="$store.dispatch('queue/next')"
+            :disabled="!hasNext">
+              <i :class="['ui', 'big', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
+          </span>
+          <span
+            role="button"
+            :title="labels.expandQueue"
+            @click.prevent.stop="$store.commit('ui/queueExpanded', !$store.state.ui.queueExpanded)"
+            class="control">
+              <i :class="['ui', 'big', 'list', 'icon']"></i>
+          </span>
+        </div>
+      </div>
       <app-footer
         v-if="!$store.state.ui.queueExpanded"
         :version="version"
@@ -34,7 +98,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import _ from '@/lodash'
-import {mapState, mapGetters} from 'vuex'
+import {mapState, mapGetters, mapActions} from 'vuex'
 import { WebSocketBridge } from 'django-channels'
 import GlobalEvents from '@/components/utils/global-events'
 import Sidebar from '@/components/Sidebar'
@@ -153,6 +217,9 @@ export default {
     this.disconnect()
   },
   methods: {
+    ...mapActions({
+      togglePlay: "player/togglePlay",
+    }),
     incrementNotificationCountInSidebar (event) {
       this.$store.commit('ui/incrementNotifications', {type: 'inbox', count: 1})
     },
@@ -242,10 +309,27 @@ export default {
     ...mapState({
       messages: state => state.ui.messages,
       nodeinfo: state => state.instance.nodeinfo,
+      playing: state => state.player.playing,
+      bufferProgress: state => state.player.bufferProgress,
+      isLoadingAudio: state => state.player.isLoadingAudio,
     }),
     ...mapGetters({
-      currentTrack: 'queue/currentTrack'
+      hasNext: "queue/hasNext",
+      currentTrack: 'queue/currentTrack',
+      progress: "player/progress",
     }),
+    labels() {
+      let play = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Play track")
+      let pause = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Pause track")
+      let next = this.$pgettext('Sidebar/Player/Icon.Tooltip', "Next track")
+      let expandQueue = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Expand queue")
+      return {
+        play,
+        pause,
+        next,
+        expandQueue,
+      }
+    },
     suggestedInstances () {
       let instances = this.$store.state.instance.knownInstances.slice(0)
       if (this.$store.state.instance.frontSettings.defaultServerUrl) {
@@ -337,4 +421,85 @@ export default {
 
 <style lang="scss">
 @import "style/_main";
+
+.ui.mobile-player.segment {
+  border-radius: 0;
+  padding: 0em;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  width: 100vw;
+  z-index: 999999;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content:space-between;
+  @include media(">tablet") {
+    display: none;
+  }
+
+  .indicating.progress {
+    overflow: hidden;
+  }
+
+  .ui.progress .bar {
+    transition: none;
+  }
+
+  .ui.inverted.progress .buffer.bar {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  @keyframes MOVE-BG {
+    from {
+      transform: translateX(0px);
+    }
+    to {
+      transform: translateX(46px);
+    }
+  }
+  .indicating.progress .bar {
+    left: -46px;
+    width: 200% !important;
+    color: grey;
+    background: repeating-linear-gradient(
+      -55deg,
+      grey 1px,
+      grey 10px,
+      transparent 10px,
+      transparent 20px
+    ) !important;
+
+    animation-name: MOVE-BG;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  .ui.progress:not([data-percent]):not(.indeterminate)
+    .bar.position:not(.buffer) {
+    background: #ff851b;
+    min-width: 0;
+  }
+  > .image {
+    padding-right: 0.5em;
+    > img {
+      height: 4.7em;
+      width: 4.7em;
+      max-width: 4.7em;
+    }
+  }
+  > .controls {
+    min-width: 8em;
+    text-align: right;
+    padding-right: 0.5em;
+    .icon {
+      font-size: 1.9em;
+    }
+  }
+  > .content a {
+    color: white;
+  }
+}
 </style>
