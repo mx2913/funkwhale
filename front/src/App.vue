@@ -75,7 +75,7 @@
             :title="labels.expandQueue"
             @click.prevent.stop="$store.commit('ui/queueExpanded', !$store.state.ui.queueExpanded)"
             class="control">
-              <i :class="['ui', 'big', 'list', 'icon']"></i>
+              <i :class="['ui', 'big', $store.state.ui.queueExpanded ? 'x' : 'list', 'icon']"></i>
           </span>
         </div>
       </div>
@@ -435,7 +435,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content:space-between;
-  @include media(">tablet") {
+  @include media(">desktop") {
     display: none;
   }
 

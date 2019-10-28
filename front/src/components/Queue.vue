@@ -3,78 +3,101 @@
     <div class="ui vertical stripe queue segment">
       <div class="ui fluid container">
         <div class="ui stackable grid" id="queue-grid">
-          <div class="ui text container">
-            <div class="ui sticky basic clearing fixed-header segment">
-              <h1 class="ui header">
-                <div class="content">
-                  <button @click="$store.commit('ui/queueExpanded', false)" class="ui right floated small basic button">
-                    <i class="close icon"></i>
-                    <translate translate-context="*/*/Button.Label/Verb">Close</translate>
-                  </button>
-                  <button class="ui right floated small basic button" @click="$store.dispatch('queue/clean'); $store.commit('ui/queueExpanded', false)">
-                    <translate translate-context="Content/Library/Button.Label">Clear</translate>
-                  </button>
-                  {{ labels.queue }}
-                  <div class="sub header">
-                    <div>
-                      <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
-                        Track %{ index } of %{ length }
-                      </translate> -
-                      <span :title="labels.duration">
-                        {{ timeLeft }}
-                      </span>
+          <div class="ui sixteen wide mobile ten wide computer column">
+
+            <div class="ui text container">
+              <div class="ui sticky basic clearing fixed-header segment">
+                <h2 class="ui header">
+                  <div class="content">
+                    <button class="ui right floated circular basic icon button dropdown controls-dropdown">
+                      <i class="ellipsis vertical icon"></i>
+                      <div
+                        v-if="$store.state.ui.notifications.pendingReviewEdits + $store.state.ui.notifications.pendingReviewReports > 0"
+                        :class="['ui', 'teal', 'mini', 'bottom floating', 'circular', 'label']">{{ $store.state.ui.notifications.pendingReviewEdits + $store.state.ui.notifications.pendingReviewReports }}</div>
+                      <div class="menu">
+                        <div
+                          role="button"
+                          class="item"
+                          @click="$store.dispatch('queue/shuffle')">
+                          <translate translate-context="*/Queue/*/Verb">Shuffle</translate>
+                        </div>
+                        <div
+                          role="button"
+                          class="item"
+                          @click="$store.dispatch('queue/clean'); $store.commit('ui/queueExpanded', false)">
+                          <translate translate-context="*/Queue/*/Verb">Clear</translate>
+                        </div>
+                        <div
+                          role="button"
+                          class="item"
+                          @click="$store.commit('ui/queueExpanded', false)">
+                          <translate translate-context="*/*/Button.Label/Verb">Close</translate>
+                        </div>
+                      </div>
+                    </button>
+                    {{ labels.queue }}
+                    <div class="sub header">
+                      <div>
+                        <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
+                          Track %{ index } of %{ length }
+                        </translate><template v-if="!$store.state.radios.running"> -
+                          <span :title="labels.duration">
+                            {{ timeLeft }}
+                          </span>
+                        </template>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </h1>
-              <div v-if="$store.state.radios.running" class="ui black message">
-                <div class="content">
-                  <div class="header">
-                    <i class="feed icon"></i> <translate translate-context="Sidebar/Player/Title">You have a radio playing</translate>
+                </h2>
+                <div v-if="$store.state.radios.running" class="ui black message">
+                  <div class="content">
+                    <div class="header">
+                      <i class="feed icon"></i> <translate translate-context="Sidebar/Player/Title">You have a radio playing</translate>
+                    </div>
+                    <p><translate translate-context="Sidebar/Player/Paragraph">New tracks will be appended here automatically.</translate></p>
+                    <div @click="$store.dispatch('radios/stop')" class="ui basic inverted red button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
                   </div>
-                  <p><translate translate-context="Sidebar/Player/Paragraph">New tracks will be appended here automatically.</translate></p>
-                  <div @click="$store.dispatch('radios/stop')" class="ui basic inverted red button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
                 </div>
               </div>
+              <table class="ui compact very basic fixed single line selectable unstackable table">
+                <draggable v-model="tracks" tag="tbody" @update="reorder" handle=".handle">
+                  <tr
+                    @click="$store.dispatch('queue/currentIndex', index)"
+                    v-for="(track, index) in tracks"
+                    :key="index"
+                    :class="['queue-item', {'active': index === queue.currentIndex}]">
+                    <td class="handle">
+                      <i class="bars icon"></i>
+                    </td>
+                    <td class="image-cell">
+                      <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
+                      <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
+                    </td>
+                    <td colspan="3">
+                      <button class="title reset ellipsis" :title="track.title" :aria-label="labels.selectTrack">
+                        <strong>{{ track.title }}</strong><br />
+                        <span>
+                          {{ track.artist.name }}
+                        </span>
+                      </button>
+                    </td>
+                    <td class="duration-cell">
+                      <template v-if="track.uploads.length > 0">
+                        {{ time.durationFormatted(track.uploads[0].duration) }}
+                      </template>
+                    </td>
+                    <td class="controls">
+                      <template v-if="$store.getters['favorites/isFavorite'](track.id)">
+                        <i class="pink heart icon"></i>
+                      </template>
+                      <button :title="labels.removeFromQueue" @click.stop="cleanTrack(index)" :class="['ui', 'really', 'tiny', 'basic', 'circular', 'icon', 'button']">
+                        <i class="x icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </draggable>
+              </table>
             </div>
-            <table class="ui compact very basic fixed single line selectable unstackable table">
-              <draggable v-model="tracks" tag="tbody" @update="reorder" handle=".handle">
-                <tr
-                  @click="$store.dispatch('queue/currentIndex', index)"
-                  v-for="(track, index) in tracks"
-                  :key="index"
-                  :class="['queue-item', {'active': index === queue.currentIndex}]">
-                  <td class="handle">
-                    <i class="bars icon"></i>
-                  </td>
-                  <td class="image-cell">
-                    <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
-                    <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
-                  </td>
-                  <td colspan="4">
-                    <button class="title reset ellipsis" :title="track.title" :aria-label="labels.selectTrack">
-                      <strong>{{ track.title }}</strong><br />
-                      <span>
-                        {{ track.artist.name }}
-                      </span>
-                    </button>
-                  </td>
-                  <td class="duration-cell">
-                    <template v-if="track.uploads.length > 0">
-                      {{ time.durationFormatted(track.uploads[0].duration) }}
-                    </template>
-                  </td>
-                  <td class="controls">
-                    <template v-if="$store.getters['favorites/isFavorite'](track.id)">
-                      <i class="pink heart icon"></i>
-                    </template>
-                    <button :title="labels.removeFromQueue" @click.stop="cleanTrack(index)" :class="['ui', 'really', 'tiny', 'basic', 'circular', 'icon', 'button']">
-                      <i class="x icon"></i>
-                    </button>
-                  </td>
-                </tr>
-              </draggable>
-            </table>
           </div>
           <div class="ui six wide column current-track">
             <div class="ui sticky basic segment">
@@ -127,6 +150,7 @@ export default {
     let self = this
     this.$nextTick(() => {
       $(this.$el).find('.ui.sticky').sticky({context: '#queue-grid'})
+      $(this.$el).find('.controls-dropdown').dropdown({action: 'hide'})
     })
   },
   computed: {
@@ -214,7 +238,7 @@ export default {
 
 #queue-grid .current-track {
   display: none;
-  @include media(">tablet") {
+  @include media(">desktop") {
     display: block;
   }
 }
@@ -253,5 +277,9 @@ td:last-child {
 
 .sticky .header .content {
   display: block;
+}
+.sticky.segment {
+  padding-left: 0;
+  padding-right: 0;
 }
 </style>
