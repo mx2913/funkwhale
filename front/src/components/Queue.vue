@@ -1,52 +1,52 @@
 <template>
   <section class="main pusher" :aria-label="labels.queue">
     <div class="ui vertical stripe queue segment">
-      <div class="ui container">
+      <div class="ui fluid container">
         <div class="ui stackable grid" id="queue-grid">
           <div class="ui text container">
             <div class="ui sticky basic clearing fixed-header segment">
-              <div class="ui two column grid">
-                <div class="ui column">
-
-                  <h1 class="ui header">
-                    <div class="content">
-                      {{ labels.queue }}
-                      <div class="sub header">
-                        <div>
-                          <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
-                            Track %{ index } of %{ length }
-                          </translate> -
-                          <span :title="labels.duration">
-                            {{ timeLeft }}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </h1>
-                  <div v-if="$store.state.radios.running" class="ui black message">
-                    <div class="content">
-                      <div class="header">
-                        <i class="feed icon"></i> <translate translate-context="Sidebar/Player/Title">You have a radio playing</translate>
-                      </div>
-                      <p><translate translate-context="Sidebar/Player/Paragraph">New tracks will be appended here automatically.</translate></p>
-                      <div @click="$store.dispatch('radios/stop')" class="ui basic inverted red button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
+              <h1 class="ui header">
+                <div class="content">
+                  <button @click="$store.commit('ui/queueExpanded', false)" class="ui right floated small basic button">
+                    <i class="close icon"></i>
+                    <translate translate-context="*/*/Button.Label/Verb">Close</translate>
+                  </button>
+                  <button class="ui right floated small basic button" @click="$store.dispatch('queue/clean'); $store.commit('ui/queueExpanded', false)">
+                    <translate translate-context="Content/Library/Button.Label">Clear</translate>
+                  </button>
+                  {{ labels.queue }}
+                  <div class="sub header">
+                    <div>
+                      <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
+                        Track %{ index } of %{ length }
+                      </translate> -
+                      <span :title="labels.duration">
+                        {{ timeLeft }}
+                      </span>
                     </div>
                   </div>
                 </div>
-                <div class="ui column">
-                  <button class="ui right floated basic button" @click="$store.dispatch('queue/clean'); $store.commit('ui/queueExpanded', false)">
-                    <translate translate-context="Content/Library/Button.Label">Clear</translate>
-                  </button>
+              </h1>
+              <div v-if="$store.state.radios.running" class="ui black message">
+                <div class="content">
+                  <div class="header">
+                    <i class="feed icon"></i> <translate translate-context="Sidebar/Player/Title">You have a radio playing</translate>
+                  </div>
+                  <p><translate translate-context="Sidebar/Player/Paragraph">New tracks will be appended here automatically.</translate></p>
+                  <div @click="$store.dispatch('radios/stop')" class="ui basic inverted red button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
                 </div>
               </div>
             </div>
             <table class="ui compact very basic fixed single line selectable unstackable table">
-              <draggable v-model="tracks" tag="tbody" @update="reorder">
+              <draggable v-model="tracks" tag="tbody" @update="reorder" handle=".handle">
                 <tr
                   @click="$store.dispatch('queue/currentIndex', index)"
                   v-for="(track, index) in tracks"
                   :key="index"
                   :class="['queue-item', {'active': index === queue.currentIndex}]">
+                  <td class="handle">
+                    <i class="bars icon"></i>
+                  </td>
                   <td class="image-cell">
                     <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
                     <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
@@ -58,6 +58,11 @@
                         {{ track.artist.name }}
                       </span>
                     </button>
+                  </td>
+                  <td class="duration-cell">
+                    <template v-if="track.uploads.length > 0">
+                      {{ time.durationFormatted(track.uploads[0].duration) }}
+                    </template>
                   </td>
                   <td class="controls">
                     <template v-if="$store.getters['favorites/isFavorite'](track.id)">
@@ -105,6 +110,7 @@ import $ from 'jquery'
 import moment from "moment"
 import lodash from '@/lodash'
 import draggable from "vuedraggable"
+import time from "@/utils/time"
 
 
 export default {
@@ -114,10 +120,10 @@ export default {
   data () {
     return {
       tracksChangeBuffer: null,
+      time
     }
   },
   mounted () {
-    console.log('HELLO', $(this.$el).find('.ui.sticky'))
     let self = this
     this.$nextTick(() => {
       $(this.$el).find('.ui.sticky').sticky({context: '#queue-grid'})
@@ -129,7 +135,6 @@ export default {
     }),
     ...mapGetters({
       currentTrack: "queue/currentTrack",
-      durationFormatted: "player/durationFormatted",
       currentTimeFormatted: "player/currentTimeFormatted",
       progress: "player/progress"
     }),
@@ -207,7 +212,7 @@ export default {
 @import "../style/vendor/media";
 
 
-.current-track {
+#queue-grid .current-track {
   display: none;
   @include media(">tablet") {
     display: block;
@@ -227,5 +232,26 @@ td:last-child {
 }
 .image-cell {
   width: 4em;
+}
+.queue.segment > .container {
+  margin: 0 !important;
+}
+#queue-grid > .text.container {
+  padding: 0;
+  margin: 0 !important;
+}
+.handle {
+  @include media("<desktop") {
+    display: none;
+  }
+}
+.duration-cell {
+  @include media("<tablet") {
+    display: none;
+  }
+}
+
+.sticky .header .content {
+  display: block;
 }
 </style>

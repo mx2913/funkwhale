@@ -1,5 +1,5 @@
 <template>
-  <section class="player-wrapper" >
+  <section class="player-wrapper">
     <div
       class="ui queue-item inverted vertical segment"
       @click="$store.commit('ui/queueExpanded', !$store.state.ui.queueExpanded)"
@@ -784,6 +784,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import "../../style/vendor/media";
+section {
+  > .player, .segment.ui.queue-item {
+    @include media("<desktop") {
+      display: none;
+    }
+  }
+}
 .ui.progress {
   margin: 0.5rem 0 1rem;
 }
