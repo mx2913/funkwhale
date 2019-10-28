@@ -99,28 +99,13 @@
   </header>
   <search-bar @search="isCollapsed = false">
   </search-bar>
-  <div v-if="!$store.state.auth.authenticated && !isCollapsed" class="ui basic segment">
+  <div v-if="!$store.state.auth.authenticated" class="ui basic signup segment">
     <router-link class="ui fluid tiny primary button" :to="{name: 'login'}"><translate translate-context="*/Login/*/Verb">Login</translate></router-link>
     <div class="ui small hidden divider"></div>
     <router-link class="ui fluid tiny button" :to="{path: '/signup'}">
       <translate translate-context="*/Signup/Link/Verb">Create an account</translate>
     </router-link>
   </div>
-
-  <!-- <div class="menu-area">
-    <div class="ui compact fluid two item inverted menu">
-      <a :class="[{active: selectedTab === 'library'}, 'item']" role="button" @click.prevent.stop="selectedTab = 'library'" data-tab="library"><translate translate-context="*/Library/*/Verb">Browse</translate></a>
-      <a :class="[{active: selectedTab === 'queue'}, 'item']" role="button" @click.prevent.stop="selectedTab = 'queue'" data-tab="queue">
-        <translate translate-context="Sidebar/Queue/Tab.Title/Noun">Queue</translate>&nbsp;
-         <template v-if="queue.tracks.length === 0">
-           <translate translate-context="Sidebar/Queue/Tab.Title">(empty)</translate>
-         </template>
-         <translate translate-context="Sidebar/Queue/Tab.Title" v-else :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
-          (%{ index } of %{ length })
-         </translate>
-      </a>
-    </div>
-  </div> -->
   <nav class="secondary" role="navigation">
     <div class="ui small hidden divider"></div>
     <section :class="['ui', 'bottom', 'attached', {active: selectedTab === 'library'}, 'tab']" :aria-label="labels.mainMenu">
@@ -359,6 +344,7 @@ $sidebar-color: #3d3e3f;
       .menu-area,
       .player-wrapper,
       .search,
+      .signup.segment,
       nav.secondary {
         display: none;
       }
