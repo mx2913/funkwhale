@@ -67,10 +67,8 @@
             </router-link>
             <div class="meta">
               <router-link class="artist" :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
-                {{ currentTrack.artist.name | truncate(20) }}
-              </router-link> /
-              <router-link class="album" :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
-                {{ currentTrack.album.title | truncate(20) }}
+                {{ currentTrack.artist.name | truncate(15) }}</router-link>/<router-link class="album" :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
+                {{ currentTrack.album.title | truncate(15) }}
               </router-link>
             </div>
             <div class="ui hidden divider"></div>
