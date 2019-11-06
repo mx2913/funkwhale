@@ -67,7 +67,7 @@
                     :key="index"
                     :class="['queue-item', {'active': index === queue.currentIndex}]">
                     <td class="handle">
-                      <i class="bars icon"></i>
+                      <i class="arrows alternate grey icon"></i>
                     </td>
                     <td class="image-cell">
                       <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
