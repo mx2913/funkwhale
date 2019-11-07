@@ -2,7 +2,7 @@
   <section class="player-wrapper">
     <div
       class="ui queue-item inverted vertical segment"
-      @click="$store.commit('ui/queueExpanded', !$store.state.ui.queueExpanded)"
+      @click="toggleQueue"
       v-if="currentTrack" :title="labels.expandQueue">
       <div class="ui tiny image">
         <img ref="cover" @load="updateBackground" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
@@ -629,6 +629,13 @@ export default {
           this.$store.dispatch('player/updateProgress', 0)
           this.observeProgress(true)
         }
+      }
+    },
+    toggleQueue () {
+      if (this.$route.name === 'queue') {
+        this.$router.go(-1)
+      } else {
+        this.$router.push('/queue')
       }
     }
   },

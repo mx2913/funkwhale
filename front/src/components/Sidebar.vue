@@ -1,5 +1,5 @@
 <template>
-<aside :class="['ui', 'vertical', 'left', 'visible', 'wide', {'collapsed': isCollapsed}, 'sidebar',]">
+<aside :class="['ui', 'vertical', 'left', $route.name != 'queue' ? 'visible' : '', 'wide', {'collapsed': isCollapsed}, 'sidebar',]">
   <header class="ui inverted segment header-wrapper">
     <router-link :title="'Funkwhale'" :to="{name: logoUrl}">
       <i class="logo bordered inverted orange big icon">

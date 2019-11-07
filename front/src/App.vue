@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :key="String($store.state.instance.instanceUrl)">
+  <div id="app" :key="String($store.state.instance.instanceUrl)" :class="[$route.name === 'queue' ? 'queue-focused' : '']">
     <!-- here, we display custom stylesheets, if any -->
     <link
       v-for="url in customStylesheets"
@@ -12,75 +12,74 @@
       <sidebar></sidebar>
       <set-instance-modal @update:show="showSetInstanceModal = $event" :show="showSetInstanceModal"></set-instance-modal>
       <service-messages v-if="messages.length > 0"/>
-      <queue v-if="$store.state.ui.queueExpanded"></queue>
-      <router-view :class="[{hidden: $store.state.ui.queueExpanded}]" :key="$route.fullPath"></router-view>
-      <div v-if="!$store.state.ui.queueExpanded" class="ui fitted divider"></div>
-
-      <div v-if="currentTrack" class="ui mobile-player inverted segment">
-        <div
-          :class="['ui', 'top attached', 'small', 'orange', 'inverted', {'indicating': isLoadingAudio}, 'progress']">
-          <div class="buffer bar" :data-percent="bufferProgress" :style="{ 'width': bufferProgress + '%' }"></div>
-          <div class="position bar" :data-percent="progress" :style="{ 'width': progress + '%' }"></div>
-        </div>
-
-        <div class="ui tiny image">
-          <img ref="cover" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
-          <img v-else src="./assets/audio/default-cover.png">
-        </div>
-        <div class="middle aligned content ellipsis">
-          <strong>
-            <router-link class="header" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
-              {{ currentTrack.title }}
-            </router-link>
-          </strong>
-          <div class="meta">
-            <router-link :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
-              {{ currentTrack.artist.name }}
-            </router-link> /
-            <router-link :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
-              {{ currentTrack.album.title }}
-            </router-link>
+      <router-view :key="$route.fullPath"></router-view>
+      <div v-if="currentTrack" class="ui mobile-player">
+        <div class="ui inverted segment fixed-controls">
+          <div
+            :class="['ui', 'top attached', 'small', 'orange', 'inverted', {'indicating': isLoadingAudio}, 'progress']">
+            <div class="buffer bar" :data-percent="bufferProgress" :style="{ 'width': bufferProgress + '%' }"></div>
+            <div class="position bar" :data-percent="progress" :style="{ 'width': progress + '%' }"></div>
           </div>
-        </div>
-        <div class="controls">
-          <span
-            role="button"
-            v-if="!playing"
-            :title="labels.play"
-            :aria-label="labels.play"
-            @click.prevent.stop="togglePlay"
-            class="control">
-              <i :class="['ui', 'big', 'play', {'disabled': !currentTrack}, 'icon']"></i>
-          </span>
-          <span
-            role="button"
-            v-else
-            :title="labels.pause"
-            :aria-label="labels.pause"
-            @click.prevent.stop="togglePlay"
-            class="control">
-              <i :class="['ui', 'big', 'pause', {'disabled': !currentTrack}, 'icon']"></i>
-          </span>
-          <span
-            role="button"
-            :title="labels.next"
-            :aria-label="labels.next"
-            class="control"
-            @click.prevent.stop="$store.dispatch('queue/next')"
-            :disabled="!hasNext">
-              <i :class="['ui', 'big', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
-          </span>
-          <span
-            role="button"
-            :title="labels.expandQueue"
-            @click.prevent.stop="$store.commit('ui/queueExpanded', !$store.state.ui.queueExpanded)"
-            class="control">
-              <i :class="['ui', 'big', $store.state.ui.queueExpanded ? 'x' : 'list', 'icon']"></i>
-          </span>
+
+          <div class="ui tiny image">
+            <img ref="cover" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
+            <img v-else src="./assets/audio/default-cover.png">
+          </div>
+          <div class="middle aligned content ellipsis">
+            <strong>
+              <router-link class="header" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
+                {{ currentTrack.title }}
+              </router-link>
+            </strong>
+            <div class="meta">
+              <router-link :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
+                {{ currentTrack.artist.name }}
+              </router-link> /
+              <router-link :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
+                {{ currentTrack.album.title }}
+              </router-link>
+            </div>
+          </div>
+          <div class="controls">
+            <span
+              role="button"
+              v-if="!playing"
+              :title="labels.play"
+              :aria-label="labels.play"
+              @click.prevent.stop="togglePlay"
+              class="control">
+                <i :class="['ui', 'big', 'play', {'disabled': !currentTrack}, 'icon']"></i>
+            </span>
+            <span
+              role="button"
+              v-else
+              :title="labels.pause"
+              :aria-label="labels.pause"
+              @click.prevent.stop="togglePlay"
+              class="control">
+                <i :class="['ui', 'big', 'pause', {'disabled': !currentTrack}, 'icon']"></i>
+            </span>
+            <span
+              role="button"
+              :title="labels.next"
+              :aria-label="labels.next"
+              class="control"
+              @click.prevent.stop="$store.dispatch('queue/next')"
+              :disabled="!hasNext">
+                <i :class="['ui', 'big', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
+            </span>
+            <span
+              role="button"
+              :title="labels.expandQueue"
+              @click.prevent.stop="toggleMobilePlayer"
+              class="control">
+                <i :class="['ui', 'big', ['queue', 'player'].indexOf($route.name) ? 'angle up' : 'angle down', 'icon']"></i>
+            </span>
+          </div>
         </div>
       </div>
       <app-footer
-        v-if="!$store.state.ui.queueExpanded"
+        v-if="$route.name != 'queue'"
         :version="version"
         @show:shortcuts-modal="showShortcutsModal = !showShortcutsModal"
         @show:set-instance-modal="showSetInstanceModal = !showSetInstanceModal"
@@ -103,7 +102,6 @@ import { WebSocketBridge } from 'django-channels'
 import GlobalEvents from '@/components/utils/global-events'
 import Sidebar from '@/components/Sidebar'
 import AppFooter from '@/components/Footer'
-import Queue from '@/components/Queue'
 import ServiceMessages from '@/components/ServiceMessages'
 import moment from  'moment'
 import locales from './locales'
@@ -125,14 +123,13 @@ export default {
     GlobalEvents,
     ServiceMessages,
     SetInstanceModal,
-    Queue,
   },
   data () {
     return {
       bridge: null,
       instanceUrl: null,
       showShortcutsModal: false,
-      showSetInstanceModal: false,
+      showSetInstanceModal: false
     }
   },
   async created () {
@@ -304,6 +301,14 @@ export default {
       parts.push(this.$store.state.instance.settings.instance.name.value || 'Funkwhale')
       document.title = parts.join(' – ')
     },
+
+    toggleMobilePlayer () {
+      if (this.$route.name === 'queue' && this.$route.hash === '#player') {
+        this.$router.go(-1)
+      } else {
+        this.$router.push('/queue#player')
+      }
+    }
   },
   computed: {
     ...mapState({
@@ -421,23 +426,29 @@ export default {
 
 <style lang="scss">
 @import "style/_main";
-
-.ui.mobile-player.segment {
+#app.queue-focused > aside {
+  display: none;
+}
+.ui.mobile-player {
+  z-index: 999999;
+  width: 100%;
+  width: 100vw;
+  @include media(">desktop") {
+    display: none;
+  }
+}
+.ui.mobile-player > .segment.fixed-controls {
+  width: 100%;
+  width: 100vw;
   border-radius: 0;
   padding: 0em;
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
-  width: 100vw;
-  z-index: 999999;
   margin: 0;
   display: flex;
   align-items: center;
   justify-content:space-between;
-  @include media(">desktop") {
-    display: none;
-  }
 
   .indicating.progress {
     overflow: hidden;
