@@ -118,16 +118,19 @@ body {
     width: $widedesktop-sidebar-width;
   }
 }
-.main.pusher,
-.footer {
-  @include media(">desktop") {
-    margin-left: $desktop-sidebar-width !important;
-  }
 
-  @include media(">widedesktop") {
-    margin-left: $widedesktop-sidebar-width !important;;
+#app:not(.queue-focused) {
+  > .main.pusher,
+  > .footer {
+    @include media(">desktop") {
+      margin-left: $desktop-sidebar-width !important;
+    }
+
+    @include media(">widedesktop") {
+      margin-left: $widedesktop-sidebar-width !important;;
+    }
+    transform: none !important;
   }
-  transform: none !important;
 }
 
 .main.pusher.hidden {

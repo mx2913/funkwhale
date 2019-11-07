@@ -35,6 +35,12 @@ export default new Router({
       }
     },
     {
+      path: "/queue",
+      name: "queue",
+      component: () =>
+        import(/* webpackChunkName: "core" */ "@/components/Queue")
+    },
+    {
       path: "/about",
       name: "about",
       component: () =>

@@ -12,7 +12,6 @@ export default {
     messageDisplayDuration: 10000,
     messages: [],
     theme: 'light',
-    queueExpanded: false,
     notifications: {
       inbox: 0,
       pendingReviewEdits: 0,
@@ -107,9 +106,6 @@ export default {
     },
     theme: (state, value) => {
       state.theme = value
-    },
-    queueExpanded: (state, value) => {
-      state.queueExpanded = value
     },
     addMessage (state, message) {
       state.messages.push(message)
