@@ -9,107 +9,83 @@
       <div class="ui fluid container">
         <div class="ui stackable grid" id="queue-grid">
           <div class="ui sixteen wide mobile ten wide computer column queue-column">
-
-            <div class="ui text container">
-              <div class="ui sticky basic clearing fixed-header segment">
-                <h2 class="ui header">
-                  <div class="content">
-                    <button class="ui right floated circular basic icon button dropdown controls-dropdown">
-                      <i class="ellipsis vertical icon"></i>
-                      <div
-                        v-if="$store.state.ui.notifications.pendingReviewEdits + $store.state.ui.notifications.pendingReviewReports > 0"
-                        :class="['ui', 'teal', 'mini', 'bottom floating', 'circular', 'label']">{{ $store.state.ui.notifications.pendingReviewEdits + $store.state.ui.notifications.pendingReviewReports }}</div>
-                      <div class="menu">
-                        <div
-                          role="button"
-                          class="item"
-                          @click="$store.dispatch('queue/shuffle')">
-                          <translate translate-context="*/Queue/*/Verb">Shuffle</translate>
-                        </div>
-                        <div
-                          role="button"
-                          class="item"
-                          @click="$store.dispatch('queue/clean'); $router.go(-1)">
-                          <translate translate-context="*/Queue/*/Verb">Clear</translate>
-                        </div>
-                        <div
-                          role="button"
-                          class="item"
-                          @click="$router.go(-1)">
-                          <translate translate-context="*/*/Button.Label/Verb">Close</translate>
-                        </div>
-                      </div>
-                    </button>
-                    {{ labels.queue }}
-                    <div class="sub header">
-                      <div>
-                        <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
-                          Track %{ index } of %{ length }
-                        </translate><template v-if="!$store.state.radios.running"> -
-                          <span :title="labels.duration">
-                            {{ timeLeft }}
-                          </span>
-                        </template>
-                      </div>
+            <div class="ui sticky basic clearing fixed-header segment">
+              <h2 class="ui header">
+                <div class="content">
+                  <button
+                    class="ui right floated basic icon button"
+                    @click="$store.dispatch('queue/clean'); $router.go(-1)">
+                      <translate translate-context="*/Queue/*/Verb">Clear</translate>
+                  </button>
+                  {{ labels.queue }}
+                  <div class="sub header">
+                    <div>
+                      <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
+                        Track %{ index } of %{ length }
+                      </translate><template v-if="!$store.state.radios.running"> -
+                        <span :title="labels.duration">
+                          {{ timeLeft }}
+                        </span>
+                      </template>
                     </div>
-                  </div>
-                </h2>
-                <div v-if="$store.state.radios.running" class="ui black message">
-                  <div class="content">
-                    <div class="header">
-                      <i class="feed icon"></i> <translate translate-context="Sidebar/Player/Title">You have a radio playing</translate>
-                    </div>
-                    <p><translate translate-context="Sidebar/Player/Paragraph">New tracks will be appended here automatically.</translate></p>
-                    <div @click="$store.dispatch('radios/stop')" class="ui basic inverted red button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
                   </div>
                 </div>
+              </h2>
+              <div v-if="$store.state.radios.running" class="ui black message">
+                <div class="content">
+                  <div class="header">
+                    <i class="feed icon"></i> <translate translate-context="Sidebar/Player/Title">You have a radio playing</translate>
+                  </div>
+                  <p><translate translate-context="Sidebar/Player/Paragraph">New tracks will be appended here automatically.</translate></p>
+                  <div @click="$store.dispatch('radios/stop')" class="ui basic inverted red button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
+                </div>
               </div>
-              <table class="ui compact very basic fixed single line selectable unstackable table">
-                <draggable v-model="tracks" tag="tbody" @update="reorder" handle=".handle">
-                  <tr
-                    @click="$store.dispatch('queue/currentIndex', index)"
-                    v-for="(track, index) in tracks"
-                    :key="index"
-                    :class="['queue-item', {'active': index === queue.currentIndex}]">
-                    <td class="handle">
-                      <i class="arrows alternate grey icon"></i>
-                    </td>
-                    <td class="image-cell">
-                      <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
-                      <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
-                    </td>
-                    <td colspan="3">
-                      <button class="title reset ellipsis" :title="track.title" :aria-label="labels.selectTrack">
-                        <strong>{{ track.title }}</strong><br />
-                        <span>
-                          {{ track.artist.name }}
-                        </span>
-                      </button>
-                    </td>
-                    <td class="duration-cell">
-                      <template v-if="track.uploads.length > 0">
-                        {{ time.durationFormatted(track.uploads[0].duration) }}
-                      </template>
-                    </td>
-                    <td class="controls">
-                      <template v-if="$store.getters['favorites/isFavorite'](track.id)">
-                        <i class="pink heart icon"></i>
-                      </template>
-                      <button :title="labels.removeFromQueue" @click.stop="cleanTrack(index)" :class="['ui', 'really', 'tiny', 'basic', 'circular', 'icon', 'button']">
-                        <i class="x icon"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </draggable>
-              </table>
             </div>
+            <table class="ui compact very basic fixed single line selectable unstackable table">
+              <draggable v-model="tracks" tag="tbody" @update="reorder" handle=".handle">
+                <tr
+                  @click="$store.dispatch('queue/currentIndex', index)"
+                  v-for="(track, index) in tracks"
+                  :key="index"
+                  :class="['queue-item', {'active': index === queue.currentIndex}]">
+                  <td class="handle">
+                    <i class="arrows alternate grey icon"></i>
+                  </td>
+                  <td class="image-cell">
+                    <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
+                    <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
+                  </td>
+                  <td colspan="3">
+                    <button class="title reset ellipsis" :title="track.title" :aria-label="labels.selectTrack">
+                      <strong>{{ track.title }}</strong><br />
+                      <span>
+                        {{ track.artist.name }}
+                      </span>
+                    </button>
+                  </td>
+                  <td class="duration-cell">
+                    <template v-if="track.uploads.length > 0">
+                      {{ time.durationFormatted(track.uploads[0].duration) }}
+                    </template>
+                  </td>
+                  <td class="controls">
+                    <template v-if="$store.getters['favorites/isFavorite'](track.id)">
+                      <i class="pink heart icon"></i>
+                    </template>
+                    <button :title="labels.removeFromQueue" @click.stop="cleanTrack(index)" :class="['ui', 'really', 'tiny', 'basic', 'circular', 'icon', 'button']">
+                      <i class="x icon"></i>
+                    </button>
+                  </td>
+                </tr>
+              </draggable>
+            </table>
           </div>
           <div class="ui six wide column current-track">
             <div class="ui basic segment" id="player">
               <template v-if="currentTrack">
                 <img class="ui image" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.square_crop)">
                 <img class="ui image" v-else src="../assets/audio/default-cover.png">
-                <h3 class="ui header">
+                <h1 class="ui header">
                   <div class="content ellipsis">
                     <router-link class="small header discrete link track" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
                       {{ currentTrack.title | truncate(35) }}
@@ -121,7 +97,7 @@
                       </router-link>
                     </div>
                   </div>
-                </h3>
+                </h1>
                 <div class="ui small warning message" v-if="currentTrack && errored">
                   <div class="header">
                     <translate translate-context="Sidebar/Player/Error message.Title">The track cannot be loaded</translate>
@@ -151,6 +127,17 @@
                     :title="labels.addArtistContentFilter">
                     <i :class="['eye slash outline', 'basic', 'icon']"></i>
                   </button>
+
+
+                    <span
+                      role="button"
+                      :title="labels.info"
+                      :aria-label="labels.info"
+                      class="control"
+                      @click.prevent.stop="info"
+                      :disabled="!currentTrack">
+                        <i :class="['ui', {'disabled': !currentTrack}, 'circle info', 'icon']" ></i>
+                    </span>
                 </div>
                 <div class="progress-wrapper">
                   <div class="progress-area" v-if="currentTrack && !errored">
@@ -174,44 +161,7 @@
                   </div>
                 </div>
                 <div class="player-controls">
-                  <div
-                    class="control volume-control"
-                    v-on:mouseover="showVolume = true"
-                    v-on:mouseleave="showVolume = false"
-                    v-bind:class="{ active : showVolume }">
-                    <span
-                      role="button"
-                      v-if="volume === 0"
-                      :title="labels.unmute"
-                      :aria-label="labels.unmute"
-                      @click.prevent.stop="unmute">
-                      <i class="volume off icon"></i>
-                    </span>
-                    <span
-                      role="button"
-                      v-else-if="volume < 0.5"
-                      :title="labels.mute"
-                      :aria-label="labels.mute"
-                      @click.prevent.stop="mute">
-                      <i class="volume down icon"></i>
-                    </span>
-                    <span
-                      role="button"
-                      v-else
-                      :title="labels.mute"
-                      :aria-label="labels.mute"
-                      @click.prevent.stop="mute">
-                      <i class="volume up icon"></i>
-                    </span>
-                    <input
-                      type="range"
-                      step="0.05"
-                      min="0"
-                      max="1"
-                      v-model="sliderVolume"
-                      v-if="showVolume" />
-                  </div>
-                  <template v-if="!showVolume">
+                  <template>
                     <span
                       role="button"
                       :title="labels.previousTrack"
@@ -249,22 +199,13 @@
                       :disabled="!hasNext">
                         <i :class="['ui', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
                     </span>
-
-
-                    <span
-                      role="button"
-                      :title="labels.info"
-                      :aria-label="labels.info"
-                      class="control"
-                      @click.prevent.stop="info"
-                      :disabled="!currentTrack">
-                        <i :class="['ui', {'disabled': !currentTrack}, 'circle info', 'icon']" ></i>
-                    </span>
                   </template>
                 </div>
-                <div class="queue-controls">
-                  <span
+                <div class="ui basic segment fixed-footer queue-controls">
+                  <div>
+                    <span
                       role="button"
+                      class="control"
                       v-if="looping === 0"
                       :title="labels.loopingDisabled"
                       :aria-label="labels.loopingDisabled"
@@ -274,11 +215,11 @@
                     </span>
                     <span
                       role="button"
+                      class="looping control"
                       @click.prevent.stop="$store.commit('player/looping', 2)"
                       :title="labels.loopingSingle"
                       :aria-label="labels.loopingSingle"
                       v-if="looping === 1"
-                      class="looping"
                       :disabled="!currentTrack">
                       <i
                         class="repeat icon">
@@ -287,6 +228,7 @@
                     </span>
                     <span
                       role="button"
+                      class="control"
                       :title="labels.loopingWhole"
                       :aria-label="labels.loopingWhole"
                       v-if="looping === 2"
@@ -298,6 +240,7 @@
                     </span>
                     <span
                       role="button"
+                      class="control"
                       :disabled="queue.tracks.length === 0"
                       :title="labels.shuffle"
                       :aria-label="labels.shuffle"
@@ -305,10 +248,55 @@
                       <div v-if="isShuffling" class="ui inline shuffling inverted tiny active loader"></div>
                       <i v-else :class="['ui', 'random', {'disabled': queue.tracks.length === 0}, 'icon']" ></i>
                     </span>
-                  <div class="position">
-                    <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
-                      %{ index } of %{ length }
-                    </translate>
+                  </div>
+                  <div>
+                    <span class="position control" role="button" @click.stop="$router.push('/queue')">
+                      <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
+                        %{ index } of %{ length }
+                      </translate>
+                      <i class="bars icon"></i>
+                    </span>
+                    <span
+                      class="control volume-control"
+                      v-on:mouseover="showVolume = true"
+                      v-on:mouseleave="showVolume = false"
+                      v-bind:class="{ active : showVolume }">
+                      <span
+                        role="button"
+                        v-if="volume === 0"
+                        :title="labels.unmute"
+                        :aria-label="labels.unmute"
+                        @click.prevent.stop="unmute">
+                        <i class="volume off icon"></i>
+                      </span>
+                      <span
+                        role="button"
+                        v-else-if="volume < 0.5"
+                        :title="labels.mute"
+                        :aria-label="labels.mute"
+                        @click.prevent.stop="mute">
+                        <i class="volume down icon"></i>
+                      </span>
+                      <span
+                        role="button"
+                        v-else
+                        :title="labels.mute"
+                        :aria-label="labels.mute"
+                        @click.prevent.stop="mute">
+                        <i class="volume up icon"></i>
+                      </span>
+                      <input
+                        type="range"
+                        step="0.05"
+                        min="0"
+                        max="1"
+                        v-model="sliderVolume" />
+                    </span>
+                    <span
+                      class="control close-control"
+                      @click.stop="$router.go(-1)">
+                      <i class="down angle icon"></i>
+                    </span>
                   </div>
                 </div>
               </template>
@@ -467,6 +455,14 @@ export default {
         })
       },
       immediate: true
+    },
+    '$store.state.queue.tracks': {
+      handler (v) {
+        if (!v || v.length === 0) {
+          this.$router.push('/')
+        }
+      },
+      immediate: true
     }
   }
 }
@@ -479,10 +475,34 @@ export default {
   top: 1em;
   right: 1em;
   z-index: 9999999;
-}
-.stripe.segment:not(.player-focused) #queue-grid .current-track {
   @include media("<desktop") {
     display: none;
+  }
+}
+.stripe.segment:not(.player-focused) #player > *:not(.queue-controls) {
+  @include media("<desktop") {
+    display: none;
+  }
+}
+.queue.segment:not(.player-focused) .queue-controls {
+   @include media("<desktop") {
+    padding: 0.5em;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    .position.control {
+      display: none;
+    }
+    .clear.control {
+      display: block;
+    }
+  }
+}
+.queue.segment #player {
+  padding: 0em;
+  > * {
+    padding: 0.5em;
   }
 }
 .player-focused .grid > .ui.queue-column {
@@ -505,12 +525,13 @@ td:last-child {
 .image-cell {
   width: 4em;
 }
-.queue.segment > .container {
-  margin: 0 !important;
-}
-#queue-grid > .text.container {
-  padding: 0;
-  margin: 0 !important;
+.queue.segment {
+  @include media("<desktop") {
+    padding: 0;
+  }
+  > .container {
+    margin: 0 !important;
+  }
 }
 .handle {
   @include media("<desktop") {
@@ -522,15 +543,16 @@ td:last-child {
     display: none;
   }
 }
-
+.fixed-header {
+  @include media("<desktop") {
+    padding: 1em;
+  }
+}
 .sticky .header .content {
   display: block;
 }
-.sticky.segment {
-  padding-left: 0;
-  padding-right: 0;
-}
 .current-track #player {
+  font-size: 1.8em;
   padding: 1em;
   text-align: center;
   display: flex;
@@ -542,17 +564,23 @@ td:last-child {
   bottom: 0;
   top: 0;
   @include media("<desktop") {
+    padding: 0.5em;
+    font-size: 1.5em;
+    justify-content: space-between;
     width: 100%;
     width: 100vw;
     left: 0;
     right: 0;
-    justify-content: center;
     > .image {
       max-height: 50vh;
     }
   }
   > *:not(.image) {
     width: 100%;
+  }
+  h1 {
+    margin: 0;
+    min-height: auto;
   }
 }
 .progress-area {
@@ -587,10 +615,79 @@ td:last-child {
 .ui.progress {
   margin: 0.5rem 0;
 }
+.timer {
+  font-size: 0.7em;
+}
 .progress {
   cursor: pointer;
   .bar {
     min-width: 0 !important;
+  }
+}
+
+
+.queue-controls {
+  display: flex;
+  padding: 0;
+  padding-top: 0.5em;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1em;
+  &.fixed-footer.segment {
+    @include media(">=desktop") {
+      box-shadow: none;
+    }
+  }
+  .control:not(:first-child) {
+    margin-left: 1em;
+  }
+  .position {
+    @include media(">=desktop") {
+      display: none;
+    }
+  }
+  .volume-control {
+    @include media("<desktop") {
+      display: none;
+    }
+  }
+  .close-control {
+    @include media(">=desktop") {
+      display: none;
+    }
+  }
+  .icon {
+    font-size: 1em;
+  }
+}
+.player-controls {
+  .control:not(:first-child) {
+    margin-left: 1em;
+  }
+  .icon {
+    font-size: 1.5em;
+  }
+}
+.looping {
+  i {
+    position: relative;
+  }
+  .ui.circular.label {
+    position: absolute;
+    font-size: 0.35em !important;
+    bottom: -0.5rem;
+    right: -0.5rem;
+    padding: 0.4em !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+  }
+}
+.volume-control {
+  display: flex;
+  line-height: inherit;
+  align-items: center;
+  input {
+    max-width: 5em;
   }
 }
 </style>

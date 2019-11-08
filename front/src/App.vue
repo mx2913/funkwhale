@@ -13,8 +13,8 @@
       <set-instance-modal @update:show="showSetInstanceModal = $event" :show="showSetInstanceModal"></set-instance-modal>
       <service-messages v-if="messages.length > 0"/>
       <router-view :key="$route.fullPath"></router-view>
-      <div v-if="currentTrack" class="ui mobile-player">
-        <div class="ui inverted segment fixed-controls">
+      <div v-if="currentTrack && $route.name != 'queue'" class="ui mobile-player">
+        <div class="ui segment fixed-controls">
           <div
             :class="['ui', 'top attached', 'small', 'orange', 'inverted', {'indicating': isLoadingAudio}, 'progress']">
             <div class="buffer bar" :data-percent="bufferProgress" :style="{ 'width': bufferProgress + '%' }"></div>
@@ -442,6 +442,7 @@ export default {
   width: 100vw;
   border-radius: 0;
   padding: 0em;
+  padding-right: 0.5em;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -449,7 +450,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content:space-between;
-
+  height: $mobile-player-height;
   .indicating.progress {
     overflow: hidden;
   }
@@ -458,9 +459,8 @@ export default {
     transition: none;
   }
 
-  .ui.inverted.progress .buffer.bar {
+  .ui.progress .buffer.bar {
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.15);
   }
 
   @keyframes MOVE-BG {
@@ -506,11 +506,8 @@ export default {
     text-align: right;
     padding-right: 0.5em;
     .icon {
-      font-size: 1.9em;
+      font-size: 1.6em;
     }
-  }
-  > .content a {
-    color: white;
   }
 }
 </style>

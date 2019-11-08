@@ -81,7 +81,7 @@
 
 $desktop-sidebar-width: 275px;
 $widedesktop-sidebar-width: 275px;
-$mobile-player-height: 4em;
+$mobile-player-height: 4rem;
 
 html,
 body {
@@ -97,7 +97,7 @@ body {
   min-height: 100vh;
   flex-direction: column;
   @include media("<desktop") {
-    padding-bottom: $mobile-player-height + 0.5em;
+    padding-bottom: $mobile-player-height + 0.5rem;
   }
 }
 
@@ -407,6 +407,12 @@ input + .help {
 
 .mobile-player {
   height: $mobile-player-height;
+}
+.queue-controls {
+
+  @include media("<desktop") {
+    height: $mobile-player-height;
+  }
 }
 @import "./themes/_light.scss";
 @import "./themes/_dark.scss";
