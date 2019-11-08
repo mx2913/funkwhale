@@ -155,8 +155,8 @@
                       <span class="right floated timer total">{{durationFormatted}}</span>
                     </template>
                     <template v-else>
-                      <span class="left floated">00:00</span>
-                      <span class="right floated">00:00</span>
+                      <span class="left floated timer">00:00</span>
+                      <span class="right floated timer">00:00</span>
                     </template>
                   </div>
                 </div>
@@ -338,7 +338,9 @@ export default {
     this.$nextTick(() => {
       $(this.$el).find('.ui.sticky').sticky({context: '#queue-grid'})
       $(this.$el).find('.controls-dropdown').dropdown({action: 'hide'})
-      this.scrollToCurrent()
+      setTimeout(() => {
+        this.scrollToCurrent()
+      }, 500);
     })
   },
   computed: {
@@ -484,18 +486,25 @@ export default {
     display: none;
   }
 }
-.queue.segment:not(.player-focused) .queue-controls {
-   @include media("<desktop") {
-    padding: 0.5em;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    .position.control {
-      display: none;
+.queue.segment:not(.player-focused) {
+  #player {
+    @include media("<desktop") {
+      height: 0;
     }
-    .clear.control {
-      display: block;
+  }
+  .queue-controls {
+    @include media("<desktop") {
+      padding: 0.5em;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      .position.control {
+        display: none;
+      }
+      .clear.control {
+        display: block;
+      }
     }
   }
 }
@@ -563,6 +572,7 @@ td:last-child {
   flex-direction: column;
   bottom: 0;
   top: 0;
+  width: 32%;
   @include media("<desktop") {
     padding: 0.5em;
     font-size: 1.5em;

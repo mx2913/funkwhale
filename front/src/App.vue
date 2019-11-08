@@ -27,15 +27,15 @@
           </div>
           <div class="middle aligned content ellipsis">
             <strong>
-              <router-link class="header" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
+              <router-link class="header discrete link" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
                 {{ currentTrack.title }}
               </router-link>
             </strong>
             <div class="meta">
-              <router-link :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
+              <router-link class="discrete link" :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
                 {{ currentTrack.artist.name }}
               </router-link> /
-              <router-link :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
+              <router-link class="discrete link" :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
                 {{ currentTrack.album.title }}
               </router-link>
             </div>

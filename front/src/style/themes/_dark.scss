@@ -287,8 +287,10 @@ $link-color: rgb(255, 144, 0);
     box-shadow: inset 0px -1px 0px 0px rgba(34, 36, 38, 0.15);
   }
   .ui.fixed-footer.segment {
-    background-color: $background-color;
     box-shadow: inset 0px 1px 0px 0px rgba(34, 36, 38, 0.15);
+  }
+  @include media("<desktop") {
+    background-color: $background-color;
   }
 }
 
