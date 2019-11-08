@@ -169,6 +169,9 @@ body {
   position: fixed;
   bottom: 1em;
   left: 1em;
+  @include media("<desktop") {
+    bottom: $mobile-player-height + 0.5rem;
+  }
   @include media(">desktop") {
     left: $desktop-sidebar-width;
   }
@@ -407,6 +410,11 @@ input + .help {
 
 .mobile-player {
   height: $mobile-player-height;
+}
+.queue.segment.player-focused #queue-grid #player {
+  @include media("<desktop") {
+    padding-bottom: $mobile-player-height;
+  }
 }
 .queue-controls {
 

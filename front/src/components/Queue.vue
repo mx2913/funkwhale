@@ -14,7 +14,7 @@
                 <div class="content">
                   <button
                     class="ui right floated basic icon button"
-                    @click="$store.dispatch('queue/clean'); $router.go(-1)">
+                    @click="$store.dispatch('queue/clean'); $store.dispatch('ui/hideQueue', {router: $router})">
                       <translate translate-context="*/Queue/*/Verb">Clear</translate>
                   </button>
                   {{ labels.queue }}
@@ -44,18 +44,17 @@
             <table class="ui compact very basic fixed single line selectable unstackable table">
               <draggable v-model="tracks" tag="tbody" @update="reorder" handle=".handle">
                 <tr
-                  @click="$store.dispatch('queue/currentIndex', index)"
                   v-for="(track, index) in tracks"
                   :key="index"
                   :class="['queue-item', {'active': index === queue.currentIndex}]">
                   <td class="handle">
                     <i class="arrows alternate grey icon"></i>
                   </td>
-                  <td class="image-cell">
+                  <td class="image-cell" @click="$store.dispatch('queue/currentIndex', index)">
                     <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
                     <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
                   </td>
-                  <td colspan="3">
+                  <td colspan="3" @click="$store.dispatch('queue/currentIndex', index)">
                     <button class="title reset ellipsis" :title="track.title" :aria-label="labels.selectTrack">
                       <strong>{{ track.title }}</strong><br />
                       <span>
@@ -86,7 +85,7 @@
                 <img class="ui image" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.square_crop)">
                 <img class="ui image" v-else src="../assets/audio/default-cover.png">
                 <h1 class="ui header">
-                  <div class="content ellipsis">
+                  <div class="content">
                     <router-link class="small header discrete link track" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
                       {{ currentTrack.title | truncate(35) }}
                     </router-link>
@@ -113,16 +112,14 @@
                 <div class="additional-controls">
                   <track-favorite-icon
                     v-if="$store.state.auth.authenticated"
-                    :class="{'inverted': !$store.getters['favorites/isFavorite'](currentTrack.id)}"
                     :track="currentTrack"></track-favorite-icon>
                   <track-playlist-icon
                     v-if="$store.state.auth.authenticated"
-                    :class="['inverted']"
                     :track="currentTrack"></track-playlist-icon>
                   <button
                     v-if="$store.state.auth.authenticated"
                     @click="$store.dispatch('moderation/hide', {type: 'artist', target: currentTrack.artist})"
-                    :class="['ui', 'really', 'basic', 'circular', 'inverted', 'icon', 'button']"
+                    :class="['ui', 'really', 'basic', 'circular', 'icon', 'button']"
                     :aria-label="labels.addArtistContentFilter"
                     :title="labels.addArtistContentFilter">
                     <i :class="['eye slash outline', 'basic', 'icon']"></i>
@@ -133,10 +130,10 @@
                       role="button"
                       :title="labels.info"
                       :aria-label="labels.info"
-                      class="control"
+                       :class="['ui', 'really', 'basic', 'circular', 'icon', 'button']"
                       @click.prevent.stop="info"
                       :disabled="!currentTrack">
-                        <i :class="['ui', {'disabled': !currentTrack}, 'circle info', 'icon']" ></i>
+                        <i :class="['ui', {'disabled': !currentTrack}, 'grey circle info', 'icon']" ></i>
                     </span>
                 </div>
                 <div class="progress-wrapper">
@@ -340,7 +337,7 @@ export default {
       $(this.$el).find('.controls-dropdown').dropdown({action: 'hide'})
       setTimeout(() => {
         this.scrollToCurrent()
-      }, 500);
+      }, 100);
     })
   },
   computed: {
@@ -461,7 +458,11 @@ export default {
     '$store.state.queue.tracks': {
       handler (v) {
         if (!v || v.length === 0) {
-          this.$router.push('/')
+          if (window.history.length > 2) {
+            this.$router.go(-1)
+          } else {
+            this.$router.push('/')
+          }
         }
       },
       immediate: true
@@ -494,11 +495,6 @@ export default {
   }
   .queue-controls {
     @include media("<desktop") {
-      padding: 0.5em;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
       .position.control {
         display: none;
       }
@@ -643,13 +639,20 @@ td:last-child {
   justify-content: space-between;
   align-items: center;
   font-size: 1.1em;
+  @include media("<desktop") {
+    padding: 0.5em;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
   &.fixed-footer.segment {
     @include media(">=desktop") {
       box-shadow: none;
     }
   }
   .control:not(:first-child) {
-    margin-left: 1em;
+    margin-left: 0.5em;
   }
   .position {
     @include media(">=desktop") {
