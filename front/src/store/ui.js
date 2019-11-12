@@ -28,22 +28,22 @@ export default {
     routePreferences: {
       "library.albums.browse": {
         paginateBy: 25,
-        orderingDirection: "+",
+        orderingDirection: "-",
         ordering: "creation_date",
       },
       "library.artists.browse": {
-        paginateBy: 25,
-        orderingDirection: "+",
+        paginateBy: 30,
+        orderingDirection: "-",
         ordering: "creation_date",
       },
       "library.radios.browse": {
-        paginateBy: 25,
-        orderingDirection: "+",
+        paginateBy: 12,
+        orderingDirection: "-",
         ordering: "creation_date",
       },
       "library.playlists.browse": {
         paginateBy: 25,
-        orderingDirection: "+",
+        orderingDirection: "-",
         ordering: "creation_date",
       },
     },
