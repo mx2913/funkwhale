@@ -22,6 +22,6 @@ if __name__ == "__main__":
         from funkwhale_api.cli import main
 
         sys.argv = sys.argv[1:]
-        main.base.cli()
+        main.invoke()
     else:
         execute_from_command_line(sys.argv)
