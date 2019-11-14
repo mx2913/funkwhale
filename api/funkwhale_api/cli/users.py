@@ -18,7 +18,13 @@ class FakeRequest(object):
 
 @transaction.atomic
 def handler_create_user(
-    username, password, email, is_superuser=False, is_staff=False, permissions=[]
+    username,
+    password,
+    email,
+    is_superuser=False,
+    is_staff=False,
+    permissions=[],
+    upload_quota=None,
 ):
     serializer = serializers.RS(
         data={
@@ -37,6 +43,7 @@ def handler_create_user(
     user = serializer.save(request=request)
     utils.logger.debug("Setting permissions and other attributes…")
     user.is_staff = is_staff
+    user.upload_quota = upload_quota
     user.is_superuser = is_superuser
     for permission in permissions:
         if permission in models.PERMISSIONS:
@@ -94,6 +101,14 @@ def users():
     "-e", "--email", help="Email address to associate with the account", required=True,
 )
 @click.option(
+    "-q",
+    "--upload-quota",
+    help="Upload quota (leave empty to use default pod quota)",
+    required=False,
+    default=None,
+    type=click.INT,
+)
+@click.option(
     "--superuser/--no-superuser", default=False,
 )
 @click.option(
@@ -102,7 +117,7 @@ def users():
 @click.option(
     "--permission", multiple=True,
 )
-def create(username, password, email, superuser, staff, permission):
+def create(username, password, email, superuser, staff, permission, upload_quota):
     """Create a new user"""
     generated_password = None
     if not password:
@@ -114,6 +129,7 @@ def create(username, password, email, superuser, staff, permission):
         is_superuser=superuser,
         is_staff=staff,
         permissions=permission,
+        upload_quota=upload_quota,
     )
     click.echo("User {} created!".format(user.username))
     if generated_password:

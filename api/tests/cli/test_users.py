@@ -10,6 +10,7 @@ def test_user_create_handler(factories, mocker, now):
         "is_superuser": False,
         "is_staff": True,
         "email": "hello@world.email",
+        "upload_quota": 35,
         "permissions": ["moderation"],
     }
     set_password = mocker.spy(users.models.User, "set_password")
@@ -20,6 +21,7 @@ def test_user_create_handler(factories, mocker, now):
     assert user.is_superuser == kwargs["is_superuser"]
     assert user.is_staff == kwargs["is_staff"]
     assert user.date_joined >= now
+    assert user.upload_quota == kwargs["upload_quota"]
     set_password.assert_called_once_with(user, kwargs["password"])
     create_actor.assert_called_once_with(user)
 
