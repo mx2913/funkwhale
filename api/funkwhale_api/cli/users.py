@@ -2,8 +2,10 @@ import click
 
 from django.db import transaction
 
+from funkwhale_api.federation import models as federation_models
 from funkwhale_api.users import models
 from funkwhale_api.users import serializers
+from funkwhale_api.users import tasks
 
 from . import base
 from . import utils
@@ -48,6 +50,32 @@ def handler_create_user(
     return user
 
 
+@transaction.atomic
+def handler_delete_user(usernames, soft=True):
+    for username in usernames:
+        click.echo("Deleting {}…".format(username))
+        actor = None
+        user = None
+        try:
+            user = models.User.objects.get(username=username)
+        except models.User.DoesNotExist:
+            try:
+                actor = federation_models.Actor.objects.local().get(
+                    preferred_username=username
+                )
+            except federation_models.Actor.DoesNotExist:
+                click.echo("  Not found, skipping")
+                continue
+
+        actor = actor or user.actor
+        if user:
+            tasks.delete_account(user_id=user.pk)
+        if not soft:
+            click.echo("  Hard delete, removing actor")
+            actor.delete()
+        click.echo("  Done")
+
+
 @base.cli.group()
 def users():
     """Manage users"""
@@ -90,3 +118,15 @@ def create(username, password, email, superuser, staff, permission):
     click.echo("User {} created!".format(user.username))
     if generated_password:
         click.echo("  Generated password: {}".format(generated_password))
+
+
+@base.delete_command(group=users, id_var="username")
+@click.argument("username", nargs=-1)
+@click.option(
+    "--hard/--no-hard",
+    default=False,
+    help="Purge all user-related info (allow recreating a user with the same username)",
+)
+def delete(username, hard):
+    """Delete given users"""
+    handler_delete_user(usernames=username, soft=not hard)

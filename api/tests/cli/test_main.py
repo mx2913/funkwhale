@@ -38,7 +38,29 @@ from funkwhale_api.cli import users
                     },
                 )
             ],
-        )
+        ),
+        (
+            ("users", "rm"),
+            ("testuser1", "testuser2", "--no-input"),
+            [
+                (
+                    users,
+                    "handler_delete_user",
+                    {"usernames": ("testuser1", "testuser2"), "soft": True},
+                )
+            ],
+        ),
+        (
+            ("users", "rm"),
+            ("testuser1", "testuser2", "--no-input", "--hard",),
+            [
+                (
+                    users,
+                    "handler_delete_user",
+                    {"usernames": ("testuser1", "testuser2"), "soft": False},
+                )
+            ],
+        ),
     ],
 )
 def test_cli(cmd, args, handlers, mocker):

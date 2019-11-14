@@ -2,7 +2,7 @@ import click
 import sys
 
 from . import base
-from . import users
+from . import users  # noqa
 
 from rest_framework.exceptions import ValidationError
 
