@@ -64,6 +64,43 @@ from funkwhale_api.cli import users
                 )
             ],
         ),
+        (
+            ("users", "set"),
+            (
+                "testuser1",
+                "testuser2",
+                "--no-input",
+                "--inactive",
+                "--upload-quota",
+                "35",
+                "--no-staff",
+                "--superuser",
+                "--permission-library",
+                "--no-permission-moderation",
+                "--no-permission-settings",
+                "--password",
+                "newpassword",
+            ),
+            [
+                (
+                    users,
+                    "handler_update_user",
+                    {
+                        "usernames": ("testuser1", "testuser2"),
+                        "kwargs": {
+                            "is_active": False,
+                            "upload_quota": 35,
+                            "is_staff": False,
+                            "is_superuser": True,
+                            "permission_library": True,
+                            "permission_moderation": False,
+                            "permission_settings": False,
+                            "password": "newpassword",
+                        },
+                    },
+                )
+            ],
+        ),
     ],
 )
 def test_cli(cmd, args, handlers, mocker):

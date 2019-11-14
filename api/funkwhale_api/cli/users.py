@@ -83,6 +83,47 @@ def handler_delete_user(usernames, soft=True):
         click.echo("  Done")
 
 
+@transaction.atomic
+def handler_update_user(usernames, kwargs):
+    users = models.User.objects.filter(username__in=usernames)
+    total = users.count()
+    if not total:
+        click.echo("No matching users")
+        return
+
+    final_kwargs = {}
+    supported_fields = [
+        "is_active",
+        "permission_moderation",
+        "permission_library",
+        "permission_settings",
+        "is_staff",
+        "is_superuser",
+        "upload_quota",
+        "password",
+    ]
+    for field in supported_fields:
+        try:
+            value = kwargs[field]
+        except KeyError:
+            continue
+        final_kwargs[field] = value
+
+    click.echo(
+        "Updating {} on {} matching users…".format(
+            ", ".join(final_kwargs.keys()), total
+        )
+    )
+    if "password" in final_kwargs:
+        new_password = final_kwargs.pop("password")
+        for user in users:
+            user.set_password(new_password)
+        models.User.objects.bulk_update(users, ["password"])
+    if final_kwargs:
+        users.update(**final_kwargs)
+    click.echo("Done!")
+
+
 @base.cli.group()
 def users():
     """Manage users"""
@@ -94,7 +135,7 @@ def users():
 @click.option(
     "-p",
     "--password",
-    envvar="PASSWORD",
+    envvar="FUNKWHALE_CLI_USER_PASSWORD",
     help="If not provided, a random password will be generated and displayed in console output",
 )
 @click.option(
@@ -146,3 +187,41 @@ def create(username, password, email, superuser, staff, permission, upload_quota
 def delete(username, hard):
     """Delete given users"""
     handler_delete_user(usernames=username, soft=not hard)
+
+
+@base.update_command(group=users, id_var="username")
+@click.argument("username", nargs=-1)
+@click.option(
+    "--active/--inactive",
+    help="Mark as active or inactive (inactive users cannot login or use the service)",
+    default=None,
+)
+@click.option("--superuser/--no-superuser", default=None)
+@click.option("--staff/--no-staff", default=None)
+@click.option("--permission-library/--no-permission-library", default=None)
+@click.option("--permission-moderation/--no-permission-moderation", default=None)
+@click.option("--permission-settings/--no-permission-settings", default=None)
+@click.option("--password", default=None, envvar="FUNKWHALE_CLI_USER_UPDATE_PASSWORD")
+@click.option(
+    "-q", "--upload-quota", type=click.INT,
+)
+def update(username, **kwargs):
+    """Update attributes for given users"""
+    field_mapping = {
+        "active": "is_active",
+        "superuser": "is_superuser",
+        "staff": "is_staff",
+    }
+    final_kwargs = {}
+    for cli_field, value in kwargs.items():
+        if value is None:
+            continue
+        model_field = (
+            field_mapping[cli_field] if cli_field in field_mapping else cli_field
+        )
+        final_kwargs[model_field] = value
+
+    if not final_kwargs:
+        raise click.BadArgumentUsage("You need to update at least one attribute")
+
+    handler_update_user(usernames=username, kwargs=final_kwargs)

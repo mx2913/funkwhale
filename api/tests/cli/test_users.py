@@ -85,3 +85,63 @@ def test_user_delete_handler_hard(factories, mocker, now):
 
     # not deleted
     user3.refresh_from_db()
+
+
+@pytest.mark.parametrize(
+    "params, expected",
+    [
+        ({"is_active": False}, {"is_active": False}),
+        (
+            {"is_staff": True, "is_superuser": True},
+            {"is_staff": True, "is_superuser": True},
+        ),
+        ({"upload_quota": 35}, {"upload_quota": 35}),
+        (
+            {
+                "permission_library": True,
+                "permission_moderation": True,
+                "permission_settings": True,
+            },
+            {
+                "all_permissions": {
+                    "library": True,
+                    "moderation": True,
+                    "settings": True,
+                }
+            },
+        ),
+    ],
+)
+def test_user_update_handler(params, expected, factories):
+    user1 = factories["federation.Actor"](local=True).user
+    user2 = factories["federation.Actor"](local=True).user
+    user3 = factories["federation.Actor"](local=True).user
+
+    def get_field_values(user):
+        return {f: getattr(user, f) for f, v in expected.items()}
+
+    unchanged = get_field_values(user3)
+
+    users.handler_update_user([user1.username, user2.username, "unknown"], params)
+
+    user1.refresh_from_db()
+    user2.refresh_from_db()
+    user3.refresh_from_db()
+
+    assert get_field_values(user1) == expected
+    assert get_field_values(user2) == expected
+    assert get_field_values(user3) == unchanged
+
+
+def test_user_update_handler_password(factories, mocker):
+    user = factories["federation.Actor"](local=True).user
+    current_password = user.password
+
+    set_password = mocker.spy(users.models.User, "set_password")
+
+    users.handler_update_user([user.username], {"password": "hello"})
+
+    user.refresh_from_db()
+
+    set_password.assert_called_once_with(user, "hello")
+    assert user.password != current_password

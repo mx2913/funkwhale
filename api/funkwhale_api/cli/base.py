@@ -42,3 +42,24 @@ def delete_command(
         return group.command(name)(decorated)
 
     return decorator
+
+
+def update_command(
+    group,
+    id_var="id",
+    name="set",
+    message_template="Do you want to update {} objects? This action may have irreversible consequnces.",
+):
+    """
+    Wrap a command to ensure it asks for confirmation before deletion, unless the --no-input
+    flag is provided
+    """
+
+    def decorator(f):
+        decorated = click.option("--no-input", is_flag=True)(f)
+        decorated = confirm_action(
+            decorated, id_var=id_var, message_template=message_template
+        )
+        return group.command(name)(decorated)
+
+    return decorator
