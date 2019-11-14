@@ -131,15 +131,22 @@ def users():
 
 
 @users.command()
-@click.argument("username")
+@click.option("--username", "-u", prompt=True, required=True)
 @click.option(
     "-p",
     "--password",
+    prompt="Password (leave empty to have a random one generated)",
+    hide_input=True,
     envvar="FUNKWHALE_CLI_USER_PASSWORD",
-    help="If not provided, a random password will be generated and displayed in console output",
+    default="",
+    help="If empty, a random password will be generated and displayed in console output",
 )
 @click.option(
-    "-e", "--email", help="Email address to associate with the account", required=True,
+    "-e",
+    "--email",
+    prompt=True,
+    help="Email address to associate with the account",
+    required=True,
 )
 @click.option(
     "-q",
@@ -161,7 +168,7 @@ def users():
 def create(username, password, email, superuser, staff, permission, upload_quota):
     """Create a new user"""
     generated_password = None
-    if not password:
+    if password == "":
         generated_password = models.User.objects.make_random_password()
     user = handler_create_user(
         username=username,

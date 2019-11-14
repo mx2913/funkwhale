@@ -12,6 +12,7 @@ from funkwhale_api.cli import users
         (
             ("users", "create"),
             (
+                "--username",
                 "testuser",
                 "--password",
                 "testpassword",
