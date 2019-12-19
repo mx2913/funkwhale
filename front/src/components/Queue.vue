@@ -476,7 +476,7 @@ export default {
   position: absolute;
   min-height: 100vh;
   width: 100vw;
-  z-index: 999;
+  z-index: 9999;
 }
 .main > .button {
   position: fixed;
