@@ -46,6 +46,26 @@ export default {
         orderingDirection: "-",
         ordering: "creation_date",
       },
+      "library.albums.me": {
+        paginateBy: 25,
+        orderingDirection: "-",
+        ordering: "creation_date",
+      },
+      "library.artists.me": {
+        paginateBy: 30,
+        orderingDirection: "-",
+        ordering: "creation_date",
+      },
+      "library.radios.me": {
+        paginateBy: 12,
+        orderingDirection: "-",
+        ordering: "creation_date",
+      },
+      "library.playlists.me": {
+        paginateBy: 25,
+        orderingDirection: "-",
+        ordering: "creation_date",
+      },
     },
   },
   getters: {
