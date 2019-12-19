@@ -337,7 +337,8 @@ export default {
       $(this.$el).find('.controls-dropdown').dropdown({action: 'hide'})
       setTimeout(() => {
         this.scrollToCurrent()
-      }, 100);
+        // delay is to let transition work
+      }, 400);
     })
   },
   computed: {
@@ -418,8 +419,7 @@ export default {
       const elementRect = current.getBoundingClientRect();
       const absoluteElementTop = elementRect.top + window.pageYOffset;
       const middle = absoluteElementTop - (window.innerHeight / 2);
-      window.scrollTo(0, middle);
-
+      window.scrollTo({top: middle, behaviour: 'smooth'});
     },
     touchProgress(e) {
       // todo
@@ -453,7 +453,6 @@ export default {
           this.scrollToCurrent()
         })
       },
-      immediate: true
     },
     '$store.state.queue.tracks': {
       handler (v) {
@@ -474,11 +473,9 @@ export default {
 @import "../style/vendor/media";
 
 .main {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  position: absolute;
+  min-height: 100vh;
+  width: 100vw;
   z-index: 999;
 }
 .main > .button {
