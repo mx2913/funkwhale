@@ -48,7 +48,7 @@
                   :key="index"
                   :class="['queue-item', {'active': index === queue.currentIndex}]">
                   <td class="handle">
-                    <i class="arrows alternate grey icon"></i>
+                    <i class="grip lines grey icon"></i>
                   </td>
                   <td class="image-cell" @click="$store.dispatch('queue/currentIndex', index)">
                     <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
@@ -251,7 +251,7 @@
                       <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
                         %{ index } of %{ length }
                       </translate>
-                      <i class="bars icon"></i>
+                      <i class="list ul icon"></i>
                     </span>
                     <span
                       class="control volume-control"

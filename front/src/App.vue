@@ -14,7 +14,7 @@
       <service-messages v-if="messages.length > 0"/>
       <router-view :key="$route.fullPath"></router-view>
       <div v-if="currentTrack && $route.name != 'queue'" class="ui mobile-player">
-        <div class="ui segment fixed-controls">
+        <div class="ui segment fixed-controls" @click.prevent.stop="toggleMobilePlayer">
           <div
             :class="['ui', 'top attached', 'small', 'orange', 'inverted', {'indicating': isLoadingAudio}, 'progress']">
             <div class="buffer bar" :data-percent="bufferProgress" :style="{ 'width': bufferProgress + '%' }"></div>
@@ -27,17 +27,10 @@
           </div>
           <div class="middle aligned content ellipsis">
             <strong>
-              <router-link class="header discrete link" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
-                {{ currentTrack.title }}
-              </router-link>
+              {{ currentTrack.title }}
             </strong>
             <div class="meta">
-              <router-link class="discrete link" :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
-                {{ currentTrack.artist.name }}
-              </router-link> /
-              <router-link class="discrete link" :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
-                {{ currentTrack.album.title }}
-              </router-link>
+                {{ currentTrack.artist.name }} / {{ currentTrack.album.title }}
             </div>
           </div>
           <div class="controls">
@@ -67,13 +60,6 @@
               @click.prevent.stop="$store.dispatch('queue/next')"
               :disabled="!hasNext">
                 <i :class="['ui', 'big', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
-            </span>
-            <span
-              role="button"
-              :title="labels.expandQueue"
-              @click.prevent.stop="toggleMobilePlayer"
-              class="control">
-                <i :class="['ui', 'big', ['queue', 'player'].indexOf($route.name) ? 'angle up' : 'angle down', 'icon']"></i>
             </span>
           </div>
         </div>
@@ -451,6 +437,7 @@ export default {
   align-items: center;
   justify-content:space-between;
   height: $mobile-player-height;
+  cursor: pointer;
   .indicating.progress {
     overflow: hidden;
   }
