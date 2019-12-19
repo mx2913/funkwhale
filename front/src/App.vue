@@ -15,57 +15,7 @@
       <transition :name="routeTransition">
         <router-view :key="$route.fullPath"></router-view>
       </transition>
-      <div v-if="currentTrack && $route.name != 'queue'" class="ui mobile-player">
-        <div class="ui segment fixed-controls" @click.prevent.stop="toggleMobilePlayer">
-          <div
-            :class="['ui', 'top attached', 'small', 'orange', 'inverted', {'indicating': isLoadingAudio}, 'progress']">
-            <div class="buffer bar" :data-percent="bufferProgress" :style="{ 'width': bufferProgress + '%' }"></div>
-            <div class="position bar" :data-percent="progress" :style="{ 'width': progress + '%' }"></div>
-          </div>
-
-          <div class="ui tiny image">
-            <img ref="cover" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
-            <img v-else src="./assets/audio/default-cover.png">
-          </div>
-          <div class="middle aligned content ellipsis">
-            <strong>
-              {{ currentTrack.title }}
-            </strong>
-            <div class="meta">
-                {{ currentTrack.artist.name }} / {{ currentTrack.album.title }}
-            </div>
-          </div>
-          <div class="controls">
-            <span
-              role="button"
-              v-if="!playing"
-              :title="labels.play"
-              :aria-label="labels.play"
-              @click.prevent.stop="togglePlay"
-              class="control">
-                <i :class="['ui', 'big', 'play', {'disabled': !currentTrack}, 'icon']"></i>
-            </span>
-            <span
-              role="button"
-              v-else
-              :title="labels.pause"
-              :aria-label="labels.pause"
-              @click.prevent.stop="togglePlay"
-              class="control">
-                <i :class="['ui', 'big', 'pause', {'disabled': !currentTrack}, 'icon']"></i>
-            </span>
-            <span
-              role="button"
-              :title="labels.next"
-              :aria-label="labels.next"
-              class="control"
-              @click.prevent.stop="$store.dispatch('queue/next')"
-              :disabled="!hasNext">
-                <i :class="['ui', 'big', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
-            </span>
-          </div>
-        </div>
-      </div>
+      <player></player>
       <app-footer
         v-if="$route.name != 'queue'"
         :version="version"
@@ -98,10 +48,12 @@ import FilterModal from '@/components/moderation/FilterModal'
 import ReportModal from '@/components/moderation/ReportModal'
 import ShortcutsModal from '@/components/ShortcutsModal'
 import SetInstanceModal from '@/components/SetInstanceModal'
+import Player from "@/components/audio/Player"
 
 export default {
   name: 'app',
   components: {
+    Player,
     Sidebar,
     AppFooter,
     FilterModal,
@@ -202,9 +154,6 @@ export default {
     this.disconnect()
   },
   methods: {
-    ...mapActions({
-      togglePlay: "player/togglePlay",
-    }),
     incrementNotificationCountInSidebar (event) {
       this.$store.commit('ui/incrementNotifications', {type: 'inbox', count: 1})
     },
@@ -289,14 +238,6 @@ export default {
       parts.push(this.$store.state.instance.settings.instance.name.value || 'Funkwhale')
       document.title = parts.join(' – ')
     },
-
-    toggleMobilePlayer () {
-      if (this.$route.name === 'queue' && this.$route.hash === '#player') {
-        this.$router.go(-1)
-      } else {
-        this.$router.push('/queue#player')
-      }
-    }
   },
   computed: {
     ...mapState({
@@ -422,20 +363,35 @@ export default {
 <style lang="scss">
 @import "style/_main";
 
-.ui.mobile-player {
+.ui.bottom-player {
   z-index: 999999;
   width: 100%;
   width: 100vw;
-  @include media(">desktop") {
-    display: none;
+}
+#app.queue-focused {
+  .ui.bottom-player {
+    @include media(">desktop") {
+      display: none;
+    }
+  }
+  .queue-not-focused {
+    @include media("<desktop") {
+      display: none;
+    }
   }
 }
-.ui.mobile-player > .segment.fixed-controls {
+#app:not(.queue-focused) {
+  .when-queue-focused {
+    @include media("<desktop") {
+      display: none;
+    }
+  }
+}
+.ui.bottom-player > .segment.fixed-controls {
   width: 100%;
   width: 100vw;
   border-radius: 0;
   padding: 0em;
-  padding-right: 0.5em;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -443,8 +399,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content:space-between;
-  height: $mobile-player-height;
+  height: $bottom-player-height;
   cursor: pointer;
+  .position.control, .progress.control {
+    font-size: 1.2em;
+  }
   .indicating.progress {
     overflow: hidden;
   }
@@ -487,20 +446,28 @@ export default {
     background: #ff851b;
     min-width: 0;
   }
-  > .image {
-    padding-right: 0.5em;
-    > img {
-      height: 4.7em;
-      width: 4.7em;
-      max-width: 4.7em;
+  >  {
+    .track-controls {
+      display: flex;
+      align-items: center;
+      .image {
+        padding: 0.5em;
+        > img {
+          height: 4.7em;
+          width: 4.7em;
+          max-width: 4.7em;
+        }
+      }
     }
   }
   > .controls {
     min-width: 8em;
-    text-align: right;
     padding-right: 0.5em;
     .icon {
       font-size: 1.6em;
+    }
+    &:not(.track-controls) {
+      justify-content: space-around;
     }
   }
 }

@@ -56,6 +56,9 @@ export default {
     hasNext: state => {
       return state.currentIndex < state.tracks.length - 1
     },
+    hasPrevious: state => {
+      return state.currentIndex > 0 && state.tracks.length > 1
+    },
     isEmpty: state => state.tracks.length === 0
   },
   actions: {

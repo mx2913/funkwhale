@@ -1,16 +1,14 @@
 <template>
 <aside :class="['ui', 'vertical', 'left', 'visible', 'wide', {'collapsed': isCollapsed}, 'sidebar',]">
-  <header class="ui inverted segment header-wrapper">
-    <router-link :title="'Funkwhale'" :to="{name: logoUrl}">
+  <header class="ui basic segment header-wrapper">
+    <router-link v-if="!$store.state.auth.authenticated" class="logo-wrapper" :to="{name: logoUrl}">
+      <img src="../assets/logo/logo-full-500.png" />
+    </router-link>
+    <router-link v-else :title="'Funkwhale'" :to="{name: logoUrl}">
       <i class="logo bordered inverted orange big icon">
         <logo class="logo"></logo>
       </i>
     </router-link>
-    <nav class="top ui compact left aligned text menu title-menu" v-if="!$store.state.auth.authenticated">
-      <router-link class="item" :to="{name: logoUrl}">
-        Funkwhale
-      </router-link>
-    </nav>
     <nav class="top ui compact right aligned grey text menu">
       <template v-if="$store.state.auth.authenticated">
 
@@ -90,13 +88,14 @@
 
         <span
           @click="isCollapsed = !isCollapsed"
-          :class="['ui', 'basic', 'big', {'inverted': isCollapsed}, 'orange', 'icon', 'collapse', 'button']">
+          :class="['ui', 'basic', 'big', {'orange': !isCollapsed}, 'icon', 'collapse', 'button']">
             <i class="sidebar icon"></i></span>
       </div>
     </nav>
   </header>
-  <search-bar @search="isCollapsed = false">
-  </search-bar>
+  <div class="ui basic search-wrapper segment">
+    <search-bar @search="isCollapsed = false"></search-bar>
+  </div>
   <div v-if="!$store.state.auth.authenticated" class="ui basic signup segment">
     <router-link class="ui fluid tiny primary button" :to="{name: 'login'}"><translate translate-context="*/Login/*/Verb">Login</translate></router-link>
     <div class="ui small hidden divider"></div>
@@ -107,7 +106,7 @@
   <nav class="secondary" role="navigation">
     <div class="ui small hidden divider"></div>
     <section :class="['ui', 'bottom', 'attached', {active: selectedTab === 'library'}, 'tab']" :aria-label="labels.mainMenu">
-      <nav class="ui inverted vertical large fluid menu" role="navigation" :aria-label="labels.mainMenu">
+      <nav class="ui vertical large fluid secondary menu" role="navigation" :aria-label="labels.mainMenu">
         <div class="item">
           <header class="header" @click="exploreExpanded = !exploreExpanded">
             <translate translate-context="*/*/*/Verb">Explore</translate>
@@ -154,20 +153,18 @@
           </translate>
         </p>
         <div class="ui two buttons">
-          <div @click="queue.restore()" class="ui basic inverted green button"><translate translate-context="*/*/*">Yes</translate></div>
-          <div @click="queue.removePrevious()" class="ui basic inverted red button"><translate translate-context="*/*/*">No</translate></div>
+          <div @click="queue.restore()" class="ui basic green button"><translate translate-context="*/*/*">Yes</translate></div>
+          <div @click="queue.removePrevious()" class="ui basic red button"><translate translate-context="*/*/*">No</translate></div>
         </div>
       </div>
     </div>
   </nav>
-  <player></player>
 </aside>
 </template>
 
 <script>
 import { mapState, mapActions, mapGetters } from "vuex"
 
-import Player from "@/components/audio/Player"
 import Logo from "@/components/Logo"
 import SearchBar from "@/components/audio/SearchBar"
 import backend from "@/audio/backend"
@@ -177,7 +174,6 @@ import $ from "jquery"
 export default {
   name: "sidebar",
   components: {
-    Player,
     SearchBar,
     Logo
   },
@@ -330,7 +326,7 @@ export default {
 <style scoped lang="scss">
 @import "../style/vendor/media";
 
-$sidebar-color: #3d3e3f;
+$sidebar-color: #F8F8F8;
 
 .sidebar {
   background: $sidebar-color;
@@ -395,7 +391,7 @@ $sidebar-color: #3d3e3f;
       margin: 0 0.5em 0 0;
     }
     &:not(.active) {
-      color: rgba(255, 255, 255, 0.75);
+      // color: rgba(255, 255, 255, 0.75);
     }
   }
 }
@@ -445,15 +441,13 @@ $sidebar-color: #3d3e3f;
   left: 0;
   right: auto;
 }
-.ui.inverted.segment.header-wrapper {
+.ui.segment.header-wrapper {
   padding: 0;
   display: flex;
   justify-content: space-between;
   height: 4em;
 }
-.fluid.category.search {
-  height: 4em;
-}
+
 nav.top.title-menu {
   flex-grow: 1;
   .item {
@@ -467,20 +461,14 @@ nav.top.title-menu {
   margin: 0px;
 }
 
-.ui.search {
-  display: flex;
-
-  .collapse.button,
-  .collapse.button:hover,
-  .collapse.button:active {
-    box-shadow: none !important;
-    margin: 0px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.collapsed .search-wrapper {
+  @include media("<desktop") {
+    padding: 0;
   }
 }
-
+.ui.search {
+  display: flex;
+}
 .ui.message.black {
   background: $sidebar-color;
 }
@@ -492,10 +480,10 @@ nav.top {
   align-items: self-end;
   padding: 0.5em 0;
   > .item, > .right.menu > .item {
-    color: rgba(255, 255, 255, 0.9) !important;
+    // color: rgba(255, 255, 255, 0.9) !important;
     font-size: 1.2em;
     &:hover, > .dropdown > .icon {
-      color: rgba(255, 255, 255, 0.9) !important;
+      // color: rgba(255, 255, 255, 0.9) !important;
     }
     > .label, > .dropdown > .label {
       font-size: 0.5em;
@@ -507,6 +495,24 @@ nav.top {
 }
 .ui.user-dropdown > .text > .label {
   margin-right: 0;
+}
+.logo-wrapper {
+  padding: 1em;
+  display: inline-block;
+  margin: 0 auto;
+  @include media("<desktop") {
+    margin: 0;
+  }
+  img {
+    height: 2em;
+    display: inline-block;
+    margin: 0 auto;
+  }
+  @include media(">tablet") {
+    img {
+      height: 2.5em;
+    }
+  }
 }
 </style>
 

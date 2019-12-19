@@ -1,19 +1,81 @@
 <template>
-  <section class="player-wrapper">
-    <div
-      class="ui queue-item inverted vertical segment"
-      @click="toggleQueue"
-      v-if="currentTrack" :title="labels.expandQueue">
-      <div class="ui tiny image">
-        <img ref="cover" @load="updateBackground" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
-        <img v-else src="../../assets/audio/default-cover.png">
+  <section class="player-wrapper ui bottom-player" >
+
+    <div class="ui inverted segment fixed-controls" @click.prevent.stop="toggleMobilePlayer">
+      <div
+        :class="['ui', 'top attached', 'small', 'orange', 'inverted', {'indicating': isLoadingAudio}, 'progress']">
+        <div class="buffer bar" :data-percent="bufferProgress" :style="{ 'width': bufferProgress + '%' }"></div>
+        <div class="position bar" :data-percent="progress" :style="{ 'width': progress + '%' }"></div>
       </div>
-      <div class="position">
-        <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
-          %{ index } of %{ length }
-        </translate>
+
+      <div class="controls track-controls queue-not-focused">
+        <div class="ui tiny image">
+          <img ref="cover" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
+          <img v-else src="../../assets/audio/default-cover.png">
+        </div>
+        <div class="middle aligned content ellipsis">
+          <strong>
+            {{ currentTrack.title }}
+          </strong>
+          <div class="meta">
+              {{ currentTrack.artist.name }} / {{ currentTrack.album.title }}
+          </div>
+        </div>
+
       </div>
-      <div class="queue-controls">
+      <div class="controls queue-not-focused">
+        <span
+          role="button"
+          :title="labels.previous"
+          :aria-label="labels.previous"
+          class="control tablet-and-up"
+          @click.prevent.stop="$store.dispatch('queue/previous')"
+          :disabled="!hasPrevious">
+            <i :class="['ui', 'big', {'disabled': !hasPrevious}, 'backward step', 'icon']" ></i>
+        </span>
+        <span
+          role="button"
+          v-if="!playing"
+          :title="labels.play"
+          :aria-label="labels.play"
+          @click.prevent.stop="togglePlay"
+          class="control">
+            <i :class="['ui', 'big', 'play', {'disabled': !currentTrack}, 'icon']"></i>
+        </span>
+        <span
+          role="button"
+          v-else
+          :title="labels.pause"
+          :aria-label="labels.pause"
+          @click.prevent.stop="togglePlay"
+          class="control">
+            <i :class="['ui', 'big', 'pause', {'disabled': !currentTrack}, 'icon']"></i>
+        </span>
+        <span
+          role="button"
+          :title="labels.next"
+          :aria-label="labels.next"
+          class="control"
+          @click.prevent.stop="$store.dispatch('queue/next')"
+          :disabled="!hasNext">
+            <i :class="['ui', 'big', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
+        </span>
+      </div>
+      <div class="controls queue-not-focused tablet-and-up">
+        <div class="progress">
+          <template v-if="!isLoadingAudio">
+            <span role="button" class="timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</span>
+            / <span class="timer total">{{durationFormatted}}</span>
+          </template>
+          <template v-else>
+            00:00 / 00:00
+          </template>
+        </div>
+      </div>
+      <div class="controls desktop-and-up">
+        <volume-control />
+      </div>
+      <div class="controls when-queue-focused">
         <span
           role="button"
           v-if="looping === 0"
@@ -57,179 +119,36 @@
           <i v-else :class="['ui', 'random', {'disabled': queue.tracks.length === 0}, 'icon']" ></i>
         </span>
       </div>
+      <div class="controls when-queue-focused">
+        <span class="position control" role="button" @click.stop="$router.push('/queue')">
+          <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
+            %{ index } of %{ length }
+          </translate>
+          <i class="list ul icon"></i>
+        </span>
+        <span
+          class="control close-control tablet-and-below"
+          @click.stop="$router.go(-1)">
+          <i class="down angle icon"></i>
+        </span>
+      </div>
     </div>
-    <div class="ui inverted vertical segment player" :aria-label="labels.audioPlayer" :style="style">
-      <div v-if="currentTrack" class="track-area ui unstackable items">
-        <div class="ui inverted item">
-          <div class="middle aligned content">
-            <router-link class="small header discrete link track" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
-              {{ currentTrack.title | truncate(25) }}
-            </router-link>
-            <div class="meta">
-              <router-link class="artist" :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
-                {{ currentTrack.artist.name | truncate(15) }}</router-link>/<router-link class="album" :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
-                {{ currentTrack.album.title | truncate(15) }}
-              </router-link>
-            </div>
-            <div class="ui hidden divider"></div>
-            <div class="secondary-controls">
-              <track-favorite-icon
-                v-if="$store.state.auth.authenticated"
-                :class="{'inverted': !$store.getters['favorites/isFavorite'](currentTrack.id)}"
-                :track="currentTrack"></track-favorite-icon>
-              <track-playlist-icon
-                v-if="$store.state.auth.authenticated"
-                :class="['inverted']"
-                :track="currentTrack"></track-playlist-icon>
-              <button
-                v-if="$store.state.auth.authenticated"
-                @click="$store.dispatch('moderation/hide', {type: 'artist', target: currentTrack.artist})"
-                :class="['ui', 'really', 'basic', 'circular', 'inverted', 'icon', 'button']"
-                :aria-label="labels.addArtistContentFilter"
-                :title="labels.addArtistContentFilter">
-                <i :class="['eye slash outline', 'basic', 'icon']"></i>
-              </button>
-
-              <div class="progress">
-                <template v-if="!isLoadingAudio">
-                  <span role="button" class="timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</span>
-                  / <span class="timer total">{{durationFormatted}}</span>
-                </template>
-                <template v-else>
-                  00:00 / 00:00
-                </template>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="progress-area" v-if="currentTrack && !errored">
-        <div
-          ref="progress"
-          :class="['ui', 'small', 'orange', 'inverted', {'indicating': isLoadingAudio}, 'progress']"
-          @click="touchProgress">
-          <div class="buffer bar" :data-percent="bufferProgress" :style="{ 'width': bufferProgress + '%' }"></div>
-          <div class="position bar" :data-percent="progress" :style="{ 'width': progress + '%' }"></div>
-        </div>
-      </div>
-      <div class="ui small warning message" v-if="currentTrack && errored">
-        <div class="header">
-          <translate translate-context="Sidebar/Player/Error message.Title">The track cannot be loaded</translate>
-        </div>
-        <p v-if="hasNext && playing && $store.state.player.errorCount < $store.state.player.maxConsecutiveErrors">
-          <translate translate-context="Sidebar/Player/Error message.Paragraph">The next track will play automatically in a few seconds…</translate>
-          <i class="loading spinner icon"></i>
-        </p>
-        <p>
-          <translate translate-context="Sidebar/Player/Error message.Paragraph">You may have a connectivity issue.</translate>
-        </p>
-      </div>
-      <div class="controls">
-        <div
-          class="control volume-control"
-          v-on:mouseover="showVolume = true"
-          v-on:mouseleave="showVolume = false"
-          v-bind:class="{ active : showVolume }">
-          <span
-            role="button"
-            v-if="volume === 0"
-            :title="labels.unmute"
-            :aria-label="labels.unmute"
-            @click.prevent.stop="unmute">
-            <i class="volume off icon"></i>
-          </span>
-          <span
-            role="button"
-            v-else-if="volume < 0.5"
-            :title="labels.mute"
-            :aria-label="labels.mute"
-            @click.prevent.stop="mute">
-            <i class="volume down icon"></i>
-          </span>
-          <span
-            role="button"
-            v-else
-            :title="labels.mute"
-            :aria-label="labels.mute"
-            @click.prevent.stop="mute">
-            <i class="volume up icon"></i>
-          </span>
-          <input
-            type="range"
-            step="0.05"
-            min="0"
-            max="1"
-            v-model="sliderVolume"
-            v-if="showVolume" />
-        </div>
-        <template v-if="!showVolume">
-          <span
-            role="button"
-            :title="labels.previousTrack"
-            :aria-label="labels.previousTrack"
-            class="control"
-            @click.prevent.stop="previous"
-            :disabled="emptyQueue">
-              <i :class="['ui', 'backward step', {'disabled': emptyQueue}, 'icon']"></i>
-          </span>
-
-          <span
-            role="button"
-            v-if="!playing"
-            :title="labels.play"
-            :aria-label="labels.play"
-            @click.prevent.stop="togglePlay"
-            class="control">
-              <i :class="['ui', 'play', {'disabled': !currentTrack}, 'icon']"></i>
-          </span>
-          <span
-            role="button"
-            v-else
-            :title="labels.pause"
-            :aria-label="labels.pause"
-            @click.prevent.stop="togglePlay"
-            class="control">
-              <i :class="['ui', 'pause', {'disabled': !currentTrack}, 'icon']"></i>
-          </span>
-          <span
-            role="button"
-            :title="labels.next"
-            :aria-label="labels.next"
-            class="control"
-            @click.prevent.stop="next"
-            :disabled="!hasNext">
-              <i :class="['ui', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
-          </span>
-
-
-          <span
-            role="button"
-            :title="labels.info"
-            :aria-label="labels.info"
-            class="control"
-            @click.prevent.stop="info"
-            :disabled="!currentTrack">
-              <i :class="['ui', {'disabled': !currentTrack}, 'circle info', 'icon']" ></i>
-          </span>
-        </template>
-      </div>
-      <GlobalEvents
-        @keydown.space.prevent.exact="togglePlay"
-        @keydown.ctrl.shift.left.prevent.exact="previous"
-        @keydown.ctrl.shift.right.prevent.exact="next"
-        @keydown.shift.down.prevent.exact="$store.commit('player/incrementVolume', -0.1)"
-        @keydown.shift.up.prevent.exact="$store.commit('player/incrementVolume', 0.1)"
-        @keydown.right.prevent.exact="seek (5)"
-        @keydown.left.prevent.exact="seek (-5)"
-        @keydown.shift.right.prevent.exact="seek (30)"
-        @keydown.shift.left.prevent.exact="seek (-30)"
-        @keydown.m.prevent.exact="toggleMute"
-        @keydown.l.exact="$store.commit('player/toggleLooping')"
-        @keydown.s.exact="shuffle"
-        @keydown.f.exact="$store.dispatch('favorites/toggle', currentTrack.id)"
-        @keydown.q.exact="clean"
-        />
-    </div>
+    <GlobalEvents
+      @keydown.space.prevent.exact="togglePlay"
+      @keydown.ctrl.shift.left.prevent.exact="previous"
+      @keydown.ctrl.shift.right.prevent.exact="next"
+      @keydown.shift.down.prevent.exact="$store.commit('player/incrementVolume', -0.1)"
+      @keydown.shift.up.prevent.exact="$store.commit('player/incrementVolume', 0.1)"
+      @keydown.right.prevent.exact="seek (5)"
+      @keydown.left.prevent.exact="seek (-5)"
+      @keydown.shift.right.prevent.exact="seek (30)"
+      @keydown.shift.left.prevent.exact="seek (-30)"
+      @keydown.m.prevent.exact="toggleMute"
+      @keydown.l.exact="$store.commit('player/toggleLooping')"
+      @keydown.s.exact="shuffle"
+      @keydown.f.exact="$store.dispatch('favorites/toggle', currentTrack.id)"
+      @keydown.q.exact="clean"
+      />
   </section>
 </template>
 
@@ -245,19 +164,21 @@ import axios from 'axios'
 
 import TrackFavoriteIcon from "@/components/favorites/TrackFavoriteIcon"
 import TrackPlaylistIcon from "@/components/playlists/TrackPlaylistIcon"
+import VolumeControl from './VolumeControl'
 
 export default {
   components: {
     TrackFavoriteIcon,
     TrackPlaylistIcon,
     GlobalEvents,
+    VolumeControl,
   },
   data() {
     let defaultAmbiantColors = [
-      [46, 46, 46],
-      [46, 46, 46],
-      [46, 46, 46],
-      [46, 46, 46]
+      [250, 250, 250],
+      [250, 250, 250],
+      [250, 250, 250],
+      [250, 250, 250]
     ]
     return {
       isShuffling: false,
@@ -637,6 +558,14 @@ export default {
       } else {
         this.$router.push('/queue')
       }
+    },
+
+    toggleMobilePlayer () {
+      if (this.$route.name === 'queue' && this.$route.hash === '#player') {
+        this.$router.go(-1)
+      } else {
+        this.$router.push('/queue#player')
+      }
     }
   },
   computed: {
@@ -655,6 +584,7 @@ export default {
     ...mapGetters({
       currentTrack: "queue/currentTrack",
       hasNext: "queue/hasNext",
+      hasPrevious: "queue/hasPrevious",
       emptyQueue: "queue/isEmpty",
       durationFormatted: "player/durationFormatted",
       currentTimeFormatted: "player/currentTimeFormatted",
@@ -790,64 +720,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../../style/vendor/media";
-section {
-  > .player, .segment.ui.queue-item {
-    @include media("<desktop") {
-      display: none;
-    }
-  }
-}
-.ui.progress {
-  margin: 0.5rem 0 1rem;
-}
-.progress {
-  cursor: pointer;
-  .bar {
-    min-width: 0 !important;
-  }
-}
-
-.ui.inverted.item > .content > .secondary-controls {
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-
-.ui.item {
-  .meta {
-    font-size: 90%;
-    line-height: 1.2;
-  }
-}
-.timer.total {
-  text-align: right;
-}
-.timer.start {
-  cursor: pointer;
-}
-.track-area {
-  margin-top: 0;
-  .header,
-  .meta,
-  .artist,
-  .album {
-    color: white !important;
-  }
-}
 .controls {
   display: flex;
   justify-content: space-between;
 }
-.controls a {
-  color: white;
-}
 
-.secondary-controls {
-  display: flex;
-  justify-content: space-between;
-  > * {
-    margin: 0 !important;
-    padding: 0 0.3em !important;
-  }
-}
 .controls .icon.big {
   cursor: pointer;
   font-size: 2em !important;
@@ -856,84 +733,6 @@ section {
 .controls .icon {
   cursor: pointer;
   vertical-align: middle;
-}
-
-.control .icon {
-  font-size: 1.5em;
-}
-.progress-area .actions {
-  text-align: center;
-}
-.ui.progress:not([data-percent]):not(.indeterminate)
-  .bar.position:not(.buffer) {
-  background: #ff851b;
-}
-.volume-control {
-  position: relative;
-  width: 12.5% !important;
-  [type="range"] {
-    position: absolute;
-    left: 25%;
-    cursor: pointer;
-    background-color: transparent;
-  }
-  input[type="range"]:focus {
-    outline: none;
-  }
-  input[type="range"]::-webkit-slider-runnable-track {
-    cursor: pointer;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    background: white;
-    cursor: pointer;
-    -webkit-appearance: none;
-    border-radius: 3px;
-    width: 10px;
-  }
-  input[type="range"]::-moz-range-track {
-    cursor: pointer;
-    background: white;
-    opacity: 0.3;
-  }
-  input[type="range"]::-moz-focus-outer {
-    border: 0;
-  }
-  input[type="range"]::-moz-range-thumb {
-    background: white;
-    cursor: pointer;
-    border-radius: 3px;
-    width: 10px;
-  }
-  input[type="range"]::-ms-track {
-    cursor: pointer;
-    background: transparent;
-    border-color: transparent;
-    color: transparent;
-  }
-  input[type="range"]::-ms-fill-lower {
-    background: white;
-    opacity: 0.3;
-  }
-  input[type="range"]::-ms-fill-upper {
-    background: white;
-    opacity: 0.3;
-  }
-  input[type="range"]::-ms-thumb {
-    background: white;
-    cursor: pointer;
-    border-radius: 3px;
-    width: 10px;
-  }
-  input[type="range"]:focus::-ms-fill-lower {
-    background: white;
-  }
-  input[type="range"]:focus::-ms-fill-upper {
-    background: white;
-  }
-}
-
-.active.volume-control {
-  width: 60% !important;
 }
 
 .looping {
@@ -950,85 +749,8 @@ section {
     min-height: 0 !important;
   }
 }
-.ui.feed.icon {
-  margin: 0;
-}
 .shuffling.loader.inline {
   margin: 0;
 }
 
-.ui.queue-item.segment {
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  &:hover {
-    background-color: rgba(55, 55, 55, 0.9)
-  }
-  .position {
-    flex-grow: 1;
-    padding: 0 1em;
-  }
-  span, i {
-    font-size: 1.1em !important;
-  }
-  > .ui.image {
-    width: 4em;
-  }
-  .queue-controls {
-    display: flex;
-    flex-grow: 0.5;
-    justify-content: space-between;
-  }
-}
-.ui.vertical.segment {
-  padding: 1em;
-}
-@keyframes MOVE-BG {
-  from {
-    transform: translateX(0px);
-  }
-  to {
-    transform: translateX(46px);
-  }
-}
-
-.indicating.progress {
-  overflow: hidden;
-}
-
-.ui.progress .bar {
-  transition: none;
-}
-
-.ui.inverted.progress .buffer.bar {
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.15);
-}
-.indicating.progress .bar {
-  left: -46px;
-  width: 200% !important;
-  color: grey;
-  background: repeating-linear-gradient(
-    -55deg,
-    grey 1px,
-    grey 10px,
-    transparent 10px,
-    transparent 20px
-  ) !important;
-
-  animation-name: MOVE-BG;
-  animation-duration: 2s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-.icons {
-  position: absolute;
-}
-
-i.icons .corner.icon {
-  font-size: 1em;
-  right: -0.3em;
-}
 </style>

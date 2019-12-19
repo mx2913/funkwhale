@@ -31,13 +31,13 @@
                   </div>
                 </div>
               </h2>
-              <div v-if="$store.state.radios.running" class="ui black message">
+              <div v-if="$store.state.radios.running" class="ui info message">
                 <div class="content">
                   <div class="header">
                     <i class="feed icon"></i> <translate translate-context="Sidebar/Player/Title">You have a radio playing</translate>
                   </div>
                   <p><translate translate-context="Sidebar/Player/Paragraph">New tracks will be appended here automatically.</translate></p>
-                  <div @click="$store.dispatch('radios/stop')" class="ui basic inverted red button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
+                  <div @click="$store.dispatch('radios/stop')" class="ui basic primary button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
                 </div>
               </div>
             </div>
@@ -198,7 +198,7 @@
                     </span>
                   </template>
                 </div>
-                <div class="ui basic segment fixed-footer queue-controls">
+                <div class="ui basic segment queue-controls">
                   <div>
                     <span
                       role="button"
@@ -253,47 +253,7 @@
                       </translate>
                       <i class="list ul icon"></i>
                     </span>
-                    <span
-                      class="control volume-control"
-                      v-on:mouseover="showVolume = true"
-                      v-on:mouseleave="showVolume = false"
-                      v-bind:class="{ active : showVolume }">
-                      <span
-                        role="button"
-                        v-if="volume === 0"
-                        :title="labels.unmute"
-                        :aria-label="labels.unmute"
-                        @click.prevent.stop="unmute">
-                        <i class="volume off icon"></i>
-                      </span>
-                      <span
-                        role="button"
-                        v-else-if="volume < 0.5"
-                        :title="labels.mute"
-                        :aria-label="labels.mute"
-                        @click.prevent.stop="mute">
-                        <i class="volume down icon"></i>
-                      </span>
-                      <span
-                        role="button"
-                        v-else
-                        :title="labels.mute"
-                        :aria-label="labels.mute"
-                        @click.prevent.stop="mute">
-                        <i class="volume up icon"></i>
-                      </span>
-                      <input
-                        type="range"
-                        step="0.05"
-                        min="0"
-                        max="1"
-                        v-model="sliderVolume" />
-                    </span>
-                    <span
-                      class="control close-control"
-                      @click.stop="$router.go(-1)">
-                      <i class="down angle icon"></i>
-                    </span>
+                    <volume-control />
                   </div>
                 </div>
               </template>
@@ -314,12 +274,14 @@ import time from "@/utils/time"
 
 import TrackFavoriteIcon from "@/components/favorites/TrackFavoriteIcon"
 import TrackPlaylistIcon from "@/components/playlists/TrackPlaylistIcon"
+import VolumeControl from '@/components/audio/VolumeControl'
 
 
 export default {
   components: {
     TrackFavoriteIcon,
     TrackPlaylistIcon,
+    VolumeControl,
     draggable
   },
   data () {
@@ -642,13 +604,9 @@ td:last-child {
   padding-top: 0.5em;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.1em;
+  font-size: 1em;
   @include media("<desktop") {
-    padding: 0.5em;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    display: none;
   }
   &.fixed-footer.segment {
     @include media(">=desktop") {
@@ -682,7 +640,7 @@ td:last-child {
     margin-left: 1em;
   }
   .icon {
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 }
 .looping {
@@ -697,14 +655,6 @@ td:last-child {
     padding: 0.4em !important;
     min-width: 0 !important;
     min-height: 0 !important;
-  }
-}
-.volume-control {
-  display: flex;
-  line-height: inherit;
-  align-items: center;
-  input {
-    max-width: 5em;
   }
 }
 </style>

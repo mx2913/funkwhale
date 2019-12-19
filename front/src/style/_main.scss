@@ -81,7 +81,7 @@
 
 $desktop-sidebar-width: 275px;
 $widedesktop-sidebar-width: 275px;
-$mobile-player-height: 4rem;
+$bottom-player-height: 5rem;
 
 html,
 body {
@@ -106,7 +106,7 @@ html {
   min-height: 100vh;
   flex-direction: column;
   @include media("<desktop") {
-    padding-bottom: $mobile-player-height + 0.5rem;
+    padding-bottom: $bottom-player-height + 0.5rem;
   }
 }
 
@@ -169,7 +169,7 @@ html {
   bottom: 1em;
   left: 1em;
   @include media("<desktop") {
-    bottom: $mobile-player-height + 0.5rem;
+    bottom: $bottom-player-height + 0.5rem;
   }
   @include media(">desktop") {
     left: $desktop-sidebar-width;
@@ -407,18 +407,31 @@ input + .help {
   margin: 0.5rem 0;
 }
 
-.mobile-player {
-  height: $mobile-player-height;
-}
 .queue.segment.player-focused #queue-grid #player {
   @include media("<desktop") {
-    padding-bottom: $mobile-player-height;
+    padding-bottom: $bottom-player-height;
   }
 }
 .queue-controls {
 
   @include media("<desktop") {
-    height: $mobile-player-height;
+    height: $bottom-player-height;
+  }
+}
+
+.desktop-and-up {
+  @include media("<desktop") {
+    display: none !important;
+  }
+}
+.tablet-and-up {
+  @include media("<tablet") {
+    display: none !important;
+  }
+}
+.tablet-and-below {
+  @include media(">desktop") {
+    display: none !important;
   }
 }
 @import "./themes/_light.scss";
