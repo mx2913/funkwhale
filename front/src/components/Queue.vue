@@ -51,7 +51,7 @@
                     <i class="grip lines grey icon"></i>
                   </td>
                   <td class="image-cell" @click="$store.dispatch('queue/currentIndex', index)">
-                    <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.small_square_crop)">
+                    <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.square_crop)">
                     <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
                   </td>
                   <td colspan="3" @click="$store.dispatch('queue/currentIndex', index)">
@@ -572,7 +572,6 @@ td:last-child {
   @include media("<desktop") {
     padding: 0.5em;
     font-size: 1.5em;
-    justify-content: space-between;
     width: 100%;
     width: 100vw;
     left: 0;
@@ -678,7 +677,7 @@ td:last-child {
     margin-left: 1em;
   }
   .icon {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
 }
 .looping {
