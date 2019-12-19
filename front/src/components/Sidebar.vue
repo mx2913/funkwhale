@@ -295,9 +295,14 @@ export default {
         let mapping = {
           "library.index": 'exploreExpanded',
           "library.albums.browse": 'exploreExpanded',
+          "library.albums.detail": 'exploreExpanded',
           "library.artists.browse": 'exploreExpanded',
+          "library.artists.detail": 'exploreExpanded',
+          "library.tracks.detail": 'exploreExpanded',
           "library.playlists.browse": 'exploreExpanded',
+          "library.playlists.detail": 'exploreExpanded',
           "library.radios.browse": 'exploreExpanded',
+          "library.radios.detail": 'exploreExpanded',
           'library.me': "myLibraryExpanded",
           'library.albums.me': "myLibraryExpanded",
           'library.artists.me': "myLibraryExpanded",
@@ -310,6 +315,14 @@ export default {
           this[mapping[n]] = true
         }
       }
+    },
+    myLibraryExpanded: {
+      handler (n) { this.exploreExpanded = !n},
+      immediate: true,
+    },
+    exploreExpanded: {
+      handler (n) { this.myLibraryExpanded = !n},
+      immediate: true,
     }
   }
 }
