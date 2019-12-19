@@ -119,7 +119,7 @@ body {
   }
 }
 
-#app:not(.queue-focused) {
+#app {
   > .main.pusher,
   > .footer {
     @include media(">desktop") {

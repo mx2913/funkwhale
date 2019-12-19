@@ -12,7 +12,9 @@
       <sidebar></sidebar>
       <set-instance-modal @update:show="showSetInstanceModal = $event" :show="showSetInstanceModal"></set-instance-modal>
       <service-messages v-if="messages.length > 0"/>
-      <router-view :key="$route.fullPath"></router-view>
+      <transition :name="routeTransition">
+        <router-view :key="$route.fullPath"></router-view>
+      </transition>
       <div v-if="currentTrack && $route.name != 'queue'" class="ui mobile-player">
         <div class="ui segment fixed-controls" @click.prevent.stop="toggleMobilePlayer">
           <div
@@ -343,6 +345,13 @@ export default {
       if (this.$store.state.instance.frontSettings) {
         return this.$store.state.instance.frontSettings.additionalStylesheets || []
       }
+    },
+    routeTransition () {
+      if (this.$route.name === 'queue') {
+        return 'fade'
+      } else {
+        return 'noop'
+      }
     }
   },
   watch: {
@@ -412,9 +421,7 @@ export default {
 
 <style lang="scss">
 @import "style/_main";
-#app.queue-focused > aside {
-  display: none;
-}
+
 .ui.mobile-player {
   z-index: 999999;
   width: 100%;
@@ -496,5 +503,15 @@ export default {
       font-size: 1.6em;
     }
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.3s;
+  transition-property: opacity;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
 }
 </style>

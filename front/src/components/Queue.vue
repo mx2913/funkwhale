@@ -1,5 +1,5 @@
 <template>
-  <section class="main pusher" :aria-label="labels.queue">
+  <section class="main with-background" :aria-label="labels.queue">
     <button
       class="ui basic circular icon button"
       @click.stop="$router.go(-1)">
@@ -473,6 +473,14 @@ export default {
 <style lang="scss" scoped>
 @import "../style/vendor/media";
 
+.main {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
 .main > .button {
   position: fixed;
   top: 1em;
