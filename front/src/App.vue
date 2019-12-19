@@ -453,8 +453,7 @@ export default {
       .image {
         padding: 0.5em;
         > img {
-          height: 4.7em;
-          width: 4.7em;
+          max-height: 3.7em;
           max-width: 4.7em;
         }
       }

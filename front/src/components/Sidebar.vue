@@ -1,15 +1,15 @@
 <template>
 <aside :class="['ui', 'vertical', 'left', 'visible', 'wide', {'collapsed': isCollapsed}, 'sidebar',]">
   <header class="ui basic segment header-wrapper">
-    <router-link v-if="!$store.state.auth.authenticated" class="logo-wrapper" :to="{name: logoUrl}">
-      <img src="../assets/logo/logo-full-500.png" />
-    </router-link>
-    <router-link v-else :title="'Funkwhale'" :to="{name: logoUrl}">
+    <router-link :title="'Funkwhale'" :to="{name: logoUrl}">
       <i class="logo bordered inverted orange big icon">
         <logo class="logo"></logo>
       </i>
     </router-link>
-    <nav class="top ui compact right aligned grey text menu">
+    <router-link v-if="!$store.state.auth.authenticated" class="logo-wrapper" :to="{name: logoUrl}">
+      <img src="../assets/logo/text-white.svg" />
+    </router-link>
+    <nav class="top ui compact right aligned inverted text menu">
       <template v-if="$store.state.auth.authenticated">
 
         <div class="right menu">
@@ -88,7 +88,7 @@
 
         <span
           @click="isCollapsed = !isCollapsed"
-          :class="['ui', 'basic', 'big', {'orange': !isCollapsed}, 'icon', 'collapse', 'button']">
+          :class="['ui', 'basic', 'big', {'orange': !isCollapsed}, 'inverted icon', 'collapse', 'button']">
             <i class="sidebar icon"></i></span>
       </div>
     </nav>
@@ -106,14 +106,14 @@
   <nav class="secondary" role="navigation">
     <div class="ui small hidden divider"></div>
     <section :class="['ui', 'bottom', 'attached', {active: selectedTab === 'library'}, 'tab']" :aria-label="labels.mainMenu">
-      <nav class="ui vertical large fluid secondary menu" role="navigation" :aria-label="labels.mainMenu">
+      <nav class="ui vertical large fluid inverted secondary menu" role="navigation" :aria-label="labels.mainMenu">
         <div class="item">
           <header class="header" @click="exploreExpanded = !exploreExpanded">
             <translate translate-context="*/*/*/Verb">Explore</translate>
             <i class="angle down icon" v-if="exploreExpanded"></i>
             <i class="angle right icon" v-else></i>
           </header>
-          <div class="menu" v-if="exploreExpanded">
+          <div class="inverted menu" v-if="exploreExpanded">
             <router-link class="item" :exact="true" :to="{name: 'library.index'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
             <router-link class="item" :to="{name: 'library.albums.browse'}"><i class="compact disc icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
             <router-link class="item" :to="{name: 'library.artists.browse'}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
@@ -138,26 +138,6 @@
         </div>
       </nav>
     </section>
-    <div v-if="queue.previousQueue " class="ui black icon message">
-      <i class="history icon"></i>
-      <div class="content">
-        <div class="header">
-          <translate translate-context="Sidebar/Queue/Message">Do you want to restore your previous queue?</translate>
-        </div>
-        <p>
-          <translate translate-context="*/*/*"
-            translate-plural="%{ count } tracks"
-            :translate-n="queue.previousQueue.tracks.length"
-            :translate-params="{count: queue.previousQueue.tracks.length}">
-            %{ count } track
-          </translate>
-        </p>
-        <div class="ui two buttons">
-          <div @click="queue.restore()" class="ui basic green button"><translate translate-context="*/*/*">Yes</translate></div>
-          <div @click="queue.removePrevious()" class="ui basic red button"><translate translate-context="*/*/*">No</translate></div>
-        </div>
-      </div>
-    </div>
   </nav>
 </aside>
 </template>
@@ -326,7 +306,7 @@ export default {
 <style scoped lang="scss">
 @import "../style/vendor/media";
 
-$sidebar-color: #F8F8F8;
+$sidebar-color: #2D2F33;
 
 .sidebar {
   background: $sidebar-color;
@@ -348,7 +328,6 @@ $sidebar-color: #F8F8F8;
     position: static !important;
     width: 100% !important;
     &.collapsed {
-      .menu-area,
       .player-wrapper,
       .search,
       .signup.segment,
@@ -367,23 +346,7 @@ $sidebar-color: #F8F8F8;
   }
 }
 
-.menu-area {
-  .menu .item:not(.active):not(:hover) {
-    opacity: 0.75;
-  }
-
-  .menu .item {
-    border-radius: 0;
-  }
-
-  .menu .item.active {
-    background-color: $sidebar-color;
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.06);
-    }
-  }
-}
-.vertical.menu {
+.ui.vertical.menu {
   .item .item {
     font-size: 1em;
     > i.icon {
@@ -394,6 +357,15 @@ $sidebar-color: #F8F8F8;
       // color: rgba(255, 255, 255, 0.75);
     }
   }
+  .item.active {
+    border-right: 5px solid #F2711C;
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+  }
+}
+.ui.secondary.menu {
+  margin-left: 0;
+  margin-right: 0;
 }
 .tabs {
   flex: 1;
@@ -445,6 +417,7 @@ $sidebar-color: #F8F8F8;
   padding: 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   height: 4em;
 }
 
@@ -497,20 +470,19 @@ nav.top {
   margin-right: 0;
 }
 .logo-wrapper {
-  padding: 1em;
   display: inline-block;
   margin: 0 auto;
   @include media("<desktop") {
     margin: 0;
   }
   img {
-    height: 2em;
+    height: 1em;
     display: inline-block;
     margin: 0 auto;
   }
   @include media(">tablet") {
     img {
-      height: 2.5em;
+      height: 1.5em;
     }
   }
 }
