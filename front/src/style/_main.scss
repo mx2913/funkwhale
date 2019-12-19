@@ -149,16 +149,6 @@ body {
   @include media(">tablet") {
     padding: 0 2.5rem;
   }
-  @include media(">desktop") {
-    position: fixed;
-    left: $desktop-sidebar-width;
-    right: 0px;
-    top: 0px;
-    z-index: 99;
-  }
-  @include media(">widedesktop") {
-    left: $widedesktop-sidebar-width;
-  }
   .item {
     padding-top: 1.5em;
     padding-bottom: 1.5em;
