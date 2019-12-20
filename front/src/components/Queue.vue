@@ -493,6 +493,9 @@ export default {
     display: none;
   }
 }
+.queue-column .table {
+  margin-bottom: 4rem;
+}
 .ui.table > tbody > tr > td.controls {
   text-align: right;
 }
