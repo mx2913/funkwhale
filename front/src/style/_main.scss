@@ -401,7 +401,7 @@ input + .help {
 
 .queue.segment.player-focused #queue-grid #player {
   @include media("<desktop") {
-    padding-bottom: $bottom-player-height;
+    padding-bottom: $bottom-player-height + 2rem;
   }
 }
 .queue-controls {

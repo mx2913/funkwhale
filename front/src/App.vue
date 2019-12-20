@@ -380,6 +380,20 @@ export default {
     }
   }
 }
+.when-queue-focused {
+  .group {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1em;
+    > * {
+      margin-left: 0.5em;
+    }
+  }
+  @include media("<desktop") {
+    width: 100%;
+    justify-content: space-between !important;
+  }
+}
 #app:not(.queue-focused) {
   .when-queue-focused {
     @include media("<desktop") {
@@ -398,6 +412,7 @@ export default {
   margin: 0;
   height: $bottom-player-height;
   .controls-row {
+    height: $bottom-player-height;
     margin: 0 auto;
     max-width: 1200px;
     display: flex;
@@ -408,9 +423,6 @@ export default {
     }
   }
   cursor: pointer;
-  .position.control, .progress.control {
-    font-size: 1.2em;
-  }
   .indicating.progress {
     overflow: hidden;
   }
@@ -468,11 +480,19 @@ export default {
   .controls {
     min-width: 8em;
     padding-right: 0.5em;
+    font-size: 1.1em;
     .icon {
-      font-size: 1.4em;
+      font-size: 1.1em;
+
     }
     &:not(.track-controls) {
+      @include media(">desktop") {
+        line-height: 1em;
+      }
       justify-content: space-around;
+      > * {
+        margin: 0 0.5em;
+      }
     }
   }
 }

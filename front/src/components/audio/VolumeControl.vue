@@ -73,5 +73,11 @@ export default {
     max-width: 7em;
     height: 4px;
   }
+  &.expandable {
+    background: transparent;
+    &:not(:hover) input {
+      display: none;
+    }
+  }
 }
 </style>

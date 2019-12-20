@@ -72,65 +72,67 @@
             </template>
           </div>
         </div>
+        <div class="controls when-queue-focused">
+          <div class="group">
+            <span
+              role="button"
+              v-if="looping === 0"
+              :title="labels.loopingDisabled"
+              :aria-label="labels.loopingDisabled"
+              @click.prevent.stop="$store.commit('player/looping', 1)"
+              :disabled="!currentTrack">
+              <i :class="['ui', {'disabled': !currentTrack}, 'step', 'repeat', 'icon']"></i>
+            </span>
+            <span
+              role="button"
+              @click.prevent.stop="$store.commit('player/looping', 2)"
+              :title="labels.loopingSingle"
+              :aria-label="labels.loopingSingle"
+              v-if="looping === 1"
+              class="looping"
+              :disabled="!currentTrack">
+              <i
+                class="repeat icon">
+                <span class="ui circular tiny orange label">1</span>
+              </i>
+            </span>
+            <span
+              role="button"
+              :title="labels.loopingWhole"
+              :aria-label="labels.loopingWhole"
+              v-if="looping === 2"
+              :disabled="!currentTrack"
+              @click.prevent.stop="$store.commit('player/looping', 0)">
+              <i
+                class="repeat orange icon">
+              </i>
+            </span>
+            <span
+              role="button"
+              :disabled="queue.tracks.length === 0"
+              :title="labels.shuffle"
+              :aria-label="labels.shuffle"
+              @click.prevent.stop="shuffle()">
+              <div v-if="isShuffling" class="ui inline shuffling inverted tiny active loader"></div>
+              <i v-else :class="['ui', 'random', {'disabled': queue.tracks.length === 0}, 'icon']" ></i>
+            </span>
+          </div>
+          <div class="group">
+            <span class="position control" role="button" @click.stop="$router.push('/queue')">
+              <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
+                %{ index } of %{ length }
+              </translate>
+              <i class="list ul icon"></i>
+            </span>
+            <span
+              class="control close-control tablet-and-below"
+              @click.stop="$router.go(-1)">
+              <i class="large down angle icon"></i>
+            </span>
+          </div>
+        </div>
         <div class="controls desktop-and-up">
-          <volume-control />
-        </div>
-        <div class="controls when-queue-focused">
-          <span
-            role="button"
-            v-if="looping === 0"
-            :title="labels.loopingDisabled"
-            :aria-label="labels.loopingDisabled"
-            @click.prevent.stop="$store.commit('player/looping', 1)"
-            :disabled="!currentTrack">
-            <i :class="['ui', {'disabled': !currentTrack}, 'step', 'repeat', 'icon']"></i>
-          </span>
-          <span
-            role="button"
-            @click.prevent.stop="$store.commit('player/looping', 2)"
-            :title="labels.loopingSingle"
-            :aria-label="labels.loopingSingle"
-            v-if="looping === 1"
-            class="looping"
-            :disabled="!currentTrack">
-            <i
-              class="repeat icon">
-              <span class="ui circular tiny orange label">1</span>
-            </i>
-          </span>
-          <span
-            role="button"
-            :title="labels.loopingWhole"
-            :aria-label="labels.loopingWhole"
-            v-if="looping === 2"
-            :disabled="!currentTrack"
-            @click.prevent.stop="$store.commit('player/looping', 0)">
-            <i
-              class="repeat orange icon">
-            </i>
-          </span>
-          <span
-            role="button"
-            :disabled="queue.tracks.length === 0"
-            :title="labels.shuffle"
-            :aria-label="labels.shuffle"
-            @click.prevent.stop="shuffle()">
-            <div v-if="isShuffling" class="ui inline shuffling inverted tiny active loader"></div>
-            <i v-else :class="['ui', 'random', {'disabled': queue.tracks.length === 0}, 'icon']" ></i>
-          </span>
-        </div>
-        <div class="controls when-queue-focused">
-          <span class="position control" role="button" @click.stop="$router.push('/queue')">
-            <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
-              %{ index } of %{ length }
-            </translate>
-            <i class="list ul icon"></i>
-          </span>
-          <span
-            class="control close-control tablet-and-below"
-            @click.stop="$router.go(-1)">
-            <i class="down angle icon"></i>
-          </span>
+          <volume-control class="expandable" />
         </div>
       </div>
     </div>
