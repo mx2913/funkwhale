@@ -402,7 +402,10 @@ export default {
     max-width: 1200px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    @include media(">desktop") {
+      justify-content: space-around;
+    }
   }
   cursor: pointer;
   .position.control, .progress.control {
