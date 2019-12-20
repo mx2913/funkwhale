@@ -396,10 +396,14 @@ export default {
   bottom: 0;
   left: 0;
   margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content:space-between;
   height: $bottom-player-height;
+  .controls-row {
+    margin: 0 auto;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
   cursor: pointer;
   .position.control, .progress.control {
     font-size: 1.2em;
@@ -446,24 +450,23 @@ export default {
     background: #ff851b;
     min-width: 0;
   }
-  >  {
-    .track-controls {
-      display: flex;
-      align-items: center;
-      .image {
-        padding: 0.5em;
-        > img {
-          max-height: 3.7em;
-          max-width: 4.7em;
-        }
+
+  .track-controls {
+    display: flex;
+    align-items: center;
+    .image {
+      padding: 0.5em;
+      > img {
+        max-height: 3.7em;
+        max-width: 4.7em;
       }
     }
   }
-  > .controls {
+  .controls {
     min-width: 8em;
     padding-right: 0.5em;
     .icon {
-      font-size: 1.6em;
+      font-size: 1.4em;
     }
     &:not(.track-controls) {
       justify-content: space-around;

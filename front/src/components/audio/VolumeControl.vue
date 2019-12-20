@@ -1,5 +1,5 @@
 <template>
-   <span class="volume-control">
+   <span class="volume-control" @click.prevent.stop="">
     <span
       role="button"
       v-if="sliderVolume === 0"
@@ -29,7 +29,6 @@
       step="0.05"
       min="0"
       max="1"
-      @click.prevent.stop=""
       v-model="sliderVolume" />
   </span>
 </template>
@@ -71,7 +70,8 @@ export default {
   line-height: inherit;
   align-items: center;
   input {
-    max-width: 5em;
+    max-width: 7em;
+    height: 4px;
   }
 }
 </style>
