@@ -136,9 +136,16 @@
             <router-link class="item" :to="{name: 'favorites'}"><i class="heart icon"></i><translate translate-context="Sidebar/Favorites/List item.Link/Noun">Favorites</translate></router-link>
           </div>
         </div>
-        <router-link class="item" to="/about">
-          <translate translate-context="Footer/About/List item.Link">About page</translate>
-        </router-link>
+        <div class="item">
+          <header class="header">
+            <translate translate-context="Footer/About/List item.Link">More</translate>
+          </header>
+          <div class="menu">
+            <router-link class="item" to="/about">
+              <i class="info icon"></i><translate translate-context="Sidebar/*/List item.Link">About this pod</translate>
+            </router-link>
+          </div>
+        </div>
       </nav>
     </section>
   </nav>
