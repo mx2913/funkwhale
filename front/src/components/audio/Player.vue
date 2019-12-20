@@ -156,7 +156,6 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"
 import GlobalEvents from "@/components/utils/global-events"
-import ColorThief from "@/vendor/color-thief"
 import { Howl } from "howler"
 import $ from 'jquery'
 import _ from '@/lodash'
@@ -286,20 +285,6 @@ export default {
       let target = this.$refs.progress
       time = (e.layerX / target.offsetWidth) * this.duration
       this.setCurrentTime(time)
-    },
-    updateBackground() {
-      // delete existing canvas, if any
-      $('canvas.color-thief').remove()
-      if (!this.currentTrack.album.cover) {
-        this.ambiantColors = this.defaultAmbiantColors
-        return
-      }
-      let image = this.$refs.cover
-      try {
-        this.ambiantColors = ColorThief.prototype.getPalette(image, 4).slice(0, 4)
-      } catch (e) {
-        console.log('Cannot generate player background from cover image, likely a cross-origin tainted canvas issue')
-      }
     },
     handleError({ sound, error }) {
       this.$store.commit("player/isLoadingAudio", false)
@@ -631,32 +616,6 @@ export default {
         expandQueue,
         addArtistContentFilter,
       }
-    },
-    style: function() {
-      let style = {
-        background: this.ambiantGradiant
-      }
-      return style
-    },
-    ambiantGradiant: function() {
-      let indexConf = [
-        { orientation: 330, percent: 100, opacity: 0.7 },
-        { orientation: 240, percent: 90, opacity: 0.7 },
-        { orientation: 150, percent: 80, opacity: 0.7 },
-        { orientation: 60, percent: 70, opacity: 0.7 }
-      ]
-      let gradients = this.ambiantColors
-        .map((e, i) => {
-          let [r, g, b] = e
-          let conf = indexConf[i]
-          return `linear-gradient(${
-            conf.orientation
-          }deg, rgba(${r}, ${g}, ${b}, ${
-            conf.opacity
-          }) 10%, rgba(255, 255, 255, 0) ${conf.percent}%)`
-        })
-        .join(", ")
-      return gradients
     },
   },
   watch: {
