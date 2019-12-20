@@ -5,7 +5,7 @@
       @click.stop="$router.go(-1)">
       <i class="x icon"></i>
     </button>
-    <div :class="['ui vertical stripe queue segment', $route.hash === '#player' ? 'player-focused' : '']">
+    <div :class="['ui vertical stripe queue segment', playerFocused ? 'player-focused' : '']">
       <div class="ui fluid container">
         <div class="ui stackable grid" id="queue-grid">
           <div class="ui sixteen wide mobile ten wide computer column queue-column">
@@ -295,8 +295,6 @@ export default {
   mounted () {
     let self = this
     this.$nextTick(() => {
-      $(this.$el).find('.ui.sticky').sticky({context: '#queue-grid'})
-      $(this.$el).find('.controls-dropdown').dropdown({action: 'hide'})
       setTimeout(() => {
         this.scrollToCurrent()
         // delay is to let transition work
@@ -355,6 +353,9 @@ export default {
       set (v) {
         this.$store.commit("player/volume", v)
       }
+    },
+    playerFocused () {
+      return this.$route.hash === '#player'
     }
   },
   methods: {
@@ -409,6 +410,16 @@ export default {
     },
   },
   watch: {
+    playerFocused: {
+      handler (v) {
+        if (!v) {
+          this.$nextTick(() => {
+            $('.ui.sticky').sticky('refresh');
+          })
+        }
+      },
+      immediate: true
+    },
     '$store.state.queue.currentIndex': {
       handler () {
         this.$nextTick(() => {
