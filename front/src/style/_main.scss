@@ -166,9 +166,7 @@ html {
   position: fixed;
   bottom: 1em;
   left: 1em;
-  @include media("<desktop") {
-    bottom: $bottom-player-height + 0.5rem;
-  }
+  bottom: $bottom-player-height + 1rem;
   @include media(">desktop") {
     left: $desktop-sidebar-width;
   }
