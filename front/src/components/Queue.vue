@@ -276,6 +276,7 @@ import TrackFavoriteIcon from "@/components/favorites/TrackFavoriteIcon"
 import TrackPlaylistIcon from "@/components/playlists/TrackPlaylistIcon"
 import VolumeControl from '@/components/audio/VolumeControl'
 
+import store from "@/store"
 
 export default {
   components: {
@@ -300,6 +301,12 @@ export default {
         // delay is to let transition work
       }, 400);
     })
+  },
+  beforeRouteEnter: (to, from, next) => {
+    if (from) {
+      store.commit('ui/urlBeforeQueueOpened', from.fullPath)
+    }
+    next()
   },
   computed: {
     ...mapState({

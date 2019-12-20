@@ -10,6 +10,7 @@ export default {
     lastDate: new Date(),
     maxMessages: 100,
     messageDisplayDuration: 10000,
+    urlBeforeQueueOpened: "/",
     messages: [],
     theme: 'light',
     notifications: {
@@ -123,6 +124,9 @@ export default {
     },
     computeLastDate: (state) => {
       state.lastDate = new Date()
+    },
+    urlBeforeQueueOpened: (state, value) => {
+      state.urlBeforeQueueOpened = value
     },
     theme: (state, value) => {
       state.theme = value

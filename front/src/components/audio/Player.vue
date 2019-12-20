@@ -126,7 +126,7 @@
             </span>
             <span
               class="control close-control tablet-and-below"
-              @click.stop="$router.go(-1)">
+              @click.stop="handleHide(!($route.name === 'queue' && $route.hash === '#player'))">
               <i class="large down angle icon"></i>
             </span>
           </div>
@@ -550,9 +550,18 @@ export default {
 
     toggleMobilePlayer () {
       if (this.$route.name === 'queue' && this.$route.hash === '#player') {
-        this.$router.go(-1)
+        this.handleHide(false)
       } else {
         this.$router.push('/queue#player')
+      }
+    },
+    handleHide (toPlayer) {
+      if (toPlayer) {
+        // hiding from queue to player
+        this.$router.push('/queue#player')
+      } else {
+        // hiding queue and player, return to regular app
+        this.$router.push(this.$store.state.ui.urlBeforeQueueOpened)
       }
     }
   },
