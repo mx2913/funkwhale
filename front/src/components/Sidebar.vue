@@ -106,14 +106,14 @@
   <nav class="secondary" role="navigation">
     <div class="ui small hidden divider"></div>
     <section :class="['ui', 'bottom', 'attached', {active: selectedTab === 'library'}, 'tab']" :aria-label="labels.mainMenu">
-      <nav class="ui vertical large fluid inverted secondary menu" role="navigation" :aria-label="labels.mainMenu">
-        <div class="item">
-          <header class="header" @click="exploreExpanded = !exploreExpanded">
+      <nav class="ui vertical large fluid inverted menu" role="navigation" :aria-label="labels.mainMenu">
+        <div :class="[{collapsed: !exploreExpanded}, 'collaspable item']">
+          <header class="header" @click="exploreExpanded = !exploreExpanded" tabindex="0" @focus="exploreExpanded = true">
             <translate translate-context="*/*/*/Verb">Explore</translate>
             <i class="angle down icon" v-if="exploreExpanded"></i>
             <i class="angle right icon" v-else></i>
           </header>
-          <div class="inverted menu" v-if="exploreExpanded">
+          <div class="menu">
             <router-link class="item" :exact="true" :to="{name: 'library.index'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
             <router-link class="item" :to="{name: 'library.albums.browse'}"><i class="compact disc icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
             <router-link class="item" :to="{name: 'library.artists.browse'}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
@@ -121,13 +121,13 @@
             <router-link class="item" :to="{name: 'library.radios.browse'}"><i class="feed icon"></i><translate translate-context="*/*/*">Radios</translate></router-link>
           </div>
         </div>
-        <div class="item" v-if="$store.state.auth.authenticated" >
-          <header class="header" @click="myLibraryExpanded = !myLibraryExpanded">
+        <div :class="[{collapsed: !myLibraryExpanded}, 'collaspable item']" v-if="$store.state.auth.authenticated">
+          <header class="header" @click="myLibraryExpanded = !myLibraryExpanded" tabindex="0" @focus="myLibraryExpanded = true">
             <translate translate-context="*/*/*/Noun">My Library</translate>
             <i class="angle down icon" v-if="myLibraryExpanded"></i>
             <i class="angle right icon" v-else></i>
           </header>
-          <div class="menu" v-if="myLibraryExpanded">
+          <div class="menu">
             <router-link class="item" :exact="true" :to="{name: 'library.me'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
             <router-link class="item" :to="{name: 'library.albums.me'}"><i class="compact disc icon"></i><translate translate-context="*/*/*">Albums</translate></router-link>
             <router-link class="item" :to="{name: 'library.artists.me'}"><i class="user icon"></i><translate translate-context="*/*/*">Artists</translate></router-link>
@@ -136,6 +136,9 @@
             <router-link class="item" :to="{name: 'favorites'}"><i class="heart icon"></i><translate translate-context="Sidebar/Favorites/List item.Link/Noun">Favorites</translate></router-link>
           </div>
         </div>
+        <router-link class="item" to="/about">
+          <translate translate-context="Footer/About/List item.Link">About page</translate>
+        </router-link>
       </nav>
     </section>
   </nav>
@@ -228,7 +231,20 @@ export default {
           return await self.cleanTrack(realIndex)
         }
       })
-
+    },
+    setupDropdown (selector) {
+      let self = this
+      $(self.$el).find(selector).dropdown({
+        selectOnKeydown: false,
+        action: function (text, value, $el) {
+          // used ton ensure focusing the dropdown and clicking via keyboard
+          // works as expected
+          let link = $($el).closest('a')
+          let url = link.attr('href')
+          self.$router.push(url)
+          $(self.$el).find(selector).dropdown('hide')
+        }
+      })
     }
   },
   watch: {
@@ -241,6 +257,7 @@ export default {
     "$store.state.auth.authenticated": {
       immediate: true,
       handler (v) {
+        let self = this
         if (v) {
           this.myLibraryExpanded = true
           this.exploreExpanded = false
@@ -249,8 +266,8 @@ export default {
           this.exploreExpanded = true
         }
         this.$nextTick(() => {
-          $(this.$el).find('.user-dropdown').dropdown({action: 'hide'})
-          $(this.$el).find('.admin-dropdown').dropdown({action: 'hide'})
+          self.setupDropdown('.user-dropdown')
+          self.setupDropdown('.admin-dropdown')
         })
       }
     },
@@ -258,7 +275,7 @@ export default {
       immediate: true,
       handler (v) {
         this.$nextTick(() => {
-          $(this.$el).find('.admin-dropdown').dropdown({action: 'hide'})
+          this.setupDropdown('.admin-dropdown')
         })
       },
       deep: true,
@@ -359,8 +376,19 @@ $sidebar-color: #2D2F33;
   }
   .item.active {
     border-right: 5px solid #F2711C;
-    border-radius: 0;
+    border-radius: 0 !important;
     background-color: rgba(255, 255, 255, 0.15) !important;
+  }
+  .item.collapsed {
+    &:not(:focus) > .menu {
+      display: none;
+    }
+    .header {
+      margin-bottom: 0;
+    }
+  }
+  .collaspable.item .header {
+    cursor: pointer;
   }
 }
 .ui.secondary.menu {
