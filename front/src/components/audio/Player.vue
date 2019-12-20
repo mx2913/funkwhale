@@ -151,6 +151,7 @@
       @keydown.s.exact="shuffle"
       @keydown.f.exact="$store.dispatch('favorites/toggle', currentTrack.id)"
       @keydown.q.exact="clean"
+      @keydown.e.exact="toggleMobilePlayer"
       />
   </section>
 </template>

@@ -1,8 +1,6 @@
 import Vue from "vue"
 import Router from "vue-router"
 
-import store from '../store'
-
 Vue.use(Router)
 
 console.log('PROCESS', process.env)
@@ -41,12 +39,6 @@ export default new Router({
       name: "queue",
       component: () =>
         import(/* webpackChunkName: "core" */ "@/components/Queue"),
-      beforeEnter: (to, from, next) => {
-        if (from) {
-          store.commit('ui/urlBeforeQueueOpened', from.fullPath)
-        }
-        next()
-      }
     },
     {
       path: "/about",

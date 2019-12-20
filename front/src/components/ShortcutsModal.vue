@@ -132,6 +132,10 @@ export default {
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Toggle mute')
             },
             {
+              key: 'e',
+              summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Expand queue/player view')
+            },
+            {
               key: 'l',
               summary: this.$pgettext('Popup/Keyboard shortcuts/Table.Label/Verb', 'Toggle queue looping')
             },
