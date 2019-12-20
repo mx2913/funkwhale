@@ -14,7 +14,7 @@
                 <div class="content">
                   <button
                     class="ui right floated basic icon button"
-                    @click="$store.dispatch('queue/clean'); $store.dispatch('ui/hideQueue', {router: $router})">
+                    @click="$store.dispatch('queue/clean')">
                       <translate translate-context="*/Queue/*/Verb">Clear</translate>
                   </button>
                   {{ labels.queue }}

@@ -1,6 +1,5 @@
 <template>
-  <section class="player-wrapper ui bottom-player" >
-
+  <section v-if="currentTrack" class="player-wrapper ui bottom-player">
     <div class="ui inverted segment fixed-controls" @click.prevent.stop="toggleMobilePlayer">
       <div
         :class="['ui', 'top attached', 'small', 'orange', 'inverted', {'indicating': isLoadingAudio}, 'progress']">
