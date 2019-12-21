@@ -141,6 +141,14 @@
                       <div class="position bar" :data-percent="progress" :style="{ 'width': progress + '%' }"></div>
                     </div>
                   </div>
+                  <div class="progress-area" v-else>
+                    <div
+                      ref="progress"
+                      :class="['ui', 'small', 'orange', 'progress']">
+                      <div class="buffer bar"></div>
+                      <div class="position bar"></div>
+                    </div>
+                  </div>
                   <div class="progress">
                     <template v-if="!isLoadingAudio">
                       <span role="button" class="left floated timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</span>
@@ -570,6 +578,10 @@ td:last-child {
 }
 .progress-area {
   overflow: hidden;
+}
+.progress-wrapper, .warning.message {
+  max-width: 25em;
+  margin: 0 auto;
 }
 .ui.progress .buffer.bar {
   position: absolute;
