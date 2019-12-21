@@ -1,10 +1,5 @@
 <template>
   <section class="main with-background" :aria-label="labels.queue">
-    <button
-      class="ui basic circular icon button"
-      @click.stop="$store.commit('ui/queueFocused', null)">
-      <i class="x icon"></i>
-    </button>
     <div :class="['ui vertical stripe queue segment', playerFocused ? 'player-focused' : '']">
       <div class="ui fluid container">
         <div class="ui stackable grid" id="queue-grid">
@@ -157,7 +152,7 @@
                     </template>
                   </div>
                 </div>
-                <div class="player-controls">
+                <div class="player-controls tablet-and-below">
                   <template>
                     <span
                       role="button"
@@ -198,7 +193,7 @@
                     </span>
                   </template>
                 </div>
-                <div class="ui basic segment queue-controls">
+                <div class="ui basic segment queue-controls tablet-and-below">
                   <div>
                     <span
                       role="button"
@@ -450,6 +445,7 @@ export default {
   min-height: 100vh;
   width: 100vw;
   z-index: 1000;
+  padding-bottom: 3em;
 }
 .main > .button {
   position: fixed;

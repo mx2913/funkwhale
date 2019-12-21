@@ -486,9 +486,6 @@ export default {
         line-height: 1em;
       }
       justify-content: space-around;
-      > * {
-        margin: 0 0.5em;
-      }
     }
   }
 }

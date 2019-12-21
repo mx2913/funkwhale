@@ -23,6 +23,18 @@
           </div>
 
         </div>
+
+        <div class="controls queue-not-focused tablet-and-up">
+          <div class="progress">
+            <template v-if="!isLoadingAudio">
+              <span role="button" class="timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</span>
+              / <span class="timer total">{{durationFormatted}}</span>
+            </template>
+            <template v-else>
+              00:00 / 00:00
+            </template>
+          </div>
+        </div>
         <div class="controls queue-not-focused">
           <span
             role="button"
@@ -61,16 +73,8 @@
               <i :class="['ui', 'big', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
           </span>
         </div>
-        <div class="controls queue-not-focused tablet-and-up">
-          <div class="progress">
-            <template v-if="!isLoadingAudio">
-              <span role="button" class="timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</span>
-              / <span class="timer total">{{durationFormatted}}</span>
-            </template>
-            <template v-else>
-              00:00 / 00:00
-            </template>
-          </div>
+        <div class="controls desktop-and-up">
+          <volume-control class="expandable" />
         </div>
         <div class="controls when-queue-focused">
           <div class="group">
@@ -132,6 +136,7 @@
             </span>
             <span
               class="control close-control desktop-and-up"
+              v-if="$store.state.ui.queueFocused"
               @click.stop="$store.commit('ui/queueFocused', null)">
               <i class="large down angle icon"></i>
             </span>
@@ -148,9 +153,6 @@
               <i class="large down angle icon"></i>
             </span>
           </div>
-        </div>
-        <div class="controls desktop-and-up">
-          <volume-control class="expandable" />
         </div>
       </div>
     </div>
