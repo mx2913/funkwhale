@@ -118,15 +118,33 @@
             </span>
           </div>
           <div class="group">
-            <span class="position control" role="button" @click.stop="$router.push('/queue')">
+            <span class="position control desktop-and-up" role="button" @click.stop="$store.commit('ui/queueFocused', null)">
+              <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
+                %{ index } of %{ length }
+              </translate>
+              <i class="list ul icon"></i>
+            </span>
+            <span class="position control tablet-and-below" role="button" @click.stop="switchTab">
               <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
                 %{ index } of %{ length }
               </translate>
               <i class="list ul icon"></i>
             </span>
             <span
+              class="control close-control desktop-and-up"
+              @click.stop="$store.commit('ui/queueFocused', null)">
+              <i class="large down angle icon"></i>
+            </span>
+            <span
+              v-if="$store.state.ui.queueFocused === 'queue'"
               class="control close-control tablet-and-below"
-              @click.stop="handleHide(!($route.name === 'queue' && $route.hash === '#player'))">
+              @click.stop="switchTab">
+              <i class="large down angle icon"></i>
+            </span>
+            <span
+              v-else
+              class="control close-control tablet-and-below"
+              @click.stop="$store.commit('ui/queueFocused', null)">
               <i class="large down angle icon"></i>
             </span>
           </div>
@@ -541,30 +559,21 @@ export default {
         }
       }
     },
-    toggleQueue () {
-      if (this.$route.name === 'queue') {
-        this.$router.go(-1)
-      } else {
-        this.$router.push('/queue')
-      }
-    },
-
     toggleMobilePlayer () {
-      if (this.$route.name === 'queue' && this.$route.hash === '#player') {
-        this.handleHide(false)
+      if (['queue', 'player'].indexOf(this.$store.state.ui.queueFocused) > -1) {
+        this.$store.commit('ui/queueFocused', null)
       } else {
-        this.$router.push('/queue#player')
+        this.$store.commit('ui/queueFocused', 'player')
       }
     },
-    handleHide (toPlayer) {
-      if (toPlayer) {
-        // hiding from queue to player
-        this.$router.push('/queue#player')
+    switchTab () {
+      if (this.$store.state.ui.queueFocused === 'player') {
+        this.$store.commit('ui/queueFocused', 'queue')
       } else {
-        // hiding queue and player, return to regular app
-        this.$router.push(this.$store.state.ui.urlBeforeQueueOpened)
+        this.$store.commit('ui/queueFocused', 'player')
+
       }
-    }
+    },
   },
   computed: {
     ...mapState({

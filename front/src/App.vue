@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :key="String($store.state.instance.instanceUrl)" :class="[$route.name === 'queue' ? 'queue-focused' : '']">
+  <div id="app" :key="String($store.state.instance.instanceUrl)" :class="[$store.state.ui.queueFocused ? 'queue-focused' : '']">
     <!-- here, we display custom stylesheets, if any -->
     <link
       v-for="url in customStylesheets"
@@ -12,9 +12,10 @@
       <sidebar></sidebar>
       <set-instance-modal @update:show="showSetInstanceModal = $event" :show="showSetInstanceModal"></set-instance-modal>
       <service-messages v-if="messages.length > 0"/>
-      <transition :name="routeTransition">
-        <router-view :key="$route.fullPath"></router-view>
+      <transition name="queue">
+        <queue v-if="$store.state.ui.queueFocused"></queue>
       </transition>
+      <router-view :class="{hidden: $store.state.ui.queueFocused}" id="view" :key="$route.fullPath"></router-view>
       <player></player>
       <app-footer
         v-if="$route.name != 'queue'"
@@ -49,6 +50,7 @@ import ReportModal from '@/components/moderation/ReportModal'
 import ShortcutsModal from '@/components/ShortcutsModal'
 import SetInstanceModal from '@/components/SetInstanceModal'
 import Player from "@/components/audio/Player"
+import Queue from '@/components/Queue'
 
 export default {
   name: 'app',
@@ -63,6 +65,7 @@ export default {
     GlobalEvents,
     ServiceMessages,
     SetInstanceModal,
+    Queue
   },
   data () {
     return {
@@ -287,13 +290,6 @@ export default {
         return this.$store.state.instance.frontSettings.additionalStylesheets || []
       }
     },
-    routeTransition () {
-      if (this.$route.name === 'queue') {
-        return 'fade'
-      } else {
-        return 'noop'
-      }
-    }
   },
   watch: {
     '$store.state.instance.instanceUrl' () {
@@ -369,10 +365,9 @@ export default {
   width: 100vw;
 }
 #app.queue-focused {
-  .ui.bottom-player {
-    @include media(">desktop") {
-      display: none;
-    }
+  #view {
+    max-height: 100vh;
+    overflow: hidden;
   }
   .queue-not-focused {
     @include media("<desktop") {
@@ -410,6 +405,7 @@ export default {
   bottom: 0;
   left: 0;
   margin: 0;
+  z-index: 1001;
   height: $bottom-player-height;
   .controls-row {
     height: $bottom-player-height;
@@ -496,14 +492,5 @@ export default {
     }
   }
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition-duration: 0.3s;
-  transition-property: opacity;
-}
 
-.fade-enter,
-.fade-leave-active {
-  opacity: 0
-}
 </style>

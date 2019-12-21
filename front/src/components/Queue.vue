@@ -2,7 +2,7 @@
   <section class="main with-background" :aria-label="labels.queue">
     <button
       class="ui basic circular icon button"
-      @click.stop="$router.go(-1)">
+      @click.stop="$store.commit('ui/queueFocused', null)">
       <i class="x icon"></i>
     </button>
     <div :class="['ui vertical stripe queue segment', playerFocused ? 'player-focused' : '']">
@@ -302,12 +302,6 @@ export default {
       }, 400);
     })
   },
-  beforeRouteEnter: (to, from, next) => {
-    if (from) {
-      store.commit('ui/urlBeforeQueueOpened', from.fullPath)
-    }
-    next()
-  },
   computed: {
     ...mapState({
       currentIndex: state => state.queue.currentIndex,
@@ -362,7 +356,7 @@ export default {
       }
     },
     playerFocused () {
-      return this.$route.hash === '#player'
+      return this.$store.state.ui.queueFocused === 'player'
     }
   },
   methods: {
@@ -437,14 +431,13 @@ export default {
     '$store.state.queue.tracks': {
       handler (v) {
         if (!v || v.length === 0) {
-          if (window.history.length > 2) {
-            this.$router.go(-1)
-          } else {
-            this.$router.push('/')
-          }
+          this.$store.commit('ui/queueFocused', null)
         }
       },
       immediate: true
+    },
+    "$route.fullPath" () {
+      this.$store.commit('ui/queueFocused', null)
     }
   }
 }
@@ -499,6 +492,9 @@ export default {
   @include media("<desktop") {
     display: none;
   }
+}
+.queue-column {
+  overflow-y: auto;
 }
 .queue-column .table {
   margin-bottom: 4rem;
