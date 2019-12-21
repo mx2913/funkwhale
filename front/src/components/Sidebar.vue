@@ -84,7 +84,7 @@
           </div>
         </div>
       </template>
-      <div class="item">
+      <div class="item collapse-button-wrapper">
 
         <span
           @click="isCollapsed = !isCollapsed"
@@ -344,6 +344,9 @@ $sidebar-color: #2D2F33;
     overflow-y: auto;
   }
   @include media(">desktop") {
+    .menu .item.collapse-button-wrapper {
+      padding: 0;
+    }
     .collapse.button {
       display: none !important;
     }
