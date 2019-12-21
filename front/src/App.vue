@@ -15,9 +15,10 @@
       <transition name="queue">
         <queue v-if="$store.state.ui.queueFocused"></queue>
       </transition>
-      <router-view :class="{hidden: $store.state.ui.queueFocused}" id="view" :key="$route.fullPath"></router-view>
+      <router-view :class="{hidden: $store.state.ui.queueFocused}" :key="$route.fullPath"></router-view>
       <player></player>
       <app-footer
+        :class="{hidden: $store.state.ui.queueFocused}"
         v-if="$route.name != 'queue'"
         :version="version"
         @show:shortcuts-modal="showShortcutsModal = !showShortcutsModal"
@@ -365,10 +366,6 @@ export default {
   width: 100vw;
 }
 #app.queue-focused {
-  #view {
-    max-height: 100vh;
-    overflow: hidden;
-  }
   .queue-not-focused {
     @include media("<desktop") {
       display: none;
