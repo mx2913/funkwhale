@@ -474,6 +474,9 @@ export default {
     min-width: 8em;
     padding-right: 0.5em;
     font-size: 1.1em;
+    @include media(">desktop") {
+      width: 20%;
+    }
     .icon {
       font-size: 1.1em;
 
@@ -486,5 +489,15 @@ export default {
     }
   }
 }
+.queue-enter-active, .queue-leave-active {
+  transition: all 0.2s ease-in-out;
+  .current-track #player {
+    opacity: 0;
 
+  }
+}
+.queue-enter, .queue-leave-to {
+  transform: translateY(100vh);
+  opacity: 0;
+}
 </style>

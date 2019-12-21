@@ -122,7 +122,7 @@
             </span>
           </div>
           <div class="group">
-            <span class="position control desktop-and-up" role="button" @click.stop="$store.commit('ui/queueFocused', null)">
+            <span class="position control desktop-and-up" role="button" @click.stop="toggleMobilePlayer">
               <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
                 %{ index } of %{ length }
               </translate>
@@ -134,11 +134,18 @@
               </translate>
               <i class="list ul icon"></i>
             </span>
+
             <span
               class="control close-control desktop-and-up"
               v-if="$store.state.ui.queueFocused"
-              @click.stop="$store.commit('ui/queueFocused', null)">
+              @click.stop="toggleMobilePlayer">
               <i class="large down angle icon"></i>
+            </span>
+            <span
+              class="control desktop-and-up"
+              v-else
+              @click.stop="toggleMobilePlayer">
+              <i class="large up angle icon"></i>
             </span>
             <span
               v-if="$store.state.ui.queueFocused === 'queue'"
