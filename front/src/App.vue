@@ -461,8 +461,10 @@ export default {
   .track-controls {
     display: flex;
     align-items: center;
+    justify-content: start;
     .image {
       padding: 0.5em;
+      width: auto;
       margin-right: 0.5em;
       > img {
         max-height: 3.7em;
