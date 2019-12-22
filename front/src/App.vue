@@ -432,6 +432,9 @@ export default {
       transform: translateX(46px);
     }
   }
+  .discrete.link {
+    color: inherit;
+  }
   .indicating.progress .bar {
     left: -46px;
     width: 200% !important;

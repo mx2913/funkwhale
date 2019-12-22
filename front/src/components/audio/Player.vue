@@ -15,10 +15,15 @@
           </div>
           <div class="middle aligned content ellipsis">
             <strong>
-              {{ currentTrack.title }}
+              <router-link class="small header discrete link track" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
+                {{ currentTrack.title }}
+              </router-link>
             </strong>
             <div class="meta">
-                {{ currentTrack.artist.name }} / {{ currentTrack.album.title }}
+              <router-link class="discrete link" :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
+                {{ currentTrack.artist.name }}</router-link> /<router-link class="discrete link" :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
+                {{ currentTrack.album.title }}
+              </router-link>
             </div>
           </div>
 
