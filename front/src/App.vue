@@ -129,6 +129,9 @@ export default {
       self.$router.push(event.target.getAttribute('href'))
       event.preventDefault();
     }, false);
+    this.$nextTick(() => {
+      document.getElementById('fake-content').classList.add('loaded')
+    })
 
   },
   destroyed () {

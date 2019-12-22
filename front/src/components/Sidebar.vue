@@ -182,6 +182,11 @@ export default {
       clearInterval(this.fetchInterval)
     }
   },
+  mounted () {
+    this.$nextTick(() => {
+      document.getElementById('fake-sidebar').classList.add('loaded')
+    })
+  },
   computed: {
     ...mapGetters({
       additionalNotifications: "ui/additionalNotifications",
