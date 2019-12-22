@@ -183,7 +183,7 @@
             </div>
           </div>
           <div class="ui sixteen wide mobile ten wide computer column queue-column">
-            <div class="ui sticky basic clearing fixed-header segment">
+            <div class="ui basic clearing fixed-header segment">
               <h2 class="ui header">
                 <div class="content">
                   <button
@@ -400,11 +400,11 @@ export default {
     },
   },
   watch: {
-    playerFocused: {
+    "$store.state.ui.queueFocused": {
       handler (v) {
-        if (!v) {
+        if (v === 'queue') {
           this.$nextTick(() => {
-            $('.ui.sticky').sticky('refresh');
+            this.scrollToCurrent()
           })
         }
       },
@@ -487,6 +487,7 @@ export default {
   overflow-y: auto;
 }
 .queue-column .table {
+  margin-top: 4em !important;
   margin-bottom: 4rem;
 }
 .ui.table > tbody > tr > td.controls {
@@ -523,12 +524,21 @@ td:last-child {
   }
 }
 .fixed-header {
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  z-index: 9;
   @include media("<desktop") {
     padding: 1em;
   }
-}
-.sticky .header .content {
-  display: block;
+  @include media(">desktop") {
+    right: 1em;
+    left: 38%;
+  }
+  .header .content {
+    display: block;
+  }
 }
 .current-track #player {
   font-size: 1.8em;
