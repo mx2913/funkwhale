@@ -191,7 +191,7 @@
               v-else
               class="control close-control tablet-and-below"
               @click.stop="$store.commit('ui/queueFocused', null)">
-              <i class="large down angle icon"></i>
+              <i class="large x icon"></i>
             </span>
           </div>
         </div>
