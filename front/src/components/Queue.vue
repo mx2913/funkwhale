@@ -121,17 +121,6 @@
                     :title="labels.addArtistContentFilter">
                     <i :class="['eye slash outline', 'basic', 'icon']"></i>
                   </button>
-
-
-                    <span
-                      role="button"
-                      :title="labels.info"
-                      :aria-label="labels.info"
-                       :class="['ui', 'really', 'basic', 'circular', 'icon', 'button']"
-                      @click.prevent.stop="info"
-                      :disabled="!currentTrack">
-                        <i :class="['ui', {'disabled': !currentTrack}, 'grey circle info', 'icon']" ></i>
-                    </span>
                 </div>
                 <div class="progress-wrapper">
                   <div class="progress-area" v-if="currentTrack && !errored">
