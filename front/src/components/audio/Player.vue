@@ -198,18 +198,10 @@ export default {
     GlobalEvents,
   },
   data() {
-    let defaultAmbiantColors = [
-      [250, 250, 250],
-      [250, 250, 250],
-      [250, 250, 250],
-      [250, 250, 250]
-    ]
     return {
       isShuffling: false,
       sliderVolume: this.volume,
-      defaultAmbiantColors: defaultAmbiantColors,
       showVolume: false,
-      ambiantColors: defaultAmbiantColors,
       currentSound: null,
       dummyAudio: null,
       isUpdatingTime: false,
@@ -657,9 +649,6 @@ export default {
         this.$store.commit("player/isLoadingAudio", true)
         this.playTimeout = setTimeout(async () => {
           await self.loadSound(newValue, oldValue)
-          if (!newValue || !newValue.album.cover) {
-            self.ambiantColors = self.defaultAmbiantColors
-          }
         }, 500);
       },
       immediate: false
