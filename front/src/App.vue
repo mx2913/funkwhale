@@ -477,6 +477,11 @@ export default {
     @include media(">desktop") {
       width: 20%;
     }
+    &.small, .small {
+      @include media(">desktop") {
+        font-size: 0.9em;
+      }
+    }
     .icon {
       font-size: 1.1em;
 

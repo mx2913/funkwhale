@@ -78,7 +78,7 @@
               <i :class="['ui', 'big', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
           </span>
         </div>
-        <div class="controls desktop-and-up">
+        <div class="controls desktop-and-up small">
           <track-favorite-icon
             v-if="$store.state.auth.authenticated"
             class="control white"
@@ -98,7 +98,7 @@
           <volume-control class="expandable" />
         </div>
         <div class="controls when-queue-focused">
-          <div class="group">
+          <div class="small group">
             <span
               role="button"
               v-if="looping === 0"
@@ -143,13 +143,13 @@
             </span>
           </div>
           <div class="group">
-            <span class="position control desktop-and-up" role="button" @click.stop="toggleMobilePlayer">
+            <span class="small position control desktop-and-up" role="button" @click.stop="toggleMobilePlayer">
               <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
                 %{ index } of %{ length }
               </translate>
               <i class="stream icon"></i>
             </span>
-            <span class="position control tablet-and-below" role="button" @click.stop="switchTab">
+            <span class="small position control tablet-and-below" role="button" @click.stop="switchTab">
               <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
                 %{ index } of %{ length }
               </translate>
