@@ -305,7 +305,7 @@ export default {
       immediate: true,
       handler(newValue) {
         let self = this
-        import(`./translations/${newValue}.json`).then((response) =>{
+        import(/* webpackChunkName: "locale-[request]" */ `./translations/${newValue}.json`).then((response) =>{
           Vue.$translations[newValue] = response.default[newValue]
         }).finally(() => {
           // set current language twice, otherwise we seem to have a cache somewhere
@@ -317,12 +317,12 @@ export default {
           return self.$store.commit('ui/momentLocale', 'en')
         }
         let momentLocale = newValue.replace('_', '-').toLowerCase()
-        import(`moment/locale/${momentLocale}.js`).then(() => {
+        import(/* webpackChunkName: "moment-locale-[request]" */ `moment/locale/${momentLocale}.js`).then(() => {
           self.$store.commit('ui/momentLocale', momentLocale)
         }).catch(() => {
           console.log('No momentjs locale available for', momentLocale)
           let shortLocale = momentLocale.split('-')[0]
-          import(`moment/locale/${shortLocale}.js`).then(() => {
+          import(/* webpackChunkName: "moment-locale-[request]" */ `moment/locale/${shortLocale}.js`).then(() => {
             self.$store.commit('ui/momentLocale', shortLocale)
           }).catch(() => {
             console.log('No momentjs locale available for', shortLocale)
