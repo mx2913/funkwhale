@@ -50,6 +50,7 @@
     "mocha": "^5.2.0",
     "moxios": "^0.4.0",
     "node-sass": "^4.9.3",
+    "preload-webpack-plugin": "^3.0.0-beta.4",
     "purgecss-webpack-plugin": "^1.6.0",
     "sass-loader": "^7.1.0",
     "sinon": "^6.1.5",
