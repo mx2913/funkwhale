@@ -108,10 +108,9 @@
     <section :class="['ui', 'bottom', 'attached', {active: selectedTab === 'library'}, 'tab']" :aria-label="labels.mainMenu">
       <nav class="ui vertical large fluid inverted menu" role="navigation" :aria-label="labels.mainMenu">
         <div :class="[{collapsed: !exploreExpanded}, 'collaspable item']">
-          <header class="header" @click="exploreExpanded = !exploreExpanded" tabindex="0" @focus="exploreExpanded = true">
+          <header class="header" @click="exploreExpanded = true" tabindex="0" @focus="exploreExpanded = true">
             <translate translate-context="*/*/*/Verb">Explore</translate>
-            <i class="angle down icon" v-if="exploreExpanded"></i>
-            <i class="angle right icon" v-else></i>
+            <i class="angle right icon" v-if="!exploreExpanded"></i>
           </header>
           <div class="menu">
             <router-link class="item" :exact="true" :to="{name: 'library.index'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
@@ -122,10 +121,9 @@
           </div>
         </div>
         <div :class="[{collapsed: !myLibraryExpanded}, 'collaspable item']" v-if="$store.state.auth.authenticated">
-          <header class="header" @click="myLibraryExpanded = !myLibraryExpanded" tabindex="0" @focus="myLibraryExpanded = true">
+          <header class="header" @click="myLibraryExpanded = true" tabindex="0" @focus="myLibraryExpanded = true">
             <translate translate-context="*/*/*/Noun">My Library</translate>
-            <i class="angle down icon" v-if="myLibraryExpanded"></i>
-            <i class="angle right icon" v-else></i>
+            <i class="angle right icon" v-if="!myLibraryExpanded"></i>
           </header>
           <div class="menu">
             <router-link class="item" :exact="true" :to="{name: 'library.me'}"><i class="music icon"></i><translate translate-context="Sidebar/Navigation/List item.Link/Verb">Browse</translate></router-link>
@@ -216,6 +214,36 @@ export default {
       } else {
         return "index"
       }
+    },
+    focusedMenu () {
+      let mapping = {
+        "library.index": 'exploreExpanded',
+        "library.albums.browse": 'exploreExpanded',
+        "library.albums.detail": 'exploreExpanded',
+        "library.artists.browse": 'exploreExpanded',
+        "library.artists.detail": 'exploreExpanded',
+        "library.tracks.detail": 'exploreExpanded',
+        "library.playlists.browse": 'exploreExpanded',
+        "library.playlists.detail": 'exploreExpanded',
+        "library.radios.browse": 'exploreExpanded',
+        "library.radios.detail": 'exploreExpanded',
+        'library.me': "myLibraryExpanded",
+        'library.albums.me': "myLibraryExpanded",
+        'library.artists.me': "myLibraryExpanded",
+        'library.playlists.me': "myLibraryExpanded",
+        'library.radios.me': "myLibraryExpanded",
+        'favorites': "myLibraryExpanded",
+      }
+      let m = mapping[this.$route.name]
+      if (m) {
+        return m
+      }
+
+      if (this.$store.state.auth.authenticated) {
+        return 'myLibraryExpanded'
+      } else {
+        return 'exploreExpanded'
+      }
     }
   },
   methods: {
@@ -266,23 +294,6 @@ export default {
     "$store.state.moderation.lastUpdate": function () {
       this.applyContentFilters()
     },
-    "$store.state.auth.authenticated": {
-      immediate: true,
-      handler (v) {
-        let self = this
-        if (v) {
-          this.myLibraryExpanded = true
-          this.exploreExpanded = false
-        } else {
-          this.myLibraryExpanded = false
-          this.exploreExpanded = true
-        }
-        this.$nextTick(() => {
-          self.setupDropdown('.user-dropdown')
-          self.setupDropdown('.admin-dropdown')
-        })
-      }
-    },
     "$store.state.auth.availablePermissions": {
       immediate: true,
       handler (v) {
@@ -292,41 +303,24 @@ export default {
       },
       deep: true,
     },
-    "$route.name": {
+    focusedMenu: {
       immediate: true,
       handler (n) {
-        let mapping = {
-          "library.index": 'exploreExpanded',
-          "library.albums.browse": 'exploreExpanded',
-          "library.albums.detail": 'exploreExpanded',
-          "library.artists.browse": 'exploreExpanded',
-          "library.artists.detail": 'exploreExpanded',
-          "library.tracks.detail": 'exploreExpanded',
-          "library.playlists.browse": 'exploreExpanded',
-          "library.playlists.detail": 'exploreExpanded',
-          "library.radios.browse": 'exploreExpanded',
-          "library.radios.detail": 'exploreExpanded',
-          'library.me': "myLibraryExpanded",
-          'library.albums.me': "myLibraryExpanded",
-          'library.artists.me': "myLibraryExpanded",
-          'library.playlists.me': "myLibraryExpanded",
-          'library.radios.me': "myLibraryExpanded",
-          'favorites': "myLibraryExpanded",
-        }
-        if (mapping[n]) {
-          // expand the menu block of the new route automatically, if applicable
-          this[mapping[n]] = true
+        if (n) {
+          this[n] = true
         }
       }
     },
-    myLibraryExpanded: {
-      handler (n) { this.exploreExpanded = !n},
-      immediate: true,
+    myLibraryExpanded (v) {
+      if (v) {
+        this.exploreExpanded = false
+      }
     },
-    exploreExpanded: {
-      handler (n) { this.myLibraryExpanded = !n},
-      immediate: true,
-    }
+    exploreExpanded (v) {
+      if (v) {
+        this.myLibraryExpanded = false
+      }
+    },
   }
 }
 </script>
@@ -343,6 +337,7 @@ $sidebar-color: #2D2F33;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    padding-bottom: 4em;
   }
   > nav {
     flex-grow: 1;
