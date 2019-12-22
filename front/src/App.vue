@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :key="String($store.state.instance.instanceUrl)" :class="[$store.state.ui.queueFocused ? 'queue-focused' : '']">
+  <div id="app" :key="String($store.state.instance.instanceUrl)" :class="[$store.state.ui.queueFocused ? 'queue-focused' : '', {'has-bottom-player': $store.state.queue.tracks.length > 0}]">
     <!-- here, we display custom stylesheets, if any -->
     <link
       v-for="url in customStylesheets"

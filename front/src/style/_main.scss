@@ -105,9 +105,15 @@ html {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-  padding-bottom: $bottom-player-height;
+  &.has-bottom-player {
+    padding-bottom: $bottom-player-height;
+  }
 }
 
+#footer {
+  border-bottom: none;
+  border-top: 1px solid rgba(34, 36, 38, 0.15);
+}
 #app > main, #app > .main {
   flex: 1;
 }
