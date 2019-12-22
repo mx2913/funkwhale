@@ -13,10 +13,10 @@
       <set-instance-modal @update:show="showSetInstanceModal = $event" :show="showSetInstanceModal"></set-instance-modal>
       <service-messages v-if="messages.length > 0"/>
       <transition name="queue">
-        <queue v-if="$store.state.ui.queueFocused"></queue>
+        <queue @touch-progress="$refs.player.setCurrentTime($event)" v-if="$store.state.ui.queueFocused"></queue>
       </transition>
       <router-view :class="{hidden: $store.state.ui.queueFocused}" :key="$route.fullPath"></router-view>
-      <player></player>
+      <player ref="player"></player>
       <app-footer
         :class="{hidden: $store.state.ui.queueFocused}"
         :version="version"

@@ -375,10 +375,10 @@ export default {
       window.scrollTo({top: middle, behaviour: 'smooth'});
     },
     touchProgress(e) {
-      // todo
-    },
-    setCurrentTime(e) {
-      // todo
+      let time
+      let target = this.$refs.progress
+      time = (e.layerX / target.offsetWidth) * this.duration
+      this.$emit('touch-progress', time)
     },
     shuffle() {
       let disabled = this.queue.tracks.length === 0

@@ -332,12 +332,6 @@ export default {
         self.$emit("previous")
       })
     },
-    touchProgress(e) {
-      let time
-      let target = this.$refs.progress
-      time = (e.layerX / target.offsetWidth) * this.duration
-      this.setCurrentTime(time)
-    },
     handleError({ sound, error }) {
       this.$store.commit("player/isLoadingAudio", false)
       this.$store.dispatch("player/trackErrored")
