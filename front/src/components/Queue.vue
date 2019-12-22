@@ -245,7 +245,7 @@
                       <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
                         %{ index } of %{ length }
                       </translate>
-                      <i class="list ul icon"></i>
+                      <i class="stream icon"></i>
                     </span>
                     <volume-control />
                   </div>
