@@ -499,9 +499,8 @@ export default {
 }
 .queue-enter-active, .queue-leave-active {
   transition: all 0.2s ease-in-out;
-  .current-track #player {
+  .current-track, .queue-column {
     opacity: 0;
-
   }
 }
 .queue-enter, .queue-leave-to {
