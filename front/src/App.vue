@@ -80,6 +80,10 @@ export default {
     if (serverUrl) {
       this.$store.commit('instance/instanceUrl', serverUrl)
     }
+    const url = urlParams.get('_url')
+    if (url) {
+      this.$router.replace(url)
+    }
     else if (!this.$store.state.instance.instanceUrl) {
       // we have several way to guess the API server url. By order of precedence:
       // 1. use the url provided in settings.json, if any
