@@ -192,16 +192,10 @@ import _ from '@/lodash'
 import url from '@/utils/url'
 import axios from 'axios'
 
-import TrackFavoriteIcon from "@/components/favorites/TrackFavoriteIcon"
-import TrackPlaylistIcon from "@/components/playlists/TrackPlaylistIcon"
-import VolumeControl from './VolumeControl'
-
 export default {
   components: {
-    TrackFavoriteIcon,
-    TrackPlaylistIcon,
+    VolumeControl:  () => import(/* webpackChunkName: "audio" */ "./VolumeControl"),
     GlobalEvents,
-    VolumeControl,
   },
   data() {
     let defaultAmbiantColors = [

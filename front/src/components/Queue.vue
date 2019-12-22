@@ -272,21 +272,16 @@ import { mapState, mapGetters, mapActions } from "vuex"
 import $ from 'jquery'
 import moment from "moment"
 import lodash from '@/lodash'
-import draggable from "vuedraggable"
 import time from "@/utils/time"
-
-import TrackFavoriteIcon from "@/components/favorites/TrackFavoriteIcon"
-import TrackPlaylistIcon from "@/components/playlists/TrackPlaylistIcon"
-import VolumeControl from '@/components/audio/VolumeControl'
 
 import store from "@/store"
 
 export default {
   components: {
-    TrackFavoriteIcon,
-    TrackPlaylistIcon,
-    VolumeControl,
-    draggable
+    TrackFavoriteIcon:  () => import(/* webpackChunkName: "auth-audio" */ "@/components/favorites/TrackFavoriteIcon"),
+    TrackPlaylistIcon:  () => import(/* webpackChunkName: "auth-audio" */ "@/components/playlists/TrackPlaylistIcon"),
+    VolumeControl:  () => import(/* webpackChunkName: "audio" */ "@/components/audio/VolumeControl"),
+    draggable:  () => import(/* webpackChunkName: "draggable" */ "vuedraggable"),
   },
   data () {
     return {

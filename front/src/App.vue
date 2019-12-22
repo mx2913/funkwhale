@@ -19,7 +19,6 @@
       <player></player>
       <app-footer
         :class="{hidden: $store.state.ui.queueFocused}"
-        v-if="$route.name != 'queue'"
         :version="version"
         @show:shortcuts-modal="showShortcutsModal = !showShortcutsModal"
         @show:set-instance-modal="showSetInstanceModal = !showSetInstanceModal"
@@ -40,33 +39,23 @@ import _ from '@/lodash'
 import {mapState, mapGetters, mapActions} from 'vuex'
 import { WebSocketBridge } from 'django-channels'
 import GlobalEvents from '@/components/utils/global-events'
-import Sidebar from '@/components/Sidebar'
-import AppFooter from '@/components/Footer'
-import ServiceMessages from '@/components/ServiceMessages'
 import moment from  'moment'
 import locales from './locales'
-import PlaylistModal from '@/components/playlists/PlaylistModal'
-import FilterModal from '@/components/moderation/FilterModal'
-import ReportModal from '@/components/moderation/ReportModal'
-import ShortcutsModal from '@/components/ShortcutsModal'
-import SetInstanceModal from '@/components/SetInstanceModal'
-import Player from "@/components/audio/Player"
-import Queue from '@/components/Queue'
 
 export default {
   name: 'app',
   components: {
-    Player,
-    Sidebar,
-    AppFooter,
-    FilterModal,
-    ReportModal,
-    PlaylistModal,
-    ShortcutsModal,
+    Player:  () => import(/* webpackChunkName: "audio" */ "@/components/audio/Player"),
+    Queue:  () => import(/* webpackChunkName: "audio" */ "@/components/Queue"),
+    PlaylistModal:  () => import(/* webpackChunkName: "auth-audio" */ "@/components/playlists/PlaylistModal"),
+    Sidebar:  () => import(/* webpackChunkName: "core" */ "@/components/Sidebar"),
+    AppFooter:  () => import(/* webpackChunkName: "core" */ "@/components/Footer"),
+    ServiceMessages:  () => import(/* webpackChunkName: "core" */ "@/components/ServiceMessages"),
+    SetInstanceModal:  () => import(/* webpackChunkName: "core" */ "@/components/SetInstanceModal"),
+    ShortcutsModal:  () => import(/* webpackChunkName: "core" */ "@/components/ShortcutsModal"),
+    FilterModal:  () => import(/* webpackChunkName: "moderation" */ "@/components/moderation/FilterModal"),
+    ReportModal:  () => import(/* webpackChunkName: "moderation" */ "@/components/moderation/ReportModal"),
     GlobalEvents,
-    ServiceMessages,
-    SetInstanceModal,
-    Queue
   },
   data () {
     return {

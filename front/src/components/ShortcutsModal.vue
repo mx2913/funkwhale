@@ -42,12 +42,11 @@
 </template>
 
 <script>
-import Modal from '@/components/semantic/Modal'
 
 export default {
   props: ['show'],
   components: {
-    Modal,
+    Modal:  () => import(/* webpackChunkName: "modal" */ "@/components/semantic/Modal"),
   },
   computed: {
     general () {
