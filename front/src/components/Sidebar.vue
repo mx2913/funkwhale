@@ -343,7 +343,7 @@ $sidebar-color: #2D2F33;
 
 .sidebar {
   background: $sidebar-color;
-  @include media(">tablet") {
+  @include media(">desktop") {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
