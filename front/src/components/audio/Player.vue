@@ -74,6 +74,22 @@
           </span>
         </div>
         <div class="controls desktop-and-up">
+          <track-favorite-icon
+            v-if="$store.state.auth.authenticated"
+            class="control white"
+            :track="currentTrack"></track-favorite-icon>
+          <track-playlist-icon
+            v-if="$store.state.auth.authenticated"
+            class="control white"
+            :track="currentTrack"></track-playlist-icon>
+          <button
+            v-if="$store.state.auth.authenticated"
+            @click="$store.dispatch('moderation/hide', {type: 'artist', target: currentTrack.artist})"
+            :class="['ui', 'really', 'basic', 'circular', 'icon', 'button', 'control']"
+            :aria-label="labels.addArtistContentFilter"
+            :title="labels.addArtistContentFilter">
+            <i :class="['eye slash outline', 'basic', 'icon']"></i>
+          </button>
           <volume-control class="expandable" />
         </div>
         <div class="controls when-queue-focused">
@@ -195,6 +211,8 @@ import axios from 'axios'
 export default {
   components: {
     VolumeControl:  () => import(/* webpackChunkName: "audio" */ "./VolumeControl"),
+    TrackFavoriteIcon:  () => import(/* webpackChunkName: "auth-audio" */ "@/components/favorites/TrackFavoriteIcon"),
+    TrackPlaylistIcon:  () => import(/* webpackChunkName: "auth-audio" */ "@/components/playlists/TrackPlaylistIcon"),
     GlobalEvents,
   },
   data() {
@@ -725,5 +743,10 @@ export default {
 .shuffling.loader.inline {
   margin: 0;
 }
-
+.control.circular.button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: inherit;
+}
 </style>

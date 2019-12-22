@@ -460,6 +460,7 @@ export default {
     align-items: center;
     .image {
       padding: 0.5em;
+      margin-right: 0.5em;
       > img {
         max-height: 3.7em;
         max-width: 4.7em;
@@ -481,7 +482,10 @@ export default {
       @include media(">desktop") {
         line-height: 1em;
       }
-      justify-content: space-around;
+      justify-content: center;
+      > * {
+        margin: 0 0.5em;
+      }
     }
   }
 }

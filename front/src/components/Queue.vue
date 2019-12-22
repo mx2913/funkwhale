@@ -106,15 +106,17 @@
                 </div>
                 <div class="additional-controls">
                   <track-favorite-icon
+                    class="tablet-and-below"
                     v-if="$store.state.auth.authenticated"
                     :track="currentTrack"></track-favorite-icon>
                   <track-playlist-icon
+                    class="tablet-and-below"
                     v-if="$store.state.auth.authenticated"
                     :track="currentTrack"></track-playlist-icon>
                   <button
                     v-if="$store.state.auth.authenticated"
                     @click="$store.dispatch('moderation/hide', {type: 'artist', target: currentTrack.artist})"
-                    :class="['ui', 'really', 'basic', 'circular', 'icon', 'button']"
+                    :class="['ui', 'really', 'basic', 'circular', 'icon', 'button', 'tablet-and-below']"
                     :aria-label="labels.addArtistContentFilter"
                     :title="labels.addArtistContentFilter">
                     <i :class="['eye slash outline', 'basic', 'icon']"></i>
