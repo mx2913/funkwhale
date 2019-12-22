@@ -8,25 +8,38 @@
       </div>
       <div class="controls-row">
 
-        <div class="controls track-controls queue-not-focused">
+        <div class="controls track-controls queue-not-focused desktop-and-up" @click.stop.prevent="">
+          <div class="ui tiny image" @click.stop.prevent="$router.push({name: 'library.tracks.detail', params: {id: currentTrack.id }})">
+            <img ref="cover" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
+            <img v-else src="../../assets/audio/default-cover.png">
+          </div>
+          <div class="middle aligned content ellipsis">
+            <strong>
+              <router-link @click.stop.prevent="" class="small header discrete link track" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
+                {{ currentTrack.title }}
+              </router-link>
+            </strong>
+            <div class="meta">
+              <router-link @click.stop.prevent="" class="discrete link" :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
+                {{ currentTrack.artist.name }}</router-link> /<router-link @click.stop.prevent="" class="discrete link" :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
+                {{ currentTrack.album.title }}
+              </router-link>
+            </div>
+          </div>
+        </div>
+        <div class="controls track-controls queue-not-focused tablet-and-below">
           <div class="ui tiny image">
             <img ref="cover" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.medium_square_crop)">
             <img v-else src="../../assets/audio/default-cover.png">
           </div>
           <div class="middle aligned content ellipsis">
             <strong>
-              <router-link class="small header discrete link track" :title="currentTrack.title" :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}">
-                {{ currentTrack.title }}
-              </router-link>
+              {{ currentTrack.title }}
             </strong>
             <div class="meta">
-              <router-link class="discrete link" :title="currentTrack.artist.name" :to="{name: 'library.artists.detail', params: {id: currentTrack.artist.id }}">
-                {{ currentTrack.artist.name }}</router-link> /<router-link class="discrete link" :title="currentTrack.album.title" :to="{name: 'library.albums.detail', params: {id: currentTrack.album.id }}">
-                {{ currentTrack.album.title }}
-              </router-link>
+              {{ currentTrack.artist.name }} / {{ currentTrack.album.title }}
             </div>
           </div>
-
         </div>
 
         <div class="controls queue-not-focused tablet-and-up">
