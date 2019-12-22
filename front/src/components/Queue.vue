@@ -678,4 +678,22 @@ td:last-child {
     min-height: 0 !important;
   }
 }
+.handle {
+  cursor: grab;
+}
+.sortable-chosen {
+  cursor: grabbing;
+}
+.queue-item.sortable-ghost {
+  td {
+    border-top: 3px dashed rgba(0, 0, 0, 0.15) !important;
+    border-bottom: 3px dashed rgba(0, 0, 0, 0.15) !important;
+    &:first-child {
+      border-left: 3px dashed rgba(0, 0, 0, 0.15) !important;
+    }
+    &:last-child {
+      border-right: 3px dashed rgba(0, 0, 0, 0.15) !important;
+    }
+  }
+}
 </style>
