@@ -165,14 +165,8 @@ html {
 .service-messages {
   position: fixed;
   bottom: 1em;
-  left: 1em;
+  right: 1em;
   bottom: $bottom-player-height + 1rem;
-  @include media(">desktop") {
-    left: $desktop-sidebar-width;
-  }
-  @include media(">widedesktop") {
-    left: $widedesktop-sidebar-width;
-  }
   > .ui.message {
     box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.7);
   }
