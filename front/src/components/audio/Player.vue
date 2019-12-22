@@ -766,5 +766,9 @@ export default {
   border: none;
   background-color: transparent;
   color: inherit;
+  &:focus {
+    box-shadow: none;
+  }
+
 }
 </style>
