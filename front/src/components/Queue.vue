@@ -3,78 +3,7 @@
     <div :class="['ui vertical stripe queue segment', playerFocused ? 'player-focused' : '']">
       <div class="ui fluid container">
         <div class="ui stackable grid" id="queue-grid">
-          <div class="ui sixteen wide mobile ten wide computer column queue-column">
-            <div class="ui sticky basic clearing fixed-header segment">
-              <h2 class="ui header">
-                <div class="content">
-                  <button
-                    class="ui right floated basic icon button"
-                    @click="$store.dispatch('queue/clean')">
-                      <translate translate-context="*/Queue/*/Verb">Clear</translate>
-                  </button>
-                  {{ labels.queue }}
-                  <div class="sub header">
-                    <div>
-                      <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
-                        Track %{ index } of %{ length }
-                      </translate><template v-if="!$store.state.radios.running"> -
-                        <span :title="labels.duration">
-                          {{ timeLeft }}
-                        </span>
-                      </template>
-                    </div>
-                  </div>
-                </div>
-              </h2>
-              <div v-if="$store.state.radios.running" class="ui info message">
-                <div class="content">
-                  <div class="header">
-                    <i class="feed icon"></i> <translate translate-context="Sidebar/Player/Title">You have a radio playing</translate>
-                  </div>
-                  <p><translate translate-context="Sidebar/Player/Paragraph">New tracks will be appended here automatically.</translate></p>
-                  <div @click="$store.dispatch('radios/stop')" class="ui basic primary button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
-                </div>
-              </div>
-            </div>
-            <table class="ui compact very basic fixed single line selectable unstackable table">
-              <draggable v-model="tracks" tag="tbody" @update="reorder" handle=".handle">
-                <tr
-                  v-for="(track, index) in tracks"
-                  :key="index"
-                  :class="['queue-item', {'active': index === queue.currentIndex}]">
-                  <td class="handle">
-                    <i class="grip lines grey icon"></i>
-                  </td>
-                  <td class="image-cell" @click="$store.dispatch('queue/currentIndex', index)">
-                    <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.square_crop)">
-                    <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
-                  </td>
-                  <td colspan="3" @click="$store.dispatch('queue/currentIndex', index)">
-                    <button class="title reset ellipsis" :title="track.title" :aria-label="labels.selectTrack">
-                      <strong>{{ track.title }}</strong><br />
-                      <span>
-                        {{ track.artist.name }}
-                      </span>
-                    </button>
-                  </td>
-                  <td class="duration-cell">
-                    <template v-if="track.uploads.length > 0">
-                      {{ time.durationFormatted(track.uploads[0].duration) }}
-                    </template>
-                  </td>
-                  <td class="controls">
-                    <template v-if="$store.getters['favorites/isFavorite'](track.id)">
-                      <i class="pink heart icon"></i>
-                    </template>
-                    <button :title="labels.removeFromQueue" @click.stop="cleanTrack(index)" :class="['ui', 'really', 'tiny', 'basic', 'circular', 'icon', 'button']">
-                      <i class="x icon"></i>
-                    </button>
-                  </td>
-                </tr>
-              </draggable>
-            </table>
-          </div>
-          <div class="ui six wide column current-track">
+                    <div class="ui six wide column current-track">
             <div class="ui basic segment" id="player">
               <template v-if="currentTrack">
                 <img class="ui image" v-if="currentTrack.album.cover && currentTrack.album.cover.original" :src="$store.getters['instance/absoluteUrl'](currentTrack.album.cover.square_crop)">
@@ -252,6 +181,77 @@
                 </div>
               </template>
             </div>
+          </div>
+          <div class="ui sixteen wide mobile ten wide computer column queue-column">
+            <div class="ui sticky basic clearing fixed-header segment">
+              <h2 class="ui header">
+                <div class="content">
+                  <button
+                    class="ui right floated basic icon button"
+                    @click="$store.dispatch('queue/clean')">
+                      <translate translate-context="*/Queue/*/Verb">Clear</translate>
+                  </button>
+                  {{ labels.queue }}
+                  <div class="sub header">
+                    <div>
+                      <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
+                        Track %{ index } of %{ length }
+                      </translate><template v-if="!$store.state.radios.running"> -
+                        <span :title="labels.duration">
+                          {{ timeLeft }}
+                        </span>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+              </h2>
+              <div v-if="$store.state.radios.running" class="ui info message">
+                <div class="content">
+                  <div class="header">
+                    <i class="feed icon"></i> <translate translate-context="Sidebar/Player/Title">You have a radio playing</translate>
+                  </div>
+                  <p><translate translate-context="Sidebar/Player/Paragraph">New tracks will be appended here automatically.</translate></p>
+                  <div @click="$store.dispatch('radios/stop')" class="ui basic primary button"><translate translate-context="*/Player/Button.Label/Short, Verb">Stop radio</translate></div>
+                </div>
+              </div>
+            </div>
+            <table class="ui compact very basic fixed single line selectable unstackable table">
+              <draggable v-model="tracks" tag="tbody" @update="reorder" handle=".handle">
+                <tr
+                  v-for="(track, index) in tracks"
+                  :key="index"
+                  :class="['queue-item', {'active': index === queue.currentIndex}]">
+                  <td class="handle">
+                    <i class="grip lines grey icon"></i>
+                  </td>
+                  <td class="image-cell" @click="$store.dispatch('queue/currentIndex', index)">
+                    <img class="ui mini image" v-if="track.album.cover && track.album.cover.original" :src="$store.getters['instance/absoluteUrl'](track.album.cover.square_crop)">
+                    <img class="ui mini image" v-else src="../assets/audio/default-cover.png">
+                  </td>
+                  <td colspan="3" @click="$store.dispatch('queue/currentIndex', index)">
+                    <button class="title reset ellipsis" :title="track.title" :aria-label="labels.selectTrack">
+                      <strong>{{ track.title }}</strong><br />
+                      <span>
+                        {{ track.artist.name }}
+                      </span>
+                    </button>
+                  </td>
+                  <td class="duration-cell">
+                    <template v-if="track.uploads.length > 0">
+                      {{ time.durationFormatted(track.uploads[0].duration) }}
+                    </template>
+                  </td>
+                  <td class="controls">
+                    <template v-if="$store.getters['favorites/isFavorite'](track.id)">
+                      <i class="pink heart icon"></i>
+                    </template>
+                    <button :title="labels.removeFromQueue" @click.stop="cleanTrack(index)" :class="['ui', 'really', 'tiny', 'basic', 'circular', 'icon', 'button']">
+                      <i class="x icon"></i>
+                    </button>
+                  </td>
+                </tr>
+              </draggable>
+            </table>
           </div>
         </div>
       </div>
