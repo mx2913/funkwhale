@@ -294,6 +294,16 @@ export default {
     "$store.state.moderation.lastUpdate": function () {
       this.applyContentFilters()
     },
+    "$store.state.auth.authenticated": {
+      immediate: true,
+      handler (v) {
+        if (v) {
+          this.$nextTick(() => {
+            this.setupDropdown('.user-dropdown')
+          })
+        }
+      }
+    },
     "$store.state.auth.availablePermissions": {
       immediate: true,
       handler (v) {
@@ -457,6 +467,13 @@ $sidebar-color: #2D2F33;
   justify-content: space-between;
   align-items: center;
   height: 4em;
+  nav {
+    > .item, > .menu > .item > .item {
+      &:hover {
+        background-color: transparent;
+      }
+    }
+  }
 }
 
 nav.top.title-menu {
