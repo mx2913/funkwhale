@@ -429,5 +429,14 @@ input + .help {
     display: none !important;
   }
 }
+:not(.menu) > {
+  a, .link {
+    &:not(.button):not(.list) {
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
 @import "./themes/_light.scss";
 @import "./themes/_dark.scss";
