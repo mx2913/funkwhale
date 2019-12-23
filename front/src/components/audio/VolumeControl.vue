@@ -1,5 +1,5 @@
 <template>
-   <span class="volume-control" @click.prevent.stop="">
+   <span :class="['volume-control', {'expanded': expanded}]" @click.prevent.stop="" @mouseover="handleOver" @mouseleave="handleLeave">
     <span
       role="button"
       v-if="sliderVolume === 0"
@@ -24,18 +24,26 @@
       @click.prevent.stop="mute">
       <i class="volume up icon"></i>
     </span>
-    <input
-      type="range"
-      step="0.05"
-      min="0"
-      max="1"
-      v-model="sliderVolume" />
+    <div class="popup">
+      <input
+        type="range"
+        step="0.05"
+        min="0"
+        max="1"
+        v-model="sliderVolume" />
+    </div>
   </span>
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"
 
 export default {
+  data () {
+    return {
+      expanded: false,
+      timeout: null,
+    }
+  },
   computed: {
     sliderVolume: {
       get () {
@@ -59,7 +67,18 @@ export default {
       unmute: "player/unmute",
       toggleMute: "player/toggleMute",
     }),
-
+    handleOver () {
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+      this.expanded = true
+    },
+    handleLeave () {
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+      this.timeout = setTimeout(() => {this.expanded = false}, 500)
+    }
   }
 }
 </script>
@@ -69,13 +88,29 @@ export default {
   display: flex;
   line-height: inherit;
   align-items: center;
+  position: relative;
+  overflow: visible;
   input {
-    max-width: 7em;
+    max-width: 5.5em;
     height: 4px;
   }
   &.expandable {
-    background: transparent;
-    &:not(:hover):not(.expanded) input {
+    .popup {
+      background-color: #1B1C1D;
+      position: absolute;
+      left: -4em;
+      top: -7em;
+      transform: rotate(-90deg);
+      display: flex;
+      align-items: center;
+      height: 2.5em;
+      padding: 0 0.5em;
+      box-shadow: 1px 1px 3px rgba(125, 125, 125, 0.5);
+    }
+    input {
+      max-width: 8.5em;
+    }
+    &:not(:hover):not(.expanded) .popup {
       display: none;
     }
   }
