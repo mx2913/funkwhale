@@ -462,6 +462,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: start;
+    flex-grow: 1;
     .image {
       padding: 0.5em;
       width: auto;
@@ -474,10 +475,11 @@ export default {
   }
   .controls {
     min-width: 8em;
-    padding-right: 0.5em;
     font-size: 1.1em;
     @include media(">desktop") {
-      width: 20%;
+      &:not(.fluid) {
+        width: 20%;
+      }
     }
     &.small, .small {
       @include media(">desktop") {
@@ -493,6 +495,12 @@ export default {
         line-height: 1em;
       }
       justify-content: center;
+      &.align-right {
+        justify-content: end;
+      }
+      &.align-left {
+        justify-content: start;
+      }
       > * {
         margin: 0 0.5em;
       }
