@@ -42,16 +42,24 @@
           </div>
         </div>
 
-        <div class="controls queue-not-focused tablet-and-up">
-          <div class="progress">
-            <template v-if="!isLoadingAudio">
-              <span role="button" class="timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</span>
-              / <span class="timer total">{{durationFormatted}}</span>
-            </template>
-            <template v-else>
-              00:00 / 00:00
-            </template>
-          </div>
+        <div class="controls desktop-and-up small">
+          <track-favorite-icon
+            v-if="$store.state.auth.authenticated"
+            class="control white"
+            :track="currentTrack"></track-favorite-icon>
+          <track-playlist-icon
+            v-if="$store.state.auth.authenticated"
+            class="control white"
+            :track="currentTrack"></track-playlist-icon>
+          <button
+            v-if="$store.state.auth.authenticated"
+            @click="$store.dispatch('moderation/hide', {type: 'artist', target: currentTrack.artist})"
+            :class="['ui', 'really', 'basic', 'circular', 'icon', 'button', 'control']"
+            :aria-label="labels.addArtistContentFilter"
+            :title="labels.addArtistContentFilter">
+            <i :class="['eye slash outline', 'basic', 'icon']"></i>
+          </button>
+          <volume-control class="expandable" />
         </div>
         <div class="controls queue-not-focused">
           <span
@@ -91,24 +99,17 @@
               <i :class="['ui', 'big', {'disabled': !hasNext}, 'forward step', 'icon']" ></i>
           </span>
         </div>
-        <div class="controls desktop-and-up small">
-          <track-favorite-icon
-            v-if="$store.state.auth.authenticated"
-            class="control white"
-            :track="currentTrack"></track-favorite-icon>
-          <track-playlist-icon
-            v-if="$store.state.auth.authenticated"
-            class="control white"
-            :track="currentTrack"></track-playlist-icon>
-          <button
-            v-if="$store.state.auth.authenticated"
-            @click="$store.dispatch('moderation/hide', {type: 'artist', target: currentTrack.artist})"
-            :class="['ui', 'really', 'basic', 'circular', 'icon', 'button', 'control']"
-            :aria-label="labels.addArtistContentFilter"
-            :title="labels.addArtistContentFilter">
-            <i :class="['eye slash outline', 'basic', 'icon']"></i>
-          </button>
-          <volume-control class="expandable" />
+
+        <div class="controls queue-not-focused tablet-and-up">
+          <div class="progress">
+            <template v-if="!isLoadingAudio">
+              <span role="button" class="timer start" @click="setCurrentTime(0)">{{currentTimeFormatted}}</span>
+              / <span class="timer total">{{durationFormatted}}</span>
+            </template>
+            <template v-else>
+              00:00 / 00:00
+            </template>
+          </div>
         </div>
         <div class="controls when-queue-focused">
           <div class="small group">
@@ -747,13 +748,17 @@ export default {
   .ui.circular.label {
     font-family: sans-serif;
     position: absolute;
-    font-size: 0.6em !important;
+    font-size: 0.5em !important;
     bottom: -0.7rem;
     right: -0.7rem;
-    padding: 0.4em !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    width: 15px;
+    padding: 2px 0 !important;
+    width: 15px !important;
+    height: 15px !important;
+    min-width: 15px !important;
+    min-height: 15px !important;
+    @include media(">desktop") {
+      font-size: 0.6em !important;
+    }
   }
 }
 .shuffling.loader.inline {

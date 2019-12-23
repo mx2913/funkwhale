@@ -121,64 +121,6 @@
                     </span>
                   </template>
                 </div>
-                <div class="ui basic segment queue-controls tablet-and-below">
-                  <div>
-                    <span
-                      role="button"
-                      class="control"
-                      v-if="looping === 0"
-                      :title="labels.loopingDisabled"
-                      :aria-label="labels.loopingDisabled"
-                      @click.prevent.stop="$store.commit('player/looping', 1)"
-                      :disabled="!currentTrack">
-                      <i :class="['ui', {'disabled': !currentTrack}, 'step', 'repeat', 'icon']"></i>
-                    </span>
-                    <span
-                      role="button"
-                      class="looping control"
-                      @click.prevent.stop="$store.commit('player/looping', 2)"
-                      :title="labels.loopingSingle"
-                      :aria-label="labels.loopingSingle"
-                      v-if="looping === 1"
-                      :disabled="!currentTrack">
-                      <i
-                        class="repeat icon">
-                        <span class="ui circular tiny orange label">1</span>
-                      </i>
-                    </span>
-                    <span
-                      role="button"
-                      class="control"
-                      :title="labels.loopingWhole"
-                      :aria-label="labels.loopingWhole"
-                      v-if="looping === 2"
-                      :disabled="!currentTrack"
-                      @click.prevent.stop="$store.commit('player/looping', 0)">
-                      <i
-                        class="repeat orange icon">
-                      </i>
-                    </span>
-                    <span
-                      role="button"
-                      class="control"
-                      :disabled="queue.tracks.length === 0"
-                      :title="labels.shuffle"
-                      :aria-label="labels.shuffle"
-                      @click.prevent.stop="shuffle()">
-                      <div v-if="isShuffling" class="ui inline shuffling inverted tiny active loader"></div>
-                      <i v-else :class="['ui', 'random', {'disabled': queue.tracks.length === 0}, 'icon']" ></i>
-                    </span>
-                  </div>
-                  <div>
-                    <span class="position control" role="button" @click.stop="$router.push('/queue')">
-                      <translate translate-context="Sidebar/Queue/Text" :translate-params="{index: queue.currentIndex + 1, length: queue.tracks.length}">
-                        %{ index } of %{ length }
-                      </translate>
-                      <i class="stream icon"></i>
-                    </span>
-                    <volume-control />
-                  </div>
-                </div>
               </template>
             </div>
           </div>
@@ -450,25 +392,10 @@ export default {
     display: none;
   }
 }
-.stripe.segment:not(.player-focused) #player > *:not(.queue-controls) {
-  @include media("<desktop") {
-    display: none;
-  }
-}
 .queue.segment:not(.player-focused) {
   #player {
     @include media("<desktop") {
       height: 0;
-    }
-  }
-  .queue-controls {
-    @include media("<desktop") {
-      .position.control {
-        display: none;
-      }
-      .clear.control {
-        display: block;
-      }
     }
   }
 }
@@ -618,44 +545,6 @@ td:last-child {
   }
 }
 
-
-.queue-controls {
-  display: flex;
-  padding: 0;
-  padding-top: 0.5em;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1em;
-  @include media("<desktop") {
-    display: none;
-  }
-  &.fixed-footer.segment {
-    @include media(">=desktop") {
-      box-shadow: none;
-    }
-  }
-  .control:not(:first-child) {
-    margin-left: 0.5em;
-  }
-  .position {
-    @include media(">=desktop") {
-      display: none;
-    }
-  }
-  .volume-control {
-    @include media("<desktop") {
-      display: none;
-    }
-  }
-  .close-control {
-    @include media(">=desktop") {
-      display: none;
-    }
-  }
-  .icon {
-    font-size: 1em;
-  }
-}
 .player-controls {
   .control:not(:first-child) {
     margin-left: 1em;
@@ -664,20 +553,7 @@ td:last-child {
     font-size: 1.1em;
   }
 }
-.looping {
-  i {
-    position: relative;
-  }
-  .ui.circular.label {
-    position: absolute;
-    font-size: 0.35em !important;
-    bottom: -0.5rem;
-    right: -0.5rem;
-    padding: 0.4em !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-  }
-}
+
 .handle {
   cursor: grab;
 }

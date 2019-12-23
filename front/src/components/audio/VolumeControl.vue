@@ -75,7 +75,7 @@ export default {
   }
   &.expandable {
     background: transparent;
-    &:not(:hover) input {
+    &:not(:hover):not(.expanded) input {
       display: none;
     }
   }
