@@ -140,9 +140,11 @@
               :aria-label="labels.loopingWhole"
               v-if="looping === 2"
               :disabled="!currentTrack"
+              class="looping"
               @click.prevent.stop="$store.commit('player/looping', 0)">
               <i
-                class="repeat orange icon">
+                class="repeat icon">
+                <span class="ui circular tiny orange label">&infin;</span>
               </i>
             </span>
             <span
@@ -743,13 +745,15 @@ export default {
     position: relative;
   }
   .ui.circular.label {
+    font-family: sans-serif;
     position: absolute;
-    font-size: 0.5em !important;
+    font-size: 0.6em !important;
     bottom: -0.7rem;
     right: -0.7rem;
     padding: 0.4em !important;
     min-width: 0 !important;
     min-height: 0 !important;
+    width: 15px;
   }
 }
 .shuffling.loader.inline {
