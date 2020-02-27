@@ -2,12 +2,14 @@ FROM alpine:3.10
 
 RUN \
     echo 'installing dependencies' && \
-    apk add --no-cache                \
-    bash             \
+    apk add --no-cache --virtual build-deps               \
     git             \
-    gettext            \
     musl-dev           \
     gcc \
+    make         \
+    && apk add --no-cache \
+    bash             \
+    gettext            \
     postgresql-dev \
     python3-dev        \
     py3-psycopg2       \
@@ -17,7 +19,6 @@ RUN \
     libpq              \
     libmagic           \
     libffi-dev         \
-    make         \
     zlib-dev           \
     openldap-dev \
     && \
@@ -42,6 +43,9 @@ ARG install_dev_deps=0
 COPY ./requirements/*.txt /requirements/
 RUN \
     if [ "$install_dev_deps" = "1" ] ; then echo "Installing dev dependencies" && pip3 install --no-cache-dir -r /requirements/local.txt -r /requirements/test.txt ; else echo "Skipping dev deps installation" ; fi
+
+RUN \
+    apk del build-deps
 
 ENTRYPOINT ["./compose/django/entrypoint.sh"]
 CMD ["./compose/django/server.sh"]
