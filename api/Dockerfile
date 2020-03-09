@@ -9,7 +9,6 @@ RUN \
     postgresql-dev \
     python3-dev        \
     py3-psycopg2       \
-    py3-pillow         \
     libldap            \
     libffi-dev         \
     make         \
@@ -30,9 +29,6 @@ COPY ./requirements/base.txt /requirements/base.txt
 # hack around https://github.com/pypa/pip/issues/6158#issuecomment-456619072
 ENV PIP_DOWNLOAD_CACHE=/noop/
 RUN \
-    echo 'fixing requirements file for alpine' && \
-    sed -i '/Pillow/d' /requirements/base.txt && \
-    \
     echo 'installing pip requirements' && \
     pip3 install --upgrade pip && \
     pip3 install setuptools wheel && \
