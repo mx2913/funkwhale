@@ -1,27 +1,11 @@
 .theme-darkgreen{ 
   aside.ui.sidebar {
-    overflow-y: visible !important;
     .ui.search .input {
-      flex: 1;
       .prompt {
         border-radius: 0.3rem;
         background-color: $darkgreen-researchprompt-background;
         color: white;
-  
-        .search .icon {
-          color: white;
-        }
-  
       }
-      input::placeholder {
-        color: white;
-      }
-    }
-    .ui.search .results {
-      vertical-align: middle;
-    }
-    .ui.search .name {
-      vertical-align: middle;
     }
   }
 }

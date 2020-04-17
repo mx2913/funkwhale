@@ -350,7 +350,6 @@ export default {
 @import "./component_theming/darkgreen/scoped/Sidebar.vue.scss";
 
 $sidebar-color: #2D2F33;
-$sidebar-header-color: lighten($sidebar-color, 20%);
 
 .sidebar {
   background: $sidebar-color;
