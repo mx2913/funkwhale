@@ -1,6 +1,11 @@
-.theme-darkgreen{ 
+.theme-darkgreen{
+  .sidebar.ui.visible.left {
+    box-shadow: $darkgreen-sidebar-shadow;
+  }
+
   .sidebar {
     background: $darkgreen-sidebar-background;
+
     .menu.vertical {
       background: none;
     }
