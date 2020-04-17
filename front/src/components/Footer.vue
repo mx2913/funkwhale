@@ -101,6 +101,10 @@ export default {
         {
           name: this.$pgettext('Footer/Settings/Dropdown.Label/Theme name', 'Dark'),
           key: 'dark'
+        },
+        {
+          name: this.$pgettext('Footer/Settings/Dropdown.Label/Theme name', 'DarkGreen'),
+          key: 'darkgreen'
         }
       ]
     }

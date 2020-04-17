@@ -33,6 +33,14 @@ if (process.env.BUNDLE_ANALYZE === '1') {
 //   }),
 // )
 module.exports = {
+  css: {
+    loaderOptions: {
+      sass: {
+        // load SASS rules and variables for vuejs component  styling
+        prependData: `@import "@/style/global_theming/_default_light_vars.scss";`
+      }
+    }
+  },
   publicPath: baseUrl,
   productionSourceMap: false,
   // Add settings for manifest file

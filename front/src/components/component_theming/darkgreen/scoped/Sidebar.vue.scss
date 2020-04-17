@@ -1,0 +1,12 @@
+.theme-darkgreen{ 
+  .sidebar {
+    background: $darkgreen-sidebar-background;
+    .menu.vertical {
+      background: none;
+    }
+  }
+  .ui.segment.header-wrapper {
+    background: $header-background;
+    box-shadow: $header-shadow;
+  }
+}

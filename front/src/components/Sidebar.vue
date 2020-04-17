@@ -347,8 +347,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "../style/vendor/media";
+@import "./component_theming/darkgreen/scoped/Sidebar.vue.scss";
 
 $sidebar-color: #2D2F33;
+$sidebar-header-color: lighten($sidebar-color, 20%);
 
 .sidebar {
   background: $sidebar-color;
@@ -553,6 +555,8 @@ nav.top {
 </style>
 
 <style lang="scss">
+@import "./component_theming/darkgreen/unscoped/Sidebar.vue.scss";
+
 aside.ui.sidebar {
   overflow-y: visible !important;
   .ui.search .input {
