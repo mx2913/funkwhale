@@ -307,10 +307,10 @@ def test_handle_modified_update_existing_path_if_found(tmpfile, factories, mocke
     event = {
         "path": tmpfile.name,
     }
-    update_metadata_from_file = mocker.patch(
-        "funkwhale_api.music.tasks.update_metadata_from_file"
+    update_track_metadata = mocker.patch(
+        "funkwhale_api.music.tasks.update_track_metadata"
     )
-    get_audio_file = mocker.patch("funkwhale_api.music.models.Upload.get_audio_file")
+    get_metadata = mocker.patch("funkwhale_api.music.models.Upload.get_metadata")
     library = factories["music.Library"]()
     track = factories["music.Track"](attributed_to=library.actor)
     upload = factories["music.Upload"](
@@ -324,8 +324,8 @@ def test_handle_modified_update_existing_path_if_found(tmpfile, factories, mocke
     import_files.handle_modified(
         event=event, stdout=stdout, library=library, in_place=True,
     )
-    update_metadata_from_file.assert_called_once_with(
-        get_audio_file.return_value, upload.track,
+    update_track_metadata.assert_called_once_with(
+        get_metadata.return_value, upload.track,
     )
 
 
@@ -336,8 +336,8 @@ def test_handle_modified_update_existing_path_if_found_and_attributed_to(
     event = {
         "path": tmpfile.name,
     }
-    update_metadata_from_file = mocker.patch(
-        "funkwhale_api.music.tasks.update_metadata_from_file"
+    update_track_metadata = mocker.patch(
+        "funkwhale_api.music.tasks.update_track_metadata"
     )
     library = factories["music.Library"]()
     factories["music.Upload"](
@@ -351,4 +351,4 @@ def test_handle_modified_update_existing_path_if_found_and_attributed_to(
     import_files.handle_modified(
         event=event, stdout=stdout, library=library, in_place=True,
     )
-    update_metadata_from_file.assert_not_called()
+    update_track_metadata.assert_not_called()

@@ -15,6 +15,8 @@ from django.core.files import File
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
 
+from rest_framework import serializers
+
 from funkwhale_api.common import utils as common_utils
 from funkwhale_api.music import models, tasks, utils
 
@@ -580,13 +582,16 @@ def handle_modified(event, stdout, library, in_place, **kwargs):
                 return
             else:
                 stdout.write(
-                    "  Updating existing file #{} with new metadata".format(
+                    "  Updating existing file #{} with new metadata…".format(
                         to_update.pk
                     )
                 )
-                audio_file = to_update.get_audio_file()
-
-                return tasks.update_metadata_from_file(audio_file, to_update.track)
+                audio_metadata = to_update.get_metadata()
+                try:
+                    return tasks.update_track_metadata(audio_metadata, to_update.track)
+                except serializers.ValidationError as e:
+                    stdout.write("  Invalid metadata: {}".format(e))
+                    return
 
     stdout.write("  Launching import for new file")
     create_upload(
