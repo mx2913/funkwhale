@@ -655,6 +655,14 @@ class Track(APIModelMixin):
 
 
 class UploadQuerySet(common_models.NullsLastQuerySet):
+    def in_place(self, include=True):
+        query = models.Q(source__startswith="file://") & (
+            models.Q(audio_file="") | models.Q(audio_file=None)
+        )
+        if not include:
+            query = ~query
+        return self.filter(query)
+
     def playable_by(self, actor, include=True):
         libraries = Library.objects.viewable_by(actor)
 
@@ -869,8 +877,15 @@ class Upload(models.Model):
                 self.mimetype = mimetypes.guess_type(self.source)[0]
         if not self.size and self.audio_file:
             self.size = self.audio_file.size
-        if not self.checksum and self.audio_file:
-            self.checksum = common_utils.get_file_hash(self.audio_file)
+        if not self.checksum:
+            try:
+                audio_file = self.get_audio_file()
+            except FileNotFoundError:
+                pass
+            else:
+                if audio_file:
+                    self.checksum = common_utils.get_file_hash(audio_file)
+
         if not self.pk and not self.fid and self.library.actor.get_user():
             self.fid = self.get_federation_id()
         return super().save(**kwargs)

@@ -1,13 +1,21 @@
+import collections
+import datetime
 import itertools
 import os
-import urllib.parse
+import queue
+import threading
 import time
+import urllib.parse
+
+import watchdog.events
+import watchdog.observers
 
 from django.conf import settings
 from django.core.files import File
 from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
 
+from funkwhale_api.common import utils as common_utils
 from funkwhale_api.music import models, tasks, utils
 
 
@@ -116,6 +124,17 @@ class Command(BaseCommand):
                 "of overhead on your server and on servers you are federating with."
             ),
         )
+        parser.add_argument(
+            "--watch",
+            action="store_true",
+            dest="watch",
+            default=False,
+            help=(
+                "Start the command in watch mode. Instead of running a full import, "
+                "and exit, watch the given path and import new files, remove deleted "
+                "files, and update metadata corresponding to updated files."
+            ),
+        )
         parser.add_argument("-e", "--extension", nargs="+")
 
         parser.add_argument(
@@ -157,6 +176,8 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        # handle relative directories
+        options["path"] = [os.path.abspath(path) for path in options["path"]]
         self.is_confirmed = False
         try:
             library = models.Library.objects.select_related("actor__user").get(
@@ -182,7 +203,7 @@ class Command(BaseCommand):
                     )
                 if p and not import_path.startswith(p):
                     raise CommandError(
-                        "Importing in-place only works if importing"
+                        "Importing in-place only works if importing "
                         "from {} (MUSIC_DIRECTORY_PATH), as this directory"
                         "needs to be accessible by the webserver."
                         "Culprit: {}".format(p, import_path)
@@ -212,6 +233,22 @@ class Command(BaseCommand):
                 reference, import_url
             )
         )
+        if options["watch"]:
+            if len(options["path"]) > 1:
+                raise CommandError("Watch only work with a single directory")
+
+            return self.setup_watcher(
+                extensions=extensions,
+                path=options["path"][0],
+                reference=reference,
+                library=library,
+                in_place=options["in_place"],
+                recursive=options["recursive"],
+                replace=options["replace"],
+                dispatch_outbox=options["outbox"],
+                broadcast=options["broadcast"],
+            )
+
         batch_start = None
         batch_duration = None
         for i, entries in enumerate(batch(crawler, options["batch_size"])):
@@ -362,15 +399,15 @@ class Command(BaseCommand):
                     message.format(batch=batch, path=path, i=i + 1, total=len(paths))
                 )
             try:
-                self.create_upload(
-                    path,
-                    reference,
-                    library,
-                    async_,
-                    options["replace"],
-                    options["in_place"],
-                    options["outbox"],
-                    options["broadcast"],
+                create_upload(
+                    path=path,
+                    reference=reference,
+                    library=library,
+                    async_=async_,
+                    replace=options["replace"],
+                    in_place=options["in_place"],
+                    dispatch_outbox=options["outbox"],
+                    broadcast=options["broadcast"],
                 )
             except Exception as e:
                 if options["exit_on_failure"]:
@@ -382,34 +419,217 @@ class Command(BaseCommand):
                 errors.append((path, "{} {}".format(e.__class__.__name__, e)))
         return errors
 
-    def create_upload(
-        self,
-        path,
-        reference,
-        library,
-        async_,
-        replace,
-        in_place,
-        dispatch_outbox,
-        broadcast,
-    ):
-        import_handler = tasks.process_upload.delay if async_ else tasks.process_upload
-        upload = models.Upload(library=library, import_reference=reference)
-        upload.source = "file://" + path
-        upload.import_metadata = {
-            "funkwhale": {
-                "config": {
-                    "replace": replace,
-                    "dispatch_outbox": dispatch_outbox,
-                    "broadcast": broadcast,
-                }
+    def setup_watcher(self, path, extensions, recursive, **kwargs):
+        watchdog_queue = queue.Queue()
+        # Set up a worker thread to process database load
+        worker = threading.Thread(
+            target=process_load_queue(self.stdout, **kwargs), args=(watchdog_queue,),
+        )
+        worker.setDaemon(True)
+        worker.start()
+
+        # setup watchdog to monitor directory for trigger files
+        patterns = ["*.{}".format(e) for e in extensions]
+        event_handler = Watcher(
+            stdout=self.stdout, queue=watchdog_queue, patterns=patterns,
+        )
+        observer = watchdog.observers.Observer()
+        observer.schedule(event_handler, path, recursive=recursive)
+        observer.start()
+
+        try:
+            while True:
+                self.stdout.write(
+                    "Watching for changes at {}…".format(path), ending="\r"
+                )
+                time.sleep(2)
+        except KeyboardInterrupt:
+            self.stdout.write("Exiting…")
+            observer.stop()
+
+        observer.join()
+
+
+def create_upload(
+    path, reference, library, async_, replace, in_place, dispatch_outbox, broadcast,
+):
+    import_handler = tasks.process_upload.delay if async_ else tasks.process_upload
+    upload = models.Upload(library=library, import_reference=reference)
+    upload.source = "file://" + path
+    upload.import_metadata = {
+        "funkwhale": {
+            "config": {
+                "replace": replace,
+                "dispatch_outbox": dispatch_outbox,
+                "broadcast": broadcast,
             }
         }
-        if not in_place:
-            name = os.path.basename(path)
-            with open(path, "rb") as f:
-                upload.audio_file.save(name, File(f), save=False)
+    }
+    if not in_place:
+        name = os.path.basename(path)
+        with open(path, "rb") as f:
+            upload.audio_file.save(name, File(f), save=False)
 
-        upload.save()
+    upload.save()
 
-        import_handler(upload_id=upload.pk)
+    import_handler(upload_id=upload.pk)
+
+
+def process_load_queue(stdout, **kwargs):
+    def inner(q):
+        # we batch events, to avoid calling same methods multiple times if a file is modified
+        # a lot in a really short time
+        flush_delay = 2
+        batched_events = collections.OrderedDict()
+        while True:
+            while True:
+                if not q.empty():
+                    event = q.get()
+                    batched_events[event["path"]] = event
+                else:
+                    break
+            for path, event in batched_events.copy().items():
+                if time.time() - event["time"] <= flush_delay:
+                    continue
+                now = datetime.datetime.utcnow()
+                stdout.write(
+                    "{} -- Processing {}:{}...\n".format(
+                        now.strftime("%Y/%m/%d %H:%M:%S"), event["type"], event["path"]
+                    )
+                )
+                del batched_events[path]
+                handle_event(event, stdout=stdout, **kwargs)
+            time.sleep(1)
+
+    return inner
+
+
+class Watcher(watchdog.events.PatternMatchingEventHandler):
+    def __init__(self, stdout, queue, patterns):
+        self.stdout = stdout
+        self.queue = queue
+        super().__init__(patterns=patterns)
+
+    def enqueue(self, event):
+        e = {
+            "is_directory": event.is_directory,
+            "type": event.event_type,
+            "path": event.src_path,
+            "src_path": event.src_path,
+            "dest_path": getattr(event, "dest_path", None),
+            "time": time.time(),
+        }
+        self.queue.put(e)
+
+    def on_moved(self, event):
+        self.enqueue(event)
+
+    def on_created(self, event):
+        self.enqueue(event)
+
+    def on_deleted(self, event):
+        self.enqueue(event)
+
+    def on_modified(self, event):
+        self.enqueue(event)
+
+
+def handle_event(event, stdout, **kwargs):
+    handlers = {
+        "modified": handle_modified,
+        "created": handle_created,
+        "moved": handle_moved,
+        "deleted": handle_deleted,
+    }
+    handlers[event["type"]](event=event, stdout=stdout, **kwargs)
+
+
+def handle_modified(event, stdout, library, in_place, **kwargs):
+    existing_candidates = library.uploads.filter(import_status="finished")
+    with open(event["path"], "rb") as f:
+        checksum = common_utils.get_file_hash(f)
+
+    existing = existing_candidates.filter(checksum=checksum).first()
+    if existing:
+        # found an existing file with same checksum, nothing to do
+        stdout.write("  File already imported and metadata is up-to-date")
+        return
+
+    to_update = None
+    if in_place:
+        source = "file://{}".format(event["path"])
+        to_update = (
+            existing_candidates.in_place()
+            .filter(source=source)
+            .select_related(
+                "track__attributed_to", "track__artist", "track__album__artist",
+            )
+            .first()
+        )
+
+        if to_update:
+            if (
+                to_update.track.attributed_to
+                and to_update.track.attributed_to != library.actor
+            ):
+                stdout.write(
+                    "  Cannot update track metadata, track belongs to someone else".format(
+                        to_update.pk
+                    )
+                )
+                return
+            else:
+                stdout.write(
+                    "  Updating existing file #{} with new metadata".format(
+                        to_update.pk
+                    )
+                )
+                audio_file = to_update.get_audio_file()
+
+                return tasks.update_metadata_from_file(audio_file, to_update.track)
+
+    stdout.write("  Launching import for new file")
+    create_upload(
+        path=event["path"],
+        reference=kwargs["reference"],
+        library=library,
+        async_=False,
+        replace=kwargs["replace"],
+        in_place=in_place,
+        dispatch_outbox=kwargs["dispatch_outbox"],
+        broadcast=kwargs["broadcast"],
+    )
+
+
+def handle_created(event, stdout, **kwargs):
+    """
+    Created is essentially an alias for modified, because for instance when copying a file in the watched directory,
+    a created event will be fired on the initial touch, then many modified event (as the file is written).
+    """
+    return handle_modified(event, stdout, **kwargs)
+
+
+def handle_moved(event, stdout, library, in_place, **kwargs):
+    if not in_place:
+        return
+
+    old_source = "file://{}".format(event["src_path"])
+    new_source = "file://{}".format(event["dest_path"])
+    existing_candidates = library.uploads.filter(import_status="finished")
+    existing_candidates = existing_candidates.in_place().filter(source=old_source)
+    existing = existing_candidates.first()
+    if existing:
+        stdout.write("  Updating path of existing file #{}".format(existing.pk))
+        existing.source = new_source
+        existing.save(update_fields=["source"])
+
+
+def handle_deleted(event, stdout, library, in_place, **kwargs):
+    if not in_place:
+        return
+    source = "file://{}".format(event["path"])
+    existing_candidates = library.uploads.filter(import_status="finished")
+    existing_candidates = existing_candidates.in_place().filter(source=source)
+    if existing_candidates.count():
+        stdout.write("  Removing file from DB")
+        existing_candidates.delete()

@@ -851,3 +851,9 @@ def update_library_entity(obj, data):
     obj.save(update_fields=list(data.keys()))
 
     return obj
+
+
+def update_metadata_from_file(audio_file, track):
+    # XXX: implement this to support updating metadata when an imported files
+    # is updated by an outside tool (e.g beets).
+    pass
