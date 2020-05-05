@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 
 from django.core.files.base import ContentFile
 from django.http import request
@@ -458,3 +459,15 @@ def monkey_patch_request_build_absolute_uri():
 
     request.HttpRequest.scheme = property(scheme)
     request.HttpRequest.get_host = get_host
+
+
+def get_file_hash(file, algo=None, chunk_size=None):
+    algo = algo or settings.HASHING_ALGORITHM
+    chunk_size = chunk_size or settings.HASHING_CHUNK_SIZE
+    handler = getattr(hashlib, algo)
+    hash = handler()
+    file.seek(0)
+    # Read and update hash string value in blocks of 4K
+    for byte_block in iter(lambda: file.read(chunk_size), b""):
+        hash.update(byte_block)
+    return "{}:{}".format(algo, hash.hexdigest())

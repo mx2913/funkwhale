@@ -1309,3 +1309,10 @@ IGNORE_FORWARDED_HOST_AND_PROTO = env.bool(
 """
 Use :attr:`FUNKWHALE_HOSTNAME` and :attr:`FUNKWHALE_PROTOCOL ` instead of request header.
 """
+
+HASHING_ALGORITHM = "sha256"
+HASHING_CHUNK_SIZE = env.int("HASHING_CHUNK_SIZE", default=1024 * 100)
+"""
+Size of each file chunk when hashing a file. Increasing this will consume more memory, but will
+reduce I/O, which can be desirable with remote storages, such as S3.
+"""
