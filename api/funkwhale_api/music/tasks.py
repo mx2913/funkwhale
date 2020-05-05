@@ -866,12 +866,13 @@ UPDATE_CONFIG = {
             )
         },
     },
-    "album": {"title": {}, "mbid": {}, "release_date": {},},
-    "artist": {"name": {}, "mbid": {},},
-    "album_artist": {"name": {}, "mbid": {},},
+    "album": {"title": {}, "mbid": {}, "release_date": {}},
+    "artist": {"name": {}, "mbid": {}},
+    "album_artist": {"name": {}, "mbid": {}},
 }
 
 
+@transaction.atomic
 def update_track_metadata(audio_metadata, track):
     # XXX: implement this to support updating metadata when an imported files
     # is updated by an outside tool (e.g beets).

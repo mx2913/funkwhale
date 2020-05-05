@@ -12,7 +12,9 @@ import watchdog.observers
 
 from django.conf import settings
 from django.core.files import File
+from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
+from django.db.models import Q
 from django.utils import timezone
 
 from rest_framework import serializers
@@ -21,7 +23,7 @@ from funkwhale_api.common import utils as common_utils
 from funkwhale_api.music import models, tasks, utils
 
 
-def crawl_dir(dir, extensions, recursive=True):
+def crawl_dir(dir, extensions, recursive=True, ignored=[]):
     if os.path.isfile(dir):
         yield dir
         return
@@ -30,9 +32,12 @@ def crawl_dir(dir, extensions, recursive=True):
             if entry.is_file():
                 for e in extensions:
                     if entry.name.lower().endswith(".{}".format(e.lower())):
-                        yield entry.path
+                        if entry.path not in ignored:
+                            yield entry.path
             elif recursive and entry.is_dir():
-                yield from crawl_dir(entry, extensions, recursive=recursive)
+                yield from crawl_dir(
+                    entry, extensions, recursive=recursive, ignored=ignored
+                )
 
 
 def batch(iterable, n=1):
@@ -149,6 +154,15 @@ class Command(BaseCommand):
                 "This causes some overhead, so it's disabled by default."
             ),
         )
+        parser.add_argument(
+            "--prune",
+            action="store_true",
+            dest="prune",
+            default=False,
+            help=(
+                "Once the import is completed, prune tracks, ablums and artists that aren't linked to any upload."
+            ),
+        )
 
         parser.add_argument(
             "--reference",
@@ -211,16 +225,6 @@ class Command(BaseCommand):
                         "Culprit: {}".format(p, import_path)
                     )
 
-        extensions = options.get("extension") or utils.SUPPORTED_EXTENSIONS
-        crawler = itertools.chain(
-            *[
-                crawl_dir(p, extensions=extensions, recursive=options["recursive"])
-                for p in options["path"]
-            ]
-        )
-        errors = []
-        total = 0
-        start_time = time.time()
         reference = options["reference"] or "cli-{}".format(timezone.now().isoformat())
 
         import_url = "{}://{}/library/{}/upload?{}"
@@ -235,6 +239,7 @@ class Command(BaseCommand):
                 reference, import_url
             )
         )
+        extensions = options.get("extension") or utils.SUPPORTED_EXTENSIONS
         if options["watch"]:
             if len(options["path"]) > 1:
                 raise CommandError("Watch only work with a single directory")
@@ -245,14 +250,51 @@ class Command(BaseCommand):
                 reference=reference,
                 library=library,
                 in_place=options["in_place"],
+                prune=options["prune"],
                 recursive=options["recursive"],
                 replace=options["replace"],
                 dispatch_outbox=options["outbox"],
                 broadcast=options["broadcast"],
             )
 
+        update = True
+        checked_paths = set()
+        if options["in_place"] and update:
+            self.stdout.write("Checking existing files for updates…")
+            message = (
+                "Are you sure you want to do this?\n\n"
+                "Type 'yes' to continue, or 'no' to skip checking for updates in "
+                "already imported files: "
+            )
+            if options["interactive"] and input("".join(message)) != "yes":
+                pass
+            else:
+                checked_paths = check_updates(
+                    stdout=self.stdout,
+                    paths=options["path"],
+                    extensions=extensions,
+                    library=library,
+                    batch_size=options["batch_size"],
+                )
+                self.stdout.write("Existing files checked, moving on to next step!")
+
+        crawler = itertools.chain(
+            *[
+                crawl_dir(
+                    p,
+                    extensions=extensions,
+                    recursive=options["recursive"],
+                    ignored=checked_paths,
+                )
+                for p in options["path"]
+            ]
+        )
+        errors = []
+        total = 0
+        start_time = time.time()
         batch_start = None
         batch_duration = None
+        self.stdout.write("Starting import of new files…")
         for i, entries in enumerate(batch(crawler, options["batch_size"])):
             total += len(entries)
             batch_start = time.time()
@@ -264,7 +306,7 @@ class Command(BaseCommand):
             if entries:
                 self.stdout.write(
                     "Handling batch {} ({} items){}".format(
-                        i + 1, options["batch_size"], time_stats,
+                        i + 1, len(entries), time_stats,
                     )
                 )
                 batch_errors = self.handle_batch(
@@ -279,9 +321,9 @@ class Command(BaseCommand):
 
             batch_duration = time.time() - batch_start
 
-        message = "Successfully imported {} tracks in {}s"
+        message = "Successfully imported {} new tracks in {}s"
         if options["async_"]:
-            message = "Successfully launched import for {} tracks in {}s"
+            message = "Successfully launched import for {} new tracks in {}s"
 
         self.stdout.write(
             message.format(total - len(errors), int(time.time() - start_time))
@@ -297,6 +339,12 @@ class Command(BaseCommand):
                 reference, import_url
             )
         )
+
+        if options["prune"]:
+            self.stdout.write(
+                "Pruning dangling tracks, albums and artists from library…"
+            )
+            prune()
 
     def handle_batch(self, library, paths, batch, reference, options):
         matching = []
@@ -444,12 +492,29 @@ class Command(BaseCommand):
                 self.stdout.write(
                     "Watching for changes at {}…".format(path), ending="\r"
                 )
-                time.sleep(2)
+                time.sleep(10)
+                if kwargs["prune"] and GLOBAL["need_pruning"]:
+                    self.stdout.write("Some files were deleted, pruning library…")
+                    prune()
+                    GLOBAL["need_pruning"] = False
         except KeyboardInterrupt:
             self.stdout.write("Exiting…")
             observer.stop()
 
         observer.join()
+
+
+GLOBAL = {"need_pruning": False}
+
+
+def prune():
+    call_command(
+        "prune_library",
+        dry_run=False,
+        prune_artists=True,
+        prune_albums=True,
+        prune_tracks=True,
+    )
 
 
 def create_upload(
@@ -568,7 +633,6 @@ def handle_modified(event, stdout, library, in_place, **kwargs):
             )
             .first()
         )
-
         if to_update:
             if (
                 to_update.track.attributed_to
@@ -588,10 +652,13 @@ def handle_modified(event, stdout, library, in_place, **kwargs):
                 )
                 audio_metadata = to_update.get_metadata()
                 try:
-                    return tasks.update_track_metadata(audio_metadata, to_update.track)
+                    tasks.update_track_metadata(audio_metadata, to_update.track)
                 except serializers.ValidationError as e:
                     stdout.write("  Invalid metadata: {}".format(e))
-                    return
+                else:
+                    to_update.checksum = checksum
+                    to_update.save(update_fields=["checksum"])
+                return
 
     stdout.write("  Launching import for new file")
     create_upload(
@@ -638,3 +705,75 @@ def handle_deleted(event, stdout, library, in_place, **kwargs):
     if existing_candidates.count():
         stdout.write("  Removing file from DB")
         existing_candidates.delete()
+        GLOBAL["need_pruning"] = True
+
+
+def check_updates(stdout, library, extensions, paths, batch_size):
+    existing = (
+        library.uploads.in_place()
+        .filter(import_status="finished")
+        .exclude(checksum=None)
+        .select_related("library", "track")
+    )
+    queries = []
+    checked_paths = set()
+    for path in paths:
+        for ext in extensions:
+            queries.append(
+                Q(source__startswith="file://{}".format(path))
+                & Q(source__endswith=".{}".format(ext))
+            )
+    query, remainder = queries[0], queries[1:]
+    for q in remainder:
+        query = q | query
+    existing = existing.filter(query)
+    total = existing.count()
+    stdout.write("Found {} files to check in database!".format(total))
+    uploads = existing.order_by("source")
+    for i, rows in enumerate(batch(uploads.iterator(), batch_size)):
+        stdout.write("Handling batch {} ({} items)".format(i + 1, len(rows),))
+
+        for upload in rows:
+
+            check_upload(stdout, upload)
+            checked_paths.add(upload.source.replace("file://", "", 1))
+
+    return checked_paths
+
+
+def check_upload(stdout, upload):
+    try:
+        audio_file = upload.get_audio_file()
+    except FileNotFoundError:
+        stdout.write(
+            "  Removing file #{} missing from disk at {}".format(
+                upload.pk, upload.source
+            )
+        )
+        return upload.delete()
+
+    checksum = common_utils.get_file_hash(audio_file)
+    if upload.checksum != checksum:
+        stdout.write(
+            "  File #{} at {} was modified, updating metadata…".format(
+                upload.pk, upload.source
+            )
+        )
+        if upload.library.actor_id != upload.track.attributed_to_id:
+            stdout.write(
+                "  Cannot update track metadata, track belongs to someone else".format(
+                    upload.pk
+                )
+            )
+        else:
+            track = models.Track.objects.select_related("artist", "album__artist").get(
+                pk=upload.track_id
+            )
+            try:
+                tasks.update_track_metadata(upload.get_metadata(), track)
+            except serializers.ValidationError as e:
+                stdout.write("  Invalid metadata: {}".format(e))
+                return
+            else:
+                upload.checksum = checksum
+                upload.save(update_fields=["checksum"])

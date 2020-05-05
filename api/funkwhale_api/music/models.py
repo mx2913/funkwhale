@@ -844,7 +844,7 @@ class Upload(models.Model):
     def get_audio_file(self):
         if self.audio_file:
             return self.audio_file.open()
-        if self.source.startswith("file://"):
+        if self.source and self.source.startswith("file://"):
             return open(self.source.replace("file://", "", 1), "rb")
 
     def get_audio_data(self):
