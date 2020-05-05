@@ -754,6 +754,9 @@ class Upload(models.Model):
     )
     downloads_count = models.PositiveIntegerField(default=0)
 
+    # stores checksums such as `sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+    checksum = models.CharField(max_length=100, db_index=True, null=True, blank=True)
+
     objects = UploadQuerySet.as_manager()
 
     @property
@@ -866,6 +869,8 @@ class Upload(models.Model):
                 self.mimetype = mimetypes.guess_type(self.source)[0]
         if not self.size and self.audio_file:
             self.size = self.audio_file.size
+        if not self.checksum and self.audio_file:
+            self.checksum = common_utils.get_file_hash(self.audio_file)
         if not self.pk and not self.fid and self.library.actor.get_user():
             self.fid = self.get_federation_id()
         return super().save(**kwargs)
