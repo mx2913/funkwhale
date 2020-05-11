@@ -782,5 +782,7 @@ input + .help {
     margin-left: 0.5em;
   }
 }
-@import "./themes/_light.scss";
-@import "./themes/_dark.scss";
+
+@import "./global_theming/_default_light.scss";
+@import "./global_theming/_dark.scss";
+@import "./global_theming/_darkgreen.scss";

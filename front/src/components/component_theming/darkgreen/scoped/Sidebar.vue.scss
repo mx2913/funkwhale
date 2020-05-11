@@ -1,0 +1,17 @@
+.theme-darkgreen{
+  .sidebar.ui.visible.left {
+    box-shadow: $darkgreen-sidebar-shadow;
+  }
+
+  .sidebar {
+    background: $darkgreen-sidebar-background;
+
+    .menu.vertical {
+      background: none;
+    }
+  }
+  .ui.segment.header-wrapper {
+    background: $darkgreen-header-background;
+    box-shadow: $darkgreen-header-shadow;
+  }
+}

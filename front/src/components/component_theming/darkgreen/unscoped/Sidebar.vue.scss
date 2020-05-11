@@ -1,0 +1,11 @@
+.theme-darkgreen{ 
+  aside.ui.sidebar {
+    .ui.search .input {
+      .prompt {
+        border-radius: 0.3rem;
+        background-color: $darkgreen-researchprompt-background;
+        color: white;
+      }
+    }
+  }
+}
