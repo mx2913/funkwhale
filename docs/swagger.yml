@@ -686,6 +686,16 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: token
+          in: query
+          required: false
+          description: |
+            A listen token as returned by /users/me
+
+            This offers an alternative authentication method for situations where HTTP headers
+            can't be modified to include a Bearer token.
+          schema:
+            type: string
 
       tags:
         - "Library and metadata"

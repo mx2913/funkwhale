@@ -665,6 +665,20 @@ Me:
           $ref: "#/QuotaStatus"
         permissions:
           $ref: "#/Permissions"
+        tokens:
+          type: object
+          properties:
+            listen:
+              type: string
+              description: |
+                A token that can be passed in the querystring, when playing
+                a file from the /api/v1/listen endpoint. Example:
+                  /api/v1/listen/uuid/?token=foo
+
+                This is especially useful in situations where authentication
+                via request headers isn't possible.
+
+                The token expires after 3 days by default.
 Avatar:
   type: "object"
   properties:
