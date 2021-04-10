@@ -126,7 +126,9 @@ def get_spa_file(spa_url, name):
     if cached:
         return cached
 
-    response = session.get_session().get(utils.join_url(spa_url, name),)
+    response = session.get_session().get(
+        utils.join_url(spa_url, name),
+    )
     response.raise_for_status()
     content = response.text
     caches["local"].set(cache_key, content, settings.FUNKWHALE_SPA_HTML_CACHE_DURATION)
@@ -407,25 +409,18 @@ class ProfilerMiddleware:
 
         return response
 
-class PymallocMiddleware:
 
+class PymallocMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        if "alloc" not in request.GET:
-            return self.get_response(request)
 
         snapshot = tracemalloc.take_snapshot()
-        lineno_stats = snapshot.statistics('lineno')
-        trace_stats = snapshot.statistics('traceback')
+        stats = snapshot.statistics("lineno")
 
-        print("")
-        print("[ By File ]")
-        for stat in lineno_stats[:25]:
+        print("Memory trace")
+        for stat in stats[:25]:
             print(stat)
 
-        print("[ Trace ]")
-        for stat in trace_stats[:25]:
-            print(stat)
         return self.get_response(request)
