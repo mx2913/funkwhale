@@ -417,9 +417,15 @@ class PymallocMiddleware:
             return self.get_response(request)
 
         snapshot = tracemalloc.take_snapshot()
-        top_stats = snapshot.statistics('lineno')
+        lineno_stats = snapshot.statistics('lineno')
+        trace_stats = snapshot.statistics('traceback')
 
-        print("[ Top 10 ]")
-        for stat in top_stats[:10]:
+        print("")
+        print("[ By File ]")
+        for stat in lineno_stats[:25]:
+            print(stat)
+
+        print("[ Trace ]")
+        for stat in trace_stats[:25]:
             print(stat)
         return self.get_response(request)
