@@ -414,11 +414,12 @@ class PymallocMiddleware:
 
     def __call__(self, request):
 
-        snapshot = tracemalloc.take_snapshot()
-        stats = snapshot.statistics("lineno")
+        if tracemalloc.is_tracing():
+            snapshot = tracemalloc.take_snapshot()
+            stats = snapshot.statistics("lineno")
 
-        print("Memory trace")
-        for stat in stats[:25]:
-            print(stat)
+            print("Memory trace")
+            for stat in stats[:25]:
+                print(stat)
 
         return self.get_response(request)
