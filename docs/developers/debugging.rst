@@ -36,7 +36,7 @@ In order to find performance issues, its possible to run API requests with activ
 order to do this,  add ``funkwhale_api.common.middleware.ProfilerMiddleware`` to the environment
 variable ``ADDITIONAL_MIDDLEWARES_BEFORE``
 
-If enabled, simply add ``prof`` to the request URL you want to profile. You should get an HTML-Report
+If enabled, simply add ``?prof`` to the request URL you want to profile. You should get an HTML-Report
 of the running request.
 
 Memory Tracing
