@@ -1,24 +1,28 @@
 <template>
   <tr>
     <td>
-      <play-button :class="['basic', {vibrant: currentTrack && isPlaying && track.id === currentTrack.id}, 'icon']"
-        :discrete="true"
-        :is-playable="playable"
-        :track="track"
-        :track-index="trackIndex"
-        :tracks="tracks"></play-button>
+        <play-button 
+          class="basic circular icon" 
+          :is-playable="playable" 
+          :track-index="trackIndex" 
+          :button-classes="['circular', {'inverted': !(currentTrack && isPlaying && track.id === currentTrack.id)}, 'vibrant', 'icon', 'button']" 
+          :discrete="true" 
+          :icon-only="true" 
+          :track="track"
+          :tracks="tracks">
+        </play-button>
     </td>
     <td>
       <img alt="" class="ui mini image" v-if="track.album && track.album.cover && track.album.cover.urls.original" v-lazy="$store.getters['instance/absoluteUrl'](track.album.cover.urls.medium_square_crop)">
       <img alt="" class="ui mini image" v-else src="../../../assets/audio/default-cover.png">
     </td>
     <td colspan="6">
-      <button class="track" @click.stop="playSong()">
+      <router-link :to="{name: 'library.tracks.detail', params: {id: track.id }}">
         <template v-if="displayPosition && track.position">
           {{ track.position }}.
         </template>
         {{ track.title|truncate(40) }}
-      </button>
+      </router-link>
     </td>
     <td colspan="4">
       <router-link class="artist discrete link" :to="{name: 'library.artists.detail', params: {id: track.artist.id }}">
