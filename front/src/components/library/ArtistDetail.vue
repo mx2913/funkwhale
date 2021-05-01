@@ -33,7 +33,7 @@
       <h2>
         <translate translate-context="Content/Artist/Title">Tracks by this artist</translate>
       </h2>
-      <track-table :display-position="true" :tracks="tracks" :next-url="nextTracksUrl"></track-table>
+      <track-table :display-position="false" :tracks="tracks" :next-url="nextTracksUrl"></track-table>
     </section>
     <section class="ui vertical stripe segment">
       <h2>
