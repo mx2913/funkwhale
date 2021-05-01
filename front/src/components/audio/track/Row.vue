@@ -2,7 +2,6 @@
   <tr>
     <td>
         <play-button 
-          class="basic circular icon" 
           :is-playable="playable" 
           :track-index="trackIndex" 
           :button-classes="['circular', {'inverted': !(currentTrack && isPlaying && track.id === currentTrack.id)}, 'vibrant', 'icon', 'button']" 
