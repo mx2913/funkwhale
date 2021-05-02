@@ -14,6 +14,12 @@
         </button>
       </div>
     </div>
+    <section v-if="tracks.length > 0" class="ui vertical stripe segment">
+      <h2>
+        <translate translate-context="Content/Artist/Title">New tracks by this artist</translate>
+      </h2>
+      <artist-entries :tracks="tracks.slice(0,5)"></artist-entries>
+    </section>
     <section v-if="isLoadingAlbums" class="ui vertical stripe segment">
       <div :class="['ui', 'centered', 'active', 'inline', 'loader']"></div>
     </section>
@@ -28,12 +34,6 @@
       <button :class="['ui', {loading: isLoadingMoreAlbums}, 'button']" v-if="nextAlbumsUrl && loadMoreAlbumsUrl" @click="loadMoreAlbums(loadMoreAlbumsUrl)">
         <translate translate-context="Content/*/Button.Label">Load more…</translate>
       </button>
-    </section>
-    <section v-if="tracks.length > 0" class="ui vertical stripe segment">
-      <h2>
-        <translate translate-context="Content/Artist/Title">Tracks by this artist</translate>
-      </h2>
-      <track-table :display-position="false" :tracks="tracks" :next-url="nextTracksUrl"></track-table>
     </section>
     <section class="ui vertical stripe segment">
       <h2>
@@ -51,14 +51,14 @@ import _ from "@/lodash"
 import axios from "axios"
 import logger from "@/logging"
 import AlbumCard from "@/components/audio/album/Card"
-import TrackTable from "@/components/audio/track/Table"
+import ArtistEntries from "@/components/audio/ArtistEntries"
 import LibraryWidget from "@/components/federation/LibraryWidget"
 
 export default {
   props: ["object", "tracks", "albums", "isLoadingAlbums", "nextTracksUrl", "nextAlbumsUrl"],
   components: {
     AlbumCard,
-    TrackTable,
+    ArtistEntries,
     LibraryWidget,
   },
   data () {

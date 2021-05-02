@@ -51,11 +51,13 @@
     flex-grow: 1;
   }
 }
-.album-entries {
+.album-entries,
+.artist-entries {
   > div {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 3.5rem;
   }
   .content {
     flex-grow: 1;
@@ -76,18 +78,53 @@
   }
 }
 
-.album-entry:hover {
-  cursor: pointer;
-
-  // explicitly style the button as if it was hovered itself
-  .ui.inverted.vibrant.button {
-    background-color: var(--vibrant-hover-color);
-    color: white;
-    box-shadow: 0 0 0 2px var(--vibrant-color) inset;
+.album-entry,
+.artist-entry {
+  .ui.really.tiny.button.play-button {
+    visibility: hidden;
+  }
+  .ui.floating.dropdown {
+    visibility: hidden;
+  }
+  .ui.favorite-icon {
+    visibility: hidden;
+  }
+  .ui.favorite-icon.pink {
+    visibility: visible;
+  }
+  .actions {
+    display: block;
+    max-width: 2rem;
+    width: 100%;
+  }
+  .ui.really.tiny.button.play-button.playing {
+    color: var(--vibrant-color);
+    visibility: visible;
+  }
+  .ui.really.tiny.button.play-button.paused {
+    color: var(--vibrant-color);
+    visibility: visible;
   }
 }
 
-.album-entry, .channel-entry-card {
+.album-entry:hover,
+.artist-entry:hover {
+  cursor: pointer;
+
+  // explicitly style the button as if it was hovered itself
+  .ui.really.tiny.button.play-button {
+    color: var(--main-color);
+    visibility: visible;
+  }
+  .ui.floating.dropdown {
+    visibility: visible;
+  }
+  .ui.favorite-icon {
+    visibility: visible;
+  }
+}
+
+.album-entry, .artist-entry, .channel-entry-card {
   border-radius: 5px;
   padding: 0.5em;
   .meta {
@@ -110,6 +147,7 @@
     border: none !important;
     padding: 0 !important;
     margin: 0 0.5em;
+    transition: all ease-in-out;
   }
 }
 .channel-image {
