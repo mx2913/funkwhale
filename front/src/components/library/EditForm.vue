@@ -9,6 +9,11 @@
         Submit another edit
       </translate>
     </button>
+    <button class="ui button" @click="goBack">
+      <translate translate-context="Content/Library/Button.Label">
+        Go back
+      </translate>
+    </button>
   </div>
   <div v-else>
 
@@ -127,6 +132,11 @@
         <translate v-if="canEdit" key="1" translate-context="Content/Library/Button.Label/Verb">Submit and apply edit</translate>
         <translate v-else key="2" translate-context="Content/Library/Button.Label/Verb">Submit suggestion</translate>
       </button>
+      <button class="ui right floated button" @click="goBack">
+        <translate translate-context="Content/Library/Button.Label">
+          Go back
+        </translate>
+      </button>
     </form>
   </div>
 </template>
@@ -243,6 +253,9 @@ export default {
           self.isLoading = false
         }
       )
+    },
+    goBack() {
+      return this.$router.go(-1)
     }
   },
   watch: {
