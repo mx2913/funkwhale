@@ -1,6 +1,10 @@
 <template>
-  <div class="album-entries">
-    <div :class="[{active: currentTrack && track.id === currentTrack.id}, 'album-entry']" @mouseover="track.hover = true" @mouseleave="track.hover = false"  @click.prevent="replacePlay(tracks, index)" v-for="(track, index) in tracks" :key="track.id">
+  <div class="artist-entries">
+    <div :class="[{active: currentTrack && track.id === currentTrack.id}, 'artist-entry']" @mouseover="track.hover = true" @mouseleave="track.hover = false"  @click.prevent="replacePlay(tracks, index)" v-for="(track, index) in tracks" :key="track.id">
+      <span>      
+        <img alt="" class="ui mini image" v-if="track.album && track.album.cover && track.album.cover.urls.original" v-lazy="$store.getters['instance/absoluteUrl'](track.album.cover.urls.medium_square_crop)">
+        <img alt="" class="ui mini image" v-else src="../../assets/audio/default-cover.png">
+      </span>
       <div class="actions">
         <play-button 
           v-if="currentTrack && isPlaying && track.id === currentTrack.id" 
@@ -30,7 +34,6 @@
           :track="track"
           :tracks="tracks">
         </play-button>
-        <span class="trackPosition" v-else>{{ prettyPosition(track.position) }}</span>
       </div>
       <div class="content ellipsis">
         <strong>{{ track.title }}</strong><br>
