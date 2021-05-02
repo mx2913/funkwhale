@@ -6,7 +6,8 @@
       :disabled="!playable"
       :aria-label="labels.replacePlay"
       :class="buttonClasses.concat(['ui', {loading: isLoading}, {'mini': discrete}, {disabled: !playable}])">
-      <i :class="[playIconClass, 'icon']"></i>
+      <i v-if="playing" class="pause icon"></i>
+      <i v-else :class="[playIconClass, 'icon']"></i>
       <template v-if="!discrete && !iconOnly">&nbsp;<slot><translate translate-context="*/Queue/Button.Label/Short, Verb">Play</translate></slot></template>
     </button>
     <button
@@ -71,7 +72,9 @@ export default {
     album: {type: Object, required: false},
     library: {type: Object, required: false},
     channel: {type: Object, required: false},
-    isPlayable: {type: Boolean, required: false, default: null}
+    isPlayable: {type: Boolean, required: false, default: null},
+    playing: {type: Boolean, required: false, default: false},
+    paused: {type: Boolean, required: false, default: false}
   },
   data () {
     return {
