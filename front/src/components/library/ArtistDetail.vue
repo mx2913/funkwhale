@@ -18,6 +18,7 @@
       <h2>
         <translate translate-context="Content/Artist/Title">New tracks by this artist</translate>
       </h2>
+      <div class="ui hidden divider"></div>
       <artist-entries :tracks="tracks.slice(0,5)"></artist-entries>
     </section>
     <section v-if="isLoadingAlbums" class="ui vertical stripe segment">
