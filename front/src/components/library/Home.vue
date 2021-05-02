@@ -19,21 +19,15 @@
         </div>
       </div>
       <div class="ui section hidden divider"></div>
-      <div class="ui stackable one column grid">
-        <div class="column">
-          <album-widget :filters="{scope: scope, playable: true, ordering: '-creation_date'}">
-            <template slot="title"><translate translate-context="Content/Home/Title">Recently added</translate></template>
-          </album-widget>
-        </div>
-      </div>
+      <album-slider :filters="{scope: scope, playable: true, ordering: '-creation_date'}">
+        <template slot="title"><translate translate-context="Content/Home/Title">Recently added</translate></template>
+      </album-slider>
       <template v-if="scope === 'all'">
         <h3 class="ui header" >
           <translate translate-context="*/*/*">New channels</translate>
         </h3>
         <channels-widget :show-modification-date="true" :limit="12" :filters="{ordering: '-creation_date', external: 'false'}"></channels-widget>
       </template>
-
-
     </section>
   </main>
 </template>
@@ -46,6 +40,7 @@ import ChannelsWidget from "@/components/audio/ChannelsWidget"
 import ArtistCard from "@/components/audio/artist/Card"
 import TrackWidget from "@/components/audio/track/Widget"
 import AlbumWidget from "@/components/audio/album/Widget"
+import AlbumSlider from "@/components/audio/album/Slider"
 import PlaylistWidget from "@/components/playlists/Widget"
 
 const ARTISTS_URL = "artists/"
@@ -62,6 +57,7 @@ export default {
     AlbumWidget,
     PlaylistWidget,
     ChannelsWidget,
+    AlbumSlider,
   },
   data() {
     return {

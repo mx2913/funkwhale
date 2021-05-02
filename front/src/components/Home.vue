@@ -178,6 +178,7 @@
         <translate translate-context="*/*/*">New channels</translate>
       </h3>
       <channels-widget :show-modification-date="true" :limit="10" :filters="{ordering: '-creation_date', external: 'false'}"></channels-widget>
+      <album-slider :filters="{playable: true, ordering: '-creation_date'}" :limit="10"></album-slider>
 
     </section>
   </main>
@@ -189,6 +190,7 @@ import _ from '@/lodash'
 import {mapState} from 'vuex'
 import showdown from 'showdown'
 import AlbumWidget from "@/components/audio/album/Widget"
+import AlbumSlider from "@/components/audio/album/Slider"
 import ChannelsWidget from "@/components/audio/ChannelsWidget"
 import LoginForm from "@/components/auth/LoginForm"
 import SignupForm from "@/components/auth/SignupForm"
@@ -200,6 +202,7 @@ export default {
     ChannelsWidget,
     LoginForm,
     SignupForm,
+    AlbumSlider,
   },
   data () {
     return {
