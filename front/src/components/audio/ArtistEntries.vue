@@ -1,11 +1,28 @@
 <template>
-  <div class="artist-entries">
-    <div :class="[{active: currentTrack && track.id === currentTrack.id}, 'artist-entry']" @mouseover="track.hover = true" @mouseleave="track.hover = false"  @click.prevent="replacePlay(tracks, index)" v-for="(track, index) in tracks" :key="track.id">
-      <span>      
-        <img alt="" class="ui mini image" v-if="track.album && track.album.cover && track.album.cover.urls.original" v-lazy="$store.getters['instance/absoluteUrl'](track.album.cover.urls.medium_square_crop)">
-        <img alt="" class="ui mini image" v-else src="../../assets/audio/default-cover.png">
-      </span>
-      <div class="actions">
+  <div class="artist-entries ui unstackable grid">
+    <div class="artist-entries row">
+      <div class="actions one wide left floated column"></div>
+      <div class="image one wide left floated column"></div>
+      <div class="content ellipsis two wide left floated column">
+        <b>{{ labels.title }}</b>
+      </div>
+      <div class="content ellipsis two wide left floated column">
+        <b>{{ labels.album }}</b>
+      </div>
+      <div class="meta one wide right floated column"></div>
+      <div class="meta one wide right floated column">
+        <i class="clock icon" style="padding: 0.5rem;" />
+      </div>
+      <div class="one wide right floated column"></div>
+    </div>
+    <div 
+      :class="[{active: currentTrack && track.id === currentTrack.id}, 'artist-entry row']" 
+      @mouseover="track.hover = true" 
+      @mouseleave="track.hover = false"  
+      @dblclick="replacePlay(tracks, index)"
+      @contextmenu.prevent="$refs.playmenu.open()"
+      v-for="(track, index) in tracks" :key="track.id">
+      <div class="actions one wide left floated column">
         <play-button 
           v-if="currentTrack && isPlaying && track.id === currentTrack.id" 
           class="basic circular icon" 
@@ -35,15 +52,24 @@
           :tracks="tracks">
         </play-button>
       </div>
-      <div class="content ellipsis">
-        <strong>{{ track.title }}</strong><br>
+      <div class="image one wide left floated column">
+        <img alt="" class="ui artist-track mini image" v-if="track.album && track.album.cover && track.album.cover.urls.original" v-lazy="$store.getters['instance/absoluteUrl'](track.album.cover.urls.medium_square_crop)">
+        <img alt="" class="ui artist-track mini image" v-else src="../../assets/audio/default-cover.png">
       </div>
-      <div class="meta">
+      <div class="content ellipsis two wide left floated column">
+        <router-link :to="{name: 'library.tracks.detail', params: {id: track.id }}">{{ track.title }}</router-link>
+      </div>
+      <div class="content ellipsis two wide left floated column">
+        <router-link :to="{name: 'library.albums.detail', params: {id: track.album.id }}">{{ track.album.title }}</router-link>
+      </div>
+      <div class="meta one wide right floated column">
         <track-favorite-icon class="tiny" :border="false" :track="track"></track-favorite-icon>
+      </div>
+      <div class="meta one wide right floated column">
         <human-duration v-if="track.uploads[0] && track.uploads[0].duration" :duration="track.uploads[0].duration"></human-duration>
       </div>
-      <div class="actions">
-        <play-button class="play-button basic icon" :dropdown-only="true" :is-playable="track.is_playable" :dropdown-icon-classes="['ellipsis', 'vertical', 'large really discrete']" :track="track"></play-button>
+      <div class="one wide right floated column">
+        <play-button id="playmenu" class="play-button basic icon" :dropdown-only="true" :is-playable="track.is_playable" :dropdown-icon-classes="['ellipsis', 'vertical', 'large really discrete']" :track="track"></play-button>
       </div>
     </div>
   </div>
@@ -78,6 +104,13 @@ export default {
     isPlaying () {
       return this.$store.state.player.playing
     },
+
+    labels() {
+      return {
+        title: this.$pgettext("*/*/*/Noun", "Title"),
+        album: this.$pgettext("*/*/*/Noun", "Album")
+      }
+    }
   },
   methods: {
     prettyPosition (position, size) {
