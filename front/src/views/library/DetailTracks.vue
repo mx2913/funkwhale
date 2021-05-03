@@ -1,6 +1,6 @@
 <template>
   <section>
-    <track-table
+    <artist-entries
       :key="object.uploads_count"
       :display-actions="false"
       :search="true"
@@ -11,17 +11,17 @@
           <translate key="2" v-else translate-context="*/*/*">You may need to follow this library to see its content.</translate>
         </p>
       </empty-state>
-    </track-table>
+    </artist-entries>
   </section>
 </template>
 
 <script>
-import TrackTable from '@/components/audio/track/Table'
+import ArtistEntries from '@/components/audio/ArtistEntries'
 
 export default {
   props: ['object', 'isOwner'],
   components: {
-    TrackTable,
+    ArtistEntries,
   },
 }
 </script>
