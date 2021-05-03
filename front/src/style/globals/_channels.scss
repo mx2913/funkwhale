@@ -105,6 +105,9 @@
   .ui.really.tiny.button.play-button.playing {
     color: var(--vibrant-color);
     visibility: visible;
+    display: contents;
+    left: auto;
+    right: auto;
   }
   .ui.really.tiny.button.play-button.paused {
     color: var(--vibrant-color);
@@ -139,6 +142,9 @@
   .ui.really.tiny.button.play-button {
     color: var(--main-color);
     visibility: visible;
+    display: contents;
+    left: auto;
+    right: auto;
   }
   .ui.floating.dropdown {
     visibility: visible;
