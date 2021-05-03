@@ -88,6 +88,13 @@
   .ui.really.tiny.button.play-button {
     visibility: hidden;
   }
+  .ui.icon.really.tiny.button.play-button.paused {
+    color: var(--main-color);
+    visibility: visible;
+    display: contents;
+    left: auto;
+    right: auto;
+  }
   .ui.floating.dropdown {
     visibility: hidden;
   }
