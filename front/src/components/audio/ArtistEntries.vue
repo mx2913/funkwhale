@@ -4,6 +4,10 @@
     <inline-search-bar v-model="query" v-if="search" @search="additionalTracks = []; fetchData()"></inline-search-bar>
     <div class="ui hidden divider"></div>
 
+    <!-- Add a header if needed -->
+
+    <slot name="header"></slot>
+
     <!-- Show a message if no tracks are available -->
 
     <slot v-if="!isLoading && allTracks.length === 0" name="empty-state">
@@ -17,7 +21,10 @@
         <div class="ui loader"></div>
       </div>
       <div class="artist-entries row">
-        <div class="actions left floated column"></div>
+        <div v-if="showPosition" class="actions left floated column">
+          <i class="hashtag icon"></i>
+        </div>
+        <div v-else class="actions left floated column"></div>
         <div v-if="showArt" class="image left floated column"></div>
         <div class="content ellipsis left floated column">
           <b>{{ labels.title }}</b>
@@ -28,9 +35,9 @@
         <div v-if="showArtist" class="content ellipsis left floated column">
           <b>{{ labels.artist }}</b>
         </div>
-        <div class="meta right floated column"></div>
+        <div v-if="$store.state.auth.authenticated" class="meta right floated column"></div>
         <div class="meta right floated column">
-          <i class="clock icon" style="padding: 0.5rem;" />
+          <i class="clock outline icon" style="padding: 0.5rem;" />
         </div>
         <div v-if="displayActions" class="right floated column"></div>
       </div>
@@ -49,11 +56,17 @@
             v-if="!$store.state.player.isLoadingAudio && currentTrack && isPlaying && track.id === currentTrack.id && !track.hover">
           </play-indicator>
           <button
+            v-else-if="currentTrack && !isPlaying && track.id === currentTrack.id && !track.hover"
+            class="ui really tiny basic icon button play-button paused"
+          >
+            <i class="pause icon" />
+          </button>
+          <button
             v-else-if="currentTrack && isPlaying && track.id === currentTrack.id && track.hover"
             class="ui really tiny basic icon button play-button"
             @click.prevent.exact="pausePlayback"
           >
-          <i class="pause icon" />
+            <i class="pause icon" />
           </button>
           <button
             v-else-if="currentTrack && !isPlaying && track.id === currentTrack.id && track.hover"
@@ -78,7 +91,24 @@
           <img alt="" class="ui artist-track mini image" v-else src="../../assets/audio/default-cover.png">
         </div>
         <div class="content ellipsis left floated column">
-          <router-link :to="{name: 'library.tracks.detail', params: {id: track.id }}">{{ track.title }}</router-link>
+          <a 
+            v-if="currentTrack && !isPlaying && track.id === currentTrack.id" 
+            @click="resumePlayback"
+          >
+            {{ track.title }}
+          </a>
+          <a 
+            v-else-if="currentTrack && isPlaying && track.id === currentTrack.id" 
+            @click="pausePlayback"
+          >
+            {{ track.title }}
+          </a>
+          <a 
+            v-else
+            @click.prevent.exact="replacePlay(allTracks, index)"
+          >
+            {{ track.title }}
+          </a>
         </div>
         <div v-if="showAlbum" class="content ellipsis left floated column">
           <router-link :to="{name: 'library.albums.detail', params: {id: track.album.id }}">{{ track.album.title }}</router-link>
@@ -86,14 +116,14 @@
         <div v-if="showArtist" class="content ellipsis left floated column">
           <router-link class="artist link" :to="{name: 'library.artists.detail', params: {id: track.artist.id }}">{{ track.artist.name }}</router-link>
         </div>
-        <div class="meta right floated column">
+        <div v-if="$store.state.auth.authenticated" class="meta right floated column">
           <track-favorite-icon class="tiny" :border="false" :track="track"></track-favorite-icon>
         </div>
         <div class="meta right floated column">
           <human-duration v-if="track.uploads[0] && track.uploads[0].duration" :duration="track.uploads[0].duration"></human-duration>
         </div>
         <div v-if="displayActions" class="right floated column">
-          <play-button id="playmenu" class="play-button basic icon" :dropdown-only="true" :is-playable="track.is_playable_by_actor" :dropdown-icon-classes="['ellipsis', 'vertical', 'large really discrete']" :track="track"></play-button>
+          <play-button id="playmenu" class="play-button basic icon" :dropdown-only="true" :is-playable="track.is_playable" :dropdown-icon-classes="['ellipsis', 'vertical', 'large really discrete']" :track="track"></play-button>
         </div>
       </div>
     </div>

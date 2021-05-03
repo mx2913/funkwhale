@@ -15,11 +15,14 @@
       </div>
     </div>
     <section v-if="tracks.length > 0" class="ui vertical stripe segment">
-      <h2>
-        <translate translate-context="Content/Artist/Title">New tracks by this artist</translate>
-      </h2>
-      <div class="ui hidden divider"></div>
-      <artist-entries :show-position="false" :track-only="true" :tracks="tracks.slice(0,5)"></artist-entries>
+      <artist-entries :show-position="false" :track-only="true" :tracks="tracks.slice(0,5)">
+        <template slot="header">
+          <h2>
+            <translate translate-context="Content/Artist/Title">New tracks by this artist</translate>
+          </h2>
+          <div class="ui hidden divider"></div>
+        </template>
+      </artist-entries>
     </section>
     <section v-if="isLoadingAlbums" class="ui vertical stripe segment">
       <div :class="['ui', 'centered', 'active', 'inline', 'loader']"></div>
