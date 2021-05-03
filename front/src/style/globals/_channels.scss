@@ -102,17 +102,6 @@
     max-width: 2rem;
     width: 100%;
   }
-  .ui.really.tiny.button.play-button.playing {
-    color: var(--vibrant-color);
-    visibility: visible;
-    display: contents;
-    left: auto;
-    right: auto;
-  }
-  .ui.really.tiny.button.play-button.paused {
-    color: var(--vibrant-color);
-    visibility: visible;
-  }
   .actions.one.wide.left.floated.column {
     width: 3% !important;
   }
@@ -139,7 +128,7 @@
   cursor: pointer;
 
   // explicitly style the button as if it was hovered itself
-  .ui.really.tiny.button.play-button {
+  .ui.icon.really.tiny.button.play-button {
     color: var(--main-color);
     visibility: visible;
     display: contents;
