@@ -19,7 +19,13 @@
       </div>
     </template>
     <template v-else>
-      <album-entries :tracks="object.tracks"></album-entries>
+      <artist-entries 
+        :tracks="object.tracks"
+        :show-position="true"
+        :show-art="false"
+        :show-album="false"
+        :show-artist="false">
+      </artist-entries>
     </template>
     <div class="ui center aligned basic segment">
       <pagination
@@ -50,7 +56,7 @@ import logger from "@/logging"
 import LibraryWidget from "@/components/federation/LibraryWidget"
 import TrackTable from "@/components/audio/track/Table"
 import ChannelEntries from '@/components/audio/ChannelEntries'
-import AlbumEntries from '@/components/audio/AlbumEntries'
+import ArtistEntries from '@/components/audio/ArtistEntries'
 import Pagination from "@/components/Pagination"
 import PaginationMixin from "@/components/mixins/Pagination"
 import PlayButton from "@/components/audio/PlayButton"
@@ -59,7 +65,7 @@ export default {
   props: ["object", "libraries", "discs", "isSerie", "artist", "page", "paginateBy", "totalTracks"],
   components: {
     LibraryWidget,
-    AlbumEntries,
+    ArtistEntries,
     ChannelEntries,
     TrackTable,
     Pagination,
