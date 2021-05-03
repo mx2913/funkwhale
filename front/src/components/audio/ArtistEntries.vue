@@ -27,7 +27,7 @@
       v-for="(track, index) in tracks" :key="track.id">
       <div class="actions one wide left floated column">
         <play-indicator
-          v-if="!isLoadingAudio && currentTrack && isPlaying && track.id === currentTrack.id && !track.hover">
+          v-if="!$store.state.player.isLoadingAudio && currentTrack && isPlaying && track.id === currentTrack.id && !track.hover">
         </play-indicator>
         <button
           v-else-if="currentTrack && isPlaying && track.id === currentTrack.id && track.hover"
@@ -104,7 +104,6 @@ export default {
   computed: {
     ...mapGetters({
       currentTrack: "queue/currentTrack",
-      isLoadingAudio: "player/isLoadingAudio"
     }),
 
     isPlaying () {
