@@ -19,13 +19,13 @@
       </div>
     </template>
     <template v-else>
-      <artist-entries 
+      <track-table 
         :tracks="object.tracks"
         :show-position="true"
         :show-art="false"
         :show-album="false"
         :show-artist="false">
-      </artist-entries>
+      </track-table>
     </template>
     <div class="ui center aligned basic segment">
       <pagination
@@ -50,24 +50,18 @@
 <script>
 
 import time from "@/utils/time"
-import axios from "axios"
-import url from "@/utils/url"
-import logger from "@/logging"
 import LibraryWidget from "@/components/federation/LibraryWidget"
-import TrackTable from "@/components/audio/track/Table"
 import ChannelEntries from '@/components/audio/ChannelEntries'
-import ArtistEntries from '@/components/audio/ArtistEntries'
+import TrackTable from '@/components/audio/track/TrackTable'
 import Pagination from "@/components/Pagination"
-import PaginationMixin from "@/components/mixins/Pagination"
 import PlayButton from "@/components/audio/PlayButton"
 
 export default {
   props: ["object", "libraries", "discs", "isSerie", "artist", "page", "paginateBy", "totalTracks"],
   components: {
     LibraryWidget,
-    ArtistEntries,
-    ChannelEntries,
     TrackTable,
+    ChannelEntries,
     Pagination,
     PlayButton
   },
