@@ -51,19 +51,14 @@
     flex-grow: 1;
   }
 }
-.album-entries,
-.artist-entries {
+.album-entries {
   > div {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 3.5rem;
   }
   .content {
     flex-grow: 1;
-  }
-  .row {
-    border-bottom: 1px solid var(--border-color);
   }
 }
 .ui.artist-label {
@@ -81,98 +76,40 @@
   }
 }
 
-.album-entry,
-.artist-entry,
-.artist-entries.row,
-.album-entries.row {
-  .ui.really.tiny.button.play-button {
-    visibility: hidden;
-  }
-  .ui.icon.really.tiny.button.play-button.paused {
-    color: var(--main-color);
-    visibility: visible;
-    display: contents;
-    left: auto;
-    right: auto;
-  }
-  .ui.floating.dropdown {
-    visibility: hidden;
-  }
-  .ui.favorite-icon {
-    visibility: hidden;
-  }
-  .ui.favorite-icon.pink {
-    visibility: visible;
-  }
-  .actions {
-    display: block;
-    max-width: 2rem;
-    width: 100%;
-  }
-  .actions.one.wide.left.floated.column {
-    width: 3% !important;
-  }
-  .content,
-  .meta,
-  .image {
-    user-select: none;
-  }
-  .helper {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
-  .ui.artist-track.mini.image {
-    top: 0;
-    bottom: 0;
-    position: absolute;
-    margin: auto;
-  }
-}
-
-.album-entry:hover,
-.artist-entry:hover {
+.album-entry:hover {
   cursor: pointer;
 
   // explicitly style the button as if it was hovered itself
-  .ui.icon.really.tiny.button.play-button {
-    color: var(--main-color);
-    visibility: visible;
-    display: contents;
-    left: auto;
-    right: auto;
-  }
-  .ui.floating.dropdown {
-    visibility: visible;
-  }
-  .ui.favorite-icon {
-    visibility: visible;
+  .ui.inverted.vibrant.button {
+    background-color: var(--vibrant-hover-color);
+    color: white;
+    box-shadow: 0 0 0 2px var(--vibrant-color) inset;
   }
 }
 
-.album-entry, .album-entries .artist-entry, .artist-entries .channel-entry-card {
+.album-entry, .channel-entry-card {
   border-radius: 5px;
   padding: 0.5em;
+  .meta {
+    text-align: right;
+    min-width: 7em;
+  }
   > div {
     padding: 0.25em;
     &:not(:last-child) {
       margin-right: 0.25em;
     }
   }
-  .favorite-icon.tiny.button {
-    border: none !important;
-    padding: 0 !important;
-    margin: 0 0.5em;
-    transition: all ease-in-out;
-  }
-}
-
-.album-entry,  .artist-entry, .channel-entry-card {
   &.active {
     background: rgba(155, 155, 155, 0.2);
   }
   &:hover {
     background: rgba(155, 155, 155, 0.1);
+  }
+  .favorite-icon.tiny.button {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0.5em;
   }
 }
 .channel-image {

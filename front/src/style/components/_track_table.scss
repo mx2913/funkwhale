@@ -1,3 +1,18 @@
+.artist-entries {
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3.5rem;
+  }
+  .content {
+    flex-grow: 1;
+  }
+  .row {
+    border-bottom: 1px solid var(--border-color);
+  }
+}
+
 .artist-entry,
 .artist-entries.row {
   .ui.really.tiny.button.play-button {
@@ -70,14 +85,9 @@
 }
 
 .artist-entry, 
-.artist-entries 
-.channel-entry-card {
+.artist-entries {
   border-radius: 5px;
   padding: 0.5em;
-  .meta {
-    text-align: right;
-    min-width: 7em;
-  }
   > div {
     padding: 0.25em;
     &:not(:last-child) {
