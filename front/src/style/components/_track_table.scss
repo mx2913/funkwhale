@@ -8,8 +8,12 @@
   .content {
     flex-grow: 1;
   }
-  .row {
+  .row:not(.mobile) {
     border-bottom: 1px solid var(--border-color);
+  }
+  .track-title.mobile {
+    font-weight: bold;
+    margin-bottom: 0.1em;
   }
 }
 
@@ -42,7 +46,7 @@
   .actions.left.floated.column {
     width: 3% !important;
   }
-  .meta.right.floated.column {
+  .meta.right.floated.column:not(.mobile) {
     width: 45px;
   }
   .content,
@@ -71,12 +75,25 @@
   &.active {
     background: rgba(155, 155, 155, 0.2);
   }
-  &:hover {
+  &:hover:not(.mobile) {
     background: rgba(155, 155, 155, 0.1);
   }
 }
 
-.track-row:hover {
+.track-row.mobile {
+  height: 75px;
+
+  .modal-button {
+    width: 10vw;
+  }
+  .actions div {
+    height: 75px;
+    line-height: 75px;
+    text-align: center;
+  }
+}
+
+.track-row:hover:not(.mobile) {
   cursor: pointer;
 
   // explicitly style the button as if it was hovered itself
@@ -114,7 +131,7 @@
   }
 }
 
-.trackPosition {
+.track-position {
   cursor: pointer;
   display: contents;
   min-height: 1em;
@@ -126,4 +143,10 @@
   line-height: 1em;
   padding: 0.5rem;
   user-select: none;
+  
+  .mobile span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+  }
 }

@@ -15,7 +15,13 @@
           :translate-params="{number: tracks[0].disc_number}"
           translate-context="Content/Album/"
         >Volume %{ number }</translate>
-        <album-entries :tracks="tracks"></album-entries>
+        <track-table 
+          :tracks="object.tracks"
+          :show-position="true"
+          :show-art="false"
+          :show-album="false"
+          :show-artist="false">
+        </track-table>
       </div>
     </template>
     <template v-else>
