@@ -16,11 +16,11 @@
 
     <!-- If tracks are available, build the header -->
 
-    <div v-else :class="['artist-entries', 'ui', 'unstackable', 'grid']">
+    <div v-else :class="['track-table', 'ui', 'unstackable', 'grid']">
       <div v-if="isLoading" class="ui inverted active dimmer">
         <div class="ui loader"></div>
       </div>
-      <div class="artist-entries row">
+      <div class="track-table row">
         <div v-if="showPosition" class="actions left floated column">
           <i class="hashtag icon"></i>
         </div>
@@ -36,16 +36,16 @@
           <b>{{ labels.artist }}</b>
         </div>
         <div v-if="$store.state.auth.authenticated" class="meta right floated column"></div>
-        <div class="meta right floated column">
+        <div v-if="showDuration" class="meta right floated column">
           <i class="clock outline icon" style="padding: 0.5rem;" />
         </div>
-        <div v-if="displayActions" class="right floated column"></div>
+        <div v-if="displayActions" class="meta right floated column"></div>
       </div>
 
       <!-- For each item, build a row -->
 
       <div 
-        :class="[{active: currentTrack && track.id === currentTrack.id}, 'artist-entry row']" 
+        :class="[{active: currentTrack && track.id === currentTrack.id}, 'track-row row']" 
         @mouseover="track.hover = true" 
         @mouseleave="track.hover = false"  
         @dblclick="doubleClick(track, index)"
@@ -88,7 +88,7 @@
         </div>
         <div v-if="showArt" class="image left floated column">
           <img alt="" class="ui artist-track mini image" v-if="track.album && track.album.cover && track.album.cover.urls.original" v-lazy="$store.getters['instance/absoluteUrl'](track.album.cover.urls.medium_square_crop)">
-          <img alt="" class="ui artist-track mini image" v-else src="../../assets/audio/default-cover.png">
+          <img alt="" class="ui artist-track mini image" v-else src="../../../assets/audio/default-cover.png">
         </div>
         <div class="content ellipsis left floated column">
           <a 
@@ -119,10 +119,10 @@
         <div v-if="$store.state.auth.authenticated" class="meta right floated column">
           <track-favorite-icon class="tiny" :border="false" :track="track"></track-favorite-icon>
         </div>
-        <div class="meta right floated column">
+        <div v-if="showDuration" class="meta right floated column">
           <human-duration v-if="track.uploads[0] && track.uploads[0].duration" :duration="track.uploads[0].duration"></human-duration>
         </div>
-        <div v-if="displayActions" class="right floated column">
+        <div v-if="displayActions" class="meta right floated column">
           <play-button id="playmenu" class="play-button basic icon" :dropdown-only="true" :is-playable="track.is_playable" :dropdown-icon-classes="['ellipsis', 'vertical', 'large really discrete']" :track="track"></play-button>
         </div>
       </div>
@@ -150,6 +150,7 @@ export default {
     filters: {type: Object, required: false, default: null},
     nextUrl: {type: String, required: false, default: null},
     displayActions: {type: Boolean, required: false, default: true},
+    showDuration: {type: Boolean, required: false, default: true},
   },
   components: {
     TrackFavoriteIcon,
@@ -214,20 +215,28 @@ export default {
     },
 
     fetchData (url) {
-      url = url || 'tracks/'
+      if (!url) {
+        return
+      }
+      this.isLoading = true
       let self = this
-      let params = {q: this.query, ...this.filters}
-      self.isLoading = true
-      axios.get(url, {params}).then((response) => {
-        self.additionalTracks = self.additionalTracks.concat(response.data.results)
-        self.fetchDataUrl = response.data.next
+      let params = _.clone(this.filters)
+      params.page_size = this.limit
+      params.page = this.page
+      params.include_channels = true
+      axios.get(url, {params: params}).then((response) => {
+        self.nextPage = response.data.next
         self.isLoading = false
-      }, (error) => {
+        self.objects = response.data.results
+        self.count = response.data.count
+        self.$emit('fetched', response.data)
+      }, error => {
         self.isLoading = false
-
+        self.errors = error.backendErrors
       })
     }
   },
+
   created () {
 
     if (!this.tracks) {

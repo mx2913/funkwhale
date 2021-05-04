@@ -1,4 +1,4 @@
-.artist-entries {
+.track-table {
   > div {
     display: flex;
     align-items: center;
@@ -13,8 +13,8 @@
   }
 }
 
-.artist-entry,
-.artist-entries.row {
+.track-row,
+.track-table.row {
   .ui.really.tiny.button.play-button {
     visibility: hidden;
   }
@@ -39,8 +39,11 @@
     max-width: 2rem;
     width: 100%;
   }
-  .actions.one.wide.left.floated.column {
+  .actions.left.floated.column {
     width: 3% !important;
+  }
+  .meta.right.floated.column {
+    width: 45px;
   }
   .content,
   .meta,
@@ -53,22 +56,31 @@
     vertical-align: middle;
   }
   .ui.artist-track.mini.image {
-    top: 0;
+    top: auto;
     bottom: 0;
     position: absolute;
     margin: auto;
   }
+
+  .image.left.floated.column {
+    width: 51px;
+  }
 }
 
-.artist-entry:hover {
+.track-row{
+  &.active {
+    background: rgba(155, 155, 155, 0.2);
+  }
+  &:hover {
+    background: rgba(155, 155, 155, 0.1);
+  }
+}
+
+.track-row:hover {
   cursor: pointer;
 
   // explicitly style the button as if it was hovered itself
-  .ui.inverted.vibrant.button {
-    background-color: var(--vibrant-hover-color);
-    color: white;
-    box-shadow: 0 0 0 2px var(--vibrant-color) inset;
-  }
+
   .ui.icon.really.tiny.button.play-button {
     color: var(--main-color);
     visibility: visible;
@@ -84,8 +96,8 @@
   }
 }
 
-.artist-entry, 
-.artist-entries {
+.track-row, 
+.track-table {
   border-radius: 5px;
   padding: 0.5em;
   > div {

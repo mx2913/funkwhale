@@ -32,7 +32,6 @@ import _ from '@/lodash'
 import axios from 'axios'
 import ChannelEntryCard from '@/components/audio/ChannelEntryCard'
 import Pagination from "@/components/Pagination"
-import PaginationMixin from "@/components/mixins/Pagination"
 
 export default {
   props: {
