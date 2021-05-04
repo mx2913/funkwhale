@@ -46,7 +46,7 @@
           </div>
         </div>
       </div>
-      <artist-entries :show-artist="true" :show-album="true" v-if="results" :tracks="results.results"></artist-entries>
+      <track-table :show-artist="true" :show-album="true" v-if="results" :tracks="results.results"></track-table>
       <div class="ui center aligned basic segment">
         <pagination
           v-if="results && results.count > paginateBy"
@@ -82,7 +82,7 @@ import OrderingMixin from "@/components/mixins/Ordering"
 import PaginationMixin from "@/components/mixins/Pagination"
 import TranslationsMixin from "@/components/mixins/Translations"
 import {checkRedirectToLogin} from '@/utils'
-import ArtistEntries from '@/components/audio/ArtistEntries'
+import TrackTable from '@/components/audio/track/TrackTable'
 const FAVORITES_URL = "tracks/"
 
 export default {
@@ -90,7 +90,7 @@ export default {
   components: {
     RadioButton,
     Pagination,
-    ArtistEntries
+    TrackTable
   },
   data() {
     return {

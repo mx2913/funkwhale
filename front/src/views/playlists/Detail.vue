@@ -97,7 +97,7 @@
 </template>
 <script>
 import axios from "axios"
-import TrackTable from "@/components/audio/track/Table"
+import TrackTable from "@/components/audio/track/TrackTable"
 import RadioButton from "@/components/radios/Button"
 import PlayButton from "@/components/audio/PlayButton"
 import PlaylistEditor from "@/components/playlists/Editor"
