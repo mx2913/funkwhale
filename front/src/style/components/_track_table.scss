@@ -1,19 +1,107 @@
-.component-track-table {
-  pre {
-    overflow-x: scroll;
+.artist-entry,
+.artist-entries.row {
+  .ui.really.tiny.button.play-button {
+    visibility: hidden;
   }
-  &.table-wrapper {
-    overflow: visible;
+  .ui.icon.really.tiny.button.play-button.paused {
+    color: var(--main-color);
+    visibility: visible;
+    display: contents;
+    left: auto;
+    right: auto;
   }
-  tr:not(:hover) {
-    .favorite-icon:not(.favorited),
-    .playlist-icon {
-      visibility: hidden;
+  .ui.floating.dropdown {
+    visibility: hidden;
+  }
+  .ui.favorite-icon {
+    visibility: hidden;
+  }
+  .ui.favorite-icon.pink {
+    visibility: visible;
+  }
+  .actions {
+    display: block;
+    max-width: 2rem;
+    width: 100%;
+  }
+  .actions.one.wide.left.floated.column {
+    width: 3% !important;
+  }
+  .content,
+  .meta,
+  .image {
+    user-select: none;
+  }
+  .helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+  .ui.artist-track.mini.image {
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    margin: auto;
+  }
+}
+
+.artist-entry:hover {
+  cursor: pointer;
+
+  // explicitly style the button as if it was hovered itself
+  .ui.inverted.vibrant.button {
+    background-color: var(--vibrant-hover-color);
+    color: white;
+    box-shadow: 0 0 0 2px var(--vibrant-color) inset;
+  }
+  .ui.icon.really.tiny.button.play-button {
+    color: var(--main-color);
+    visibility: visible;
+    display: contents;
+    left: auto;
+    right: auto;
+  }
+  .ui.floating.dropdown {
+    visibility: visible;
+  }
+  .ui.favorite-icon {
+    visibility: visible;
+  }
+}
+
+.artist-entry, 
+.artist-entries 
+.channel-entry-card {
+  border-radius: 5px;
+  padding: 0.5em;
+  .meta {
+    text-align: right;
+    min-width: 7em;
+  }
+  > div {
+    padding: 0.25em;
+    &:not(:last-child) {
+      margin-right: 0.25em;
     }
   }
-
-  .track {
-    display: block;
-    line-height: 2;
+  .favorite-icon.tiny.button {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0.5em;
+    transition: all ease-in-out;
   }
+}
+
+.trackPosition {
+  cursor: pointer;
+  display: contents;
+  min-height: 1em;
+  outline: none;
+  border: none;
+  vertical-align: baseline;
+  font-family: var(--font-family);
+  margin: 0 0.25em 0 0;
+  line-height: 1em;
+  padding: 0.5rem;
+  user-select: none;
 }
