@@ -15,7 +15,7 @@
       </div>
     </div>
     <section v-if="tracks.length > 0" class="ui vertical stripe segment">
-      <track-table :show-position="false" :track-only="true" :tracks="tracks.slice(0,5)">
+      <track-table :is-artist="true" :show-position="false" :track-only="true" :tracks="tracks.slice(0,5)">
         <template slot="header">
           <h2>
             <translate translate-context="Content/Artist/Title">New tracks by this artist</translate>
