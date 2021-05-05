@@ -45,7 +45,7 @@ module.exports = {
     appleMobileWebAppStatusBarStyle: 'black',
     workboxPluginMode: 'InjectManifest',
     manifestOptions: {
-      display: 'minimal-ui',
+      display: 'standalone',
       start_url: '.',
       description: 'A social platform to enjoy and share music',
       scope: "/",

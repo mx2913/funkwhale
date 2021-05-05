@@ -28,6 +28,10 @@
         <button v-if="track" class="item basic" :disabled="!playable" @click.stop.prevent="$store.dispatch('radios/start', {type: 'similar', objectId: track.id})" :title="labels.startRadio">
           <i class="feed icon"></i><translate translate-context="*/Queue/Button.Label/Short, Verb">Play radio</translate>
         </button>
+        <button v-if="track" class="item basic" :disabled="!playable" @click.stop="$store.commit('playlists/chooseTrack', track)">
+          <i class="list icon"></i>
+          <translate translate-context="Sidebar/Player/Icon.Tooltip/Verb">Add to playlist…</translate>
+        </button>
         <button v-if="track" class="item basic" @click.stop.prevent="$router.push(`/library/tracks/${track.id}/`)">
           <i class="info icon"></i><translate translate-context="*/Queue/Dropdown/Button/Label/Short">Track details</translate>
         </button>
@@ -103,6 +107,7 @@ export default {
         playNext: this.$pgettext('*/Queue/Dropdown/Button/Title', 'Play next'),
         startRadio: this.$pgettext('*/Queue/Dropdown/Button/Title', 'Play similar songs'),
         report: this.$pgettext('*/Moderation/*/Button/Label,Verb', 'Report…'),
+        addToPlaylist: this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', 'Add to playlist…'),
         replacePlay,
       }
     },

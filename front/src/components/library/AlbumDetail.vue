@@ -16,6 +16,7 @@
           translate-context="Content/Album/"
         >Volume %{ number }</translate>
         <track-table 
+          :is-album="true"
           :tracks="object.tracks"
           :show-position="true"
           :show-art="false"
@@ -26,6 +27,7 @@
     </template>
     <template v-else>
       <track-table 
+        :is-album="true"
         :tracks="object.tracks"
         :show-position="true"
         :show-art="false"
