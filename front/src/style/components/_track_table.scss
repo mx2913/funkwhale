@@ -11,10 +11,6 @@
   .row:not(.mobile) {
     border-bottom: 1px solid var(--border-color);
   }
-  .track-title.mobile {
-    font-weight: bold;
-    margin-bottom: 0.1em;
-  }
 }
 
 .track-row,
@@ -71,7 +67,7 @@
   }
 }
 
-.track-row{
+.track-row {
   &.active {
     background: rgba(155, 155, 155, 0.2);
   }
@@ -80,16 +76,51 @@
   }
 }
 
+.track-table.mobile,
 .track-row.mobile {
   height: 75px;
+  align-items: center;
+  display: flex;
 
-  .modal-button {
-    width: 10vw;
+  > div {
+    margin-right: 0.25em;
+  }
+
+  .modal-button,
+  .meta {
+    display: flex !important;
+    justify-content: center;
+    flex-direction: column;
+    text-align: right;
+    margin: 10% 0;
+    width: 10vw !important;
+  }
+  .meta.with-art {
+    align-items: right;
+  }
+  .modal-button.with-art {
+    align-items: center;
   }
   .actions div {
     height: 75px;
     line-height: 75px;
-    text-align: center;
+    width: 10vw;
+  }
+  .ui.favorite-icon.button {
+    pointer-events: none;
+  }
+  .ui.artist-track.mini.image {
+    width: 45px;
+  }
+  .track-title.mobile {
+    font-weight: bold;
+    margin-bottom: 0.1em;
+  }
+  .track-title.mobile.play-indicator {
+    color: var(--vibrant-color);
+  }
+  .image.left.floated.column {
+    width: 61px;
   }
 }
 
@@ -113,11 +144,11 @@
   }
 }
 
-.track-row, 
+.track-row,
 .track-table {
   border-radius: 5px;
   padding: 0.5em;
-  > div {
+  > div:not(.mobile) {
     padding: 0.25em;
     &:not(:last-child) {
       margin-right: 0.25em;
@@ -128,6 +159,9 @@
     padding: 0 !important;
     margin: 0 0.5em;
     transition: all ease-in-out;
+  }
+  .mobile {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -143,10 +177,38 @@
   line-height: 1em;
   padding: 0.5rem;
   user-select: none;
-  
+
   .mobile span {
     display: inline-block;
     vertical-align: middle;
     line-height: normal;
+  }
+}
+
+.ui.overlay.fullscreen.modal {
+  .track-modal-title,
+  .track-modal-subtitle {
+    margin: 0.1em;
+  }
+  .track-modal-subtitle {
+    font-weight: normal;
+  }
+  .track-modal.list-icon {
+    margin-right: 1em;
+  }
+  .track-modal.list-item {
+    font-weight: bold;
+    font-size: large;
+  }
+}
+
+.scrolling.dimmable.dimmed {
+  > .dimmer {
+    overflow: auto;
+    --webkit-overflow-scrolling: touch;
+  }
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
   }
 }

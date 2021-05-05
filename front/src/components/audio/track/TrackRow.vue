@@ -8,7 +8,11 @@
     @mouseleave="track.hover = false"
     @dblclick="activateTrack(track, index)"
   >
-    <div class="actions one wide left floated column">
+    <div
+      class="actions one wide left floated column"
+      role="button"
+      @click.prevent.exact="activateTrack(track, index)"
+    >
       <play-indicator
         v-if="
           !$store.state.player.isLoadingAudio &&
@@ -38,7 +42,6 @@
           track.hover
         "
         class="ui really tiny basic icon button play-button"
-        @click.prevent.exact="pausePlayback"
       >
         <i class="pause icon" />
       </button>
@@ -50,14 +53,12 @@
           track.hover
         "
         class="ui really tiny basic icon button play-button"
-        @click.prevent.exact="resumePlayback"
       >
         <i class="play icon" />
       </button>
       <button
         v-else-if="track.hover"
         class="ui really tiny basic icon button play-button"
-        @click.prevent.exact="replacePlay(tracks, index)"
       >
         <i class="play icon" />
       </button>
@@ -65,7 +66,12 @@
         {{ prettyPosition(track.position) }}
       </span>
     </div>
-    <div v-if="showArt" class="image left floated column">
+    <div
+      v-if="showArt"
+      class="image left floated column"
+      role="button"
+      @click.prevent.exact="activateTrack(track, index)"
+    >
       <img
         alt=""
         class="ui artist-track mini image"
@@ -85,7 +91,7 @@
         src="../../../assets/audio/default-cover.png"
       />
     </div>
-    <div class="content ellipsis left floated column">
+    <div tabindex=0 class="content ellipsis left floated column">
       <a
         v-if="currentTrack && !isPlaying && track.id === currentTrack.id"
         @click="resumePlayback"

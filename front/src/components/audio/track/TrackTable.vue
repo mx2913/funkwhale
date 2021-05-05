@@ -91,6 +91,8 @@
         :show-position="showPosition"
         :show-art="showArt"
         :show-duration="showDuration"
+        :is-artist="isArtist"
+        :is-album="isAlbum"
       ></track-mobile-row>
     </div>
   </div>
@@ -119,6 +121,8 @@ export default {
     nextUrl: { type: String, required: false, default: null },
     displayActions: { type: Boolean, required: false, default: true },
     showDuration: { type: Boolean, required: false, default: true },
+    isArtist: { type: Boolean, required: false, default: false },
+    isAlbum: { type: Boolean, required: false, default: false },
   },
 
   data() {
