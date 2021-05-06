@@ -150,9 +150,7 @@
   padding: 0.5em;
   > div:not(.mobile) {
     padding: 0.25em;
-    &:not(:last-child) {
-      margin-right: 0.25em;
-    }
+    margin-right: 0.25em;
   }
   .favorite-icon.tiny.button {
     border: none !important;
