@@ -4,8 +4,8 @@
       { active: currentTrack && track.id === currentTrack.id },
       'track-row row',
     ]"
-    @mouseover="track.hover = true"
-    @mouseleave="track.hover = false"
+    @mouseover="hover = track.id"
+    @mouseleave="hover = null"
     @dblclick="activateTrack(track, index)"
   >
     <div
@@ -19,7 +19,7 @@
           currentTrack &&
           isPlaying &&
           track.id === currentTrack.id &&
-          !track.hover
+          !(track.id == hover)
         "
       >
       </play-indicator>
@@ -28,7 +28,7 @@
           currentTrack &&
           !isPlaying &&
           track.id === currentTrack.id &&
-          !track.hover
+          !track.id == hover
         "
         class="ui really tiny basic icon button play-button paused"
       >
@@ -39,25 +39,14 @@
           currentTrack &&
           isPlaying &&
           track.id === currentTrack.id &&
-          track.hover
+          track.id == hover
         "
         class="ui really tiny basic icon button play-button"
       >
         <i class="pause icon" />
       </button>
       <button
-        v-else-if="
-          currentTrack &&
-          !isPlaying &&
-          track.id === currentTrack.id &&
-          track.hover
-        "
-        class="ui really tiny basic icon button play-button"
-      >
-        <i class="play icon" />
-      </button>
-      <button
-        v-else-if="track.hover"
+        v-else-if="track.id == hover"
         class="ui really tiny basic icon button play-button"
       >
         <i class="play icon" />
@@ -81,6 +70,30 @@
         v-lazy="
           $store.getters['instance/absoluteUrl'](
             track.album.cover.urls.medium_square_crop
+          )
+        "
+      />
+      <img
+        alt=""
+        class="ui artist-track mini image"
+        v-else-if="
+          track.cover && track.cover.urls.original
+        "
+        v-lazy="
+          $store.getters['instance/absoluteUrl'](
+            track.cover.urls.medium_square_crop
+          )
+        "
+      />
+      <img
+        alt=""
+        class="ui artist-track mini image"
+        v-else-if="
+          track.artist && track.artist.cover && track.album.cover.urls.original
+        "
+        v-lazy="
+          $store.getters['instance/absoluteUrl'](
+            track.cover.urls.medium_square_crop
           )
         "
       />
@@ -178,6 +191,12 @@ export default {
     showDuration: { type: Boolean, required: false, default: true },
     index: { type: Number, required: true },
     track: { type: Object, required: true },
+  },
+
+  data() {
+    return {
+      hover: null,
+    }
   },
 
   components: {

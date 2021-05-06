@@ -84,7 +84,8 @@
                 :is-album="isAlbum"
                 :is-serie="isSerie"
                 :is-channel="isChannel"
-                :artist="artist"></album-dropdown>
+                :artist="artist"
+                ></album-dropdown>
               <div v-if="(object.tags && object.tags.length > 0) || object.description || $store.state.auth.authenticated && object.is_local">
                 <div class="ui small hidden divider"></div>
                 <div class="ui divider"></div>
@@ -128,7 +129,6 @@
 <script>
 import axios from "axios"
 import lodash from "@/lodash"
-import backend from "@/audio/backend"
 import PlayButton from "@/components/audio/PlayButton"
 import TagsList from "@/components/tags/List"
 import ArtistLabel from '@/components/audio/ArtistLabel'

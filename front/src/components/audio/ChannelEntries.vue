@@ -5,18 +5,18 @@
     <div v-if="isLoading" class="ui inverted active dimmer">
       <div class="ui loader"></div>
     </div>
-    <channel-entry-card v-for="entry in objects" :default-cover="defaultCover" :entry="entry" :key="entry.id" />
-    <template v-if="count > limit">
-      <div class="ui hidden divider"></div>
-      <div class = "ui center aligned basic segment">
-        <pagination
-          @page-changed="updatePage"
-          :current="page"
-          :paginate-by="limit"
-          :total="count"
-        ></pagination>
-      </div>
-    </template>
+    <track-table
+      :is-podcast="true"
+      :show-art="true"
+      :show-position="false"
+      :tracks="objects"
+      :show-artist="false"
+      :show-album="false"
+      :paginate-results="true"
+      :total="count"
+      @page-changed="updatePage"
+      :page="page"
+      :paginate-by="limit"></track-table>
     <template v-if="!isLoading && objects.length === 0">
       <empty-state @refresh="fetchData('tracks/')" :refresh="true">
         <p>
@@ -30,8 +30,7 @@
 <script>
 import _ from '@/lodash'
 import axios from 'axios'
-import ChannelEntryCard from '@/components/audio/ChannelEntryCard'
-import Pagination from "@/components/Pagination"
+import TrackTable from '@/components/audio/track/Table'
 
 export default {
   props: {
@@ -40,8 +39,7 @@ export default {
     defaultCover: {type: Object},
   },
   components: {
-    ChannelEntryCard,
-    Pagination
+    TrackTable
   },
   data () {
     return {
@@ -57,7 +55,7 @@ export default {
     this.fetchData('tracks/')
   },
   methods: {
-    fetchData (url) {
+    async fetchData (url) {
       if (!url) {
         return
       }
@@ -67,16 +65,17 @@ export default {
       params.page_size = this.limit
       params.page = this.page
       params.include_channels = true
-      axios.get(url, {params: params}).then((response) => {
-        self.nextPage = response.data.next
-        self.isLoading = false
-        self.objects = response.data.results
-        self.count = response.data.count
-        self.$emit('fetched', response.data)
-      }, error => {
+      try {
+      let channelsPromise = await axios.get(url, {params: params})
+      self.nextPage = channelsPromise.data.next
+      self.objects = channelsPromise.data.results
+      self.count = channelsPromise.data.count
+      self.$emit('fetched', channelsPromise.data)
+      self.isLoading = false
+      } catch(e) {
         self.isLoading = false
         self.errors = error.backendErrors
-      })
+      }
     },
     updatePage: function(page) {
       this.page = page
