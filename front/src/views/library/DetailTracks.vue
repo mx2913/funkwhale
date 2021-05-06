@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import TrackTable from '@/components/audio/track/TrackTable'
+import TrackTable from '@/components/audio/track/Table'
 
 export default {
   props: ['object', 'isOwner'],

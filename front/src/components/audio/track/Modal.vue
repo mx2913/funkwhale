@@ -215,9 +215,10 @@
 import Modal from "@/components/semantic/Modal";
 import TrackFavoriteIcon from "@/components/favorites/TrackFavoriteIcon";
 import ReportMixin from '@/components/mixins/Report'
+import PlayOptionsMixin from '@/components/mixins/PlayOptions'
 
 export default {
-  mixins: [ReportMixin],
+  mixins: [ReportMixin, PlayOptionsMixin],
   props: {
     show: { type: Boolean, required: true, default: false },
     track: { type: Object, required: true },
@@ -289,22 +290,6 @@ export default {
   methods: {
     closeModal() {
       this.$emit("update:show", false);
-    },
-    addNext(next) {
-      let self = this;
-      let wasEmpty = this.$store.state.queue.tracks.length === 0;
-      self.$store.dispatch("queue/appendMany", {
-        tracks: this.tracks,
-        index: self.$store.state.queue.currentIndex + 1,
-      });
-      let goNext = next && !wasEmpty;
-      if (goNext) {
-        self.$store.dispatch("queue/next");
-      }
-    },
-    add() {
-      let self = this;
-      self.$store.dispatch("queue/appendMany", { tracks: this.tracks });
     },
   },
 };

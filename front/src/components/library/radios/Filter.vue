@@ -69,7 +69,7 @@ import $ from 'jquery'
 import _ from '@/lodash'
 
 import Modal from '@/components/semantic/Modal'
-import TrackTable from '@/components/audio/track/TrackTable'
+import TrackTable from '@/components/audio/track/Table'
 import BuilderFilter from './Filter'
 
 export default {

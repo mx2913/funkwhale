@@ -82,7 +82,7 @@ import OrderingMixin from "@/components/mixins/Ordering"
 import PaginationMixin from "@/components/mixins/Pagination"
 import TranslationsMixin from "@/components/mixins/Translations"
 import {checkRedirectToLogin} from '@/utils'
-import TrackTable from '@/components/audio/track/TrackTable'
+import TrackTable from '@/components/audio/track/Table'
 const FAVORITES_URL = "tracks/"
 
 export default {

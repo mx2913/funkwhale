@@ -64,7 +64,7 @@
 
 <script>
 import axios from "axios"
-import TrackTable from "@/components/audio/track/TrackTable"
+import TrackTable from "@/components/audio/track/Table"
 import RadioButton from "@/components/radios/Button"
 import Pagination from "@/components/Pagination"
 
