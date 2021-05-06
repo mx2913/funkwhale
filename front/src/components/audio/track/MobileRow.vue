@@ -154,9 +154,11 @@
 import PlayIndicator from "@/components/audio/track/PlayIndicator";
 import { mapActions, mapGetters } from "vuex";
 import TrackFavoriteIcon from "@/components/favorites/TrackFavoriteIcon";
-import TrackModal from "@/components/audio/track/TrackModal";
+import TrackModal from "@/components/audio/track/Modal";
+import PlayOptionsMixin from "@/components/mixins/PlayOptions"
 
 export default {
+  mixins: [PlayOptionsMixin],
   data() {
     return {
       showTrackModal: false,
@@ -196,37 +198,12 @@ export default {
   },
 
   methods: {
-    replacePlay(tracks, trackIndex) {
-      this.$store.dispatch("queue/clean");
-      this.$store.dispatch("queue/appendMany", { tracks: tracks }).then(() => {
-        this.$store.dispatch("queue/currentIndex", trackIndex);
-      });
-    },
-
     prettyPosition(position, size) {
       var s = String(position);
       while (s.length < (size || 2)) {
         s = "0" + s;
       }
       return s;
-    },
-
-    activateTrack(track, index) {
-      if (
-        this.currentTrack &&
-        this.isPlaying &&
-        track.id === this.currentTrack.id
-      ) {
-        this.pausePlayback();
-      } else if (
-        this.currentTrack &&
-        !this.isPlaying &&
-        track.id === this.currentTrack.id
-      ) {
-        this.resumePlayback();
-      } else {
-        this.replacePlay(this.tracks, index);
-      }
     },
 
     ...mapActions({

@@ -60,7 +60,7 @@
 import time from "@/utils/time"
 import LibraryWidget from "@/components/federation/LibraryWidget"
 import ChannelEntries from '@/components/audio/ChannelEntries'
-import TrackTable from '@/components/audio/track/TrackTable'
+import TrackTable from '@/components/audio/track/Table'
 import Pagination from "@/components/Pagination"
 import PlayButton from "@/components/audio/PlayButton"
 
