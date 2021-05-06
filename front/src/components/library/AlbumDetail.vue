@@ -21,7 +21,12 @@
           :show-position="true"
           :show-art="false"
           :show-album="false"
-          :show-artist="false">
+          :show-artist="false"
+          :paginate-results="true"
+          :total="totalTracks"
+          :paginate-by="paginateBy"
+          :page="page"
+          @page-changed="updatePage">
         </track-table>
       </div>
     </template>
@@ -32,18 +37,14 @@
         :show-position="true"
         :show-art="false"
         :show-album="false"
-        :show-artist="false">
+        :show-artist="false"
+        :paginate-results="true"
+        :total="totalTracks"
+        :paginate-by="paginateBy"
+        :page="page"
+        @page-changed="updatePage">
       </track-table>
     </template>
-    <div class="ui center aligned basic segment">
-      <pagination
-        v-if="!isSerie && object.tracks && totalTracks > paginateBy"
-        @page-changed="updatePage"
-        :current="page"
-        :paginate-by="paginateBy"
-        :total="totalTracks"
-      ></pagination>
-    </div>
     <template v-if="!artist.channel && !isSerie">
       <h2>
         <translate translate-context="Content/*/Title/Noun">User libraries</translate>
@@ -61,7 +62,6 @@ import time from "@/utils/time"
 import LibraryWidget from "@/components/federation/LibraryWidget"
 import ChannelEntries from '@/components/audio/ChannelEntries'
 import TrackTable from '@/components/audio/track/Table'
-import Pagination from "@/components/Pagination"
 import PlayButton from "@/components/audio/PlayButton"
 
 export default {
@@ -70,7 +70,6 @@ export default {
     LibraryWidget,
     TrackTable,
     ChannelEntries,
-    Pagination,
     PlayButton
   },
   data() {

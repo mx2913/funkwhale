@@ -69,7 +69,16 @@
           :show-art="showArt"
           :display-actions="displayActions"
           :show-duration="showDuration"
+          :is-podcast="isPodcast"
         ></track-row>
+      </div>
+      <div v-if="paginateResults" class="ui center aligned basic segment desktop-and-up">
+        <pagination
+          :total="total"
+          :current="page"
+          :paginate-by="paginateBy"
+          v-on="$listeners">
+        </pagination>
       </div>
     </div>
 
@@ -93,7 +102,16 @@
         :show-duration="showDuration"
         :is-artist="isArtist"
         :is-album="isAlbum"
+        :is-podcast="isPodcast"
       ></track-mobile-row>
+      <div v-if="paginateResults" class="ui center aligned basic segment tablet-and-below">
+        <pagination
+          v-if="paginateResults"
+          :total="total"
+          :current="page"
+          :compact="true"
+          v-on="$listeners"></pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -103,11 +121,13 @@ import _ from "@/lodash";
 import axios from "axios";
 import TrackRow from "@/components/audio/track/Row";
 import TrackMobileRow from "@/components/audio/track/MobileRow";
+import Pagination from "@/components/Pagination";
 
 export default {
   components: {
     TrackRow,
     TrackMobileRow,
+    Pagination,
   },
 
   props: {
@@ -123,6 +143,11 @@ export default {
     showDuration: { type: Boolean, required: false, default: true },
     isArtist: { type: Boolean, required: false, default: false },
     isAlbum: { type: Boolean, required: false, default: false },
+    isPodcast: { type: Boolean, required: false, default: false },
+    paginateResults: { type: Boolean, required: false, default: true},
+    total: { type: Number, required: false},
+    page: {type: Number, required: false, default: 1},
+    paginateBy: {type: Number, required: false, default: 25}
   },
 
   data() {
@@ -148,40 +173,37 @@ export default {
     },
   },
   methods: {
-    fetchData(url) {
+    async fetchData(url) {
       if (!url) {
         return;
       }
       this.isLoading = true;
       let self = this;
       let params = _.clone(this.filters);
+      let tracksPromise = axios.get(url, { params: params })
       params.page_size = this.limit;
       params.page = this.page;
       params.include_channels = true;
-      axios.get(url, { params: params }).then(
-        (response) => {
-          self.nextPage = response.data.next;
-          self.isLoading = false;
-          self.objects = response.data.results;
-          self.count = response.data.count;
-          self.$emit("fetched", response.data);
-        },
-        (error) => {
+      try {
+        await tracksPromise
+        self.nextPage = tracksPromise.data.next;
+        self.objects = tracksPromise.data.results;
+        self.count = tracksPromise.data.count;
+        self.$emit("fetched", tracksPromise.data);
+        self.isLoading = false;
+      } catch(e) {
           self.isLoading = false;
           self.errors = error.backendErrors;
-        }
-      );
+      }
     },
+    updatePage: function(page) {
+      this.$emit('page-changed', page)
+    }
   },
-
   created() {
     if (!this.tracks) {
       this.fetchData("tracks/");
     }
-
-    this.allTracks.forEach((track) => {
-      this.$set(track, "hover", false);
-    });
   },
 };
 </script>
