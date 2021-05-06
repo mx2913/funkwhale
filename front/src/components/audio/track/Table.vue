@@ -101,8 +101,8 @@
 <script>
 import _ from "@/lodash";
 import axios from "axios";
-import TrackRow from "@/components/audio/track/TrackRow";
-import TrackMobileRow from "@/components/audio/track/TrackMobileRow";
+import TrackRow from "@/components/audio/track/Row";
+import TrackMobileRow from "@/components/audio/track/MobileRow";
 
 export default {
   components: {
