@@ -2,59 +2,12 @@
   <div
     :class="[
       { active: currentTrack && track.id === currentTrack.id },
-      'track-row row',
+      'track-row podcast row',
     ]"
     @mouseover="hover = track.id"
     @mouseleave="hover = null"
     @dblclick="activateTrack(track, index)"
   >
-    <div
-      class="actions one wide left floated column"
-      role="button"
-      @click.prevent.exact="activateTrack(track, index)"
-    >
-      <play-indicator
-        v-if="
-          !$store.state.player.isLoadingAudio &&
-          currentTrack &&
-          isPlaying &&
-          track.id === currentTrack.id &&
-          !(track.id == hover)
-        "
-      >
-      </play-indicator>
-      <button
-        v-else-if="
-          currentTrack &&
-          !isPlaying &&
-          track.id === currentTrack.id &&
-          !track.id == hover
-        "
-        class="ui really tiny basic icon button play-button paused"
-      >
-        <i class="pause icon" />
-      </button>
-      <button
-        v-else-if="
-          currentTrack &&
-          isPlaying &&
-          track.id === currentTrack.id &&
-          track.id == hover
-        "
-        class="ui really tiny basic icon button play-button"
-      >
-        <i class="pause icon" />
-      </button>
-      <button
-        v-else-if="track.id == hover"
-        class="ui really tiny basic icon button play-button"
-      >
-        <i class="play icon" />
-      </button>
-      <span class="track-position" v-else-if="showPosition">
-        {{ prettyPosition(track.position) }}
-      </span>
-    </div>
     <div
       v-if="showArt"
       class="image left floated column"
@@ -104,44 +57,11 @@
         src="../../../assets/audio/default-cover.png"
       />
     </div>
-    <div tabindex=0 class="content ellipsis left floated column">
-      <a
-        @click="activateTrack(track, index)"
-      >
-        {{ track.title }}
-      </a>
-    </div>
-    <div v-if="showAlbum" class="content ellipsis left floated column">
-      <router-link
-        :to="{ name: 'library.albums.detail', params: { id: track.album.id } }"
-        >{{ track.album.title }}</router-link
-      >
-    </div>
-    <div v-if="showArtist" class="content ellipsis left floated column">
-      <router-link
-        class="artist link"
-        :to="{
-          name: 'library.artists.detail',
-          params: { id: track.artist.id },
-        }"
-        >{{ track.artist.name }}</router-link
-      >
-    </div>
-    <div
-      v-if="$store.state.auth.authenticated"
-      class="meta right floated column"
-    >
-      <track-favorite-icon
-        class="tiny"
-        :border="false"
-        :track="track"
-      ></track-favorite-icon>
-    </div>
-    <div v-if="showDuration" class="meta right floated column">
-      <human-duration
-        v-if="track.uploads[0] && track.uploads[0].duration"
-        :duration="track.uploads[0].duration"
-      ></human-duration>
+    <div tabindex=0 class="content left floated column">
+      <p class="podcast-episode-title ellipsis">{{ track.title }}</p>
+      <p class="podcast-episode-meta">
+      An episode description, with all its twists and turns!
+      This episode focuses on something I'm sure, but nobody really knows what it's focusing on.</p>
     </div>
     <div v-if="displayActions" class="meta right floated column">
       <play-button
@@ -163,12 +83,9 @@
 <script>
 import PlayIndicator from "@/components/audio/track/PlayIndicator";
 import { mapActions, mapGetters } from "vuex";
-import TrackFavoriteIcon from "@/components/favorites/TrackFavoriteIcon";
 import PlayButton from "@/components/audio/PlayButton";
-import PlayOptions from "@/components/mixins/PlayOptions"
 
 export default {
-  mixins: [PlayOptions],
   props: {
     tracks: Array,
     showAlbum: { type: Boolean, required: false, default: true },
@@ -192,7 +109,6 @@ export default {
 
   components: {
     PlayIndicator,
-    TrackFavoriteIcon,
     PlayButton,
   },
 
@@ -215,7 +131,7 @@ export default {
       }
       return s;
     },
-    
+
     ...mapActions({
       resumePlayback: "player/resumePlayback",
       pausePlayback: "player/pausePlayback",
