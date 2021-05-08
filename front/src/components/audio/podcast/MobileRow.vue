@@ -68,7 +68,15 @@
       >
         {{ track.title }}
       </p>
-      <p class="track-meta mobile">
+      <p v-if="track.artist.content_category === 'podcast'" class="track-meta mobile">
+        <human-date class="really discrete" :date="track.creation_date"></human-date>
+        <span>&#183;</span>
+        <human-duration
+          v-if="track.uploads[0] && track.uploads[0].duration"
+          :duration="track.uploads[0].duration"
+        ></human-duration>
+      </p>
+      <p v-else class="track-meta mobile">
         {{ track.artist.name }} <span>&#183;</span>
         <human-duration
           v-if="track.uploads[0] && track.uploads[0].duration"
@@ -77,7 +85,7 @@
       </p>
     </div>
     <div
-      v-if="$store.state.auth.authenticated"
+      v-if="$store.state.auth.authenticated && this.track.artist.content_category !== 'podcast'"
       :class="[
         'meta',
         'right',

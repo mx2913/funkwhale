@@ -33,7 +33,9 @@
           <translate translate-context="Sidebar/Player/Icon.Tooltip/Verb">Add to playlist…</translate>
         </button>
         <button v-if="track" class="item basic" @click.stop.prevent="$router.push(`/library/tracks/${track.id}/`)">
-          <i class="info icon"></i><translate translate-context="*/Queue/Dropdown/Button/Label/Short">Track details</translate>
+          <i class="info icon"></i>
+          <translate v-if="track.artist.content_category === 'podcast'" translate-context="*/Queue/Dropdown/Button/Label/Short">Episode details</translate>
+          <translate v-else translate-context="*/Queue/Dropdown/Button/Label/Short">Track details</translate>
         </button>
         <div class="divider"></div>
         <button v-if="filterableArtist" ref="filterArtist" data-ref="filterArtist" class="item basic" :disabled="!filterableArtist" @click.stop.prevent="filterArtist" :title="labels.hideArtist">

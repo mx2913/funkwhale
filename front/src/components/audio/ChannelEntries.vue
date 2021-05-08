@@ -5,8 +5,22 @@
     <div v-if="isLoading" class="ui inverted active dimmer">
       <div class="ui loader"></div>
     </div>
+    <podcast-table
+      v-if="isPodcast"
+      :is-podcast="isPodcast"
+      :show-art="true"
+      :show-position="false"
+      :tracks="objects"
+      :show-artist="false"
+      :show-album="false"
+      :paginate-results="true"
+      :total="count"
+      @page-changed="updatePage"
+      :page="page"
+      :paginate-by="limit"></podcast-table>
     <track-table
-      :is-podcast="true"
+      v-else
+      :is-podcast="isPodcast"
       :show-art="true"
       :show-position="false"
       :tracks="objects"
@@ -30,6 +44,7 @@
 <script>
 import _ from '@/lodash'
 import axios from 'axios'
+import PodcastTable from '@/components/audio/podcast/Table'
 import TrackTable from '@/components/audio/track/Table'
 
 export default {
@@ -37,9 +52,11 @@ export default {
     filters: {type: Object, required: true},
     limit: {type: Number, default: 10},
     defaultCover: {type: Object},
+    isPodcast: {type: Boolean, required: true},
   },
   components: {
-    TrackTable
+    PodcastTable,
+    TrackTable,
   },
   data () {
     return {
