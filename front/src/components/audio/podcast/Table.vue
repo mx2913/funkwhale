@@ -13,6 +13,7 @@
         <!-- For each item, build a row -->
         <podcast-row
           v-for="(track, index) in tracks"
+          :default-cover="defaultCover"
           :track="track"
           :key="track.id"
           :index="index"
@@ -42,11 +43,11 @@
       <!-- For each item, build a row -->
 
       <track-mobile-row
-        v-for="(track, index) in allTracks"
+        v-for="(track, index) in tracks"
         :track="track"
         :key="track.id"
         :index="index"
-        :tracks="allTracks"
+        :tracks="tracks"
         :show-position="showPosition"
         :show-art="showArt"
         :show-duration="showDuration"
@@ -99,6 +100,7 @@ export default {
     page: {type: Number, required: false, default: 1},
     paginateBy: {type: Number, required: false, default: 25},
     isPodcast: {type: Boolean, required: true},
+    defaultCover: {type: Object, required: false},
   },
 
   data() {

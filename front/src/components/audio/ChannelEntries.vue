@@ -7,6 +7,7 @@
     </div>
     <podcast-table
       v-if="isPodcast"
+      :default-cover="defaultCover"
       :is-podcast="isPodcast"
       :show-art="true"
       :show-position="false"
@@ -20,6 +21,7 @@
       :paginate-by="limit"></podcast-table>
     <track-table
       v-else
+      :default-cover="defaultCover"
       :is-podcast="isPodcast"
       :show-art="true"
       :show-position="false"
