@@ -165,7 +165,7 @@ import PlayIndicator from "@/components/audio/track/PlayIndicator";
 import { mapActions, mapGetters } from "vuex";
 import TrackFavoriteIcon from "@/components/favorites/TrackFavoriteIcon";
 import PlayButton from "@/components/audio/PlayButton";
-import PlayOptions from "@/components/mixins/PlayOptions"
+import PlayOptions from "@/components/mixins/PlayOptions";
 
 export default {
   mixins: [PlayOptions],
