@@ -224,7 +224,7 @@ export default new Router({
               )
           },
           {
-            path: 'activity',
+            path: "/activity",
             name: `profile${route.suffix}.activity`,
             component: () =>
               import(
@@ -318,8 +318,8 @@ export default new Router({
         import(/* webpackChunkName: "admin" */ '@/views/admin/library/Base'),
       children: [
         {
-          path: 'edits',
-          name: 'manage.library.edits',
+          path: "/edits",
+          name: "manage.library.edits",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/EditsList'
@@ -331,8 +331,8 @@ export default new Router({
           }
         },
         {
-          path: 'artists',
-          name: 'manage.library.artists',
+          path: "/artists",
+          name: "manage.library.artists",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/ArtistsList'
@@ -344,8 +344,8 @@ export default new Router({
           }
         },
         {
-          path: 'artists/:id',
-          name: 'manage.library.artists.detail',
+          path: "/artists/:id",
+          name: "manage.library.artists.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/ArtistDetail'
@@ -353,8 +353,8 @@ export default new Router({
           props: true
         },
         {
-          path: 'channels',
-          name: 'manage.channels',
+          path: "/channels",
+          name: "manage.channels",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/ChannelsList'
@@ -366,8 +366,8 @@ export default new Router({
           }
         },
         {
-          path: 'channels/:id',
-          name: 'manage.channels.detail',
+          path: "/channels/:id",
+          name: "manage.channels.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/ChannelDetail'
@@ -375,8 +375,8 @@ export default new Router({
           props: true
         },
         {
-          path: 'albums',
-          name: 'manage.library.albums',
+          path: "/albums",
+          name: "manage.library.albums",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/AlbumsList'
@@ -388,8 +388,8 @@ export default new Router({
           }
         },
         {
-          path: 'albums/:id',
-          name: 'manage.library.albums.detail',
+          path: "/albums/:id",
+          name: "manage.library.albums.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/AlbumDetail'
@@ -397,8 +397,8 @@ export default new Router({
           props: true
         },
         {
-          path: 'tracks',
-          name: 'manage.library.tracks',
+          path: "/tracks",
+          name: "manage.library.tracks",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/TracksList'
@@ -410,8 +410,8 @@ export default new Router({
           }
         },
         {
-          path: 'tracks/:id',
-          name: 'manage.library.tracks.detail',
+          path: "/tracks/:id",
+          name: "manage.library.tracks.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/TrackDetail'
@@ -419,8 +419,8 @@ export default new Router({
           props: true
         },
         {
-          path: 'libraries',
-          name: 'manage.library.libraries',
+          path: "/libraries",
+          name: "manage.library.libraries",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/LibrariesList'
@@ -432,8 +432,8 @@ export default new Router({
           }
         },
         {
-          path: 'libraries/:id',
-          name: 'manage.library.libraries.detail',
+          path: "/libraries/:id",
+          name: "manage.library.libraries.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/LibraryDetail'
@@ -441,8 +441,8 @@ export default new Router({
           props: true
         },
         {
-          path: 'uploads',
-          name: 'manage.library.uploads',
+          path: "/uploads",
+          name: "manage.library.uploads",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/UploadsList'
@@ -454,8 +454,8 @@ export default new Router({
           }
         },
         {
-          path: 'uploads/:id',
-          name: 'manage.library.uploads.detail',
+          path: "/uploads/:id",
+          name: "manage.library.uploads.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/UploadDetail'
@@ -463,8 +463,8 @@ export default new Router({
           props: true
         },
         {
-          path: 'tags',
-          name: 'manage.library.tags',
+          path: "/tags",
+          name: "manage.library.tags",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/TagsList'
@@ -476,8 +476,8 @@ export default new Router({
           }
         },
         {
-          path: 'tags/:id',
-          name: 'manage.library.tags.detail',
+          path: "/tags/:id",
+          name: "manage.library.tags.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/library/TagDetail'
@@ -493,16 +493,16 @@ export default new Router({
         import(/* webpackChunkName: "admin" */ '@/views/admin/users/Base'),
       children: [
         {
-          path: 'users',
-          name: 'manage.users.users.list',
+          path: "/users",
+          name: "manage.users.users.list",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/users/UsersList'
             )
         },
         {
-          path: 'invitations',
-          name: 'manage.users.invitations.list',
+          path: "/invitations",
+          name: "manage.users.invitations.list",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/users/InvitationsList'
@@ -517,16 +517,16 @@ export default new Router({
         import(/* webpackChunkName: "admin" */ '@/views/admin/moderation/Base'),
       children: [
         {
-          path: 'domains',
-          name: 'manage.moderation.domains.list',
+          path: "/domains",
+          name: "manage.moderation.domains.list",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/moderation/DomainsList'
             )
         },
         {
-          path: 'domains/:id',
-          name: 'manage.moderation.domains.detail',
+          path: "/domains/:id",
+          name: "manage.moderation.domains.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/moderation/DomainsDetail'
@@ -534,8 +534,8 @@ export default new Router({
           props: true
         },
         {
-          path: 'accounts',
-          name: 'manage.moderation.accounts.list',
+          path: "/accounts",
+          name: "manage.moderation.accounts.list",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/moderation/AccountsList'
@@ -547,8 +547,8 @@ export default new Router({
           }
         },
         {
-          path: 'accounts/:id',
-          name: 'manage.moderation.accounts.detail',
+          path: "/accounts/:id",
+          name: "manage.moderation.accounts.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/moderation/AccountsDetail'
@@ -556,8 +556,8 @@ export default new Router({
           props: true
         },
         {
-          path: 'reports',
-          name: 'manage.moderation.reports.list',
+          path: "/reports",
+          name: "manage.moderation.reports.list",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/moderation/ReportsList'
@@ -570,8 +570,8 @@ export default new Router({
           }
         },
         {
-          path: 'reports/:id',
-          name: 'manage.moderation.reports.detail',
+          path: "/reports/:id",
+          name: "manage.moderation.reports.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/moderation/ReportDetail'
@@ -579,8 +579,8 @@ export default new Router({
           props: true
         },
         {
-          path: 'requests',
-          name: 'manage.moderation.requests.list',
+          path: "/requests",
+          name: "manage.moderation.requests.list",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/moderation/RequestsList'
@@ -593,8 +593,8 @@ export default new Router({
           }
         },
         {
-          path: 'requests/:id',
-          name: 'manage.moderation.requests.detail',
+          path: "/requests/:id",
+          name: "manage.moderation.requests.detail",
           component: () =>
             import(
               /* webpackChunkName: "admin" */ '@/views/admin/moderation/RequestDetail'
@@ -609,13 +609,13 @@ export default new Router({
         import(/* webpackChunkName: "core" */ '@/components/library/Library'),
       children: [
         {
-          path: '',
+          path: "/",
           component: () =>
             import(/* webpackChunkName: "core" */ '@/components/library/Home'),
           name: 'library.index'
         },
         {
-          path: 'me',
+          path: "/me",
           component: () =>
             import(/* webpackChunkName: "core" */ '@/components/library/Home'),
           name: 'library.me',
@@ -624,8 +624,8 @@ export default new Router({
           })
         },
         {
-          path: 'artists/',
-          name: 'library.artists.browse',
+          path: "/artists/",
+          name: "library.artists.browse",
           component: () =>
             import(
               /* webpackChunkName: "artists" */ '@/components/library/Artists'
@@ -641,8 +641,8 @@ export default new Router({
           })
         },
         {
-          path: 'me/artists',
-          name: 'library.artists.me',
+          path: "/me/artists",
+          name: "library.artists.me",
           component: () =>
             import(
               /* webpackChunkName: "artists" */ '@/components/library/Artists'
@@ -659,8 +659,8 @@ export default new Router({
           })
         },
         {
-          path: 'albums/',
-          name: 'library.albums.browse',
+          path: "/albums/",
+          name: "library.albums.browse",
           component: () =>
             import(
               /* webpackChunkName: "albums" */ '@/components/library/Albums'
@@ -676,8 +676,8 @@ export default new Router({
           })
         },
         {
-          path: 'podcasts/',
-          name: 'library.podcasts.browse',
+          path: "/podcasts/",
+          name: "library.podcasts.browse",
           component: () =>
             import(
               /* webpackChunkName: "podcasts" */ '@/components/library/Podcasts'
@@ -693,8 +693,8 @@ export default new Router({
           })
         },
         {
-          path: 'me/albums',
-          name: 'library.albums.me',
+          path: "/me/albums",
+          name: "library.albums.me",
           component: () =>
             import(
               /* webpackChunkName: "albums" */ '@/components/library/Albums'
@@ -711,8 +711,8 @@ export default new Router({
           })
         },
         {
-          path: 'radios/',
-          name: 'library.radios.browse',
+          path: "/radios/",
+          name: "library.radios.browse",
           component: () =>
             import(
               /* webpackChunkName: "radios" */ '@/components/library/Radios'
@@ -725,8 +725,8 @@ export default new Router({
           })
         },
         {
-          path: 'me/radios/',
-          name: 'library.radios.me',
+          path: "/me/radios/",
+          name: "library.radios.me",
           component: () =>
             import(
               /* webpackChunkName: "radios" */ '@/components/library/Radios'
@@ -740,8 +740,8 @@ export default new Router({
           })
         },
         {
-          path: 'radios/build',
-          name: 'library.radios.build',
+          path: "/radios/build",
+          name: "library.radios.build",
           component: () =>
             import(
               /* webpackChunkName: "radios" */ '@/components/library/radios/Builder'
@@ -749,8 +749,8 @@ export default new Router({
           props: true
         },
         {
-          path: 'radios/build/:id',
-          name: 'library.radios.edit',
+          path: "/radios/build/:id",
+          name: "library.radios.edit",
           component: () =>
             import(
               /* webpackChunkName: "radios" */ '@/components/library/radios/Builder'
@@ -758,15 +758,15 @@ export default new Router({
           props: true
         },
         {
-          path: 'radios/:id',
-          name: 'library.radios.detail',
+          path: "/radios/:id",
+          name: "library.radios.detail",
           component: () =>
             import(/* webpackChunkName: "radios" */ '@/views/radios/Detail'),
           props: true
         },
         {
-          path: 'playlists/',
-          name: 'library.playlists.browse',
+          path: "/playlists/",
+          name: "library.playlists.browse",
           component: () =>
             import(/* webpackChunkName: "playlists" */ '@/views/playlists/List'),
           props: route => ({
@@ -777,8 +777,8 @@ export default new Router({
           })
         },
         {
-          path: 'me/playlists/',
-          name: 'library.playlists.me',
+          path: "/me/playlists/",
+          name: "library.playlists.me",
           component: () =>
             import(/* webpackChunkName: "playlists" */ '@/views/playlists/List'),
           props: route => ({
@@ -790,8 +790,8 @@ export default new Router({
           })
         },
         {
-          path: 'playlists/:id',
-          name: 'library.playlists.detail',
+          path: "/playlists/:id",
+          name: "library.playlists.detail",
           component: () =>
             import(/* webpackChunkName: "playlists" */ '@/views/playlists/Detail'),
           props: route => ({
@@ -800,8 +800,8 @@ export default new Router({
           })
         },
         {
-          path: 'tags/:id',
-          name: 'library.tags.detail',
+          path: "/tags/:id",
+          name: "library.tags.detail",
           component: () =>
             import(
               /* webpackChunkName: "tags" */ '@/components/library/TagDetail'
@@ -809,7 +809,7 @@ export default new Router({
           props: true
         },
         {
-          path: 'artists/:id',
+          path: "/artists/:id",
           component: () =>
             import(
               /* webpackChunkName: "artists" */ '@/components/library/ArtistBase'
@@ -817,24 +817,24 @@ export default new Router({
           props: true,
           children: [
             {
-              path: '',
-              name: 'library.artists.detail',
+              path: "/",
+              name: "library.artists.detail",
               component: () =>
                 import(
                   /* webpackChunkName: "artists" */ '@/components/library/ArtistDetail'
                 )
             },
             {
-              path: 'edit',
-              name: 'library.artists.edit',
+              path: "/edit",
+              name: "library.artists.edit",
               component: () =>
                 import(
                   /* webpackChunkName: "edits" */ '@/components/library/ArtistEdit'
                 )
             },
             {
-              path: 'edit/:editId',
-              name: 'library.artists.edit.detail',
+              path: "/edit/:editId",
+              name: "library.artists.edit.detail",
               component: () =>
                 import(
                   /* webpackChunkName: "edits" */ '@/components/library/EditDetail'
@@ -844,7 +844,7 @@ export default new Router({
           ]
         },
         {
-          path: 'albums/:id',
+          path: "/albums/:id",
           component: () =>
             import(
               /* webpackChunkName: "albums" */ '@/components/library/AlbumBase'
@@ -852,24 +852,24 @@ export default new Router({
           props: true,
           children: [
             {
-              path: '',
-              name: 'library.albums.detail',
+              path: "/",
+              name: "library.albums.detail",
               component: () =>
                 import(
                   /* webpackChunkName: "albums" */ '@/components/library/AlbumDetail'
                 )
             },
             {
-              path: 'edit',
-              name: 'library.albums.edit',
+              path: "/edit",
+              name: "library.albums.edit",
               component: () =>
                 import(
                   /* webpackChunkName: "edits" */ '@/components/library/AlbumEdit'
                 )
             },
             {
-              path: 'edit/:editId',
-              name: 'library.albums.edit.detail',
+              path: "/edit/:editId",
+              name: "library.albums.edit.detail",
               component: () =>
                 import(
                   /* webpackChunkName: "edits" */ '@/components/library/EditDetail'
@@ -879,7 +879,7 @@ export default new Router({
           ]
         },
         {
-          path: 'tracks/:id',
+          path: "/tracks/:id",
           component: () =>
             import(
               /* webpackChunkName: "tracks" */ '@/components/library/TrackBase'
@@ -887,24 +887,24 @@ export default new Router({
           props: true,
           children: [
             {
-              path: '',
-              name: 'library.tracks.detail',
+              path: "/",
+              name: "library.tracks.detail",
               component: () =>
                 import(
                   /* webpackChunkName: "tracks" */ '@/components/library/TrackDetail'
                 )
             },
             {
-              path: 'edit',
-              name: 'library.tracks.edit',
+              path: "/edit",
+              name: "library.tracks.edit",
               component: () =>
                 import(
                   /* webpackChunkName: "edits" */ '@/components/library/TrackEdit'
                 )
             },
             {
-              path: 'edit/:editId',
-              name: 'library.tracks.edit.detail',
+              path: "/edit/:editId",
+              name: "library.tracks.edit.detail",
               component: () =>
                 import(
                   /* webpackChunkName: "edits" */ '@/components/library/EditDetail'
@@ -914,8 +914,8 @@ export default new Router({
           ]
         },
         {
-          path: 'uploads/:id',
-          name: 'library.uploads.detail',
+          path: "/uploads/:id",
+          name: "library.uploads.detail",
           props: true,
           component: () =>
             import(
@@ -924,7 +924,7 @@ export default new Router({
         },
         {
           // browse a single library via it's uuid
-          path: ':id([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})',
+          path: "/:id([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})",
           props: true,
           component: () =>
             import(
@@ -932,40 +932,40 @@ export default new Router({
             ),
           children: [
             {
-              path: '',
-              name: 'library.detail',
+              path: "/",
+              name: "library.detail",
               component: () =>
                 import(
                   /* webpackChunkName: "library" */ '@/views/library/DetailOverview'
                 )
             },
             {
-              path: 'albums',
-              name: 'library.detail.albums',
+              path: "/albums",
+              name: "library.detail.albums",
               component: () =>
                 import(
                   /* webpackChunkName: "library" */ '@/views/library/DetailAlbums'
                 )
             },
             {
-              path: 'tracks',
-              name: 'library.detail.tracks',
+              path: "/tracks",
+              name: "library.detail.tracks",
               component: () =>
                 import(
                   /* webpackChunkName: "library" */ '@/views/library/DetailTracks'
                 )
             },
             {
-              path: 'edit',
-              name: 'library.detail.edit',
+              path: "/edit",
+              name: "library.detail.edit",
               component: () =>
                 import(
                   /* webpackChunkName: "auth-libraries" */ '@/views/library/Edit'
                 )
             },
             {
-              path: 'upload',
-              name: 'library.detail.upload',
+              path: "/upload",
+              name: "library.detail.upload",
               component: () =>
                 import(
                   /* webpackChunkName: "auth-libraries" */ '@/views/library/Upload'
@@ -995,16 +995,16 @@ export default new Router({
         ),
       children: [
         {
-          path: '',
-          name: 'channels.detail',
+          path: "/",
+          name: "channels.detail",
           component: () =>
             import(
               /* webpackChunkName: "channels" */ '@/views/channels/DetailOverview'
             )
         },
         {
-          path: 'episodes',
-          name: 'channels.detail.episodes',
+          path: "/episodes",
+          name: "channels.detail.episodes",
           component: () =>
             import(
               /* webpackChunkName: "channels" */ '@/views/channels/DetailEpisodes'
