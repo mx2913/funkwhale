@@ -18,18 +18,6 @@
         alt=""
         class="ui artist-track mini image"
         v-if="
-          track.album && track.album.cover && track.album.cover.urls.original
-        "
-        v-lazy="
-          $store.getters['instance/absoluteUrl'](
-            track.album.cover.urls.medium_square_crop
-          )
-        "
-      />
-      <img
-        alt=""
-        class="ui artist-track mini image"
-        v-else-if="
           track.cover && track.cover.urls.original
         "
         v-lazy="
@@ -42,11 +30,11 @@
         alt=""
         class="ui artist-track mini image"
         v-else-if="
-          track.artist && track.artist.cover && track.album.cover.urls.original
+          defaultCover
         "
         v-lazy="
           $store.getters['instance/absoluteUrl'](
-            track.cover.urls.medium_square_crop
+            defaultCover.cover.urls.medium_square_crop
           )
         "
       />
@@ -58,7 +46,9 @@
       />
     </div>
     <div tabindex=0 class="content left floated column">
-      <p class="podcast-episode-title ellipsis">{{ track.title }}</p>
+      <a
+        class="podcast-episode-title ellipsis"
+        @click.prevent.exact="activateTrack(track, index)">{{ track.title }}</a>
       <p class="podcast-episode-meta">
       An episode description, with all its twists and turns!
       This episode focuses on something I'm sure, but nobody really knows what it's focusing on.</p>
@@ -84,8 +74,10 @@
 import PlayIndicator from "@/components/audio/track/PlayIndicator";
 import { mapActions, mapGetters } from "vuex";
 import PlayButton from "@/components/audio/PlayButton";
+import PlayOptions from "@/components/mixins/PlayOptions";
 
 export default {
+  mixins: [PlayOptions],
   props: {
     tracks: Array,
     showAlbum: { type: Boolean, required: false, default: true },
@@ -99,6 +91,7 @@ export default {
     showDuration: { type: Boolean, required: false, default: true },
     index: { type: Number, required: true },
     track: { type: Object, required: true },
+    defaultCover: { type: Object, required: false },
   },
 
   data() {
