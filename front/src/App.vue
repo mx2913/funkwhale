@@ -238,20 +238,21 @@ export default {
         return
       }
       this.bridge.close()
+      console.log("Disconnected from websocket")
     },
     openWebsocket () {
       if (!this.$store.state.auth.authenticated) {
         return
       }
-      this.disconnect()
       let self = this
-      let token = this.$store.state.auth.token
+      self.disconnect()
+      let token = self.$store.state.auth.token
       // let token = 'test'
-      let url = this.$store.getters['instance/absoluteUrl'](`api/v1/activity?token=${token}`)
+      let url = self.$store.getters['instance/absoluteUrl'](`api/v1/activity?token=${token}`)
       url = url.replace('http://', 'ws://')
       url = url.replace('https://', 'wss://')
       const bridge = new WebSocket(url)
-      this.bridge = bridge
+      self.bridge = bridge
       bridge.onmessage = function (event) {
         console.log(event)
         self.$store.dispatch('ui/websocketEvent', event)
@@ -259,6 +260,12 @@ export default {
       bridge.onopen = function (event) {
         console.log(event)
         console.log('Connected to WebSocket')
+      }
+      bridge.onclose = function(event) {
+        console.log("Websocket has closed. Attempting reconnect in 60 seconds.", event.reason)
+        setTimeout(function() {
+          self.openWebsocket();
+        }, 1000 * 60);
       }
     },
     getTrackInformationText(track) {
