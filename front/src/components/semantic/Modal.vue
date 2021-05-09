@@ -9,7 +9,7 @@
 
 <script>
 import $ from 'jquery'
-import createFocusTrap from 'focus-trap'
+import { createFocusTrap } from 'focus-trap'
 
 export default {
   props: {
