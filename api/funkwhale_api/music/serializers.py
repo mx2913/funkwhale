@@ -161,7 +161,6 @@ def serialize_artist_simple(artist):
         "is_local": artist.is_local,
         "content_category": artist.content_category,
     }
-
     if "description" in artist._state.fields_cache:
         data["description"] = (
             common_serializers.ContentSerializer(artist.description).data
@@ -175,8 +174,7 @@ def serialize_artist_simple(artist):
             if artist.attachment_cover
             else None
         )
-
-    if artist.get_channel():
+    if "channel" in artist._state.fields_cache and artist.get_channel():
         data["channel"] = str(artist.channel.uuid)
 
     if getattr(artist, "_tracks_count", None) is not None:
