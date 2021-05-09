@@ -162,17 +162,19 @@ def serialize_artist_simple(artist):
         "content_category": artist.content_category,
     }
 
-    data["description"] = (
-        common_serializers.ContentSerializer(artist.description).data
-        if artist.description
-        else None
-    )
+    if "description" in artist._state.fields_cache:
+        data["description"] = (
+            common_serializers.ContentSerializer(artist.description).data
+            if artist.description
+            else None
+        )
 
-    data["cover"] = (
-        cover_field.to_representation(artist.attachment_cover)
-        if artist.attachment_cover
-        else None
-    )
+    if "attachment_cover" in artist._state.fields_cache:
+        data["cover"] = (
+            cover_field.to_representation(artist.attachment_cover)
+            if artist.attachment_cover
+            else None
+        )
 
     if artist.get_channel():
         data["channel"] = str(artist.channel.uuid)
