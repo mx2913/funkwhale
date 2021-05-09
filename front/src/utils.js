@@ -10,7 +10,7 @@ export function setUpdate(obj, statuses, value) {
 export function parseAPIErrors(responseData, parentField) {
   let errors = []
   for (var field in responseData) {
-    if (responseData.hasOwnProperty(field)) {
+    if (responseData.prototype.hasOwnProperty.call(field)) {
       let value = responseData[field]
       let fieldName = lodash.startCase(field.replace('_', ' '))
       if (parentField) {

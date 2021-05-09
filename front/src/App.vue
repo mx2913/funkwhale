@@ -37,10 +37,8 @@
 import Vue from 'vue'
 import axios from 'axios'
 import _ from '@/lodash'
-import {mapState, mapGetters, mapActions} from 'vuex'
-import { WebSocketBridge } from 'django-channels'
+import {mapState, mapGetters} from 'vuex'
 import GlobalEvents from '@/components/utils/global-events'
-import moment from  'moment'
 import locales from './locales'
 import {getClientOnlyRadio} from '@/radios'
 
@@ -219,7 +217,6 @@ export default {
     autodetectLanguage () {
       let userLanguage = navigator.language || navigator.userLanguage
       let available = locales.locales.map(e => { return e.code })
-      let self = this
       let candidate
       let matching = available.filter((a) => {
         return userLanguage.replace('-', '_') === a
@@ -240,7 +237,7 @@ export default {
       if (!this.bridge) {
         return
       }
-      this.bridge.socket.close(1000, 'goodbye', {keepClosed: true})
+      this.bridge.close()
     },
     openWebsocket () {
       if (!this.$store.state.auth.authenticated) {
@@ -250,21 +247,19 @@ export default {
       let self = this
       let token = this.$store.state.auth.token
       // let token = 'test'
-      const bridge = new WebSocketBridge()
-      this.bridge = bridge
       let url = this.$store.getters['instance/absoluteUrl'](`api/v1/activity?token=${token}`)
       url = url.replace('http://', 'ws://')
       url = url.replace('https://', 'wss://')
-      bridge.connect(
-        url,
-        [],
-        {reconnectInterval: 1000 * 60})
-      bridge.listen(function (event) {
+      const bridge = new WebSocket(url)
+      this.bridge = bridge
+      bridge.onmessage = function (event) {
+        console.log(event)
         self.$store.dispatch('ui/websocketEvent', event)
-      })
-      bridge.socket.addEventListener('open', function () {
+      }
+      bridge.onopen = function (event) {
+        console.log(event)
         console.log('Connected to WebSocket')
-      })
+      }
     },
     getTrackInformationText(track) {
       const trackTitle = track.title
@@ -342,6 +337,8 @@ export default {
     customStylesheets () {
       if (this.$store.state.instance.frontSettings) {
         return this.$store.state.instance.frontSettings.additionalStylesheets || []
+      } else {
+        return []
       }
     },
   },

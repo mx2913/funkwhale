@@ -1,8 +1,11 @@
 // This is the code piece that GenerateSW mode can't provide for us.
 // This code listens for the user's confirmation to update the app.
-workbox.loadModule('workbox-routing');
-workbox.loadModule('workbox-strategies');
-workbox.loadModule('workbox-expiration');
+import { Route, Router, RegExpRoute } from 'workbox-routing';
+import NetworkFirst from 'workbox-strategies';
+import Plugin from 'workbox-expiration';
+import precacheAndRoute from 'workbox-precaching';
+import clientsClaim from 'workbox-core'
+
 
 self.addEventListener('message', (e) => {
   if (!e.data) {
@@ -15,14 +18,16 @@ self.addEventListener('message', (e) => {
       break;
     case 'serverChosen':
       self.registerServerRoutes(e.data.serverUrl)
+      break;
     default:
       // NOOP
       break;
   }
 });
-workbox.core.clientsClaim();
 
-const router = new workbox.routing.Router();
+clientsClaim();
+
+const router = new Router();
 router.addCacheListener()
 router.addFetchListener()
 
@@ -45,17 +50,17 @@ self.registerServerRoutes = (serverUrl) => {
   var networkFirstExcludedPaths = [
     'api/v1/listen'
   ]
-  var strategy = new workbox.strategies.NetworkFirst({
+  var strategy = new NetworkFirst({
     cacheName: "api-cache:" + serverUrl,
     plugins: [
-      new workbox.expiration.Plugin({
+      new Plugin({
         maxAgeSeconds: 24 * 60 * 60 * 7,
       }),
     ]
   })
   var networkFirstRoutes = networkFirstPaths.map((path) => {
     var regex = new RegExp(regexReadyServerUrl + path)
-    return new workbox.routing.RegExpRoute(regex, () => {})
+    return new RegExpRoute(regex, () => {})
   })
   var matcher = ({url, event}) => {
     for (let index = 0; index < networkFirstExcludedPaths.length; index++) {
@@ -77,7 +82,7 @@ self.registerServerRoutes = (serverUrl) => {
     return false
   }
 
-  var route = new workbox.routing.Route(matcher, strategy)
+  var route = new Route(matcher, strategy)
   console.log('[sw] registering new API route...', route)
   router.registerRoute(route)
   registeredServerRoutes.push(route)
@@ -87,4 +92,4 @@ self.registerServerRoutes = (serverUrl) => {
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 
 // workbox.precaching.suppressWarnings(); // Only used with Vue CLI 3 and Workbox v3.
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+precacheAndRoute(self.__precacheManifest, {});
