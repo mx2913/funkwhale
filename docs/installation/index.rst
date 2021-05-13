@@ -11,7 +11,7 @@ Regardless of your chosen installation method, the following requirements must b
 
 .. note::
 
-    Because of the federated nature of Funkwhale, **we strongly recommend you not to change the Funkwhale domain after initial deployment**, as it is likely to break
+    Because of the federated nature of Funkwhale, **it is strongly recommended not to change the Funkwhale domain after initial deployment**, as it is likely to break
     your installation.
 
 Project architecture
@@ -35,14 +35,14 @@ Hardware requirements
 ---------------------
 
 Funkwhale is not especially CPU hungry. On a dockerized instance with 2 CPUs
-and a few active users, the memory footprint is around ~500Mb::
+and a few active users, the memory footprint is around 500Mb::
 
    CONTAINER                   MEM USAGE
-   funkwhale_api_1             202.1 MiB
-   funkwhale_celerybeat_1      96.52 MiB
-   funkwhale_celeryworker_1    168.7 MiB
-   funkwhale_postgres_1        22.73 MiB
-   funkwhale_redis_1           1.496 MiB
+   funkwhale_api_1             202 MiB
+   funkwhale_celerybeat_1      96 MiB
+   funkwhale_celeryworker_1    168 MiB
+   funkwhale_postgres_1        22 MiB
+   funkwhale_redis_1           1 MiB
 
 Some users have reported running Funkwhale on Raspberry Pis with a memory
 consumption of less than 350MiB.
@@ -143,7 +143,7 @@ since you may have to apply manual actions for your instance to continue to work
 
 .. _frontend-setup:
 
-Frontend setup
+Serving only the frontend
 ---------------
 
 .. note::
@@ -151,10 +151,12 @@ Frontend setup
     You do not need to do this if you are deploying using Docker, as frontend files
     are already included in the docker image.
 
+    You also do not need to do this if you are deploying manually on Debian or Arch, as this is covered by the corresponding documentation already.
+
 
 Files for the web frontend are purely static and can simply be downloaded, unzipped and served from any webserver:
 
-.. parsed-literal::
+.. code-block:: shell
 
     cd /srv/funkwhale
     curl -L -o front.zip "https://dev.funkwhale.audio/funkwhale/funkwhale/builds/artifacts/|version|/download?job=build_front"
@@ -180,14 +182,14 @@ Nginx
 
 Ensure you have a recent version of nginx on your server. On Debian-like system, you would have to run the following:
 
-.. code-block:: bash
+.. code-block:: shell
 
     sudo apt-get update
     sudo apt-get install nginx
 
 On Arch Linux and its derivatives:
 
-.. code-block:: bash
+.. code-block:: shell
 
     sudo pacman -S nginx
 
@@ -195,11 +197,15 @@ To avoid configuration errors at this level, we will generate an nginx configura
 using your .env file. This will ensure your reverse-proxy configuration always
 match the application configuration and make upgrade/maintenance easier.
 
+.. note::
+    The following commands need to be run as superuser.
+
 On docker deployments, run the following commands:
 
-.. parsed-literal::
+.. code-block:: shell
 
     export FUNKWHALE_VERSION="|version|"
+
     # download the needed files
     curl -L -o /etc/nginx/funkwhale_proxy.conf "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/|version|/deploy/funkwhale_proxy.conf"
     curl -L -o /etc/nginx/sites-available/funkwhale.template "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/|version|/deploy/docker.proxy.template"
@@ -215,7 +221,6 @@ On docker deployments, run the following commands:
     ln -s /etc/nginx/sites-available/funkwhale.conf /etc/nginx/sites-enabled/
 
 On non-docker deployments, run the following commands:
-
 
 .. parsed-literal::
 
@@ -250,7 +255,7 @@ Finally, enable the resulting configuration:
 
 .. warning::
 
-    If you plan to use to in-place import, ensure the alias value
+    If you plan to use in-place import, ensure the alias value
     in the ``_protected/music`` location matches your MUSIC_DIRECTORY_SERVE_PATH
     env var.
 
@@ -271,6 +276,7 @@ a certificate, as shown below:
 
     # install certbot with nginx support
     sudo apt install python-certbot-nginx
+
     # generate the certificate
     # (accept the terms of service if prompted)
     sudo certbot --nginx -d yourfunkwhale.domain
@@ -341,7 +347,6 @@ Caddy v1::
             header_upstream X-Forwarded-Host {host}:{server_port}
         }
     }
-
 
 About internal locations
 ^^^^^^^^^^^^^^^^^^^^^^^^

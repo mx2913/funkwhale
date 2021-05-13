@@ -8,10 +8,10 @@ Debian and Arch Linux installation
 Cache setup (Redis)
 -------------------
 
-Funkwhale also requires a cache server:
+Funkwhale requires a cache server:
 
-- To make the whole system faster, by caching network requests or database queries
-- To handle asynchronous tasks such as music import
+- to make the whole system faster, by caching network requests or database queries;
+- to handle asynchronous tasks such as music import.
 
 On Debian-like distributions, a redis package is available, and you can
 install it:
@@ -36,8 +36,9 @@ On Debian-like systems, you can install them using:
 .. code-block:: shell
 
     sudo apt-get update
-    # Install dependencies
+    # Install system dependencies
     sudo apt-get install curl python3-pip python3-venv git unzip libldap2-dev libsasl2-dev gettext-base zlib1g-dev libffi-dev libssl-dev
+
     # Funkwhale dependencies
     sudo apt install build-essential ffmpeg libjpeg-dev libmagic-dev libpq-dev postgresql-client python3-dev make
 
@@ -45,8 +46,9 @@ On Arch Linux and its derivatives:
 
 .. code-block:: shell
 
-    # Install dependencies
+    # Install system dependencies
     sudo pacman -S curl python-pip python-virtualenv git unzip
+
     # Funkwhale dependencies
     sudo pacman -S curl file ffmpeg libjpeg-turbo libpqxx python libldap libsasl
 
@@ -111,9 +113,9 @@ and pick the one you want to install, usually the latest one should be okay.
 
 In this guide, we will assume you want to install the latest version of Funkwhale, which is |version|:
 
-First, we will download the latest api release.
+First, we will download the latest api release:
 
-.. parsed-literal::
+.. code-block:: shell
 
     curl -L -o "api-|version|.zip" "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/|version|/download?job=build_api"
     unzip "api-|version|.zip" -d extracted
@@ -123,7 +125,7 @@ First, we will download the latest api release.
 
 Then we will download the frontend files:
 
-.. parsed-literal::
+.. code-block:: shell
 
     curl -L -o "front-|version|.zip" "https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/|version|/download?job=build_front"
     unzip "front-|version|.zip" -d extracted
@@ -133,7 +135,7 @@ Then we will download the frontend files:
 .. note::
 
     You can also choose to get the code directly from the git repo. In this
-    case, run
+    case, run::
 
         cd /srv
 
@@ -143,7 +145,7 @@ Then we will download the frontend files:
 
     The above clone command uses the master branch instead of the default develop branch, as master is stable and more suited for production setups.
 
-    You'll also need to re-create the folders we make earlier:
+    You'll also need to re-create the folders we make earlier::
 
         mkdir -p config data/static data/media data/music front
 
@@ -177,9 +179,7 @@ This will result in a ``virtualenv`` directory being created in
 ``/srv/funkwhale/virtualenv``.
 
 In the rest of this guide, we'll need to activate this environment to ensure
-dependencies are installed within it, and not directly on your host system.
-
-This is done with the following command:
+dependencies are installed within it, and not directly on your host system. This is done with the following command:
 
 .. code-block:: shell
 
@@ -214,7 +214,7 @@ Download the sample environment file:
 
 .. note::
 
-    if you used git to get the latest version of the code earlier, you can instead do
+    if you used git to get the latest version of the code earlier, you can instead do::
 
         cp /srv/funkwhale/deploy/env.prod.sample /srv/funkwhale/config/.env
 
@@ -296,7 +296,7 @@ for Funkwhale to work properly:
     sudo -u postgres psql funkwhale -c 'CREATE EXTENSION "unaccent";'
     sudo -u postgres psql funkwhale -c 'CREATE EXTENSION "citext";'
 
-Now that the database has been created, import the initial database structure:
+Now that the database has been created, import the initial database structure using the virtualenv created before:
 
 .. code-block:: shell
 
@@ -321,7 +321,7 @@ This will create the required tables and rows.
 Create an admin account
 -----------------------
 
-You can then create your first user account:
+Using the virtualenv created before, create your first user account:
 
 .. code-block:: shell
 
@@ -354,25 +354,23 @@ Systemd unit file
     All the command lines below should be executed as root.
 
 Systemd offers a convenient way to manage your Funkwhale instance if you're
-not using docker.
-
-We'll see how to setup systemd to properly start a Funkwhale instance.
+not using docker. We'll see how to setup systemd to properly start a Funkwhale instance.
 
 First, download the sample unitfiles:
 
 .. parsed-literal::
 
-    curl -L -o "/etc/systemd/system/funkwhale.target" "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/|version|/deploy/funkwhale.target"
-    curl -L -o "/etc/systemd/system/funkwhale-server.service" "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/|version|/deploy/funkwhale-server.service"
-    curl -L -o "/etc/systemd/system/funkwhale-worker.service" "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/|version|/deploy/funkwhale-worker.service"
-    curl -L -o "/etc/systemd/system/funkwhale-beat.service" "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/|version|/deploy/funkwhale-beat.service"
+    sudo curl -L -o "/etc/systemd/system/funkwhale.target" "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/|version|/deploy/funkwhale.target"
+    sudo curl -L -o "/etc/systemd/system/funkwhale-server.service" "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/|version|/deploy/funkwhale-server.service"
+    sudo curl -L -o "/etc/systemd/system/funkwhale-worker.service" "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/|version|/deploy/funkwhale-worker.service"
+    sudo curl -L -o "/etc/systemd/system/funkwhale-beat.service" "https://dev.funkwhale.audio/funkwhale/funkwhale/raw/|version|/deploy/funkwhale-beat.service"
 
 This will download three unitfiles:
 
-- ``funkwhale-server.service`` to launch the Funkwhale web server
-- ``funkwhale-worker.service`` to launch the Funkwhale task worker
-- ``funkwhale-beat.service`` to launch the Funkwhale task beat (this is for recurring tasks)
-- ``funkwhale.target`` to easily stop and start all of the services at once
+- ``funkwhale-server.service`` to launch the Funkwhale web server;
+- ``funkwhale-worker.service`` to launch the Funkwhale task worker;
+- ``funkwhale-beat.service`` to launch the Funkwhale task beat (this is for recurring tasks);
+- ``funkwhale.target`` to easily stop and start all of the services at once.
 
 You can of course review and edit them to suit your deployment scenario
 if needed, but the defaults should be fine.
@@ -381,29 +379,29 @@ Once the files are downloaded, reload systemd:
 
 .. code-block:: shell
 
-    systemctl daemon-reload
+    sudo systemctl daemon-reload
 
 And start the services:
 
 .. code-block:: shell
 
-    systemctl start funkwhale.target
+    sudo systemctl start funkwhale.target
 
 To ensure all Funkwhale processes are started automatically after a reboot, run:
 
 .. code-block:: shell
     
-    systemctl enable funkwhale-server
-    systemctl enable funkwhale-worker
-    systemctl enable funkwhale-beat
+    sudo systemctl enable funkwhale-server
+    sudo systemctl enable funkwhale-worker
+    sudo systemctl enable funkwhale-beat
 
 You can check the statuses of all processes like this:
 
 .. code-block:: shell
 
-    systemctl status funkwhale-\*
+    sudo systemctl status funkwhale-\*
 
 Reverse proxy setup
 --------------------
 
-See :ref:`reverse-proxy <reverse-proxy-setup>`.
+See :ref:`Reverse proxy <reverse-proxy-setup>`.
