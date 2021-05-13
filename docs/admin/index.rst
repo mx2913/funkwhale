@@ -18,6 +18,7 @@ Setup Guides
    backup
    migration
    uninstall
+   ldap
 
 Administration
 --------------
