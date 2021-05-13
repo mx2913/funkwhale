@@ -354,18 +354,22 @@ and replace the following values with the proper paths:
 - For Apache2: ``SSLCertificateFile`` and ``SSLCertificateKeyFile``.
 
 If you don't have one, comment or remove the lines starting with ``ssl_certificate`` and ``ssl_certificate_key`` for nginx, and ``SSLCertificateFile`` and ``SSLCertificateKeyFile`` for Apache2. You can then proceed to generate
-a certificate, as shown below:
+a certificate, as shown below. These instructions are provided by `certbot <https://certbot.eff.org/instructions>`:
 
 .. code-block:: shell
 
-    # install certbot with nginx support
-    sudo apt install python-certbot-nginx
+    # install certbot
+    sudo snap install core; sudo snap refresh core
+    sudo snap install --classic certbot
+    sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
-    # generate the certificate
-    # (accept the terms of service if prompted)
+    # if you are using nginx: generate the certificate
     sudo certbot --nginx -d yourfunkwhale.domain
 
-This creates a valid certificate and edit the nginx configuration to use the new certificate.
+    # if you are using Apache2: generate the certificate
+    sudo certbot --apache -d yourfunkwhale.domain
+
+This creates a valid certificate and edit the nginx or Apache2 configuration to use the new certificate. The certificate will be automatically renewed when they expire.
     
 
 
