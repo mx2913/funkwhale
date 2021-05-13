@@ -40,3 +40,4 @@ Troubleshooting Issues
    :maxdepth: 2
 
    troubleshooting
+   debugging
