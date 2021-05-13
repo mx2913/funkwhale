@@ -2,6 +2,7 @@ Instance configuration
 ======================
 
 General configuration is achieved using two type of settings:
+
 - :ref:`environment variables <environment-variables>` and
 - :ref:`instance settings <instance-settings>`.
 
@@ -20,6 +21,7 @@ and technical aspects of your instance, such as database credentials.
 
     You should restart all Funkwhale processes when you change the values
     on environment variables::
+        
         sudo systemctl restart funkwhale.target
 
 
@@ -29,6 +31,7 @@ and technical aspects of your instance, such as database credentials.
     such as the user and password in the database and SMTP sections.
     If those variables contain such characters, they must be urlencoded, for
     instance using the following command::
+
         python3 -c 'import urllib.parse; print(urllib.parse.quote_plus("p@ssword"))
 
     See as well https://github.com/joke2k/django-environ#using-unsafe-characters-in-urls

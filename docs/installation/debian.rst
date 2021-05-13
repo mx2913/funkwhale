@@ -234,8 +234,7 @@ configuration options are mentioned at the top of the file.
 Paste the secret key you generated earlier at the entry
 ``DJANGO_SECRET_KEY`` and populate the ``DATABASE_URL``
 and ``CACHE_URL`` values based on how you configured
-your PostgreSQL and Redis servers in
-:doc:`external dependencies <./external_dependencies>`.
+your PostgreSQL and Redis servers in.
 
 Database setup
 --------------

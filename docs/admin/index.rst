@@ -33,8 +33,8 @@ Administration
    upgrading
    mrf
 
-Troubleshooting Issues
-----------------------
+Troubleshooting
+---------------
 
 .. toctree::
    :maxdepth: 2
