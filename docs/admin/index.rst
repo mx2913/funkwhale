@@ -16,6 +16,7 @@ Setup Guides
    importing-music
    external-storages
    migration
+   uninstall
 
 Administration
 --------------
