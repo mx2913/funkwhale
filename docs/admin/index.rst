@@ -15,6 +15,7 @@ Setup Guides
    configuration
    importing-music
    external-storages
+   optimization
    backup
    migration
    uninstall

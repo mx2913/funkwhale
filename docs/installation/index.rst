@@ -51,7 +51,7 @@ Thus, Funkwhale should run fine on commodity hardware, small hosting boxes and
 Raspberry Pi. We lack real-world examples of such deployments, so don't hesitate
 do give us your feedback (either positive or negative).
 
-Check out :doc:`optimization` for advice on how to tune your instance on small
+Check out :doc:`../admin/optimization` for advice on how to tune your instance on small
 configurations.
 
 Software requirements
