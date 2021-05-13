@@ -3,15 +3,30 @@ Debian and Arch Linux installation
 
 .. note::
 
-    This guide targets Debian 9 (Stretch), which is the latest Debian, as well as Arch Linux.
+    This guide targets Debian 10 (Buster), which is the latest version available, as well as Arch Linux.
 
-External dependencies
----------------------
+Cache setup (Redis)
+-------------------
 
-The guides will focus on installing Funkwhale-specific components and
-dependencies. However, Funkwhale requires a
-:doc:`few external dependencies <./external_dependencies>` for which
-documentation is outside of this document scope.
+Funkwhale also requires a cache server:
+
+- To make the whole system faster, by caching network requests or database queries
+- To handle asynchronous tasks such as music import
+
+On Debian-like distributions, a redis package is available, and you can
+install it:
+
+.. code-block:: shell
+
+    sudo apt-get install redis-server
+
+On Arch Linux and its derivatives:
+
+.. code-block:: shell
+
+    sudo pacman -S redis
+
+This should be enough to have your redis server set up.
 
 Install system dependencies
 ---------------------------
@@ -35,8 +50,13 @@ On Arch Linux and its derivatives:
     # Funkwhale dependencies
     sudo pacman -S curl file ffmpeg libjpeg-turbo libpqxx python libldap libsasl
 
-Layout
--------
+External Authentication (LDAP)
+------------------------------
+
+LDAP support requires some additional dependencies to enable. On the OS level both ``libldap2-dev`` and ``libsasl2-dev`` are required, and the Python modules ``python-ldap`` and ``python-django-auth-ldap`` must be installed. These dependencies are all included in the ``requirements.*`` files so deploying with those will install these dependencies by default. However, they are not required unless LDAP support is explicitly enabled. See :doc:`./ldap` for more details.
+
+Installation structure
+----------------------
 
 All Funkwhale-related files will be located under ``/srv/funkwhale`` apart
 from database files and a few configuration files. We will also have a
@@ -77,22 +97,21 @@ Create the aforementioned directories:
 
 The ``virtualenv`` directory is a bit special and will be created separately.
 
-Download latest Funkwhale release
-----------------------------------
+Download the latest Funkwhale release
+-------------------------------------
 
 Funkwhale is splitted in two components:
 
-1. The API, which will handle music storage and user accounts
-2. The frontend, that will simply connect to the API to interact with its data
+1. The API, which will handle music storage and user accounts;
+2. The frontend, that will simply connect to the API to interact with its data.
 
 Those components are packaged in subsequent releases, such as 0.1, 0.2, etc.
 You can browse the :doc:`changelog </changelog>` for a list of available releases
 and pick the one you want to install, usually the latest one should be okay.
 
-In this guide, we'll assume you want to install the latest version of Funkwhale,
-which is |version|:
+In this guide, we will assume you want to install the latest version of Funkwhale, which is |version|:
 
-First, we'll download the latest api release.
+First, we will download the latest api release.
 
 .. parsed-literal::
 
@@ -102,7 +121,7 @@ First, we'll download the latest api release.
     rm -rf extracted
 
 
-Then we'll download the frontend files:
+Then we will download the frontend files:
 
 .. parsed-literal::
 
@@ -219,9 +238,65 @@ your PostgreSQL and Redis servers in
 :doc:`external dependencies <./external_dependencies>`.
 
 Database setup
----------------
+--------------
 
-You should now be able to import the initial database structure:
+Funkwhale requires a PostgreSQL database to work properly. Please refer
+to the `PostgreSQL documentation <https://www.postgresql.org/download/>`_
+for installation instructions specific to your os.
+
+On Debian-like systems, you would install the database server like this:
+
+.. code-block:: shell
+
+    sudo apt-get install postgresql postgresql-contrib
+
+On Arch Linux and its derivatives:
+
+.. code-block:: shell
+
+    sudo pacman -S postgresql
+
+On Arch Linux, you'll also need to initialize the database. See `the Arch Linux wiki <https://wiki.archlinux.org/index.php/Postgresql#Initial_configuration>`_.
+
+The remaining steps are heavily inspired from `this Digital Ocean guide <https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04>`_.
+
+Open a database shell:
+
+.. code-block:: shell
+
+    sudo -u postgres psql
+
+Create the project database and user:
+
+.. code-block:: shell
+
+    CREATE DATABASE funkwhale WITH ENCODING 'utf8';
+    CREATE USER funkwhale;
+    GRANT ALL PRIVILEGES ON DATABASE funkwhale TO funkwhale;
+
+.. warning::
+
+    It's important that you use utf-8 encoding for your database,
+    otherwise you'll end up with errors and crashes later on when dealing
+    with music metadata that contains non-ascii chars.
+
+Assuming you already have :ref:`created your funkwhale user <create-funkwhale-user>`,
+you should now be able to open a postgresql shell:
+
+.. code-block:: shell
+
+    sudo -u funkwhale -H psql
+
+Unless you give a superuser access to the database user, you should also
+enable some extensions on your database server, as those are required
+for Funkwhale to work properly:
+
+.. code-block:: shell
+
+    sudo -u postgres psql funkwhale -c 'CREATE EXTENSION "unaccent";'
+    sudo -u postgres psql funkwhale -c 'CREATE EXTENSION "citext";'
+
+Now that the database has been created, import the initial database structure:
 
 .. code-block:: shell
 

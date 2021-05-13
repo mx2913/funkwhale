@@ -1,5 +1,5 @@
 Installation
-=============
+============
 
 Requirements
 ------------
@@ -13,55 +13,6 @@ Regardless of your chosen installation method, the following requirements must b
 
     Because of the federated nature of Funkwhale, **we strongly recommend you not to change the Funkwhale domain after initial deployment**, as it is likely to break
     your installation.
-
-Available installation methods
--------------------------------
-
-Quick install
-^^^^^^^^^^^^^
-
-To install the latest version of Funkwhale on a recent Debian or Ubuntu server, run::
-
-    sudo apt-get update
-    sudo apt-get install curl
-    sudo sh -c "$(curl -sSL https://get.funkwhale.audio/)"
-
-This installation script will ask you a few questions, install the required dependencies
-and set up your instance.
-
-Additional info:
-
-- This script is based on our `Ansible role <https://dev.funkwhale.audio/funkwhale/ansible/>`_.
-- By default, the script installs Nginx, PostgreSQL, Redis and Funkwhale itself but you can customize the installation procedure if you already have some of these services available on your machine
-- Edit your pod configuration in ``/srv/funkwhale/ansible/playbook.yml`` and apply new configuration with ``sudo /srv/funkwhale/ansible/reconfigure``
-- Upgrade is done using ``sh -c "$(curl -sSL https://get.funkwhale.audio/upgrade.sh)"``.
-
-
-Alternative installation methods
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-We also offer Docker images, an installation guide for Debian 9 and Arch Linux, and `an
-Ansible role <https://dev.funkwhale.audio/funkwhale/ansible/>`_.
-
-.. toctree::
-   :maxdepth: 1
-
-   external_dependencies
-   debian
-   docker
-   systemd
-   non_amd64_architectures
-
-Third-party packages
-^^^^^^^^^^^^^^^^^^^^
-
-Funkwhale packages are available for the following platforms:
-
-- `YunoHost 3 <https://yunohost.org/>`_: https://github.com/YunoHost-Apps/funkwhale_ynh (kindly maintained by `@Jibec <https://github.com/Jibec>`_)
-- ArchLinux (as an AUR package): if you'd rather use a package, check out this alternative installation method on ArchLinux: https://wiki.archlinux.org/index.php/Funkwhale (package and wiki kindly maintained by getzee)
-- `NixOS <https://github.com/mmai/funkwhale-nixos>`_ (kindly maintained by @mmai)
-- `Helm chart <https://gitlab.com/ananace/charts/>`_ to install Funkwhale on Kubernetes (kindly maintained by `@ananace <https://gitlab.com/ananace>`_)
-- `HomelabOS <https://homelabos.com/docs/software/funkwhale/>`_
 
 Project architecture
 --------------------
@@ -79,7 +30,6 @@ The project relies on the following components and services to work:
 
     The synced clock is needed for federation purpose, to assess
     the validity of incoming requests.
-
 
 Hardware requirements
 ---------------------
@@ -118,6 +68,55 @@ dependencies should be available in your distribution's repositories.
 
    Funkwhale works only with Python >= 3.5, as we need support for async/await.
    Older versions of Python are not supported.
+
+Available installation methods
+-------------------------------
+
+Funkwhale can be installed using one of the following method:
+  
+- Quick install, the most straight forward way to get Funkwhale;
+- Mono-container Docker installation;
+- Multi-container Docker installation;
+- Manual Debian and Arch Linux installation;
+- `Ansible role <https://dev.funkwhale.audio/funkwhale/ansible/>`_.
+
+Further, Funkwhale packages are available for the following platforms:
+
+- `YunoHost 3 <https://yunohost.org/>`_: https://github.com/YunoHost-Apps/funkwhale_ynh (kindly maintained by `@Jibec <https://github.com/Jibec>`_)
+- ArchLinux (as an AUR package): if you'd rather use a package, check out this alternative installation method on ArchLinux: https://wiki.archlinux.org/index.php/Funkwhale (package and wiki kindly maintained by getzee)
+- `NixOS <https://github.com/mmai/funkwhale-nixos>`_ (kindly maintained by @mmai)
+- `Helm chart <https://gitlab.com/ananace/charts/>`_ to install Funkwhale on Kubernetes (kindly maintained by `@ananace <https://gitlab.com/ananace>`_)
+- `HomelabOS <https://homelabos.com/docs/software/funkwhale/>`_
+
+Quick install
+^^^^^^^^^^^^^
+
+To install the latest version of Funkwhale on a recent Debian or Ubuntu server, run::
+
+    sudo apt-get update
+    sudo apt-get install curl
+    sudo sh -c "$(curl -sSL https://get.funkwhale.audio/)"
+
+This installation script will ask you a few questions, install the required dependencies
+and set up your instance.
+
+Additional info:
+
+- This script is based on our `Ansible role <https://dev.funkwhale.audio/funkwhale/ansible/>`_.
+- By default, the script installs Nginx, PostgreSQL, Redis and Funkwhale itself but you can customize the installation procedure if you already have some of these services available on your machine
+- Edit your pod configuration in ``/srv/funkwhale/ansible/playbook.yml`` and apply new configuration with ``sudo /srv/funkwhale/ansible/reconfigure``
+- Upgrade is done using ``sh -c "$(curl -sSL https://get.funkwhale.audio/upgrade.sh)"``.
+
+
+Alternative installation methods
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. toctree::
+   :maxdepth: 1
+
+   debian
+   docker
+   non_amd64_architectures
 
 Running Funkwhale on the develop branch
 ---------------------------------------
@@ -163,10 +162,18 @@ Files for the web frontend are purely static and can simply be downloaded, unzip
 
 .. _reverse-proxy-setup:
 
-Reverse proxy
---------------
+Reverse proxy configuration
+---------------------------
 
 In order to make Funkwhale accessible from outside your server and to play nicely with other applications on your machine, you should configure a reverse proxy.
+
+We offer sample configurations for Nginx, Apache2 and Caddy.
+
+.. note::
+
+    You can freely adapt the proposed configuration to your own needs, as we cannot
+    cover every use case with a single template, especially when it's related
+    to SSL configuration.
 
 Nginx
 ^^^^^
@@ -235,12 +242,6 @@ On non-docker deployments, run the following commands:
 
         grep '${' /etc/nginx/sites-available/funkwhale.conf
 
-.. note::
-
-    You can freely adapt the resulting file to your own needs, as we cannot
-    cover every use case with a single template, especially when it's related
-    to SSL configuration.
-
 Finally, enable the resulting configuration:
 
 .. code-block:: bash
@@ -280,7 +281,6 @@ Reloading
 :::::::::
 
 Check the configuration is valid with ``nginx -t`` then reload your nginx server with ``sudo systemctl reload nginx``.
-
 
 Apache2
 ^^^^^^^
