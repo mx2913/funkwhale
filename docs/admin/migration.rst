@@ -21,7 +21,8 @@ Non-Docker
 ----------
 
 On the destination server, run through the :doc:`installation steps<../installation/debian>` with the exception of the following points:
-- Do not enable the extensions `unaccent` and `citext` when setting up the database;
+
+- Do not enable the extensions ``unaccent`` and ``citext`` when setting up the database;
 - Do not initialize the database by applying the migrate command;
 - Do not create an admin account.
 
@@ -37,7 +38,7 @@ On the origin server, create a database backup:
 
     sudo -u funkwhale pg_dump -d funkwhale > "db.dump"
 
-On the destination server, use rsync to fetch the contents of `/srv/funwkhale/data/media/music` and `/srv/funkwhale/data/music` from the origin server, as well as the database dump nd the `.env` file:
+On the destination server, use rsync to fetch the contents of ``/srv/funwkhale/data/media/music/`` and ``/srv/funkwhale/data/media/`` from the origin server, as well as the database dump nd the ``.env`` file:
 
 .. code-block:: shell
 
@@ -64,7 +65,7 @@ Ensure that all DNS changes have been made and start the services:
 Docker
 ------
 
-On the destination server, run through the :doc:`installation steps<../installation/docker>` but skip the `docker-compose run --rm api python manage.py migrate` step.
+On the destination server, run through the :doc:`installation steps<../installation/docker>` but skip the ``docker-compose run --rm api python manage.py migrate`` step.
 
 Stop all funkwhale related containers on the destination server.
 
@@ -74,7 +75,7 @@ On the origin server, create a database backup:
 
     docker exec -t funkwhale_postgres_1 pg_dumpall -c -U postgres > "db.dump"
 
-On the destination server, use rsync to fetch the contents of `/srv/funwkhale/data/media/music` and `/srv/funkwhale/data/music` from the origin server, as well as the database dump nd the `.env` file:
+On the destination server, use rsync to fetch the contents of ``/srv/funwkhale/data/media/music`` and ``/srv/funkwhale/data/media`` from the origin server, as well as the database dump nd the ``.env`` file:
 
 .. code-block:: shell
 

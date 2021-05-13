@@ -38,11 +38,11 @@ Funkwhale is not especially CPU hungry. On a dockerized instance with 2 CPUs
 and a few active users, the memory footprint is around 500Mb::
 
    CONTAINER                   MEM USAGE
-   funkwhale_api_1             202 MiB
-   funkwhale_celerybeat_1      96 MiB
-   funkwhale_celeryworker_1    168 MiB
-   funkwhale_postgres_1        22 MiB
-   funkwhale_redis_1           1 MiB
+   funkwhale_api_1             202  MiB
+   funkwhale_celerybeat_1      96   MiB
+   funkwhale_celeryworker_1    168  MiB
+   funkwhale_postgres_1        22   MiB
+   funkwhale_redis_1           1    MiB
 
 Some users have reported running Funkwhale on Raspberry Pis with a memory
 consumption of less than 350 MiB.
@@ -144,7 +144,7 @@ since you may have to apply manual actions for your instance to continue to work
 .. _frontend-setup:
 
 Serving only the frontend
----------------
+-------------------------
 
 .. note::
 
@@ -309,11 +309,6 @@ Then, download our sample virtualhost file:
 You can tweak the configuration file according to your setup, especially the
 TLS configuration. Otherwise, defaults should work if you followed the
 installation guide.
-
-.. note::
-
-    To obtain a certificate to enable HTTPS on your server, please refer to the note in
-    the nginx chapter above.
 
 Check the configuration is valid with ``apache2ctl configtest``, and once you're
 done, load the new configuration with ``service apache2 restart``.
