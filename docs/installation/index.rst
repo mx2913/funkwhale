@@ -259,34 +259,26 @@ Finally, enable the resulting configuration:
     in the ``_protected/music`` location matches your MUSIC_DIRECTORY_SERVE_PATH
     env var.
 
-HTTPS Configuration
-:::::::::::::::::::
+Finally, check that the configuration is valid with ``nginx -t`` then reload your nginx server with ``sudo systemctl reload nginx``.
 
-At this point you will need a SSL certificate to enable HTTPS on your server.
-The default nginx configuration assumes you have those available at ``/etc/letsencrypt/live/${FUNKWHALE_HOSTNAME}/``, which
-is the path used by `certbot <https://certbot.eff.org/docs/>`_ when generating certificates with Let's Encrypt.
+.. note::
+    Music (and other static) files are never served by the app itself, but by the reverse
+    proxy. This is needed because a webserver is way more efficient at serving
+    files than a Python process.
 
-In you already have a certificate you'd like to use, simply update the nginx configuration
-and replace ``ssl_certificate`` and ``ssl_certificate_key`` values with the proper paths.
+    However, we do want to ensure users have the right to access music files, and
+    it can't be done at the proxy's level. To tackle this issue, `we use
+    nginx's internal directive <http://nginx.org/en/docs/http/ngx_http_core_module.html#internal>`_.
 
-If you don't have one, comment or remove the lines starting with ``ssl_certificate`` and ``ssl_certificate_key``. You can then proceed to generate
-a certificate, as shown below:
+    When the API receives a request on its music serving endpoint, it will check
+    that the user making the request can access the file. Then, it will return an empty
+    response with a ``X-Accel-Redirect`` header. This header will contain the path
+    to the file to serve to the user, and will be picked by nginx, but never sent
+    back to the client.
 
-.. code-block:: shell
-
-    # install certbot with nginx support
-    sudo apt install python-certbot-nginx
-
-    # generate the certificate
-    # (accept the terms of service if prompted)
-    sudo certbot --nginx -d yourfunkwhale.domain
-
-This should create a valid certificate and edit the nginx configuration to use the new certificate.
-
-Reloading
-:::::::::
-
-Check the configuration is valid with ``nginx -t`` then reload your nginx server with ``sudo systemctl reload nginx``.
+    Using this technique, we can ensure music files are covered by the authentication
+    and permission policy of your instance, while remaining as performant
+    as possible.
 
 Apache2
 ^^^^^^^
@@ -348,23 +340,32 @@ Caddy v1::
         }
     }
 
-About internal locations
-^^^^^^^^^^^^^^^^^^^^^^^^
+HTTPS configuration
+^^^^^^^^^^^^^^^^^^^
 
-Music (and other static) files are never served by the app itself, but by the reverse
-proxy. This is needed because a webserver is way more efficient at serving
-files than a Python process.
+After configuring the reverse proxy, you need a SSL certificate to enable HTTPS on your server.
 
-However, we do want to ensure users have the right to access music files, and
-it can't be done at the proxy's level. To tackle this issue, `we use
-nginx's internal directive <http://nginx.org/en/docs/http/ngx_http_core_module.html#internal>`_.
+The default reverse proxy configuration assumes you have those available at ``/etc/letsencrypt/live/${FUNKWHALE_HOSTNAME}/``, which
+is the path used by `certbot <https://certbot.eff.org/docs/>`_ when generating certificates with Let's Encrypt.
 
-When the API receives a request on its music serving endpoint, it will check
-that the user making the request can access the file. Then, it will return an empty
-response with a ``X-Accel-Redirect`` header. This header will contain the path
-to the file to serve to the user, and will be picked by nginx, but never sent
-back to the client.
+If you already have a certificate you would like to use, simply update the reverse proxy configuration
+and replace the following values with the proper paths:
+- For nginx: ``ssl_certificate`` and ``ssl_certificate_key``;
+- For Apache2: ``SSLCertificateFile`` and ``SSLCertificateKeyFile``.
 
-Using this technique, we can ensure music files are covered by the authentication
-and permission policy of your instance, while remaining as performant
-as possible.
+If you don't have one, comment or remove the lines starting with ``ssl_certificate`` and ``ssl_certificate_key`` for nginx, and ``SSLCertificateFile`` and ``SSLCertificateKeyFile`` for Apache2. You can then proceed to generate
+a certificate, as shown below:
+
+.. code-block:: shell
+
+    # install certbot with nginx support
+    sudo apt install python-certbot-nginx
+
+    # generate the certificate
+    # (accept the terms of service if prompted)
+    sudo certbot --nginx -d yourfunkwhale.domain
+
+This creates a valid certificate and edit the nginx configuration to use the new certificate.
+    
+
+
