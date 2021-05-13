@@ -45,7 +45,7 @@ and a few active users, the memory footprint is around 500Mb::
    funkwhale_redis_1           1 MiB
 
 Some users have reported running Funkwhale on Raspberry Pis with a memory
-consumption of less than 350MiB.
+consumption of less than 350 MiB.
 
 Thus, Funkwhale should run fine on commodity hardware, small hosting boxes and
 Raspberry Pi. We lack real-world examples of such deployments, so don't hesitate
