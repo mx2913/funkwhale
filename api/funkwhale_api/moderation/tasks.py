@@ -113,7 +113,9 @@ def send_new_report_email_to_moderators(report):
 
     for moderator in moderators:
         if not moderator.email:
-            logger.warning("Moderator %s has no e-mail address configured", moderator.username)
+            logger.warning(
+                "Moderator %s has no e-mail address configured", moderator.username
+            )
             continue
         mail.send_mail(
             subject,
@@ -199,7 +201,9 @@ def notify_mods_signup_request_pending(obj):
 
     for moderator in moderators:
         if not moderator.email:
-            logger.warning("Moderator %s has no e-mail address configured", moderator.username)
+            logger.warning(
+                "Moderator %s has no e-mail address configured", moderator.username
+            )
             continue
         mail.send_mail(
             subject,
