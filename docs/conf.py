@@ -64,8 +64,8 @@ master_doc = "index"
 # General information about the project.
 year = datetime.datetime.now().year
 project = "funkwhale"
-copyright = "{}, Eliot Berriot".format(year)
-author = "Eliot Berriot"
+copyright = "{}, The Funkwhale Collective".format(year)
+author = "The Funkwhale Collective"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
