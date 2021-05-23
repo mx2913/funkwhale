@@ -117,6 +117,7 @@ html_context = {
     "conf_py_path": "/docs/",
 }
 html_logo = "logo.svg"
+html_favicon = "../front/public/favicon.png"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
