@@ -190,6 +190,8 @@ redirect_files = [
     ("upgrading/index.html", "../admin/upgrading.html"),
     ("upgrading/0.17.html", "../admin/0.17.html"),
     ("users/django.html", "../admin/django.html"),
+    ("cli/index.html", "../users/cli.html"),
+    ("cli/examples.html", "../users/cli.html#examples")
 ]
 
 # Generate redirect template
