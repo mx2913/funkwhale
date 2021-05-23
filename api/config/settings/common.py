@@ -1391,7 +1391,7 @@ IGNORE_FORWARDED_HOST_AND_PROTO = env.bool(
     default=True
 )
 """
-Use :attr:`FUNKWHALE_HOSTNAME` and :attr:`FUNKWHALE_PROTOCOL `
+Use :attr:`FUNKWHALE_HOSTNAME` and :attr:`FUNKWHALE_PROTOCOL`
 instead of request header.
 """
 
