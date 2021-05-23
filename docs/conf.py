@@ -193,7 +193,12 @@ redirect_files = [
     ("upgrading/0.17.html", "../admin/0.17.html"),
     ("users/django.html", "../admin/django.html"),
     ("cli/index.html", "../users/cli.html"),
-    ("cli/examples.html", "../users/cli.html#examples")
+    ("cli/examples.html", "../users/cli.html#examples"),
+    ("installation/ldap.html", "../admin/ldap.html"),
+    ("installation/optimization.html", "../admin/optimization.html"),
+    ("installation/external_dependencies.html", "debian.html"),
+    ("installation/systemd.html", "debian.html#systemd-unit-file"),
+    ("backup.html", "../admin/backup.html"),
 ]
 
 # Generate redirect template
