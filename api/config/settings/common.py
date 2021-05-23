@@ -123,7 +123,7 @@ else:
     try:
         FUNKWHALE_HOSTNAME = env("FUNKWHALE_HOSTNAME")
         """
-        Hostname of your Funkwhale pod, e.g ``mypod.audio``
+        Hostname of your Funkwhale pod, e.g. ``mypod.audio``
         """
 
         FUNKWHALE_PROTOCOL = env("FUNKWHALE_PROTOCOL", default="https")
@@ -522,8 +522,7 @@ STATICFILES_FINDERS = (
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
 MEDIA_ROOT = env("MEDIA_ROOT", default=str(APPS_DIR("media")))
 """
-Where media files (such as album covers or audio tracks) should be stored
-on your system? (Ensure this directory actually exists)
+Path where media files (such as album covers or audio tracks) are stored on your system. Ensure this directory actually exists.
 """
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = env("MEDIA_URL", default=FUNKWHALE_URL + "/media/")
@@ -685,10 +684,10 @@ CACHE_URL = env.cache_url("CACHE_URL", default=CACHE_DEFAULT)
 """
 URL to your redis server. Examples:
 
-- `redis://<host>:<port>/<database>`
-- `redis://127.0.0.1:6379/0`
-- `redis://:password@localhost:6379/0` for password auth (the extra semicolon is important)
-- `redis:///run/redis/redis.sock?db=0` over unix sockets
+- ``redis://<host>:<port>/<database>``
+- ``redis://127.0.0.1:6379/0``
+- ``redis://:password@localhost:6379/0`` for password auth (the extra semicolon is important)
+- ``redis:///run/redis/redis.sock?db=0`` over unix sockets
 
 .. note::
 
@@ -741,8 +740,8 @@ to use a different one, or use Redis sockets to connect.
 
 Exemple:
 
-- `redis://127.0.0.1:6379/0`
-- `redis+socket:///run/redis/redis.sock?virtual_host=0`
+- ``redis://127.0.0.1:6379/0``
+- ``redis+socket:///run/redis/redis.sock?virtual_host=0``
 """
 # END CELERY
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
@@ -1059,11 +1058,11 @@ You shouldn't have to tweak this.
 
 MUSICBRAINZ_CACHE_DURATION = env.int("MUSICBRAINZ_CACHE_DURATION", default=300)
 """
-How long to cache MusicBrainz results, in seconds
+How long to cache MusicBrainz results, in seconds.
 """
 MUSICBRAINZ_HOSTNAME = env("MUSICBRAINZ_HOSTNAME", default="musicbrainz.org")
 """
-Use this setting to change the musicbrainz hostname, for instance to
+Use this setting to change the MusicBrainz hostname, for instance to
 use a mirror. The hostname can also contain a port number.
 
 Example:
@@ -1077,10 +1076,10 @@ ADMIN_URL = env("DJANGO_ADMIN_URL", default="^api/admin/")
 """
 Path to the Django admin area.
 
-Exemples:
+Examples:
 
-- `^api/admin/`
-- `^api/mycustompath/`
+- ``^api/admin/``
+- ``^api/mycustompath/``
 
 """
 CSRF_USE_SESSIONS = True
@@ -1111,7 +1110,7 @@ ACCOUNT_USERNAME_BLACKLIST = [
     "actor",
 ] + env.list("ACCOUNT_USERNAME_BLACKLIST", default=[])
 """
-List of usernames that will be unavailable during registration.
+List of usernames that will be unavailable during registration, given as a list of strings.
 """
 EXTERNAL_REQUESTS_VERIFY_SSL = env.bool("EXTERNAL_REQUESTS_VERIFY_SSL", default=True)
 """
@@ -1133,7 +1132,7 @@ On docker installations, we recommend you use the default of ``/music``
 for this value. For non-docker installation, you can use any absolute path.
 ``/srv/funkwhale/data/music`` is a safe choice if you don't know what to use.
 
-.. note:: This path should not include any trailing slash
+.. note:: This path should not include any trailing slash.
 
 .. warning::
 
@@ -1160,7 +1159,7 @@ Then, the value of :attr:`MUSIC_DIRECTORY_SERVE_PATH` should be
 
 On non-docker setup, you don't need to configure this setting.
 
-.. note:: This path should not include any trailing slash
+.. note:: This path should not include any trailing slash.
 
 """
 # When this is set to default=True, we need to reenable migration music/0042
@@ -1171,7 +1170,7 @@ USERS_INVITATION_EXPIRATION_DAYS = env.int(
     "USERS_INVITATION_EXPIRATION_DAYS", default=14
 )
 """
-Expiration delay in days, for user invitations.
+Expiration delay, in days, for user invitations.
 """
 
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
@@ -1212,7 +1211,7 @@ FEDERATION_OBJECT_FETCH_DELAY = env.int(
     "FEDERATION_OBJECT_FETCH_DELAY", default=60 * 24 * 3
 )
 """
-Number of minutes before a remote object will be automatically refetched when accessed in the UI.
+Delay, in minutes, before a remote object will be automatically refetched when accessed in the UI.
 """
 MODERATION_EMAIL_NOTIFICATIONS_ENABLED = env.bool(
     "MODERATION_EMAIL_NOTIFICATIONS_ENABLED", default=True
@@ -1230,11 +1229,11 @@ Delay, in seconds, between two manual fetch of the same remote object.
 """
 INSTANCE_SUPPORT_MESSAGE_DELAY = env.int("INSTANCE_SUPPORT_MESSAGE_DELAY", default=15)
 """
-Delay in days after signup before we show the "support your pod" message
+Delay after signup, in days, before the "support your pod" message is shown.
 """
 FUNKWHALE_SUPPORT_MESSAGE_DELAY = env.int("FUNKWHALE_SUPPORT_MESSAGE_DELAY", default=15)
 """
-Delay in days after signup before we show the "support Funkwhale" message
+Delay after signup, in days, before the "support Funkwhale" message is shown.
 """
 
 MIN_DELAY_BETWEEN_DOWNLOADS_COUNT = env.int(
@@ -1248,7 +1247,7 @@ MARKDOWN_EXTENSIONS = env.list("MARKDOWN_EXTENSIONS", default=["nl2br", "extra"]
 """
 List of markdown extensions to enable.
 
-Cf `<https://python-markdown.github.io/extensions/>`_
+See `<https://python-markdown.github.io/extensions/>`_.
 """
 LINKIFIER_SUPPORTED_TLDS = ["audio"] + env.list("LINKINFIER_SUPPORTED_TLDS", default=[])
 """
@@ -1271,7 +1270,7 @@ PODCASTS_RSS_FEED_REFRESH_DELAY = env.int(
     "PODCASTS_RSS_FEED_REFRESH_DELAY", default=60 * 60 * 24
 )
 """
-Delay in seconds between to fetch of RSS feeds. Reducing this mean you'll receive new episodes faster,
+Delay in seconds between two fetch of RSS feeds. Reducing this mean you'll receive new episodes faster,
 but will require more resources.
 """
 # maximum items loaded through XML feed
