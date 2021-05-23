@@ -1387,7 +1387,8 @@ Maximum number of RSS items to load in each podcast feed.
 """
 
 IGNORE_FORWARDED_HOST_AND_PROTO = env.bool(
-    "IGNORE_FORWARDED_HOST_AND_PROTO", default=True
+    "IGNORE_FORWARDED_HOST_AND_PROTO",
+    default=True
 )
 """
 Use :attr:`FUNKWHALE_HOSTNAME` and :attr:`FUNKWHALE_PROTOCOL `
