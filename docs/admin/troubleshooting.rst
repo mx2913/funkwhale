@@ -50,7 +50,7 @@ Diagnostic tools:
 Common problems
 ***************
 
-Instance work properly, but audio files are not served (404 error)
+Instance works properly, but audio files are not served (404 error)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - If you're using docker, ensure the ``MEDIA_ROOT`` variable is commented in your env file

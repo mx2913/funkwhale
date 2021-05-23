@@ -609,7 +609,7 @@ SCOPED_TOKENS_MAX_AGE = 60 * 60 * 24 * 3
 # ------------------------------------------------------------------------------
 AUTH_LDAP_ENABLED = env.bool("LDAP_ENABLED", default=False)
 """
-Wether to enable LDAP authentication. See :doc:`/installation/ldap` for more information.
+Wether to enable LDAP authentication. See :doc:`/admin/ldap` for more information.
 """
 
 if AUTH_LDAP_ENABLED:
