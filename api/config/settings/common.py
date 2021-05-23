@@ -26,14 +26,10 @@ logging.config.dictConfig(
         "version": 1,
         "disable_existing_loggers": False,
         "formatters": {
-            "console": {
-                "format":
-                    "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"}
+            "console": {"format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"}
         },
         "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "console"},
+            "console": {"class": "logging.StreamHandler", "formatter": "console"},
         },
         "loggers": {
             "funkwhale_api": {
@@ -106,19 +102,14 @@ if LOAD_CORE_PLUGINS:
 PLUGINS = list(OrderedDict.fromkeys(PLUGINS))
 
 if PLUGINS:
-    logger.info(
-        "Running with the following plugins enabled: %s",
-        ", ".join(PLUGINS))
+    logger.info("Running with the following plugins enabled: %s", ", ".join(PLUGINS))
 else:
     logger.info("Running with no plugins")
 
 from .. import plugins  # noqa
 
 plugins.startup.autodiscover([p + ".funkwhale_startup" for p in PLUGINS])
-DEPENDENCIES = plugins.trigger_filter(
-    plugins.PLUGINS_DEPENDENCIES,
-    [],
-    enabled=True)
+DEPENDENCIES = plugins.trigger_filter(plugins.PLUGINS_DEPENDENCIES, [], enabled=True)
 plugins.install_dependencies(DEPENDENCIES)
 FUNKWHALE_HOSTNAME = None
 FUNKWHALE_HOSTNAME_SUFFIX = env("FUNKWHALE_HOSTNAME_SUFFIX", default=None)
@@ -181,16 +172,12 @@ FUNKWHALE_SPA_REWRITE_MANIFEST_URL = env.bool(
 
 APP_NAME = "Funkwhale"
 
-FEDERATION_HOSTNAME = env(
-    "FEDERATION_HOSTNAME",
-    default=FUNKWHALE_HOSTNAME).lower()
+FEDERATION_HOSTNAME = env("FEDERATION_HOSTNAME", default=FUNKWHALE_HOSTNAME).lower()
 FEDERATION_SERVICE_ACTOR_USERNAME = env(
     "FEDERATION_SERVICE_ACTOR_USERNAME", default="service"
 )
 # How many pages to fetch when crawling outboxes and third-party collections
-FEDERATION_COLLECTION_MAX_PAGES = env.int(
-    "FEDERATION_COLLECTION_MAX_PAGES",
-    default=5)
+FEDERATION_COLLECTION_MAX_PAGES = env.int("FEDERATION_COLLECTION_MAX_PAGES", default=5)
 """
 Number of existing pages of content to fetch when discovering/refreshing
 an actor or channel.
@@ -198,8 +185,7 @@ an actor or channel.
 More pages means more content will be loaded, but will require more resources.
 """
 
-ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[]) +\
-    [FUNKWHALE_HOSTNAME]
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[]) + [FUNKWHALE_HOSTNAME]
 """
 List of allowed hostnames for which the Funkwhale server will answer.
 """
@@ -276,9 +262,7 @@ INSTALLED_APPS = (
 
 # MIDDLEWARE CONFIGURATION
 # ------------------------------------------------------------------------------
-ADDITIONAL_MIDDLEWARES_BEFORE = env.list(
-    "ADDITIONAL_MIDDLEWARES_BEFORE",
-    default=[])
+ADDITIONAL_MIDDLEWARES_BEFORE = env.list("ADDITIONAL_MIDDLEWARES_BEFORE", default=[])
 MIDDLEWARE = (
     tuple(plugins.trigger_filter(plugins.MIDDLEWARES_BEFORE, [], enabled=True))
     + tuple(ADDITIONAL_MIDDLEWARES_BEFORE)
@@ -297,10 +281,7 @@ MIDDLEWARE = (
         "funkwhale_api.users.middleware.RecordActivityMiddleware",
         "funkwhale_api.common.middleware.ThrottleStatusMiddleware",
     )
-    + tuple(plugins.trigger_filter(
-        plugins.MIDDLEWARES_AFTER,
-        [],
-        enabled=True))
+    + tuple(plugins.trigger_filter(plugins.MIDDLEWARES_AFTER, [], enabled=True))
 )
 
 # DEBUG
@@ -324,8 +305,7 @@ FIXTURE_DIRS = (str(APPS_DIR.path("fixtures")),)
 # EMAIL
 # ------------------------------------------------------------------------------
 DEFAULT_FROM_EMAIL = env(
-    "DEFAULT_FROM_EMAIL",
-    default="Funkwhale <noreply@{}>".format(FUNKWHALE_HOSTNAME)
+    "DEFAULT_FROM_EMAIL", default="Funkwhale <noreply@{}>".format(FUNKWHALE_HOSTNAME)
 )
 """
 Name and email address used to send system emails.
@@ -485,9 +465,7 @@ however, if you're using S3 storage with :attr:`AWS_QUERYSTRING_AUTH`,
 it's safe to disable it.
 """
 AWS_DEFAULT_ACL = None
-AWS_QUERYSTRING_AUTH = env.bool(
-    "AWS_QUERYSTRING_AUTH",
-    default=not PROXY_MEDIA)
+AWS_QUERYSTRING_AUTH = env.bool("AWS_QUERYSTRING_AUTH", default=not PROXY_MEDIA)
 """
 Whether to include signatures in S3 urls, as a way to enforce access-control.
 
@@ -625,8 +603,7 @@ command line will never require verification.
 ACCOUNT_EMAIL_VERIFICATION = (
     "mandatory" if ACCOUNT_EMAIL_VERIFICATION_ENFORCE else "optional"
 )
-ACCOUNT_USERNAME_VALIDATORS = \
-    "funkwhale_api.users.serializers.username_validators"
+ACCOUNT_USERNAME_VALIDATORS = "funkwhale_api.users.serializers.username_validators"
 
 # Custom user app defaults
 # Select the correct user model
@@ -667,10 +644,7 @@ if AUTH_LDAP_ENABLED:
     # Import the LDAP modules here; this way, we don't need the dependency
     # unless someone actually enables the LDAP support
     import ldap
-    from django_auth_ldap.config import \
-        LDAPSearch, \
-        LDAPSearchUnion, \
-        GroupOfNamesType
+    from django_auth_ldap.config import LDAPSearch, LDAPSearchUnion, GroupOfNamesType
 
     # Add LDAP to the authentication backends
     AUTHENTICATION_BACKENDS += ("django_auth_ldap.backend.LDAPBackend",)
@@ -679,9 +653,9 @@ if AUTH_LDAP_ENABLED:
     AUTH_LDAP_SERVER_URI = env("LDAP_SERVER_URI")
     AUTH_LDAP_BIND_DN = env("LDAP_BIND_DN", default="")
     AUTH_LDAP_BIND_PASSWORD = env("LDAP_BIND_PASSWORD", default="")
-    AUTH_LDAP_SEARCH_FILTER = env(
-        "LDAP_SEARCH_FILTER",
-        default="(uid={0})").format("%(user)s")
+    AUTH_LDAP_SEARCH_FILTER = env("LDAP_SEARCH_FILTER", default="(uid={0})").format(
+        "%(user)s"
+    )
     AUTH_LDAP_START_TLS = env.bool("LDAP_START_TLS", default=False)
     AUTH_LDAP_BIND_AS_AUTHENTICATING_USER = env(
         "AUTH_LDAP_BIND_AS_AUTHENTICATING_USER", default=False
@@ -693,9 +667,7 @@ if AUTH_LDAP_ENABLED:
         "username:cn",
         "email:mail",
     ]
-    LDAP_USER_ATTR_MAP = env.list(
-        "LDAP_USER_ATTR_MAP",
-        default=DEFAULT_USER_ATTR_MAP)
+    LDAP_USER_ATTR_MAP = env.list("LDAP_USER_ATTR_MAP", default=DEFAULT_USER_ATTR_MAP)
     AUTH_LDAP_USER_ATTR_MAP = {}
     for m in LDAP_USER_ATTR_MAP:
         funkwhale_field, ldap_field = m.split(":")
@@ -872,23 +844,17 @@ def get_user_secret_key(user):
 OLD_PASSWORD_FIELD_ENABLED = True
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME":
-        "django.contrib.auth.password_validation."
+        "NAME": "django.contrib.auth.password_validation."
         "UserAttributeSimilarityValidator"
     },
     {
-        "NAME":
-            "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
         "OPTIONS": {"min_length": env.int("PASSWORD_MIN_LENGTH", default=8)},
     },
-    {"NAME":
-        "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME":
-        "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
-DISABLE_PASSWORD_VALIDATORS = env.bool(
-    "DISABLE_PASSWORD_VALIDATORS",
-    default=False)
+DISABLE_PASSWORD_VALIDATORS = env.bool("DISABLE_PASSWORD_VALIDATORS", default=False)
 """
 Wether to disable password validators (length, common words, similarity with
 username…) used during regitration.
@@ -904,8 +870,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS":
-    "funkwhale_api.common.pagination.FunkwhalePagination",
+    "DEFAULT_PAGINATION_CLASS": "funkwhale_api.common.pagination.FunkwhalePagination",
     "PAGE_SIZE": 25,
     "DEFAULT_PARSER_CLASSES": (
         "rest_framework.parsers.JSONParser",
@@ -944,15 +909,12 @@ if THROTTLING_ENABLED:
     )
 
 THROTTLING_SCOPES = {
-    "*": {
-        "anonymous": "anonymous-wildcard",
-        "authenticated": "authenticated-wildcard"},
+    "*": {"anonymous": "anonymous-wildcard", "authenticated": "authenticated-wildcard"},
     "create": {
         "authenticated": "authenticated-create",
         "anonymous": "anonymous-create",
     },
-    "list": {
-        "authenticated": "authenticated-list", "anonymous": "anonymous-list"},
+    "list": {"authenticated": "authenticated-list", "anonymous": "anonymous-list"},
     "retrieve": {
         "authenticated": "authenticated-retrieve",
         "anonymous": "anonymous-retrieve",
@@ -999,8 +961,7 @@ THROTTLING_RATES = {
         "description": "Anonymous GET requests on resource lists",
     },
     "authenticated-retrieve": {
-        "rate":
-            THROTTLING_USER_RATES.get("authenticated-retrieve", "10000/hour"),
+        "rate": THROTTLING_USER_RATES.get("authenticated-retrieve", "10000/hour"),
         "description": "Authenticated GET requests on resource detail",
     },
     "anonymous-retrieve": {
@@ -1017,8 +978,7 @@ THROTTLING_RATES = {
     },
     "authenticated-update": {
         "rate": THROTTLING_USER_RATES.get("authenticated-update", "1000/hour"),
-        "description":
-            "Authenticated PATCH and PUTrequests on resource detail",
+        "description": "Authenticated PATCH and PUTrequests on resource detail",
     },
     "anonymous-update": {
         "rate": THROTTLING_USER_RATES.get("anonymous-update", "1000/day"),
@@ -1038,8 +998,7 @@ THROTTLING_RATES = {
         "description": "Anonymous report submission",
     },
     "authenticated-oauth-app": {
-        "rate":
-            THROTTLING_USER_RATES.get("authenticated-oauth-app", "10/hour"),
+        "rate": THROTTLING_USER_RATES.get("authenticated-oauth-app", "10/hour"),
         "description": "Authenticated OAuth app creation",
     },
     "anonymous-oauth-app": {
@@ -1123,9 +1082,7 @@ the API will use different kind of headers to serve audio files
 
 Allowed values: ``nginx``, ``apache2``
 """
-assert REVERSE_PROXY_TYPE in \
-    ["apache2", "nginx"], \
-    "Unsupported REVERSE_PROXY_TYPE"
+assert REVERSE_PROXY_TYPE in ["apache2", "nginx"], "Unsupported REVERSE_PROXY_TYPE"
 
 PROTECT_FILES_PATH = env("PROTECT_FILES_PATH", default="/_protected")
 """
@@ -1192,8 +1149,7 @@ ACCOUNT_USERNAME_BLACKLIST = [
 List of usernames that will be unavailable during registration,
 given as a list of strings.
 """
-EXTERNAL_REQUESTS_VERIFY_SSL = env.bool(
-    "EXTERNAL_REQUESTS_VERIFY_SSL", default=True)
+EXTERNAL_REQUESTS_VERIFY_SSL = env.bool("EXTERNAL_REQUESTS_VERIFY_SSL", default=True)
 """
 Wether to enforce HTTPS certificates verification when doing outgoing
 HTTP requests (typically with federation).
@@ -1273,16 +1229,14 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 }
 VERSATILEIMAGEFIELD_SETTINGS = {
     "create_images_on_demand": False,
-    "jpeg_resize_quality":
-        env.int("THUMBNAIL_JPEG_RESIZE_QUALITY", default=95),
+    "jpeg_resize_quality": env.int("THUMBNAIL_JPEG_RESIZE_QUALITY", default=95),
 }
 RSA_KEY_SIZE = 2048
 # for performance gain in tests, since we don't need to actually create the
 # thumbnails
 CREATE_IMAGE_THUMBNAILS = env.bool("CREATE_IMAGE_THUMBNAILS", default=True)
 # we rotate actor keys at most every two days by default
-ACTOR_KEY_ROTATION_DELAY = env.int(
-    "ACTOR_KEY_ROTATION_DELAY", default=3600 * 48)
+ACTOR_KEY_ROTATION_DELAY = env.int("ACTOR_KEY_ROTATION_DELAY", default=3600 * 48)
 SUBSONIC_DEFAULT_TRANSCODING_FORMAT = (
     env("SUBSONIC_DEFAULT_TRANSCODING_FORMAT", default="mp3") or None
 )
@@ -1309,24 +1263,18 @@ MODERATION_EMAIL_NOTIFICATIONS_ENABLED = env.bool(
 Whether to enable email notifications to moderators and pods admins.
 """
 FEDERATION_AUTHENTIFY_FETCHES = True
-FEDERATION_SYNCHRONOUS_FETCH = env.bool(
-    "FEDERATION_SYNCHRONOUS_FETCH",
-    default=True)
+FEDERATION_SYNCHRONOUS_FETCH = env.bool("FEDERATION_SYNCHRONOUS_FETCH", default=True)
 FEDERATION_DUPLICATE_FETCH_DELAY = env.int(
     "FEDERATION_DUPLICATE_FETCH_DELAY", default=60 * 50
 )
 """
 Delay, in seconds, between two manual fetch of the same remote object.
 """
-INSTANCE_SUPPORT_MESSAGE_DELAY = env.int(
-    "INSTANCE_SUPPORT_MESSAGE_DELAY",
-    default=15)
+INSTANCE_SUPPORT_MESSAGE_DELAY = env.int("INSTANCE_SUPPORT_MESSAGE_DELAY", default=15)
 """
 Delay after signup, in days, before the "support your pod" message is shown.
 """
-FUNKWHALE_SUPPORT_MESSAGE_DELAY = env.int(
-    "FUNKWHALE_SUPPORT_MESSAGE_DELAY",
-    default=15)
+FUNKWHALE_SUPPORT_MESSAGE_DELAY = env.int("FUNKWHALE_SUPPORT_MESSAGE_DELAY", default=15)
 """
 Delay after signup, in days, before the "support Funkwhale" message is shown.
 """
@@ -1338,31 +1286,23 @@ MIN_DELAY_BETWEEN_DOWNLOADS_COUNT = env.int(
 Minimum required period, in seconds, for two downloads of the same track
 by the same IP or user to be recorded in statistics.
 """
-MARKDOWN_EXTENSIONS = env.list(
-    "MARKDOWN_EXTENSIONS",
-    default=["nl2br", "extra"])
+MARKDOWN_EXTENSIONS = env.list("MARKDOWN_EXTENSIONS", default=["nl2br", "extra"])
 """
 List of markdown extensions to enable.
 
 See `<https://python-markdown.github.io/extensions/>`_.
 """
-LINKIFIER_SUPPORTED_TLDS = ["audio"] + env.list(
-    "LINKINFIER_SUPPORTED_TLDS",
-    default=[])
+LINKIFIER_SUPPORTED_TLDS = ["audio"] + env.list("LINKINFIER_SUPPORTED_TLDS", default=[])
 """
 Additional TLDs to support with our markdown linkifier.
 """
-EXTERNAL_MEDIA_PROXY_ENABLED = env.bool(
-    "EXTERNAL_MEDIA_PROXY_ENABLED",
-    default=True)
+EXTERNAL_MEDIA_PROXY_ENABLED = env.bool("EXTERNAL_MEDIA_PROXY_ENABLED", default=True)
 """
 Wether to proxy attachment files hosted on third party pods and and servers.
 Keeping this to true is recommended, to reduce leaking browsing information
 of your users, and reduce the bandwidth used on remote pods.
 """
-PODCASTS_THIRD_PARTY_VISIBILITY = env(
-    "PODCASTS_THIRD_PARTY_VISIBILITY",
-    default="me")
+PODCASTS_THIRD_PARTY_VISIBILITY = env("PODCASTS_THIRD_PARTY_VISIBILITY", default="me")
 """
 By default, only people who subscribe to a podcast RSS will have access to
 their episodes. Switch to "instance" or "everyone" to change that.
@@ -1379,16 +1319,13 @@ Reducing this mean you'll receive new episodes faster, but will require more
 resources.
 """
 # maximum items loaded through XML feed
-PODCASTS_RSS_FEED_MAX_ITEMS = env.int(
-    "PODCASTS_RSS_FEED_MAX_ITEMS",
-    default=250)
+PODCASTS_RSS_FEED_MAX_ITEMS = env.int("PODCASTS_RSS_FEED_MAX_ITEMS", default=250)
 """
 Maximum number of RSS items to load in each podcast feed.
 """
 
 IGNORE_FORWARDED_HOST_AND_PROTO = env.bool(
-    "IGNORE_FORWARDED_HOST_AND_PROTO",
-    default=True
+    "IGNORE_FORWARDED_HOST_AND_PROTO", default=True
 )
 """
 Use :attr:`FUNKWHALE_HOSTNAME` and :attr:`FUNKWHALE_PROTOCOL`
