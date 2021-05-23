@@ -160,6 +160,5 @@ Filters reference
 
 .. autodata:: config.plugins.PLUGINS_DEPENDENCIES
 .. autodata:: config.plugins.PLUGINS_APPS
-.. autodata:: config.plugins.PLUGINSMIDDLEWARES_BEFORE_DEPENDENCIES
 .. autodata:: config.plugins.MIDDLEWARES_AFTER
 .. autodata:: config.plugins.URLS
