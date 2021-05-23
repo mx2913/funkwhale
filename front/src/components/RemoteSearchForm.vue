@@ -21,7 +21,7 @@
           {{ labels.fieldLabel }}
         </label>
         <p v-if="type === 'rss'">
-          <translate translate-context="Content/Fetch/Paragraph">Paste here the RSS url or the fediverse address to subscribe to its feed.</translate>
+          <translate translate-context="Content/Fetch/Paragraph">Paste a fediverse address or RSS URL here to subscribe to its feed.</translate>
         </p>
         <p v-else-if="type === 'artists'">
           <translate translate-context="Content/Fetch/Paragraph">Use this form to retrieve an object hosted somewhere else in the fediverse.</translate>
