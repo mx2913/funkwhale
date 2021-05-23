@@ -107,7 +107,7 @@ html_theme = "sphinx_rtd_theme"
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {"gitlab_url": "https://dev.funkwhale.audio/funkwhale/funkwhale"}
+#html_theme_options = {}
 html_context = {
     "display_gitlab": True,
     "gitlab_host": "dev.funkwhale.audio",
@@ -115,6 +115,7 @@ html_context = {
     "gitlab_user": "funkwhale",
     "gitlab_version": "master",
     "conf_py_path": "/docs/",
+    "gitlab_url": "https://dev.funkwhale.audio/funkwhale/funkwhale",
 }
 html_logo = "logo.svg"
 html_favicon = "../front/public/favicon.png"
