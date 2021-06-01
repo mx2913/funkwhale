@@ -38,17 +38,20 @@ On the origin server, create a database backup:
 
     sudo -u funkwhale pg_dump -d funkwhale > "db.dump"
 
-On the destination server, use rsync to fetch the contents of ``/srv/funwkhale/data/media/music/`` and ``/srv/funkwhale/data/media/`` from the origin server, as well as the database dump nd the ``.env`` file:
+On the destination server, use rsync to fetch the contents of ``/srv/funwkhale/data/media/music/`` and ``/srv/funkwhale/data/media/`` from the origin server, as well as the database dump and the ``.env`` file:
 
 .. code-block:: shell
 
-    rsync -a <your username>@<origin server IP/hostname>:/srv/funkwhale/data/media/ /srv/funkwhale/data/media/
-    rsync -a <your username>@<origin server IP/hostname>:/srv/funkwhale/data/music/ /srv/funkwhale/data/music/
+    origin = <origin server IP/hostname>
+    username = <your username>
 
-    rsync -a <your username>@<origin server IP/hostname>:/srv/funkwhale/config/.env /srv/funkwhale/config/
-    rsync -a <your username>@<origin server IP/hostname>:/srv/funkwhale/db.dump /srv/funkwhale/
+    rsync -a $username@$origin:/srv/funkwhale/data/media/ /srv/funkwhale/data/media/
+    rsync -a $username@$origin:/srv/funkwhale/data/music/ /srv/funkwhale/data/music/
 
-Restore the database dump:
+    rsync -a $username@$origin:/srv/funkwhale/config/.env /srv/funkwhale/config/
+    rsync -a $username@$origin:/srv/funkwhale/db.dump /srv/funkwhale/
+
+On the destination server, restore the database dump:
 
 .. code-block:: shell
 
@@ -79,11 +82,14 @@ On the destination server, use rsync to fetch the contents of ``/srv/funwkhale/d
 
 .. code-block:: shell
 
-    rsync -a <your username>@<origin server IP/hostname>:/srv/funkwhale/data/media/ /srv/funkwhale/data/media/
-    rsync -a <your username>@<origin server IP/hostname>:/srv/funkwhale/data/music/ /srv/funkwhale/data/music/
+    origin = <origin server IP/hostname>
+    username = <your username>
 
-    rsync -a <your username>@<origin server IP/hostname>:/srv/funkwhale/.env /srv/funkwhale/
-    rsync -a <your username>@<origin server IP/hostname>:/srv/funkwhale/db.dump /srv/funkwhale/
+    rsync -a $username@$origin:/srv/funkwhale/data/media/ /srv/funkwhale/data/media/
+    rsync -a $username@$origin:/srv/funkwhale/data/music/ /srv/funkwhale/data/music/
+
+    rsync -a $username@$origin:/srv/funkwhale/.env /srv/funkwhale/
+    rsync -a $username@$origin:/srv/funkwhale/db.dump /srv/funkwhale/
 
 Restore the database dump:
 
