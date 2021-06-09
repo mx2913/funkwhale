@@ -1,5 +1,6 @@
 import logging
 import re
+
 # /!\ The next import have xml vulnerabilities but this shouldn't have security implication in funkwhale
 # since there are only used to generate xspf file.
 from xml.etree.ElementTree import Element, SubElement
@@ -15,8 +16,8 @@ logger = logging.getLogger(__name__)
 
 def clean_namespace_xspf(xspf_file):
     """
-        This will delete any namaespace found in the xspf file. It will also delete any encoding info.
-        This way xspf file will be compatible with our get_track_id_from_xspf function.
+    This will delete any namaespace found in the xspf file. It will also delete any encoding info.
+    This way xspf file will be compatible with our get_track_id_from_xspf function.
     """
     file = open(xspf_file)
     with file as f:
@@ -30,7 +31,7 @@ def clean_namespace_xspf(xspf_file):
 
 def get_track_id_from_xspf(xspf_file):
     """
-        Return a list of funkwhale tracks id from a xspf file. Tracks not found in database are ignored.
+    Return a list of funkwhale tracks id from a xspf file. Tracks not found in database are ignored.
     """
     track_list = []
     xspf_data_clean = clean_namespace_xspf(xspf_file)
@@ -78,7 +79,7 @@ def get_track_id_from_xspf(xspf_file):
 
 def generate_xspf_from_playlist(playlist_id):
     """
-        This returns a string containing playlist data in xspf format
+    This returns a string containing playlist data in xspf format
     """
     fw_playlist = Playlist.objects.get(id=playlist_id)
     tracks_id = fw_playlist.playlist_tracks.all().values_list("track_id", flat=True)
@@ -111,7 +112,7 @@ def generate_xspf_from_playlist(playlist_id):
 
 def generate_xspf_from_tracks_ids(tracks_ids):
     """
-        This returns a string containing playlist data in xspf format. It's used for test purposes.
+    This returns a string containing playlist data in xspf format. It's used for test purposes.
     """
 
     top = Element("playlist")
@@ -140,7 +141,7 @@ def generate_xspf_from_tracks_ids(tracks_ids):
 
 def prettify(elem):
     """
-        Return a pretty-printed XML string for the Element.
+    Return a pretty-printed XML string for the Element.
     """
     rough_string = etree.tostring(elem, "utf-8")
     reparsed = minidom.parseString(rough_string)
