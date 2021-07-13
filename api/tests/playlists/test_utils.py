@@ -21,9 +21,9 @@ def test_get_track_id_from_xspf(factories, tmp_path):
 
 def test_generate_xspf_from_playlist(factories):
     playlist = factories["playlists.PlaylistTrack"]()
+    playlist_factory = models.Playlist.objects.get()
     xspf_test = utils.generate_xspf_from_playlist(playlist.id)
     tree = etree.fromstring(xspf_test)
-    playlist_factory = models.Playlist.objects.get()
     track1 = playlist_factory.playlist_tracks.get(id=1)
     track1_name = track1.track
     assert playlist_factory.name == tree.findtext("./title")
