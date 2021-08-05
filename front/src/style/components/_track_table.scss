@@ -13,6 +13,10 @@
   }
 }
 
+.track-row.row {
+  align-content: center;
+}
+
 .track-row,
 .track-table.row {
   .ui.really.tiny.button.play-button {
@@ -146,7 +150,6 @@
 
 .track-row,
 .track-table {
-  border-radius: 5px;
   padding: 0.5em;
   > div:not(.mobile) {
     padding: 0.25em;
