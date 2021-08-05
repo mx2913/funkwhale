@@ -28,6 +28,11 @@ Each category comes with its own set of diagnose tools and/or commands we will d
 steps for each type of problem. Please try those to see if it fix your issues. If none of those works, please report your issue on our
 issue tracker.
 
+.. note::
+
+    To get detailed log messages, set the environment variable ``LOGLEVEL=debug``. 
+    If you are using the docker setup you can configure this in the ``.env`` file.
+
 Backend issues
 ^^^^^^^^^^^^^^
 
@@ -50,12 +55,12 @@ Diagnostic tools:
 Common problems
 ***************
 
-Instance work properly, but audio files are not served (404 error)
+Instance works properly, but audio files are not served (404 error)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - If you're using docker, ensure the ``MEDIA_ROOT`` variable is commented in your env file
 - Ensure the ``_protected/media`` block points toward the path where media files are stored (``/srv/funkwhale/data/media``, by default)
-- If you're using in-place import, ensure :ref:`setting-MUSIC_DIRECTORY_PATH`, :ref:`setting-MUSIC_DIRECTORY_SERVE_PATH` and :ref:`setting-REVERSE_PROXY_TYPE` are configured properly, and that the files are readable by the webserver
+- If you're using in-place import, ensure :data:`MUSIC_DIRECTORY_PATH <config.settings.common.MUSIC_DIRECTORY_PATH>`, :data:`MUSIC_DIRECTORY_SERVE_PATH <config.settings.common.MUSIC_DIRECTORY_SERVE_PATH>` and :data:`REVERSE_PROXY_TYPE <config.settings.common.REVERSE_PROXY_TYPE>` are configured properly, and that the files are readable by the webserver
 
 Weakref error when running ``python manage.py <command>``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,7 +141,7 @@ Report an issue or get help
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Well be more than happy to help you to debug installation and configuration issues. The main channel
-for receiving support about your Funkwhale installation is the `#funkwhale-troubleshooting:matrix.org <https://riot.im/app/#/room/#funkwhale-troubleshooting:matrix.org>`_ Matrix channel.
+for receiving support about your Funkwhale installation is the `#funkwhale-troubleshooting:matrix.org <https://matrix.to/#/#funkwhale-troubleshooting:matrix.org>`_ Matrix channel.
 
 Before asking for help, we'd really appreciate if you took the time to go through this document and try to diagnose the problem yourself. But if you don't find
 anything relevant or don't have the time, we'll be there for you!

@@ -303,11 +303,13 @@ Typical workflow for a contribution
 2. If working on an issue, assign yourself to the issue. Otherwise, consider open an issue before starting to work on something, especially for new features.
 3. Create a dedicated branch for your work ``42-awesome-fix``. It is good practice to prefix your branch name with the ID of the issue you are solving.
 4. Work on your stuff
-5. Commit small, atomic changes to make it easier to review your contribution
-6. Add a changelog fragment to summarize your changes: ``echo "Implemented awesome stuff (#42)" > changes/changelog.d/42.feature``
-7. Push your branch
-8. Create your merge request
-9. Take a step back and enjoy, we're really grateful you did all of this and took the time to contribute!
+5. [Optional] Consider running ``yarn lint`` in ``front`` if you changed something there. Consider fixing some
+   linting errors in the files you touched.
+6. Commit small, atomic changes to make it easier to review your contribution
+7. Add a changelog fragment to summarize your changes: ``echo "Implemented awesome stuff (#42)" > changes/changelog.d/42.feature``
+8. Push your branch
+9. Create your merge request
+10. Take a step back and enjoy, we're really grateful you did all of this and took the time to contribute!
 
 Changelog management
 --------------------
@@ -647,11 +649,11 @@ useful when testing components that depend on each other:
 
     def notify(email, message):
         """
-        A function that sends an email to the given recipient
+        A function that sends an e-mail to the given recipient
         with the given message
         """
 
-        # our email sending logic here
+        # our e-mail sending logic here
         # ...
 
     # funkwhale_api/myapp/users.py
@@ -673,9 +675,9 @@ useful when testing components that depend on each other:
     def test_downgrade_superuser_sends_email(factories, mocker):
         """
         Your downgrade logic is already tested, however, we want to ensure
-        an email is sent when user is downgraded, but we don't have any email
+        an e-mail is sent when user is downgraded, but we don't have any e-mail
         server available in our testing environment. Thus, we need to mock
-        the email sending process.
+        the e-mail sending process.
         """
         mocked_notify = mocker.patch('funkwhale_api.myapp.notifications.notify')
         user = factories['users.User'](is_superuser=True)
@@ -690,7 +692,7 @@ useful when testing components that depend on each other:
         user = factories['users.User'](is_superuser=False)
         users.downgrade_user(user)
 
-        # here, we ensure no email was sent
+        # here, we ensure no e-mail was sent
         mocked_notify.assert_not_called()
 
 Views: you can find some readable views tests in file: ``api/tests/users/test_views.py``

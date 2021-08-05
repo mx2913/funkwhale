@@ -1,4 +1,4 @@
-FROM alpine:3.10 as builder
+FROM alpine:3.13 as builder
 
 RUN \
     echo 'installing dependencies' && \
@@ -15,6 +15,10 @@ RUN \
     zlib-dev           \
     jpeg-dev           \
     openldap-dev \
+    openssl-dev \
+    cargo \
+    libxml2-dev \
+    libxslt-dev \
     && \
     \
     ln -s /usr/bin/python3 /usr/bin/python
@@ -41,7 +45,7 @@ RUN \
     if [ "$install_dev_deps" = "1" ] ; then echo "Installing dev dependencies" && pip3 install --no-cache-dir -r /requirements/local.txt -r /requirements/test.txt ; else echo "Skipping dev deps installation" ; fi
 
 
-FROM alpine:3.10 as build-image
+FROM alpine:3.13 as build-image
 
 COPY --from=builder /venv /venv
 # emulate activation by prefixing PATH
@@ -55,6 +59,8 @@ RUN apk add --no-cache \
     jpeg-dev \
     ffmpeg             \
     libpq              \
+    libxml2 \
+    libxslt \
     && \
     \
     ln -s /usr/bin/python3 /usr/bin/python

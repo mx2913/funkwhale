@@ -13,8 +13,8 @@ variables:
 stages:
   - review
   - lint
-  - test
   - build
+  - test
   - deploy
   - deps
 
@@ -117,13 +117,31 @@ flake8:
     paths:
       - "$PIP_CACHE_DIR"
 
+eslint:
+  interruptible: true
+  image: node:12-buster
+  stage: lint
+  allow_failure: true
+  before_script:
+    - cd front
+    - yarn install
+  script:
+    # We search for all files ending with .vue or .js in src which changed in relation to develop
+    # and lint them. This way we focus on some errors instead of checking the hole repository
+    - export changedFiles=$(git diff --relative --name-only --diff-filter=d origin/develop -- src/ | grep -E "\.(vue|js)$")
+    - yarn run eslint --quiet -f table $changedFiles
+  cache:
+    key: "$CI_PROJECT_ID__eslint_npm_cache"
+    paths:
+      - front/node_modules
+
 test_api:
   interruptible: true
   services:
     - postgres:11
     - redis:5
   stage: test
-  image: funkwhale/funkwhale:develop
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
   cache:
     key: "$CI_PROJECT_ID__pip_cache"
     paths:
@@ -136,20 +154,21 @@ test_api:
   only:
     - branches
   before_script:
-    - apk add make git gcc python3-dev musl-dev
+    - apk add make git gcc python3-dev musl-dev python3-dev openssl-dev cargo
     - apk add postgresql-dev py3-psycopg2 libldap libffi-dev make zlib-dev jpeg-dev openldap-dev
     - cd api
     - pip3 install -r requirements/base.txt
     - pip3 install -r requirements/local.txt
     - pip3 install -r requirements/test.txt
   script:
-    - pytest --cov=funkwhale_api --junitxml=report.xml tests/
+    - pytest --cov-report xml --cov-report term-missing --cov=funkwhale_api --junitxml=report.xml tests/
   tags:
     - docker
   artifacts:
     when: always
     reports:
       junit: api/report.xml
+      cobertura: api/coverage.xml
 
 test_front:
   interruptible: true
@@ -198,9 +217,21 @@ build_front:
     - tags@funkwhale/funkwhale
     - master@funkwhale/funkwhale
     - develop@funkwhale/funkwhale
-
   tags:
     - docker
+
+build_backend:
+  stage: build
+  image: bash
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker system prune -af
+    - cd api
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  tags:
+    - docker-build
 
 pages:
   stage: test
@@ -235,10 +266,13 @@ docker_release:
     - (if [ "$CI_COMMIT_REF_NAME" == "develop" ] || [ "$CI_COMMIT_REF_NAME" == "master" ]; then ./scripts/set-api-build-metadata.sh $(echo $CI_COMMIT_SHA | cut -c 1-8); fi);
   script:
     - if [[ ! -z "$CI_COMMIT_TAG" ]]; then (./docs/get-releases-json.py | scripts/is-docker-latest.py $CI_COMMIT_TAG -) && export DOCKER_LATEST_TAG="-t $IMAGE_LATEST" || export DOCKER_LATEST_TAG=; fi
+    - if [[ "$CI_COMMIT_REF_NAME" =~ ^[0-9]+(.[0-9]+){1,2}$ ]]; then export stable=1 && export major="$(echo $CI_COMMIT_REF_NAME | cut -d '.' -f 1)" && export minor="$(echo $CI_COMMIT_REF_NAME | cut -d '.' -f 1,2)"; fi
     - cd api
     - docker build -t $IMAGE $DOCKER_LATEST_TAG .
     - docker push $IMAGE
     - if [[ ! -z "$DOCKER_LATEST_TAG" ]]; then docker push $IMAGE_LATEST; fi
+    - if [[ $stable == 1 ]]; then docker tag $IMAGE $IMAGE_NAME:$major && docker push $IMAGE_NAME:$major; fi
+    - if [[ $stable == 1 ]]; then docker tag $IMAGE $IMAGE_NAME:$minor && docker push $IMAGE_NAME:$minor; fi
   only:
     - develop@funkwhale/funkwhale
     - master@funkwhale/funkwhale
@@ -246,34 +280,34 @@ docker_release:
   tags:
     - docker-build
 
-docker_all_in_one_release:
-  stage: deploy
-  image: bash
-  variables:
-    ALL_IN_ONE_REF: master
-    ALL_IN_ONE_ARTIFACT_URL: https://github.com/thetarkus/docker-funkwhale/archive/$ALL_IN_ONE_REF.zip
-    BUILD_PATH: all_in_one
-  before_script:
-    - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-    - (if [ "$CI_COMMIT_REF_NAME" == "develop" ] || [ "$CI_COMMIT_REF_NAME" == "master" ]; then ./scripts/set-api-build-metadata.sh $(echo $CI_COMMIT_SHA | cut -c 1-8); fi);
-  script:
-    - if [[ ! -z "$CI_COMMIT_TAG" ]]; then (./docs/get-releases-json.py | scripts/is-docker-latest.py $CI_COMMIT_TAG -) && export DOCKER_LATEST_TAG="-t $ALL_IN_ONE_IMAGE_LATEST" || export DOCKER_LATEST_TAG=; fi
-    - wget $ALL_IN_ONE_ARTIFACT_URL -O all_in_one.zip
-    - unzip -o all_in_one.zip -d tmpdir
-    - mv tmpdir/docker-funkwhale-$ALL_IN_ONE_REF $BUILD_PATH && rmdir tmpdir
-    - cp -r api $BUILD_PATH/src/api
-    - cp -r front $BUILD_PATH/src/front
-    - cd $BUILD_PATH
-    - ./scripts/download-nginx-template.sh src/ $CI_COMMIT_REF_NAME
-    - docker build -t $ALL_IN_ONE_IMAGE $DOCKER_LATEST_TAG .
-    - docker push $ALL_IN_ONE_IMAGE
-    - if [[ ! -z "$DOCKER_LATEST_TAG" ]]; then docker push $ALL_IN_ONE_IMAGE_LATEST; fi
-  only:
-    - develop@funkwhale/funkwhale
-    - master@funkwhale/funkwhale
-    - tags@funkwhale/funkwhale
-  tags:
-    - docker-build
+#docker_all_in_one_release:
+#  stage: deploy
+#  image: bash
+#  variables:
+#    ALL_IN_ONE_REF: master
+#    ALL_IN_ONE_ARTIFACT_URL: https://github.com/thetarkus/docker-funkwhale/archive/$ALL_IN_ONE_REF.zip
+#    BUILD_PATH: all_in_one
+#  before_script:
+#    - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+#    - (if [ "$CI_COMMIT_REF_NAME" == "develop" ] || [ "$CI_COMMIT_REF_NAME" == "master" ]; then ./scripts/set-api-build-metadata.sh $(echo $CI_COMMIT_SHA | cut -c 1-8); fi);
+#  script:
+#    - if [[ ! -z "$CI_COMMIT_TAG" ]]; then (./docs/get-releases-json.py | scripts/is-docker-latest.py $CI_COMMIT_TAG -) && export DOCKER_LATEST_TAG="-t $ALL_IN_ONE_IMAGE_LATEST" || export DOCKER_LATEST_TAG=; fi
+#    - wget $ALL_IN_ONE_ARTIFACT_URL -O all_in_one.zip
+#    - unzip -o all_in_one.zip -d tmpdir
+#    - mv tmpdir/docker-funkwhale-$ALL_IN_ONE_REF $BUILD_PATH && rmdir tmpdir
+#    - cp -r api $BUILD_PATH/src/api
+#    - cp -r front $BUILD_PATH/src/front
+#    - cd $BUILD_PATH
+#    - ./scripts/download-nginx-template.sh src/ $CI_COMMIT_REF_NAME
+#    - docker build -t $ALL_IN_ONE_IMAGE $DOCKER_LATEST_TAG .
+#    - docker push $ALL_IN_ONE_IMAGE
+#    - if [[ ! -z "$DOCKER_LATEST_TAG" ]]; then docker push $ALL_IN_ONE_IMAGE_LATEST; fi
+#  only:
+#    - develop@funkwhale/funkwhale
+#    - master@funkwhale/funkwhale
+#    - tags@funkwhale/funkwhale
+#  tags:
+#    - docker-build
 
 build_api:
   # Simply publish a zip containing api/ directory
@@ -296,7 +330,7 @@ build_api:
 check_api_dependencies:
   interruptible: true
   stage: deps
-  image: funkwhale/funkwhale:develop
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
   cache:
     key: "$CI_PROJECT_ID__pip_cache"
     paths:

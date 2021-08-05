@@ -226,6 +226,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"
 import GlobalEvents from "@/components/utils/global-events"
+import { toLinearVolumeScale } from '@/audio/volume'
 import { Howl } from "howler"
 import $ from 'jquery'
 import _ from '@/lodash'
@@ -265,8 +266,6 @@ export default {
     this.$store.commit("player/isLoadingAudio", false)
     Howler.unload()  // clear existing cache, if any
     this.nextTrackPreloaded = false
-    // we trigger the watcher explicitely it does not work otherwise
-    this.sliderVolume = this.volume
     // this is needed to unlock audio playing under some browsers,
     // cf https://github.com/goldfire/howler.js#mobilechrome-playback
     // but we never actually load those audio files
@@ -364,7 +363,6 @@ export default {
         loop: false,
         html5: true,
         preload: true,
-        volume: this.volume,
         onend: function () {
           self.ended()
         },
@@ -384,6 +382,10 @@ export default {
           })
         },
         onplay: function () {
+          if (this != self.currentSound) {
+            this.stop()
+            return
+          }
           self.$store.commit('player/isLoadingAudio', false)
           self.$store.commit('player/resetErrorCount')
           self.$store.commit('player/errored', false)
@@ -697,8 +699,8 @@ export default {
     labels() {
       let audioPlayer = this.$pgettext('Sidebar/Player/Hidden text', "Media player")
       let previous = this.$pgettext('Sidebar/Player/Icon.Tooltip', "Previous track")
-      let play = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Play track")
-      let pause = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Pause track")
+      let play = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Play")
+      let pause = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Pause")
       let next = this.$pgettext('Sidebar/Player/Icon.Tooltip', "Next track")
       let unmute = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Unmute")
       let mute = this.$pgettext('Sidebar/Player/Icon.Tooltip/Verb', "Mute")
@@ -741,23 +743,23 @@ export default {
         }
         this.nextTrackPreloaded = false
         clearTimeout(this.playTimeout)
-        let self = this
         if (this.currentSound) {
           this.currentSound.pause()
         }
         this.$store.commit("player/isLoadingAudio", true)
         this.playTimeout = setTimeout(async () => {
-          await self.loadSound(newValue, oldValue)
-        }, 500);
+          await this.loadSound(newValue, oldValue)
+        }, 100);
         this.updateMetadata()
       },
       immediate: false
     },
-    volume(newValue) {
-      this.sliderVolume = newValue
-      if (this.currentSound) {
-        this.currentSound.volume(newValue)
-      }
+    volume: {
+      immediate: true,
+      handler(newValue) {
+        this.sliderVolume = newValue
+        Howler.volume(toLinearVolumeScale(newValue))
+      },
     },
     sliderVolume(newValue) {
       this.$store.commit("player/volume", newValue)
