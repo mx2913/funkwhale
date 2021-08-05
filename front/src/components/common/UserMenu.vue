@@ -40,11 +40,11 @@
         {{ labels.support }}
         <i class="dropdown icon" />
         <div class="menu">
-          <a href="https://governance.funkwhale.audio/g/kQgxNq15/funkwhale" class="item" target="_blank">
+          <a href="https://forum.funkwhale.audio" class="item" target="_blank">
             <i class="users icon" />
             {{ labels.forum }}
           </a>
-          <a href="https://riot.im/app/#/room/#funkwhale-troubleshooting:matrix.org" class="item" target="_blank">
+          <a href="https://matrix.to/#/#funkwhale-troubleshooting:matrix.org" class="item" target="_blank">
             <i class="comment icon" />
             {{ labels.chat }}
           </a>
