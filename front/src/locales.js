@@ -112,6 +112,18 @@ export default {
     {
       "code": "fa_IR",
       "label": "فارسی"
+    },
+    {
+      "code": "ml",
+      "label": "മലയാളം"
+    },
+    {
+      "code": "sv",
+      "label": "Svenska"
+    },
+    {
+      "code": "el",
+      "label": "Ελληνικά"
     }
   ]
 }

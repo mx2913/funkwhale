@@ -1,5 +1,5 @@
 django~=3.2.3
-setuptools~=57.1.0
+setuptools~=57.4.0
 # Configuration
 django-environ~=0.4.0
 
@@ -21,15 +21,15 @@ kombu~=5.1.0
 celery~=5.1.2
 
 # Your custom requirements go here
-django-cors-headers~=3.7.0
+django-cors-headers~=3.8.0
 musicbrainzngs~=0.7.1
 djangorestframework~=3.12.2
 arrow~=1.1.0
 persisting-theory~=0.2.0
-django-versatileimagefield~=2.1.0
+django-versatileimagefield~=2.2.0
 django-filter~=2.4.0
 django-rest-auth~=0.9.0
-ipython~=7.25.0
+ipython~=7.27.0
 mutagen~=1.45.0
 
 pymemoize~=1.0.0
@@ -46,12 +46,12 @@ cryptography~=3.4.7
 # clone until the branch is merged and released upstream
 git+https://github.com/agateblue/requests-http-signature.git@signature-header-support
 django-cleanup~=5.2.0
-requests~=2.25.1
+requests~=2.26.0
 pyOpenSSL~=20.0.1
 
 # for LDAP authentication
 python-ldap~=3.3.0
-django-auth-ldap~=2.4.0
+django-auth-ldap~=3.0.0
 
 pydub~=0.25.1
 pyld~=2.0.3
