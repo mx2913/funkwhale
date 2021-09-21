@@ -49,9 +49,7 @@
       <a
         class="podcast-episode-title ellipsis"
         @click.prevent.exact="activateTrack(track, index)">{{ track.title }}</a>
-      <p class="podcast-episode-meta">
-      An episode description, with all its twists and turns!
-      This episode focuses on something I'm sure, but nobody really knows what it's focusing on.</p>
+      <p class="podcast-episode-meta">{{ description.text }}</p>
     </div>
     <div v-if="displayActions" class="meta right floated column">
       <play-button
@@ -71,6 +69,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import PlayIndicator from "@/components/audio/track/PlayIndicator";
 import { mapActions, mapGetters } from "vuex";
 import PlayButton from "@/components/audio/PlayButton";
@@ -97,8 +96,14 @@ export default {
   data() {
     return {
       hover: null,
+      errors: null,
+      description: null,
     }
   },
+
+  created () {
+    this.fetchData('tracks/' + this.track.id + '/' )
+	},
 
   components: {
     PlayIndicator,
@@ -116,6 +121,21 @@ export default {
   },
 
   methods: {
+    async fetchData (url) {
+      if (!url) {
+        return
+      }
+      this.isLoading = true
+      let self = this
+      try {
+        let channelsPromise = await axios.get(url)
+        self.description = channelsPromise.data.description
+        self.isLoading = false
+      } catch(e) {
+        self.isLoading = false
+        self.errors = error.backendErrors
+      }
+    },
 
     prettyPosition(position, size) {
       var s = String(position);
