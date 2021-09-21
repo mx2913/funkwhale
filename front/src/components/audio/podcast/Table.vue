@@ -13,7 +13,6 @@
         <!-- For each item, build a row -->
         <podcast-row
           v-for="(track, index) in tracks"
-          :default-cover="defaultCover"
           :track="track"
           :key="track.id"
           :index="index"
