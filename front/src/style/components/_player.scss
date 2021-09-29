@@ -76,8 +76,12 @@
     .bar.position:not(.buffer) {
     background: var(--vibrant-color);
     width: 100%;
-    transition: transform 1.1s linear 0s;
+    transition: transform 0s linear 0s;
     transform-origin: left center 0px;
+  }
+
+  .animation {
+    transition-duration: 1.01s !important;
   }
 
   .track-controls {

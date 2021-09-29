@@ -7,7 +7,7 @@
       <div
         :class="['ui', 'top attached', 'small', 'inverted', {'indicating': isLoadingAudio}, 'progress']">
         <div class="buffer bar" :data-percent="bufferProgress" :style="{ 'width': bufferProgress + '%' }"></div>
-        <div class="position bar" :data-percent="progress" :style="{ 'transform': 'scale(' + progress + ', 1)' }"></div>
+        <div class="position bar" :class="{ 'animation': animationActive }" :data-percent="progress" :style="{ 'transform': 'scale(' + progress + ', 1)' }"></div>
       </div>
       <div class="controls-row">
 
@@ -727,6 +727,9 @@ export default {
         expandQueue,
         addArtistContentFilter
       }
+    },
+    animationActive () {
+      return this.progress && this.playing;
     }
   },
   watch: {
