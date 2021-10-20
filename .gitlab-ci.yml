@@ -268,6 +268,7 @@ docker_release:
   services:
     - docker:20-dind
   before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
     - cp -r front/dist api/frontend
     - (if [ "$CI_COMMIT_REF_NAME" == "develop" ] || [ "$CI_COMMIT_REF_NAME" == "stable" ]; then ./scripts/set-api-build-metadata.sh $(echo $CI_COMMIT_SHA | cut -c 1-8); fi);
@@ -275,11 +276,8 @@ docker_release:
     - if [[ ! -z "$CI_COMMIT_TAG" ]]; then (./docs/get-releases-json.py | scripts/is-docker-latest.py $CI_COMMIT_TAG -) && export DOCKER_LATEST_TAG="-t $IMAGE_LATEST" || export DOCKER_LATEST_TAG=; fi
     - if [[ "$CI_COMMIT_REF_NAME" =~ ^[0-9]+(.[0-9]+){1,2}$ ]]; then export stable=1 && export major="$(echo $CI_COMMIT_REF_NAME | cut -d '.' -f 1)" && export minor="$(echo $CI_COMMIT_REF_NAME | cut -d '.' -f 1,2)"; fi
     - cd api
-    - docker build -t $IMAGE $DOCKER_LATEST_TAG .
-    - docker push $IMAGE
-    - if [[ ! -z "$DOCKER_LATEST_TAG" ]]; then docker push $IMAGE_LATEST; fi
-    - if [[ $stable == 1 ]]; then docker tag $IMAGE $IMAGE_NAME:$major && docker push $IMAGE_NAME:$major; fi
-    - if [[ $stable == 1 ]]; then docker tag $IMAGE $IMAGE_NAME:$minor && docker push $IMAGE_NAME:$minor; fi
+    - docker buildx create --use --name A$CI_COMMIT_SHORT_SHA
+    - docker buildx build --platform $BUILD_PLATFORMS --push -t $IMAGE -t $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-$(date +%Y-%m-%d) -t $IMAGE_LATEST .
   only:
     - develop@funkwhale/funkwhale
     - stable@funkwhale/funkwhale
