@@ -25,7 +25,7 @@
         <button class="item basic" ref="playNow" data-ref="playNow" :disabled="!playable" @click.stop.prevent="addNext(true)" :title="labels.playNow">
           <i class="play icon"></i>{{ labels.playNow }}
         </button>
-        <button v-if="track" class="item basic" :disabled="!playable" @click.stop.prevent="$store.dispatch('radios/start', {type: 'similar', objectId: track.id})" :title="labels.startRadio">
+        <button v-if="track" class="item basic" :disabled="!playable" @click.stop.prevent="$store.dispatch('radios/start', {type: 'similar_history', objectId: track.id})" :title="labels.startRadio">
           <i class="feed icon"></i><translate translate-context="*/Queue/Button.Label/Short, Verb">Play radio</translate>
         </button>
         <button v-if="track" class="item basic" :disabled="!playable" @click.stop="$store.commit('playlists/chooseTrack', track)">

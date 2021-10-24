@@ -1,3 +1,4 @@
+import logging
 import random
 
 from django.core.exceptions import ValidationError
@@ -11,8 +12,10 @@ from funkwhale_api.moderation import filters as moderation_filters
 from funkwhale_api.music.models import Artist, Library, Track, Upload
 from funkwhale_api.tags.models import Tag
 
-from . import filters, models
+from . import filters, models, utils
 from .registries import registry
+
+logger = logging.getLogger(__name__)
 
 
 class SimpleRadio(object):
@@ -201,7 +204,7 @@ class NextNotFound(Exception):
     pass
 
 
-@registry.register(name="similar")
+@registry.register(name="similar_history")
 class SimilarRadio(RelatedObjectRadio):
     model = Track
 
@@ -252,6 +255,27 @@ class SimilarRadio(RelatedObjectRadio):
         if not next_candidates:
             raise NextNotFound()
         return random.choice([c[0] for c in next_candidates])
+
+
+@registry.register(name="similar_mbid")
+class SimilarAcousticRadio(RelatedObjectRadio):
+    model = Track
+
+    def get_regex(self):
+        related_mbid = str(self.session.related_object.mbid)
+        if not related_mbid:
+            logger.info(f"No mbid found for the related object.")
+            pass
+        mbids_regex = str()
+        mbids = utils.get_similar_tracks_mbids_from_mbid(related_mbid, "rosamerica")
+        for mbid in mbids:
+            mbids_regex = str(mbids_regex) + str(mbid + "|")
+        return mbids_regex
+
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
+        mbids_regex = self.get_regex()
+        return queryset.filter(mbid__regex=r'({mbids_regex})'.format(mbids_regex=mbids_regex))
 
 
 @registry.register(name="artist")
