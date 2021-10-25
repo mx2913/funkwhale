@@ -396,7 +396,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~plyr/src/sass/plyr.scss";
 
 html,
 body,
