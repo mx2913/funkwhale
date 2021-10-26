@@ -29,59 +29,7 @@
           <h3><a :href="fullUrl('/library/tracks/' + currentTrack.id)" target="_blank" rel="noopener noreferrer">{{ currentTrack.title }}</a></h3>
           <a :href="fullUrl('/library/artists/' + currentTrack.artist.id)" target="_blank" rel="noopener noreferrer">{{ currentTrack.artist.name }}</a>
         </header>
-        <section v-if="!isLoading" class="controls" aria-label="Audio player">
-          <template v-if="currentTrack && currentTrack.sources.length > 0">
-            <div class="queue-controls plyr--audio" v-if="tracks.length > 1">
-              <div class="plyr__controls">
-                <button
-                  @focus="setControlFocus($event, true)"
-                  @blur="setControlFocus($event, false)"
-                  @click="previous()"
-                  type="button"
-                  class="plyr__control"
-                  aria-label="Play previous track">
-                  <svg class="icon--not-pressed" role="presentation" focusable="false" viewBox="0 0 1100 1650" width="80" height="80">
-                    <use xlink:href="#plyr-step-backward"></use>
-                  </svg>
-                </button>
-                <button
-                  @click="next()"
-                  @focus="setControlFocus($event, true)"
-                  @blur="setControlFocus($event, false)"
-                  type="button"
-                  class="plyr__control"
-                  aria-label="Play next track">
-                  <svg class="icon--not-pressed" role="presentation" focusable="false" viewBox="0 0 1100 1650" width="80" height="80">
-                    <use xlink:href="#plyr-step-forward"></use>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <vue-plyr
-              :key="currentIndex"
-              ref="player"
-              class="player"
-              :options="{loadSprite: false, controls: controls, duration: currentTrack.sources[0].duration, autoplay}">
-              <audio preload="none">
-                <source v-for="source in currentTrack.sources" :src="source.src" :type="source.type"/>
-              </audio>
-            </vue-plyr>
-          </template>
-          <div v-else class="player">
-            <span v-if="error === 'invalid_type'" class="error">Widget improperly configured (bad resource type {{ type }}).</span>
-            <span v-else-if="error === 'invalid_id'" class="error">Widget improperly configured (missing resource id).</span>
-            <span v-else-if="error === 'server_not_found'" class="error">Track not found.</span>
-            <span v-else-if="error === 'server_requires_auth'" class="error">You need to login to access this resource.</span>
-            <span v-else-if="error === 'server_error'" class="error">A server error occurred.</span>
-            <span v-else-if="error === 'server_error'" class="error">An unknown error occurred while loading track data from server.</span>
-            <span v-else-if="currentTrack && currentTrack.sources.length === 0" class="error">This track is unavailable.</span>
-            <span v-else class="error">An unknown error occurred while loading track data.</span>
-          </div>
-          <a title="Funkwhale" href="https://funkwhale.audio" target="_blank" rel="noopener noreferrer" class="logo-wrapper">
-            <logo :fill="currentTheme.textColor" class="logo"></logo>
-          </a>
-        </section>
+        <Player></Player>
       </div>
     </article>
     <div v-if="tracks.length > 1" class="queue-wrapper" id="queue">
@@ -119,6 +67,7 @@ import axios from 'axios'
 import Logo from "@/components/Logo"
 import url from '@/utils/url'
 import time from '@/utils/time'
+import Player from '@/components/audio/PlayerCopy'
 
 function getURLParams () {
   var urlParams
@@ -135,7 +84,7 @@ function getURLParams () {
 }
 export default {
   name: 'app',
-  components: {Logo},
+  components: {Logo, Player},
   data () {
     return {
       time,
@@ -175,6 +124,7 @@ export default {
     if (!!params.instance) {
       this.baseUrl = params.instance
     }
+    this.$store.dispatch('instance/setUrl', this.baseUrl)
 
     this.autoplay = params.autoplay != undefined || params.auto_play != undefined
     this.fetch(this.type, this.id)
@@ -256,7 +206,9 @@ export default {
       let self = this
       let url = `${this.baseUrl}/api/v1/tracks/${id}/`
       axios.get(url).then(response => {
-        self.tracks = self.parseTracks([response.data])
+        self.tracks = response.data
+        self.$store.dispatch('queue/append', {track: self.tracks})
+        self.$store.dispatch('queue/next')
         self.isLoading = false;
       }).catch(error => {
         if (error.response) {
@@ -326,9 +278,9 @@ export default {
     },
     bindEvents () {
       let self = this
-      this.$refs.player.player.on('ended', () => {
-        self.next()
-      })
+      //this.$refs.player.player.on('ended', () => {
+      //  self.next()
+      //})
     },
     fullUrl (path) {
       if (path.startsWith('/')) {
