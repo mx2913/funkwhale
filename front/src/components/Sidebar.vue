@@ -101,7 +101,12 @@
           </a>
         </template>
       </template>
-      <user-modal @update:show="showUserModal = $event" :show="showUserModal"></user-modal>
+      <user-modal v-on:showLanguageModalEvent="showLanguageModal=true" @update:show="showUserModal = $event" :show="showUserModal"></user-modal>
+      <modal :show="showLanguageModal">
+        <div>
+          <p>Hi</p>
+        </div>
+      </modal>
       <div class="item collapse-button-wrapper">
         <button
           @click="isCollapsed = !isCollapsed"
@@ -181,6 +186,7 @@ import UserModal from "@/components/common/UserModal";
 import Logo from "@/components/Logo"
 import SearchBar from "@/components/audio/SearchBar"
 import UserMenu from "@/components/common/UserMenu"
+import Modal from "@/components/semantic/Modal"
 
 import $ from "jquery"
 
@@ -194,6 +200,7 @@ export default {
     Logo,
     UserMenu,
     UserModal,
+    Modal
   },
   data() {
     return {
@@ -203,6 +210,7 @@ export default {
       exploreExpanded: false,
       myLibraryExpanded: false,
       showUserModal: false,
+      showLanguageModal: false
     }
   },
   destroy() {

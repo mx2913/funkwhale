@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO make generic and move to semantic/modal? -->
   <modal
     @update:show="$emit('update:show', $event)"
     :show="show"
@@ -22,6 +23,12 @@
       </h3>
     </div>
     <div class="content">
+      <div class="row">
+        <div class="column" v-on:click="$emit('showLanguageModalEvent')">
+        <i class="language icon user-modal list-icon" />
+        <span class="user-modal list-item">{{ labels.profile }}</span>
+        </div>
+      </div>
       <div class="ui one column unstackable grid">
         <template v-if="$store.state.auth.authenticated">
           <div class="row">
