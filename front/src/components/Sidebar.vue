@@ -101,12 +101,25 @@
           </a>
         </template>
       </template>
-      <user-modal v-on:showLanguageModalEvent="showLanguageModal=true" @update:show="showUserModal = $event" :show="showUserModal"></user-modal>
-      <modal :show="showLanguageModal" @update:show="showLanguageModal = $event">
-        <div>
-          <p>Hi</p>
+      <user-modal v-on:showThemeModalEvent="showThemeModal=true" v-on:showLanguageModalEvent="showLanguageModal=true" @update:show="showUserModal = $event" :show="showUserModal"></user-modal>
+      <modal :fullscreen="false" :show="showLanguageModal" @update:show="showLanguageModal = $event">
+        <div class="header">
+          <h3 class="title">{{ labels.language }}</h3>
+        </div>
+        <div class="content">
+          <fieldset v-for="(language, key) in $language.available">
+            <input type="radio"  :id="key" name="language" v-model="languageSelection" :value="key">
+            <label :for="key"> {{ language }}</label>
+          </fieldset>
         </div>
       </modal>
+      <!--
+      <modal :fullscreen="false" :show="showThemeModal" @update:show="showThemeModal = $event">
+        <div class="header">
+          <h3 class="title">Theme</h3>
+        </div>
+      </modal>
+      -->
       <div class="item collapse-button-wrapper">
         <button
           @click="isCollapsed = !isCollapsed"
@@ -210,7 +223,9 @@ export default {
       exploreExpanded: false,
       myLibraryExpanded: false,
       showUserModal: false,
-      showLanguageModal: false
+      showLanguageModal: false,
+      showThemeModal: false,
+      languageSelection: this.$language.current
     }
   },
   destroy() {
@@ -236,11 +251,16 @@ export default {
       let selectTrack = this.$pgettext('Sidebar/Player/Hidden text', "Play this track")
       let pendingFollows = this.$pgettext('Sidebar/Notifications/Hidden text', "Pending follow requests")
       let pendingReviewEdits = this.$pgettext('Sidebar/Moderation/Hidden text', "Pending review edits")
+      let language = this.$pgettext(
+          "Sidebar/Settings/Dropdown.Label/Short, Verb",
+          "Change language"
+        )
       return {
         pendingFollows,
         mainMenu,
         selectTrack,
         pendingReviewEdits,
+        language,
         addContent: this.$pgettext("*/Library/*/Verb", 'Add content'),
         administration: this.$pgettext("Sidebar/Admin/Title/Noun", 'Administration'),
       }
@@ -382,6 +402,28 @@ export default {
         this.myLibraryExpanded = false
       }
     },
+    languageSelection: function(v) {
+      this.$store.dispatch('ui/currentLanguage', v);
+    }
   }
 }
 </script>
+<style>
+[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+[type="radio"] + label::after {
+  content: "";
+}
+[type="radio"]:checked + label::after {
+  margin-left: 10px;
+  content: "\2713"; /* Checkmark */
+}
+fieldset {
+  border: none;
+}
+</style>

@@ -23,28 +23,35 @@
       </h3>
     </div>
     <div class="content">
-      <div class="row">
-        <div class="column" @click="[$emit('update:show', false), $emit('showLanguageModalEvent')]">
-        <i class="language icon user-modal list-icon" />
-        <span class="user-modal list-item">{{ labels.profile }}</span>
-        </div>
-      </div>
       <div class="ui one column unstackable grid">
+        <div class="row">
+          <div class="column" @click="[$emit('update:show', false), $emit('showLanguageModalEvent')]" role="button">
+            <i class="language icon user-modal list-icon" />
+            <span class="user-modal list-item">{{ labels.language }}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column" @click="[$emit('update:show', false), $emit('showThemeModalEvent')]" role="button">
+            <i class="palette icon user-modal list-icon" />
+            <span class="user-modal list-item">{{ labels.theme }}</span>
+          </div>
+        </div>
+        <div class="ui divider"></div>
         <template v-if="$store.state.auth.authenticated">
           <div class="row">
-            <div class="column" @click.prevent.exact="$router.push({name: 'profile.overview', params: { username: $store.state.auth.username }})">
+            <div class="column" @click.prevent.exact="$router.push({name: 'profile.overview', params: { username: $store.state.auth.username }})" role="button">
               <i class="user icon user-modal list-icon" />
               <span class="user-modal list-item">{{ labels.profile }}</span>
             </div>
           </div>
           <div class="row">
-            <router-link tag="div" class="column" v-if="$store.state.auth.authenticated" :to="{name: 'notifications'}">
+            <router-link tag="div" class="column" v-if="$store.state.auth.authenticated" :to="{name: 'notifications'}" role="button">
               <i class="user-modal list-icon bell icon"></i>
               <span class="user-modal list-item">{{ labels.notifications }}</span>
             </router-link>
           </div>
           <div class="row">
-            <router-link tag="div" class="column" :to="{ path: '/settings' }">
+            <router-link tag="div" class="column" :to="{ path: '/settings' }" role="button">
               <i class="user-modal list-icon cog icon" />
               <span class="user-modal list-item">{{ labels.settings }}</span>
             </router-link>
@@ -58,14 +65,14 @@
           </a>
         </div>
         <div class="row">
-          <router-link tag="div" v-if="this.$route.path != '/about'" class="column" :to="{ name: 'about' }">
+          <router-link tag="div" v-if="this.$route.path != '/about'" class="column" :to="{ name: 'about' }" role="button">
             <i class="user-modal list-icon question circle outline icon" />
             <span class="user-modal list-item">{{ labels.about }}</span>
           </router-link>
         </div>
         <div class="divider" />
         <template v-if="$store.state.auth.authenticated && this.$route.path != '/logout'">
-          <router-link tag="div" class="column" :to="{ name: 'logout' }">
+          <router-link tag="div" class="column" :to="{ name: 'logout' }" role="button">
             <i class="user-modal list-icon sign out alternate icon" />
             <span class="user-modal list-item">{{ labels.logout }}</span>
           </router-link>
