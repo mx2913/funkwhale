@@ -275,7 +275,9 @@ class SimilarAcousticRadio(RelatedObjectRadio):
     def filter_queryset(self, queryset):
         queryset = super().filter_queryset(queryset)
         mbids_regex = self.get_regex()
-        return queryset.filter(mbid__regex=r'({mbids_regex})'.format(mbids_regex=mbids_regex))
+        return queryset.filter(
+            mbid__regex=r'({mbids_regex})'.format(mbids_regex=mbids_regex)
+        )
 
 
 @registry.register(name="artist")
