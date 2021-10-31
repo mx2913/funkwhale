@@ -102,7 +102,7 @@
         </template>
       </template>
       <user-modal v-on:showLanguageModalEvent="showLanguageModal=true" @update:show="showUserModal = $event" :show="showUserModal"></user-modal>
-      <modal :show="showLanguageModal">
+      <modal :show="showLanguageModal" @update:show="showLanguageModal = $event">
         <div>
           <p>Hi</p>
         </div>
