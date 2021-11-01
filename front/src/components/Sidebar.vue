@@ -187,6 +187,9 @@
             </router-link>
           </div>
         </div>
+        <div v-if="!production" class="item">
+          <a role="button" href="" class="link item" @click.prevent="$emit('show:set-instance-modal')">Switch instance</a>
+        </div>
       </nav>
     </section>
   </nav>
@@ -310,6 +313,9 @@ export default {
         this.$store.state.ui.notifications.pendingReviewReports +
         this.$store.state.ui.notifications.pendingReviewRequests
       )
+    },
+    production () {
+      return process.env.NODE_ENV === "production";
     }
   },
   methods: {
