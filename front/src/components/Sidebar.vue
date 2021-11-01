@@ -108,18 +108,22 @@
         </div>
         <div class="content">
           <fieldset v-for="(language, key) in $language.available">
-            <input type="radio"  :id="key" name="language" v-model="languageSelection" :value="key">
-            <label :for="key"> {{ language }}</label>
+            <input type="radio" :id="key" name="language" v-model="languageSelection" :value="key">
+            <label :for="key">{{ language }}</label>
           </fieldset>
         </div>
       </modal>
-      <!--
       <modal :fullscreen="false" :show="showThemeModal" @update:show="showThemeModal = $event">
         <div class="header">
-          <h3 class="title">Theme</h3>
+          <h3 class="title">{{ labels.theme }}</h3>
+        </div>
+        <div class="content">
+          <fieldset v-for="theme in themes">
+            <input type="radio" :id="theme.key" name="theme" v-model="themeSelection" :value="theme.key">
+            <label :for="theme.key">{{ theme.name }}</label>
+          </fieldset>
         </div>
       </modal>
-      -->
       <div class="item collapse-button-wrapper">
         <button
           @click="isCollapsed = !isCollapsed"
@@ -228,7 +232,8 @@ export default {
       showUserModal: false,
       showLanguageModal: false,
       showThemeModal: false,
-      languageSelection: this.$language.current
+      languageSelection: this.$language.current,
+      themeSelection: this.$store.state.ui.theme
     }
   },
   destroy() {
@@ -256,14 +261,17 @@ export default {
       let pendingReviewEdits = this.$pgettext('Sidebar/Moderation/Hidden text', "Pending review edits")
       let language = this.$pgettext(
           "Sidebar/Settings/Dropdown.Label/Short, Verb",
-          "Change language"
-        )
+          "Change language")
+     let theme = this.$pgettext(
+          "Sidebar/Settings/Dropdown.Label/Short, Verb",
+          "Change theme")
       return {
         pendingFollows,
         mainMenu,
         selectTrack,
         pendingReviewEdits,
         language,
+        theme,
         addContent: this.$pgettext("*/Library/*/Verb", 'Add content'),
         administration: this.$pgettext("Sidebar/Admin/Title/Noun", 'Administration'),
       }
@@ -316,6 +324,18 @@ export default {
     },
     production () {
       return process.env.NODE_ENV === "production";
+    },
+    themes () {
+      return [
+        {
+          name: this.$pgettext('Sidebar/Settings/Dropdown.Label/Theme name', 'Light'),
+          key: 'light'
+        },
+        {
+          name: this.$pgettext('Sidebar/Settings/Dropdown.Label/Theme name', 'Dark'),
+          key: 'dark'
+        }
+      ]
     }
   },
   methods: {
@@ -410,6 +430,9 @@ export default {
     },
     languageSelection: function(v) {
       this.$store.dispatch('ui/currentLanguage', v);
+    },
+    themeSelection: function(v) {
+      this.$store.dispatch('ui/theme', v);
     }
   }
 }
