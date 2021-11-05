@@ -103,7 +103,7 @@
       </template>
       <user-modal v-on:showThemeModalEvent="showThemeModal=true" v-on:showLanguageModalEvent="showLanguageModal=true" @update:show="showUserModal = $event" :show="showUserModal"></user-modal>
       <modal :fullscreen="false" :show="showLanguageModal" @update:show="showLanguageModal = $event">
-      <i role="button" class="back inside icon" @click.prevent.exact="showUserModal = !showUserModal"></i>
+      <i role="button" class="left chevron back inside icon" @click.prevent.exact="showUserModal = !showUserModal"></i>
         <div class="header">
           <h3 class="title">{{ labels.language }}</h3>
         </div>
@@ -115,7 +115,7 @@
         </div>
       </modal>
       <modal :fullscreen="false" :show="showThemeModal" @update:show="showThemeModal = $event">
-      <i role="button" class="back inside icon" @click.prevent.exact="showUserModal = !showUserModal"></i>
+      <i role="button" class="left chevron back inside icon" @click.prevent.exact="showUserModal = !showUserModal"></i>
         <div class="header">
           <h3 class="title">{{ labels.theme }}</h3>
         </div>
@@ -263,10 +263,10 @@ export default {
       let pendingReviewEdits = this.$pgettext('Sidebar/Moderation/Hidden text', "Pending review edits")
       let language = this.$pgettext(
           "Sidebar/Settings/Dropdown.Label/Short, Verb",
-          "Change language")
+          "Language")
      let theme = this.$pgettext(
           "Sidebar/Settings/Dropdown.Label/Short, Verb",
-          "Change theme")
+          "Theme")
       return {
         pendingFollows,
         mainMenu,
@@ -458,15 +458,12 @@ fieldset {
   border: none;
 }
 .back {
-  font-size: 1.25em;
+  font-size: 1.25em !important;
   position: absolute;
   top: 0.5rem;
   left: 0.5rem;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.25rem !important;
+  height: 2.25rem !important;
   padding: 0.625rem 0 0 0;
-}
-.back::before {
-  content: "\2770";
 }
 </style>

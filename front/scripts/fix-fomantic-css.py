@@ -171,7 +171,10 @@ def discard_unused_icons(rule):
         ".palette",
         ".sun",
         ".moon",
-        ".gitlab"
+        ".gitlab",
+        ".chevron",
+        ".right",
+        ".left"
     ]
     if ":before" not in rule["lines"][0]:
         return False

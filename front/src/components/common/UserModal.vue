@@ -27,13 +27,15 @@
         <div class="row">
           <div class="column" @click="[$emit('update:show', false), $emit('showLanguageModalEvent')]" role="button">
             <i class="language icon user-modal list-icon" />
-            <span class="user-modal list-item">{{ labels.language }}</span>
+            <span class="user-modal list-item">{{ labels.language }}: {{ $language.available[$language.current] }}</span>
+            <i class="action-hint chevron right icon" />
           </div>
         </div>
         <div class="row">
           <div class="column" @click="[$emit('update:show', false), $emit('showThemeModalEvent')]" role="button">
             <i class="palette icon user-modal list-icon" />
-            <span class="user-modal list-item">{{ labels.theme }}</span>
+              <span class="user-modal list-item">{{ labels.theme }}: {{ this.themes.find(x => x.key ===$store.state.ui.theme).name }}</span>
+            <i class="action-hint chevron right icon" />
           </div>
         </div>
         <div class="ui divider"></div>
@@ -113,11 +115,11 @@ export default {
         docs: this.$pgettext("Sidebar/*/Listitem.Link", "Documentation"),
         language: this.$pgettext(
           "Sidebar/Settings/Dropdown.Label/Short, Verb",
-          "Change language"
+          "Language"
         ),
         theme: this.$pgettext(
           "Sidebar/Settings/Dropdown.Label/Short, Verb",
-          "Change theme"
+          "Theme"
         ),
         chat: this.$pgettext("Sidebar/*/Listitem.Link", "Chat room"),
         git: this.$pgettext("Sidebar/*/List item.Link", "Issue tracker"),
@@ -156,3 +158,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.action-hint {
+  float: right;
+}
+</style>
