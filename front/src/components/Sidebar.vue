@@ -103,6 +103,7 @@
       </template>
       <user-modal v-on:showThemeModalEvent="showThemeModal=true" v-on:showLanguageModalEvent="showLanguageModal=true" @update:show="showUserModal = $event" :show="showUserModal"></user-modal>
       <modal :fullscreen="false" :show="showLanguageModal" @update:show="showLanguageModal = $event">
+      <i role="button" class="back inside icon" @click.prevent.exact="showUserModal = !showUserModal"></i>
         <div class="header">
           <h3 class="title">{{ labels.language }}</h3>
         </div>
@@ -114,6 +115,7 @@
         </div>
       </modal>
       <modal :fullscreen="false" :show="showThemeModal" @update:show="showThemeModal = $event">
+      <i role="button" class="back inside icon" @click.prevent.exact="showUserModal = !showUserModal"></i>
         <div class="header">
           <h3 class="title">{{ labels.theme }}</h3>
         </div>
@@ -454,5 +456,17 @@ export default {
 }
 fieldset {
   border: none;
+}
+.back {
+  font-size: 1.25em;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0.625rem 0 0 0;
+}
+.back::before {
+  content: "\2770";
 }
 </style>
