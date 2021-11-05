@@ -266,6 +266,8 @@ pages:
 .docker_publish:
   stage: deploy
   image: egon0/docker-with-buildx-and-git:bash
+  tags:
+    - multiarch
   services:
     - docker:20-dind
   before_script:
