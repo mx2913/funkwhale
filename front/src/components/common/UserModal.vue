@@ -27,15 +27,21 @@
         <div class="row">
           <div class="column" @click="[$emit('update:show', false), $emit('showLanguageModalEvent')]" role="button">
             <i class="language icon user-modal list-icon" />
-            <span class="user-modal list-item">{{ labels.language }}: {{ $language.available[$language.current] }}</span>
-            <i class="action-hint chevron right icon" />
+            <span class="user-modal list-item">{{ labels.language }}:</span>
+            <div class="right floated">
+              <span class="user-modal list-item">{{ $language.available[$language.current] }}</span>
+              <i class="action-hint chevron right icon" />
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="column" @click="[$emit('update:show', false), $emit('showThemeModalEvent')]" role="button">
             <i class="palette icon user-modal list-icon" />
-              <span class="user-modal list-item">{{ labels.theme }}: {{ this.themes.find(x => x.key ===$store.state.ui.theme).name }}</span>
-            <i class="action-hint chevron right icon" />
+            <span class="user-modal list-item">{{ labels.theme }}:</span>
+            <div class="right floated">
+              <span class="user-modal list-item"> {{ this.themes.find(x => x.key ===$store.state.ui.theme).name }}</span>
+              <i class="action-hint chevron right icon user-modal" />
+            </div>
           </div>
         </div>
         <div class="ui divider"></div>
@@ -161,6 +167,6 @@ export default {
 
 <style>
 .action-hint {
-  float: right;
+  margin-left: 1rem !important;
 }
 </style>
