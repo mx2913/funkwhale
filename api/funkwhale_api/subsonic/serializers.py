@@ -1,6 +1,7 @@
 import collections
 
 from django.db.models import Count, functions
+from django.db.models import Sum
 from rest_framework import serializers
 
 from funkwhale_api.history import models as history_models
@@ -147,10 +148,17 @@ def get_album2_data(album):
         "name": album.title,
         "artist": album.artist.name,
         "created": to_subsonic_date(album.creation_date),
+        "duration": album.tracks.aggregate(d=Sum("uploads__duration"))["d"] or 0,
+        "playCount": album.tracks.aggregate(c=Sum("downloads_count"))["c"] or 0,
     }
     if album.attachment_cover_id:
         payload["coverArt"] = "al-{}".format(album.id)
-
+    if album.tagged_items:
+        # exposes only first genre since the specification uses singular noun
+        first_genre = album.tagged_items.first()
+        payload["genre"] = first_genre.tag.name if first_genre else ""
+    if album.release_date:
+        payload["year"] = album.release_date.year
     try:
         payload["songCount"] = album._tracks_count
     except AttributeError:
