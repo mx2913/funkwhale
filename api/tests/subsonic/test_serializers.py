@@ -173,6 +173,7 @@ def test_get_album_serializer(factories):
     album = factories["music.Album"](artist=artist, with_cover=True)
     track = factories["music.Track"](album=album, disc_number=42)
     upload = factories["music.Upload"](track=track, bitrate=42000, duration=43, size=44)
+    tagged_item = factories["tags.TaggedItem"](content_object=album, tag__name="foo")
 
     expected = {
         "id": album.pk,
@@ -183,7 +184,7 @@ def test_get_album_serializer(factories):
         "created": serializers.to_subsonic_date(album.creation_date),
         "year": album.release_date.year,
         "coverArt": "al-{}".format(album.id),
-        "genre": [ti.tag.name for ti in album.tagged_items.all()][0] or "",
+        "genre": tagged_item.tag.name,
         "duration": album.tracks.aggregate(d=Sum("uploads__duration"))["d"] or 0,
         "playCount": album.tracks.aggregate(c=Sum("downloads_count"))["c"] or 0,
         "song": [
