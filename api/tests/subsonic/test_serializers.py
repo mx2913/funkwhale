@@ -183,7 +183,7 @@ def test_get_album_serializer(factories):
         "created": serializers.to_subsonic_date(album.creation_date),
         "year": album.release_date.year,
         "coverArt": "al-{}".format(album.id),
-        "genre": ", ".join([ti.tag.name for ti in album.tagged_items.all()]),
+        "genre": [ti.tag.name for ti in album.tagged_items.all()][0] or "",
         "duration": album.tracks.aggregate(d=Sum("uploads__duration"))["d"] or 0,
         "playCount": album.tracks.aggregate(c=Sum("downloads_count"))["c"] or 0,
         "song": [
