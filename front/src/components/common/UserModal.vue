@@ -4,6 +4,7 @@
     @update:show="$emit('update:show', $event)"
     :show="show"
     :scrolling="true"
+    :fullscreen="false"
   >
     <div v-if="$store.state.auth.authenticated" class="header">
       <img 
