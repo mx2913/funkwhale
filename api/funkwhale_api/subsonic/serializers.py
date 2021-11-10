@@ -149,7 +149,7 @@ def get_album2_data(album):
         "artist": album.artist.name,
         "created": to_subsonic_date(album.creation_date),
         "duration": album.tracks.aggregate(d=Sum("uploads__duration"))["d"] or 0,
-        "playCount": album.tracks.aggregate(c=Sum("downloads_count"))["c"] or 0,
+        "playCount": album.tracks.aggregate(l=Count("listenings"))["l"] or 0,
     }
     if album.attachment_cover_id:
         payload["coverArt"] = "al-{}".format(album.id)

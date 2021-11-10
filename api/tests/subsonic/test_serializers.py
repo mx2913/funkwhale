@@ -1,6 +1,6 @@
 import datetime
 
-from django.db.models.aggregates import Sum
+from django.db.models.aggregates import Count, Sum
 import pytest
 
 from funkwhale_api.music import models as music_models
@@ -186,7 +186,7 @@ def test_get_album_serializer(factories):
         "coverArt": "al-{}".format(album.id),
         "genre": tagged_item.tag.name,
         "duration": album.tracks.aggregate(d=Sum("uploads__duration"))["d"] or 0,
-        "playCount": album.tracks.aggregate(c=Sum("downloads_count"))["c"] or 0,
+        "playCount": album.tracks.aggregate(l=Count("listenings"))["l"] or 0,
         "song": [
             {
                 "id": track.pk,
