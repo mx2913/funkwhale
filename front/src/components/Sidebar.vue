@@ -449,10 +449,15 @@ export default {
 }
 [type="radio"] + label::after {
   content: "";
+  font-size: 1.4em;
 }
 [type="radio"]:checked + label::after {
   margin-left: 10px;
   content: "\2713"; /* Checkmark */
+  font-size: 1.4em;
+}
+[type="radio"]:checked + label {
+  font-weight: bold;
 }
 fieldset {
   border: none;
