@@ -17,6 +17,11 @@
   .content .description,
   .description {
     color: var(--card-text-color);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
   }
   .extra,
   .meta {
