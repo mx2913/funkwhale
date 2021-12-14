@@ -6,9 +6,9 @@
     >
       <div :class="['ui', 'centered', 'active', 'inline', 'loader']" />
     </div>
-    <template v-if="object">
+    <template v-if="report">
       <div class="ui vertical stripe segment">
-        <report-card :obj="object" />
+        <report-card :report="report" />
       </div>
     </template>
   </main>
@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       isLoading: true,
-      object: null
+      report: null
     }
   },
   created () {
@@ -39,7 +39,7 @@ export default {
       this.isLoading = true
       const url = `manage/moderation/reports/${this.id}/`
       axios.get(url).then(response => {
-        self.object = response.data
+        self.report = response.data
         self.isLoading = false
       })
     }

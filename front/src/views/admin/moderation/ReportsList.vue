@@ -107,7 +107,7 @@
         <report-card
           v-for="obj in result.results"
           :key="obj.uuid"
-          :obj="obj"
+          :report="obj"
           @handled="fetchData"
         />
       </div>

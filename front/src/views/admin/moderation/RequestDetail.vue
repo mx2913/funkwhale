@@ -6,9 +6,9 @@
     >
       <div :class="['ui', 'centered', 'active', 'inline', 'loader']" />
     </div>
-    <template v-if="object">
+    <template v-if="user_request">
       <div class="ui vertical stripe segment">
-        <user-request-card :obj="object" />
+        <user-request-card :user-request="user_request" />
       </div>
     </template>
   </main>
@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       isLoading: true,
-      object: null
+      user_request: null
     }
   },
   created () {
@@ -39,7 +39,7 @@ export default {
       this.isLoading = true
       const url = `manage/moderation/requests/${this.id}/`
       axios.get(url).then(response => {
-        self.object = response.data
+        self.user_request = response.data
         self.isLoading = false
       })
     }

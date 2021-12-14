@@ -2,10 +2,10 @@
   <div class="ui fluid report card">
     <div class="content">
       <h4 class="header">
-        <router-link :to="{name: 'manage.moderation.reports.detail', params: {id: obj.uuid}}">
+        <router-link :to="{name: 'manage.moderation.reports.detail', params: {id: report_.uuid}}">
           <translate
             translate-context="Content/Moderation/Card/Short"
-            :translate-params="{id: obj.uuid.substring(0, 8)}"
+            :translate-params="{id: report_.uuid.substring(0, 8)}"
           >
             Report %{ id }
           </translate>
@@ -28,14 +28,14 @@
                     </translate>
                   </td>
                   <td>
-                    <div v-if="obj.submitter">
+                    <div v-if="report_.submitter">
                       <actor-link
                         :admin="true"
-                        :actor="obj.submitter"
+                        :actor="report_.submitter"
                       />
                     </div>
-                    <div v-else-if="obj.submitter_email">
-                      {{ obj.submitter_email }}
+                    <div v-else-if="report_.submitter_email">
+                      {{ report_.submitter_email }}
                     </div>
                   </td>
                 </tr>
@@ -47,7 +47,7 @@
                   </td>
                   <td>
                     <report-category-dropdown
-                      :value="obj.type"
+                      :value="report_.type"
                       @input="update({type: $event})"
                     >
                       &#32;
@@ -63,7 +63,7 @@
                   </td>
                   <td>
                     <human-date
-                      :date="obj.creation_date"
+                      :date="report_.creation_date"
                       :icon="true"
                     />
                   </td>
@@ -80,8 +80,8 @@
                       Status
                     </translate>
                   </td>
-                  <td v-if="obj.is_handled">
-                    <span v-if="obj.is_handled">
+                  <td v-if="report_.is_handled">
+                    <span v-if="report_.is_handled">
                       <i class="success check icon" />
                       <translate translate-context="Content/*/*/Short">Resolved</translate>
                     </span>
@@ -100,10 +100,10 @@
                     </translate>
                   </td>
                   <td>
-                    <div v-if="obj.assigned_to">
+                    <div v-if="report_.assigned_to">
                       <actor-link
                         :admin="true"
-                        :actor="obj.assigned_to"
+                        :actor="report_.assigned_to"
                       />
                     </div>
                     <translate
@@ -122,8 +122,8 @@
                   </td>
                   <td>
                     <human-date
-                      v-if="obj.handled_date"
-                      :date="obj.handled_date"
+                      v-if="report_.handled_date"
+                      :date="report_.handled_date"
                       :icon="true"
                     />
                     <translate
@@ -142,7 +142,7 @@
                   </td>
                   <td>
                     <i class="comment icon" />
-                    {{ obj.notes.length }}
+                    {{ report_.notes.length }}
                   </td>
                 </tr>
               </tbody>
@@ -163,11 +163,11 @@
             </translate>
           </h3>
           <expandable-div
-            v-if="obj.summary"
+            v-if="report_.summary"
             class="summary"
-            :content="obj.summary"
+            :content="report_.summary"
           >
-            <div v-html="markdown.makeHtml(obj.summary)" />
+            <div v-html="markdown.makeHtml(report_.summary)" />
           </expandable-div>
         </div>
         <aside class="column">
@@ -177,7 +177,7 @@
             </translate>
           </h3>
           <div
-            v-if="!obj.target"
+            v-if="!report_.target"
             role="alert"
             class="ui warning message"
           >
@@ -188,7 +188,7 @@
           <router-link
             v-if="target && configs[target.type].urls.getDetail"
             class="ui basic button"
-            :to="configs[target.type].urls.getDetail(obj.target_state)"
+            :to="configs[target.type].urls.getDetail(report_.target_state)"
           >
             <i class="eye icon" />
             <translate translate-context="Content/Moderation/Link">
@@ -198,7 +198,7 @@
           <router-link
             v-if="target && configs[target.type].urls.getAdminDetail"
             class="ui basic button"
-            :to="configs[target.type].urls.getAdminDetail(obj.target_state)"
+            :to="configs[target.type].urls.getAdminDetail(report_.target_state)"
           >
             <i class="wrench icon" />
             <translate translate-context="Content/Moderation/Link">
@@ -218,7 +218,7 @@
                   {{ configs[target.type].label }}
                 </td>
               </tr>
-              <tr v-if="obj.target_owner && (!target || target.type !== 'account')">
+              <tr v-if="report_.target_owner && (!target || target.type !== 'account')">
                 <td>
                   <translate translate-context="*/*/*">
                     Owner
@@ -227,15 +227,15 @@
                 <td>
                   <actor-link
                     :admin="true"
-                    :actor="obj.target_owner"
+                    :actor="report_.target_owner"
                   />
                 </td>
                 <td>
                   <instance-policy-modal
-                    v-if="!obj.target_owner.is_local"
+                    v-if="!report_.target_owner.is_local"
                     class="right floated mini basic"
                     type="actor"
-                    :target="obj.target_owner.full_username"
+                    :target="report_.target_owner.full_username"
                   />
                 </td>
               </tr>
@@ -248,19 +248,19 @@
                 <td>
                   <actor-link
                     :admin="true"
-                    :actor="obj.target_owner"
+                    :actor="report_.target_owner"
                   />
                 </td>
                 <td>
                   <instance-policy-modal
-                    v-if="!obj.target_owner.is_local"
+                    v-if="!report_.target_owner.is_local"
                     class="right floated mini basic"
                     type="actor"
-                    :target="obj.target_owner.full_username"
+                    :target="report_.target_owner.full_username"
                   />
                 </td>
               </tr>
-              <tr v-if="obj.target_state.is_local">
+              <tr v-if="report_.target_state.is_local">
                 <td>
                   <translate translate-context="Content/Moderation/*/Noun">
                     Domain
@@ -273,22 +273,22 @@
                   </translate>
                 </td>
               </tr>
-              <tr v-else-if="obj.target_state.domain">
+              <tr v-else-if="report_.target_state.domain">
                 <td>
-                  <router-link :to="{name: 'manage.moderation.domains.detail', params: {id: obj.target_state.domain }}">
+                  <router-link :to="{name: 'manage.moderation.domains.detail', params: {id: report_.target_state.domain }}">
                     <translate translate-context="Content/Moderation/*/Noun">
                       Domain
                     </translate>
                   </router-link>
                 </td>
                 <td>
-                  {{ obj.target_state.domain }}
+                  {{ report_.target_state.domain }}
                 </td>
                 <td>
                   <instance-policy-modal
                     class="right floated mini basic"
                     type="domain"
-                    :target="obj.target_state.domain"
+                    :target="report_.target_state.domain"
                   />
                 </td>
               </tr>
@@ -324,12 +324,12 @@
             </translate>
           </h3>
           <notes-thread
-            :notes="obj.notes"
+            :notes="report_.notes"
             @deleted="handleRemovedNote($event)"
           />
           <note-form
-            :target="{type: 'report', uuid: obj.uuid}"
-            @created="obj.notes.push($event)"
+            :target="{type: 'report', uuid: report_.uuid}"
+            @created="report_.notes.push($event)"
           />
         </div>
         <div class="column">
@@ -340,7 +340,7 @@
           </h3>
           <div class="ui labelled icon basic buttons">
             <button
-              v-if="obj.is_handled === false"
+              v-if="report_.is_handled === false"
               :class="['ui', {loading: isLoading}, 'button']"
               @click="resolve(true)"
             >
@@ -350,7 +350,7 @@
               </translate>
             </button>
             <button
-              v-if="obj.is_handled === true"
+              v-if="report_.is_handled === true"
               :class="['ui', {loading: isLoading}, 'button']"
               @click="resolve(false)"
             >
@@ -363,7 +363,7 @@
               v-for="(action, key) in actions"
             >
               <dangerous-button
-                v-if="action.dangerous && action.show(obj)"
+                v-if="action.dangerous && action.show(report_)"
                 :key="key"
                 :class="['ui', {loading: isLoading}, 'button']"
                 :action="action.handler"
@@ -413,12 +413,12 @@ export default {
     InstancePolicyModal
   },
   props: {
-    initObj: { type: Object, required: true },
+    report: { type: Object, required: true },
     currentState: { type: String, required: false, default: '' }
   },
   data () {
     return {
-      obj: this.initObj,
+      report_: this.report,
       markdown: new showdown.Converter(),
       isLoading: false,
       isCollapsed: false,
@@ -430,10 +430,10 @@ export default {
   computed: {
     configs: entities.getConfigs,
     previousState () {
-      if (this.obj.is_applied) {
+      if (this.report_.is_applied) {
         // mutation was applied, we use the previous state that is stored
         // on the mutation itself
-        return this.obj.previous_state
+        return this.report_.previous_state
       }
       // mutation is not applied yet, so we use the current state that was
       // passed to the component, if any
@@ -454,14 +454,14 @@ export default {
       if (this.target.type === 'artist') {
         namespace = 'library.artists.edit.detail'
       }
-      return this.$router.resolve({ name: namespace, params: { id, editId: this.obj.uuid } }).href
+      return this.$router.resolve({ name: namespace, params: { id, editId: this.report_.uuid } }).href
     },
 
     targetFields () {
       if (!this.target) {
         return []
       }
-      const payload = this.obj.target_state
+      const payload = this.report_.target_state
       const fields = this.configs[this.target.type].moderatedFields
       return fields.map((fieldConfig) => {
         const dummyRepr = (v) => { return v }
@@ -476,10 +476,10 @@ export default {
       })
     },
     target () {
-      if (this.obj.target) {
-        return this.obj.target
+      if (this.report_.target) {
+        return this.report_.target
       } else {
-        return this.obj.target_state._target
+        return this.report_.target_state._target
       }
     },
     actions () {
@@ -498,12 +498,12 @@ export default {
           modalConfirmLabel: this.$pgettext('*/*/*/Verb', 'Delete'),
           icon: 'x',
           iconColor: 'danger',
-          show: (obj) => { return !!obj.target },
+          show: (report) => { return !!report.target },
           dangerous: true,
           handler: () => {
             axios.delete(deleteUrl).then((response) => {
               console.log('Target deleted')
-              self.obj.target = null
+              self.report_.target = null
               self.resolve(true)
             }, () => {
               console.log('Error while deleting target')
@@ -516,13 +516,13 @@ export default {
   },
   methods: {
     update (payload) {
-      const url = `manage/moderation/reports/${this.obj.uuid}/`
+      const url = `manage/moderation/reports/${this.report_.uuid}/`
       const self = this
       this.isLoading = true
       setUpdate(payload, this.updating, true)
       axios.patch(url, payload).then((response) => {
         self.$emit('updated', payload)
-        Object.assign(self.obj, payload)
+        Object.assign(self.report_, payload)
         self.isLoading = false
         setUpdate(payload, self.updating, false)
       }, () => {
@@ -531,13 +531,13 @@ export default {
       })
     },
     resolve (v) {
-      const url = `manage/moderation/reports/${this.obj.uuid}/`
+      const url = `manage/moderation/reports/${this.report_.uuid}/`
       const self = this
       this.isLoading = true
       axios.patch(url, { is_handled: v }).then((response) => {
         self.$emit('handled', v)
         self.isLoading = false
-        self.obj.is_handled = v
+        self.report_.is_handled = v
         let increment
         if (v) {
           self.isCollapsed = true
@@ -551,7 +551,7 @@ export default {
       })
     },
     handleRemovedNote (uuid) {
-      this.obj.notes = this.obj.notes.filter((note) => {
+      this.report_.notes = this.report_.notes.filter((note) => {
         return note.uuid !== uuid
       })
     }

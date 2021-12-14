@@ -2,10 +2,10 @@
   <div class="ui fluid user-request card">
     <div class="content">
       <h4 class="header">
-        <router-link :to="{name: 'manage.moderation.requests.detail', params: {id: obj.uuid}}">
+        <router-link :to="{name: 'manage.moderation.requests.detail', params: {id: user_request.uuid}}">
           <translate
             translate-context="Content/Moderation/Card/Short"
-            :translate-params="{id: obj.uuid.substring(0, 8)}"
+            :translate-params="{id: user_request.uuid.substring(0, 8)}"
           >
             Request %{ id }
           </translate>
@@ -30,7 +30,7 @@
                   <td>
                     <actor-link
                       :admin="true"
-                      :actor="obj.submitter"
+                      :actor="user_request.submitter"
                     />
                   </td>
                 </tr>
@@ -42,7 +42,7 @@
                   </td>
                   <td>
                     <human-date
-                      :date="obj.creation_date"
+                      :date="user_request.creation_date"
                       :icon="true"
                     />
                   </td>
@@ -60,19 +60,19 @@
                     </translate>
                   </td>
                   <td>
-                    <template v-if="obj.status === 'pending'">
+                    <template v-if="user_request.status === 'pending'">
                       <i class="warning hourglass icon" />
                       <translate translate-context="Content/Library/*/Short">
                         Pending
                       </translate>
                     </template>
-                    <template v-else-if="obj.status === 'refused'">
+                    <template v-else-if="user_request.status === 'refused'">
                       <i class="danger x icon" />
                       <translate translate-context="Content/*/*/Short">
                         Refused
                       </translate>
                     </template>
-                    <template v-else-if="obj.status === 'approved'">
+                    <template v-else-if="user_request.status === 'approved'">
                       <i class="success check icon" />
                       <translate translate-context="Content/*/*/Short">
                         Approved
@@ -87,10 +87,10 @@
                     </translate>
                   </td>
                   <td>
-                    <div v-if="obj.assigned_to">
+                    <div v-if="user_request.assigned_to">
                       <actor-link
                         :admin="true"
-                        :actor="obj.assigned_to"
+                        :actor="user_request.assigned_to"
                       />
                     </div>
                     <translate
@@ -109,8 +109,8 @@
                   </td>
                   <td>
                     <human-date
-                      v-if="obj.handled_date"
-                      :date="obj.handled_date"
+                      v-if="user_request.handled_date"
+                      :date="user_request.handled_date"
                       :icon="true"
                     />
                     <translate
@@ -129,7 +129,7 @@
                   </td>
                   <td>
                     <i class="comment icon" />
-                    {{ obj.notes.length }}
+                    {{ user_request.notes.length }}
                   </td>
                 </tr>
               </tbody>
@@ -154,15 +154,15 @@
               This user wants to sign-up on your pod.
             </translate>
           </p>
-          <template v-if="obj.metadata">
+          <template v-if="user_request.metadata">
             <div class="ui hidden divider" />
             <div
-              v-for="k in Object.keys(obj.metadata)"
+              v-for="k in Object.keys(user_request.metadata)"
               :key="k"
             >
               <h4>{{ k }}</h4>
-              <p v-if="obj.metadata[k] && obj.metadata[k].length">
-                {{ obj.metadata[k] }}
+              <p v-if="user_request.metadata[k] && user_request.metadata[k].length">
+                {{ user_request.metadata[k] }}
               </p>
               <translate
                 v-else
@@ -175,7 +175,7 @@
           </template>
         </div>
         <aside class="column">
-          <div v-if="obj.status != 'approved'">
+          <div v-if="user_request.status != 'approved'">
             <h3>
               <translate translate-context="Content/*/*/Noun">
                 Actions
@@ -183,7 +183,7 @@
             </h3>
             <div class="ui labelled icon basic buttons">
               <button
-                v-if="obj.status === 'pending' || obj.status === 'refused'"
+                v-if="user_request.status === 'pending' || user_request.status === 'refused'"
                 :class="['ui', {loading: isLoading}, 'button']"
                 @click="approve(true)"
               >
@@ -193,7 +193,7 @@
                 </translate>
               </button>
               <button
-                v-if="obj.status === 'pending'"
+                v-if="user_request.status === 'pending'"
                 :class="['ui', {loading: isLoading}, 'button']"
                 @click="approve(false)"
               >
@@ -210,12 +210,12 @@
             </translate>
           </h3>
           <notes-thread
-            :notes="obj.notes"
+            :notes="user_request.notes"
             @deleted="handleRemovedNote($event)"
           />
           <note-form
-            :target="{type: 'request', uuid: obj.uuid}"
-            @created="obj.notes.push($event)"
+            :target="{type: 'request', uuid: user_request.uuid}"
+            @created="user_request.notes.push($event)"
           />
         </aside>
       </div>
@@ -235,26 +235,26 @@ export default {
     NotesThread
   },
   props: {
-    initObj: { type: Object, required: true }
+    userRequest: { type: Object, required: true }
   },
   data () {
     return {
       markdown: new showdown.Converter(),
       isLoading: false,
       isCollapsed: false,
-      obj: this.initObj
+      user_request: this.userRequest
     }
   },
   methods: {
     approve (v) {
-      const url = `manage/moderation/requests/${this.obj.uuid}/`
+      const url = `manage/moderation/requests/${this.user_request.uuid}/`
       const self = this
       const newStatus = v ? 'approved' : 'refused'
       this.isLoading = true
       axios.patch(url, { status: newStatus }).then((response) => {
         self.$emit('handled', newStatus)
         self.isLoading = false
-        self.obj.status = newStatus
+        self.user_request.status = newStatus
         if (v) {
           self.isCollapsed = true
         }
@@ -264,7 +264,7 @@ export default {
       })
     },
     handleRemovedNote (uuid) {
-      this.obj.notes = this.obj.notes.filter((note) => {
+      this.user_request.notes = this.user_request.notes.filter((note) => {
         return note.uuid !== uuid
       })
     }
