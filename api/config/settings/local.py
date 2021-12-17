@@ -78,6 +78,8 @@ DEBUG_TOOLBAR_PANELS = [
 # ------------------------------------------------------------------------------
 # INSTALLED_APPS += ('django_extensions', )
 
+INSTALLED_APPS += ("drf_spectacular",)
+
 # Debug toolbar is slow, we disable it for tests
 DEBUG_TOOLBAR_ENABLED = env.bool("DEBUG_TOOLBAR_ENABLED", default=DEBUG)
 if DEBUG_TOOLBAR_ENABLED:
@@ -96,6 +98,10 @@ CELERY_TASK_ALWAYS_EAGER = False
 
 CSRF_TRUSTED_ORIGINS = [o for o in ALLOWED_HOSTS]
 
+REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
+SPECTACULAR_SETTINGS = {
+    "SCHEMA_PATH_PREFIX": "/api/(v[0-9])?",
+}
 
 if env.bool("WEAK_PASSWORDS", default=False):
     # Faster during tests
