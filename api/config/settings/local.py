@@ -98,8 +98,13 @@ CELERY_TASK_ALWAYS_EAGER = False
 
 CSRF_TRUSTED_ORIGINS = [o for o in ALLOWED_HOSTS]
 
+from funkwhale_api import __version__ as version
+
 REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
 SPECTACULAR_SETTINGS = {
+    "TITLE": "Funkwhale API",
+    "DESCRIPTION": open("Readme.md", "r").read(),
+    "VERSION": version,
     "SCHEMA_PATH_PREFIX": "/api/(v[0-9])?",
 }
 
