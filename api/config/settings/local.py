@@ -106,6 +106,11 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": open("Readme.md", "r").read(),
     "VERSION": version,
     "SCHEMA_PATH_PREFIX": "/api/(v[0-9])?",
+    "OAUTH_FLOWS": ["authorizationCode"],
+    "AUTHENTICATION_WHITELIST": [
+        "funkwhale_api.common.authentication.OAuth2Authentication",
+        "funkwhale_api.common.authentication.ApplicationTokenAuthentication",
+    ],
 }
 
 if env.bool("WEAK_PASSWORDS", default=False):
