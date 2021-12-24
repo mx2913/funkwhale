@@ -19,4 +19,4 @@ aioresponses~=0.7.2
 #https://github.com/dmclain/django-debug-toolbar-line-profiler/archive/master.zip
 #django-silk
 
-drf-spectacular~=0.21.0
+drf-spectacular~=0.21.1
