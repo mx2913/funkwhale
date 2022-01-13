@@ -1,0 +1,20 @@
+# Upload content to a library
+
+```{note}
+Access to a library's content is set at a __library level__. You can't change the privacy level of content within the library.
+```
+
+Once you have created a library, you can start uploading content to it. Funkwhale reads information about your content from its metadata. For the best results, make sure to tag your files well.
+
+To upload content to a library:
+
+1. Log in to your pod.
+2. Select the upload icon (⇧) in the top of the sidebar.
+3. Select __Get started__ under __Upload third-party content in a library__.
+4. A screen appears showing your upload quota and your libraries.
+5. Select __Upload__ under the library you want to add content to.
+6. Click on the section marked __Click to select files__ to open a file picker, or drag and drop your files on to it.
+7. If you opened the file picker, select the files you want to upload and confirm.
+8. The screen shows you the status of each upload. Once the upload queue is empty, your upload is complete.
+
+Congratulations! You added some content to your library. You can now listen to your tracks on your Funkwhale pod.
