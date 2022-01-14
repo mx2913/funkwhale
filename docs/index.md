@@ -5,11 +5,12 @@ Funkwhale is a self-hosted, modern free and open-source music server, heavily in
 ```{toctree}
 ---
 maxdepth: 1
-caption: User documentation
 hidden: true
+caption: User documentation
 ---
 
 user_documentation/accounts/index
+user_documentation/subsonic/index
 user_documentation/libraries/index
 
 ```

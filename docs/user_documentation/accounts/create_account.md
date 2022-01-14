@@ -1,4 +1,4 @@
-# Create a Funkwhale account
+# Create your Funkwhale account
 
 ```{tip}
 Use our [Pod Picker tool](https://network.funkwhale.audio/dashboards/d/overview/network-overview) to find the perfect pod for you!
@@ -10,7 +10,7 @@ To use Funkwhale, you need to create an account on a Funkwhale pod. Signing up t
 - A username.
 - A password.
 
-## Check a pod's policies
+## Check your pod's policies
 
 Before you sign up to a pod, you should check its __policies__. You can find these by navigating to the pod's __About this pod__ page.
 
