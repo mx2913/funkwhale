@@ -16,5 +16,6 @@ maxdepth: 1
 
 create_library
 upload_content
+edit_library
 
 ```
