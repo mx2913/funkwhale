@@ -30,3 +30,14 @@ upload_content
 delete_content
 
 ```
+
+```{toctree}
+---
+caption: Share and follow libraries
+maxdepth: 1
+---
+
+share_library
+follow_library
+
+```
