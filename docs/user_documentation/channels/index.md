@@ -27,7 +27,9 @@ caption: Manage channel content
 maxdepth: 1
 ---
 
-upload_content
-delete_content
+upload_artist
+upload_podcast
+delete_artist
+delete_podcast
 
 ```

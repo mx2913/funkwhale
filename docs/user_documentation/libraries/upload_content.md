@@ -14,7 +14,7 @@ To upload content to a library:
 4. A screen appears showing your upload quota and your libraries.
 5. Select {guilabel}`Upload` under the library you want to add content to.
 6. Click on the section marked {guilabel}`Click to select files` to open a file picker, or drag and drop your files on to it.
-7. If you opened the file picker, select the files you want to upload and confirm.
-8. The screen shows you the status of each upload. Once the upload queue is empty, your upload is complete.
+   - If you opened the file picker, select the files you want to upload and confirm.
+7. The screen shows you the status of each upload. Once the upload queue is empty, your upload is complete.
 
 Congratulations! You added some content to your library. You can now listen to your tracks on your Funkwhale pod.
