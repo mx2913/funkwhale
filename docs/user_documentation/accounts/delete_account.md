@@ -13,7 +13,7 @@ If you have decided you no longer want your Funkwhale account, you can delete it
 When you delete your account, your pod sends a message to other Funkwhale pods notifying them. If these pods hold any of your data, they should also delete it.
 
 ```{note}
-Other pods should delete local copies of your data in compliance with your request. There is no guarantee that they will do so, and some data may remain available. This can happen if a pod is offline or unavailable when pod sends out the deletion message.
+Other pods should delete local copies of your data in compliance with your request. There is no guarantee that they will do so, and some data may remain available. This can happen if a pod is offline or unavailable when your pod sends out the deletion message.
 ```
 
 To delete your account:
