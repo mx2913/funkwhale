@@ -17,7 +17,7 @@ You can create two types of channel:
 To create an __Artist discography__ channel:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select {guilabel}`+ Add new` next to the {guilabel}`Channels` header. A {guilabel}`Create channel` pop-up window appears.
 5. Select {guilabel}`Artist discography` and select {guilabel}`Next step`. The {guilabel}`Artist channel` form appears.
@@ -35,7 +35,7 @@ That's it! You've created your artist channel. You can now [add some music to it
 To create a __Podcast__ channel:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select {guilabel}`+ Add new` next to the {guilabel}`Channels` header. A {guilabel}`Create channel` pop-up window appears.
 5. Select {guilabel}`Podcasts` and select {guilabel}`Next step`. The {guilabel}`Podcast channel` form appears.

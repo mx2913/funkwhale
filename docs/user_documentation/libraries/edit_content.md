@@ -4,7 +4,7 @@
 You can only edit content in libraries you own. Pod admins can edit all content.
 ```
 
-You can edit library content after you have uploaded it. This is helpful if the content isn't [tagged](tagging_music).
+You can edit library content after you have uploaded it. This is helpful if the content isn't [tagged](tag_music).
 
 ```{contents}
 :local:
@@ -34,7 +34,7 @@ To edit an album:
 
 1. Search for the album in the sidebar or go to the {guilabel}`Albums` page in {guilabel}`My Library` and search there.
 2. Select the album you want to edit. The album details page opens.
-3. Select the kebab menu ({guilabel}`⋮`) to show the album options.
+3. Select the kebab menu ({fa}`ellipsis-v`) to show the album options.
 4. Select {guilabel}`✎ Edit`. The {guilabel}`Edit this album` screen opens.
 5. Change the details in any of these fields:
    - {guilabel}`Title` – the title of the album.
@@ -53,7 +53,7 @@ To edit a track:
 
 1. Search for the track in the sidebar.
 2. Select the track you want to edit. The track details page opens.
-3. Select the kebab menu ({guilabel}`⋮`) to show the track options.
+3. Select the kebab menu ({fa}`ellipsis-v`) to show the track options.
 4. Select {guilabel}`✎ Edit`. The {guilabel}`Edit this track` screen opens.
 5. Change the details in any of these fields:
    - {guilabel}`Title` – the title of the track.

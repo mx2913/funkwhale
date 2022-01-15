@@ -19,7 +19,7 @@ Other pods should delete local copies of your data in compliance with your reque
 To delete your account:
 
 1. Log in to your account.
-2. Select the cog icon or your avatar to expand the user menu.
+2. Select the cog icon ({fa}`cog`) or your avatar to expand the user menu.
 3. Select {guilabel}`Settings`.
 4. Scroll to the {guilabel}`Delete my account` section.
 5. Enter your {guilabel}`Password`.

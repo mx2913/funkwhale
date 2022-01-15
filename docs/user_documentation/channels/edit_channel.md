@@ -17,10 +17,10 @@ You can change different details depending on what type of channel you are editi
 To edit an __Artist channel__:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select the channel you want to delete under the {guilabel}`Channels` header. The channel's page opens.
-5. Select the kebab menu ({guilabel}`⋮`) to show the channel options.
+5. Select the kebab menu ({fa}`ellipsis-v`) to show the channel options.
 6. Select {guilabel}`Edit…`. The {guilabel}`Artist channel` form appears.
 7. Change the details in any of these fields:
    - {guilabel}`Name`
@@ -36,10 +36,10 @@ That's it! You've updated your channel details. Users see the new details when t
 To edit a __Podcast channel__:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select the channel you want to delete under the {guilabel}`Channels` header. The channel's page opens.
-5. Select the kebab menu ({guilabel}`⋮`) to show the channel options.
+5. Select the kebab menu ({fa}`ellipsis-v`) to show the channel options.
 6. Select {guilabel}`Edit…`. The {guilabel}`Artist channel` form appears.
 7. Change the details in any of these fields:
    - {guilabel}`Name`

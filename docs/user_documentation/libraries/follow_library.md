@@ -11,7 +11,7 @@ Follow a library to get access to its content. There are two ways to follow a li
 If you've received a sharing link, you can use this to follow a library. To do this:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Follow remote libraries`. A screen appears showing you the libraries you are following.
 4. Paste the sharing link into the {guilabel}`Search a remote library` search bar.
 5. Select the {guilabel}`Search` icon or hit {kbd}`⏎ Return` to search for the library. If the library exists, a library card appears.

@@ -9,7 +9,7 @@ Once you have [created a library](create_library), you can start uploading conte
 To upload content to a library:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Upload third-party content in a library`.
 4. A screen appears showing your upload quota and your libraries.
 5. Select {guilabel}`Upload` under the library you want to add content to.

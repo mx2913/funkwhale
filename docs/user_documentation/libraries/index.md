@@ -26,7 +26,7 @@ caption: Manage library content
 maxdepth: 1
 ---
 
-tagging_music
+tag_music
 upload_content
 edit_content
 delete_content

@@ -15,12 +15,12 @@ Deleting an episode also removes the file from the server. This action is irreve
 To delete a single episode from a channel:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select the channel containing the content under the {guilabel}`Channels` header. The channel's page opens.
-5. Select the kebab menu ({guilabel}`⋮`) next to the episode in question. This opens the track options menu.
+5. Select the kebab menu ({fa}`ellipsis-v`) next to the episode in question. This opens the track options menu.
 6. Select {guilabel}`ℹ︎ Episode details`. The episode details page opens.
-7. Select the kebab menu ({guilabel}`⋮`) at the top of the page.
+7. Select the kebab menu ({fa}`ellipsis-v`) at the top of the page.
 8. Select {guilabel}`Delete…`. A {guilabel}`Delete this track?` warning appears.
 9. Select {guilabel}`Delete` to delete the episode.
 
@@ -35,11 +35,11 @@ Deleting a series also deletes all episodes in the series and removes the files 
 Delete a series to remove all episodes it contains. To do this:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select the channel containing the content under the {guilabel}`Channels` header. The channel's page opens.
 5. Select your series in the {guilabel}`Series` section. The series detail page opens.
-6. Select the kebab menu ({guilabel}`⋮`) to open the options menu.
+6. Select the kebab menu ({fa}`ellipsis-v`) to open the options menu.
 7. Select {guilabel}`Delete…`. A {guilabel}`Delete this album?` warning appears.
 8. Select {guilabel}`Delete` to delete the series.
 

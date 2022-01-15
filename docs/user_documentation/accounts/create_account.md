@@ -18,7 +18,7 @@ Before you sign up to a pod, you should check its __policies__. You can find the
 2. Select the {guilabel}`About this pod` link in the sidebar.
 3. Select the {guilabel}`Learn more` button in the {guilabel}`About this pod` section.
 
-Administrators can add a pod's {guilabel}`Rules` and {guilabel}`Terms and privacy policy` to this page. Make sure to read through them before signing up. For more information, check out our guide to the About this pod page.
+Administrators can add a pod's {guilabel}`Rules` and {guilabel}`Terms and privacy policy` to this page. Make sure to read through them before signing up. Also check the {guilabel}`Upload quota` to see how much space users have access to.
 
 ## Sign up
 

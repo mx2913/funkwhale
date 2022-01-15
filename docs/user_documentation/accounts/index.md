@@ -11,6 +11,7 @@ caption: Manage your account
 ---
 
 create_account
+check_quota
 delete_account
 
 ```

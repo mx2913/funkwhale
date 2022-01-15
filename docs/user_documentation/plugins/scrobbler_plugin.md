@@ -13,7 +13,7 @@ Using ListenBrainz or Maloja? Check out the [ListenBrainz](listenbrainz_plugin) 
 The __Scrobbler__ plugin supports any scrobbling service that uses the Audioscrobbler protocol. To set up the __Scrobbler plugin__:
 
 1. Log in to your account.
-2. Select the cog icon or your avatar to expand the user menu.
+2. Select the cog icon ({fa}`cog`) or your avatar to expand the user menu.
 3. Select {guilabel}`Settings`.
 4. Scroll down to the {guilabel}`Plugins` section.
 5. Select {guilabel}`Manage plugins`.
