@@ -7,15 +7,15 @@ When you delete content from a library you delete the audio files from the serve
 You can delete content from a library at any time. To do this:
 
 1. Log in to your pod.
-2. Select the upload icon (⇧) in the top of the sidebar.
-3. Select __Get started__ under __Upload third-party content in a library__.
+2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+3. Select {guilabel}`Get started` under {guilabel}`Upload third-party content in a library`.
 4. A screen appears showing your upload quota and your libraries.
-5. Select __Library Details__ under the library you want to edit.
-6. Select the __Edit__  button at the top of the screen.
-7. Scroll down to the __Library contents__ section. A list of tracks is shown.
-8. Select the checkbox next to the tracks you want to delete.
-9. Select __Delete__ in the __Actions__ dropdown menu.
-10. Select __Go__.
-11. Select __Launch__ on the warning message that appears.
+5. Select {guilabel}`Library Details` under the library you want to edit.
+6. Select the {guilabel}`Edit`  button at the top of the screen.
+7. Scroll down to the {guilabel}`Library contents` section. A list of tracks is shown.
+8. Select the checkbox ({guilabel}`☐`) next to the tracks you want to delete. Selected tracks show a tick ({guilabel}`☑︎`).
+9. Select {guilabel}`Delete` in the {guilabel}`Actions` dropdown menu.
+10. Select {guilabel}`Go`.
+11. Select {guilabel}`Launch` on the warning message that appears.
 
 That's it! You've successfully deleted the content from your library.
