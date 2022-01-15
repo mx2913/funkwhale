@@ -1,4 +1,4 @@
-# Add avatar
+# Add your avatar
 
 You can upload an avatar to your account. Other users can see this when they visit your profile. To add an avatar:
 

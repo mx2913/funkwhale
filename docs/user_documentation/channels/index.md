@@ -16,6 +16,18 @@ maxdepth: 1
 ---
 
 create_channel
+edit_channel
 delete_channel
+
+```
+
+```{toctree}
+---
+caption: Manage channel content
+maxdepth: 1
+---
+
+upload_content
+delete_content
 
 ```

@@ -11,10 +11,19 @@ caption: Manage your account
 ---
 
 create_account
+delete_account
+
+```
+
+```{toctree}
+---
+maxdepth: 1
+caption: Change account details
+---
+
 change_email
 change_password
 add_avatar
 delete_avatar
-delete_account
 
 ```

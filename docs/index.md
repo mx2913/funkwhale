@@ -31,7 +31,6 @@ third-party
 documentation/index
 contributing
 translators
-changelog
 ```
 
 ```{toctree}
@@ -42,5 +41,16 @@ hidden: true
 ---
 
 glossary
+
+```
+
+```{toctree}
+---
+caption: Changes
+maxdepth: 1
+hidden: true
+---
+
+changelog
 
 ```
