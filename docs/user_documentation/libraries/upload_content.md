@@ -9,11 +9,11 @@ Once you have created a library, you can start uploading content to it. Funkwhal
 To upload content to a library:
 
 1. Log in to your pod.
-2. Select the upload icon (⇧) in the top of the sidebar.
-3. Select __Get started__ under __Upload third-party content in a library__.
+2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+3. Select {guilabel}`Get started` under {guilabel}`Upload third-party content in a library`.
 4. A screen appears showing your upload quota and your libraries.
-5. Select __Upload__ under the library you want to add content to.
-6. Click on the section marked __Click to select files__ to open a file picker, or drag and drop your files on to it.
+5. Select {guilabel}`Upload` under the library you want to add content to.
+6. Click on the section marked {guilabel}`Click to select files` to open a file picker, or drag and drop your files on to it.
 7. If you opened the file picker, select the files you want to upload and confirm.
 8. The screen shows you the status of each upload. Once the upload queue is empty, your upload is complete.
 

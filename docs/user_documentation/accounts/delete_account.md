@@ -20,10 +20,10 @@ To delete your account:
 
 1. Log in to your account.
 2. Select the cog icon or your avatar to expand the user menu.
-3. Select __Settings__.
-4. Scroll to the __Delete my account__ section.
-5. Enter your __Password__.
-6. Select __Delete my account…__.
-7. Select __Delete my account__ on the warning notice that appears.
+3. Select {guilabel}`Settings`.
+4. Scroll to the {guilabel}`Delete my account` section.
+5. Enter your {guilabel}`Password`.
+6. Select {guilabel}`Delete my account…`.
+7. Select {guilabel}`Delete my account` on the warning notice that appears.
 
 That's it! You've deleted your account. You can [create another account](create_account.md) at any time.

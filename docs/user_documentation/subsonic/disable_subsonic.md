@@ -4,10 +4,10 @@ If you don't want to use Subsonic any more, you can disable access. This stops a
 
 1. Log in to your account.
 2. Select your profile picture to expand the user menu.
-3. Select __Settings__.
-4. Scroll to the __Subsonic API password__ section.
-5. Select __Disable Subsonic access__.
-6. Select __Disable access__ in the warning message that appears.
-7. The Subsonic password field shows __Access disabled__.
+3. Select {guilabel}`Settings`.
+4. Scroll to the {guilabel}`Subsonic API password` section.
+5. Select {guilabel}`Disable Subsonic access`.
+6. Select {guilabel}`Disable access` in the warning message that appears.
+7. The Subsonic password field shows {guilabel}`Access disabled`.
 
 You're done! Subsonic apps can no longer access your account. You can re-enable the API at any time by [requesting a new password](subsonic_password).

@@ -14,14 +14,14 @@ The __Scrobbler__ plugin supports any scrobbling service that uses the Audioscro
 
 1. Log in to your account.
 2. Select the cog icon or your avatar to expand the user menu.
-3. Select __Settings__.
-4. Scroll down to the __Plugins__ section.
-5. Select __Manage plugins__.
-6. Find the __Scrobbler__ plugin.
-7. Toggle the __Enabled__ switch.
-8. Enter the URL of your scrobbler service. If you leave this field blank, the plugin defaults to __Last.fm__.
-9. Enter __Your scrobbler username__. You can set this up on your scrobbler service.
-10. Enter __Your scrobbler password__. You can set this up on your scrobbler service.
-11. Select __Save__.
+3. Select {guilabel}`Settings`.
+4. Scroll down to the {guilabel}`Plugins` section.
+5. Select {guilabel}`Manage plugins`.
+6. Find the {guilabel}`Scrobbler` plugin.
+7. Toggle the {guilabel}`Enabled` switch.
+8. Enter the {guilabel}`URL of the scrobbler service`. If you leave this field blank, the plugin defaults to __Last.fm__.
+9. Enter {guilabel}`Your scrobbler username`. You can set this up on your scrobbler service.
+10. Enter {guilabel}`Your scrobbler password`. You can set this up on your scrobbler service.
+11. Select {guilabel}`Save`.
 
 That's it! You've set up the __Scrobbler__ plugin. When you listen to tracks, the plugin sends the information to your scrobbler service.
