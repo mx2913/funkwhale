@@ -11,6 +11,7 @@ caption: User documentation
 
 user_documentation/accounts/index
 user_documentation/libraries/index
+user_documentation/channels/index
 user_documentation/subsonic/index
 user_documentation/plugins/index
 
@@ -33,8 +34,13 @@ translators
 changelog
 ```
 
-## Indices and tables
+```{toctree}
+---
+caption: Reference
+maxdepth: 1
+hidden: true
+---
 
-- [index](genindex)
-- [Module index](modindex)
-- [Search page](search)
+glossary
+
+```

@@ -4,7 +4,7 @@
 Access to a library's content is set at a __library level__. You can't change the privacy level of content within the library.
 ```
 
-Once you have created a library, you can start uploading content to it. Funkwhale reads information about your content from its metadata. For the best results, make sure to tag your files well.
+Once you have [created a library](create_library), you can start uploading content to it. Funkwhale reads information about your content from its metadata. For the best results, make sure to tag your files well.
 
 To upload content to a library:
 

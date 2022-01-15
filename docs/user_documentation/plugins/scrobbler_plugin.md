@@ -4,7 +4,7 @@
 If you want to use [Last.fm](https://last.fm) to scrobble your listens, your pod admin needs to set up an API account. Contact your pod admin if you have any questions.
 ```
 
-The __Scrobbler__ plugin enables you to submit (scrobble) listens to a scrobbler service. Scrobbling listens helps you build up a profile of your music tastes. It also enables you to keep a record of your listens.
+The __Scrobbler__ plugin enables you to submit ({term}`scrobble<Scrobbling>`) listens to a scrobbler service. Scrobbling listens helps you build up a profile of your music tastes. It also enables you to keep a record of your listens.
 
 ```{tip}
 Using ListenBrainz or Maloja? Check out the [ListenBrainz](listenbrainz_plugin) and [Maloja](maloja_plugin) plugins!
