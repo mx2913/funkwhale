@@ -7,7 +7,7 @@ You can update the details of your libraries at any time. To do this:
 3. Select {guilabel}`Get started` under {guilabel}`Upload third-party content in a library`.
 4. A screen appears showing your upload quota and your libraries.
 5. Select {guilabel}`Library Details` under the library you want to edit.
-6. Select the {guilabel}`Edit` button at the top of the screen.
+6. Select the {guilabel}`✎ Edit` button at the top of the screen.
 7. Change any of the following:
    - {guilabel}`Name`.
    - {guilabel}`Description`.
