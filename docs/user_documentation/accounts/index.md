@@ -18,12 +18,13 @@ delete_account
 ```{toctree}
 ---
 maxdepth: 1
-caption: Change account details
+caption: Change account settings
 ---
 
 change_email
 change_password
 add_avatar
 delete_avatar
+activity_visibility
 
 ```
