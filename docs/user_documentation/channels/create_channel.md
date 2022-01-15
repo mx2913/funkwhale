@@ -28,7 +28,7 @@ To create an __Artist discography__ channel:
 10. __Optional__ – enter a {guilabel}`Description` of your channel. You can {guilabel}`Write` using [Markdown](https://www.markdownguide.org/) syntax and {guilabel}`Preview` how it will look. Users see this when they visit your channel page.
 11. Select {guilabel}`Create channel` to create your channel.
 
-That's it! You've created your artist channel. You can now add some music to it.
+That's it! You've created your artist channel. You can now [add some music to it](upload_artist.md).
 
 ## Podcast
 
@@ -51,4 +51,4 @@ To create a __Podcast__ channel:
 15. __Optional__ – enter the {guilabel}`Owner name`. This populates the ``itunes:name`` field of your podcast's {abbr}`RSS (Really Simple Syndication)` feed.
 16. Select {guilabel}`Create channel` to create your channel.
 
-You're done! You've created your podcast channel. Now you can add some episodes to it.
+You're done! You've created your podcast channel. Now you can [add some episodes to it](upload_podcast.md).
