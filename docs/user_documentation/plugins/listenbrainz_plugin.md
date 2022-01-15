@@ -1,6 +1,6 @@
 # ListenBrainz plugin
 
-The __ListenBrainz__ plugin enables you to submit (scrobble) listens to your [ListenBrainz](https://listenbrainz.org) account. Scrobbling listens helps you build up a profile of your music tastes. It also enables you to keep a record of your listens. To set up the __ListenBrainz plugin__:
+The __ListenBrainz__ plugin enables you to submit ({term}`scrobble<Scrobbling>`) listens to your [ListenBrainz](https://listenbrainz.org) account. Scrobbling listens helps you build up a profile of your music tastes. It also enables you to keep a record of your listens. To set up the __ListenBrainz plugin__:
 
 1. Log in to your account.
 2. Select the cog icon or your avatar to expand the user menu.

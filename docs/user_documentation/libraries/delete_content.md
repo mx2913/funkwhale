@@ -14,7 +14,7 @@ You can delete content from a library at any time. To do this:
 6. Select the {guilabel}`Edit`  button at the top of the screen.
 7. Scroll down to the {guilabel}`Library contents` section. A list of tracks is shown.
 8. Select the checkbox ({guilabel}`☐`) next to the tracks you want to delete. Selected tracks show a tick ({guilabel}`☑︎`).
-9. Select {guilabel}`Delete` in the {guilabel}`Actions` dropdown menu.
+9. Select {menuselection}`Actions --> Delete`.
 10. Select {guilabel}`Go`.
 11. Select {guilabel}`Launch` on the warning message that appears.
 

@@ -1,7 +1,7 @@
 # Create a library
 
 ```{tip}
-Want to publish your own content on your pod? Take a look at channels.
+Want to publish your own content on your pod? Take a look at [channels](../channels/index).
 ```
 
 To start uploading your collection to your pod, you need to create a library. You can create as many libraries as you need.
