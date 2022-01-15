@@ -9,7 +9,7 @@ Your __activity visibility__ determines who can see your listening activity on F
 To change your activity visibility:
 
 1. Log in to your account.
-2. Select the cog icon or your avatar to expand the user menu.
+2. Select the cog icon ({fa}`cog`) or your avatar to expand the user menu.
 3. Select {guilabel}`Settings`.
 4. Find {guilabel}`Activity visibility` in the {guilabel}`Account settings` section.
 5. Select your visibility level from the dropdown menu.

@@ -9,7 +9,7 @@ To start uploading your collection to your pod, you need to create a library. Yo
 To create a library:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Upload third-party content in a library`.
 4. A screen appears showing your upload quota. If you have created any libraries, these are also shown.
 5. Select {guilabel}`Create a new library`.

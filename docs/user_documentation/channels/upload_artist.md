@@ -13,7 +13,7 @@ You can also create albums to organize your channel content.
 Albums are a good way of organizing your content. You can create as many albums as you want. To create a new album:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select the channel you want to add an album to under the {guilabel}`Channels` header. The channel's page opens.
 5. Select {guilabel}`+ Add new` next to the {guilabel}`Albums` section. A {guilabel}`New album` screen appears.
@@ -23,7 +23,7 @@ Albums are a good way of organizing your content. You can create as many albums 
 Once you've created your album, you can add some details to it. To do this:
 
 1. Select the album. The album details screen opens.
-2. Select the kebab menu ({guilabel}`⋮`) to show the album options.
+2. Select the kebab menu ({fa}`ellipsis-v`) to show the album options.
 3. Select {guilabel}`Edit`. The {guilabel}`Edit this album` screen opens.
 4. Change the details in any of these fields:
    - {guilabel}`Title` – the title of the album.
@@ -41,7 +41,7 @@ That's it! You can now add content to your album.
 To add content to your channel:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select the channel you want to add content to under the {guilabel}`Channels` header. The channel's page opens.
 5. Select {guilabel}`⇧ Upload`. The {guilabel}`Publish audio` screen appears.
@@ -57,7 +57,7 @@ To add content to your channel:
 
 Once you have uploaded your files, you can change their details. To do this:
 
-1. Select the edit icon ({guilabel}`✎` ) to edit the track details. The {guilabel}`Upload details` screen appears.
+1. Select the edit icon ({fa}`edit`) to edit the track details. The {guilabel}`Upload details` screen appears.
 2. Change the details in any of these fields:
    - {guilabel}`Title` – the title of the track
    - {guilabel}`Track Picture` – the picture that shows up next to the track.
@@ -75,7 +75,7 @@ That's it! You've added content to your channel. Your followers can now listen t
 If you selected {guilabel}`Finish later`, Funkwhale saves your files and edits. You can continue your upload later by doing the following:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select the channel you want to add content to under the {guilabel}`Channels` header. The channel's page opens.
 5. Select {guilabel}`⇧ Upload`. The {guilabel}`Publish audio` screen appears.

@@ -5,7 +5,7 @@ Sharing a library gives another user access to the library's content. When a use
 To share a library you own:
 
 1. Log in to your pod.
-2. Select the upload icon ({guilabel}`⇧`) in the top of the sidebar.
+2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Upload third-party content in a library`.
 4. A screen appears showing your upload quota and your libraries.
 5. Select {guilabel}`Library Details` under the library you want to share.
