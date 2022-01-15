@@ -10,8 +10,9 @@ caption: User documentation
 ---
 
 user_documentation/accounts/index
-user_documentation/subsonic/index
 user_documentation/libraries/index
+user_documentation/subsonic/index
+user_documentation/plugins/index
 
 ```
 
