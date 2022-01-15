@@ -10,8 +10,18 @@ You can add tracks to your favorites list at any time. There are a few ways you 
 
 To add the currently playing track to your favorites, do one of the following:
 
+```{tabbed} Desktop
+
 - Select the gray heart icon ({fa}`heart`) on the player bar. The heart turns pink to show that the track is in your favorites.
 - Hit the {kbd}`l` key on your keyboard. The heart icon on the player turns pink to show that the track is in your favorites.
+
+```
+
+```{tabbed} Mobile
+
+- Select the player at the bottom of the screen to expand it. Select the gray heart icon ({fa}`heart`) under the track art. The heart turns pink to show that the track is in your favorites.
+
+```
 
 That's all there is to it! The currently playing track is now in your favorites list.
 
@@ -19,9 +29,21 @@ That's all there is to it! The currently playing track is now in your favorites 
 
 You can favorite tracks on any page with a track table. This includes artist pages, album pages, and the search page. To favorite tracks on the track table:
 
+```{tabbed} Desktop
+
 1. Find your track in a track table.
 2. Hover over the track row. A gray heart icon ({fa}`heart`) appears.
 3. Select the heart icon. The heart turns pink to show that the track is in your favorites.
+
+```
+
+```{tabbed} Mobile
+
+1. Find your track in a track table.
+2. Tap on the kebab menu ({fa}`ellipsis-v`) on the track row. The track menu opens.
+3. Select {guilabel}`Add to favorites`. The heart turns pink to show that the track is in your favorites.
+
+```
 
 You're done! The track is in your favorites.
 
