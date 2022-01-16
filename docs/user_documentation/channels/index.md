@@ -33,3 +33,14 @@ delete_artist
 delete_podcast
 
 ```
+
+```{toctree}
+---
+caption: Follow channels
+maxdepth: 1
+---
+
+follow_channel
+subscribe_rss
+
+```
