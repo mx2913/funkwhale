@@ -48,8 +48,8 @@ for key, value in FUNKWHALE_CONFIG.items():
 # ones.
 extensions = [
     "sphinx.ext.graphviz",
-    "sphinx.ext.autodoc", 
-    "myst_parser", 
+    "sphinx.ext.autodoc",
+    "myst_parser",
     "sphinx_panels",
 ]
 autodoc_mock_imports = [
