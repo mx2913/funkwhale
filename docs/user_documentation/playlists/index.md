@@ -10,6 +10,7 @@ maxdepth: 1
 
 create_playlist
 edit_playlist
+listen_playlist
 delete_playlist
 
 ```
