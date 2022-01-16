@@ -55,3 +55,24 @@ To listen to public radios other users created:
 ```
 
 That's it! The radio starts playing.
+
+## Stop a radio
+
+Radios continue to play until there is no more content matching their criteria. You can stop radios whenever you want. To do this:
+
+```{tabbed} Desktop
+
+1. Select the up arrow ({fa}`caret-up`) on the queue menu to expand the [queue](../queue/index.md).
+2. Select {guilabel}`Stop Radio` at the bottom of the queue.
+
+```
+
+```{tabbed} Mobile
+
+1. Select the player bar at the bottom of the screen to expand the player.
+2. Select the up arrow ({fa}`caret-up`) on the queue menu to expand the [queue](../queue/index.md).
+3. Select {guilabel}`Stop Radio` at the bottom of the queue.
+
+```
+
+That's it! The radio stops playing. The radio's content remains in the queue.
