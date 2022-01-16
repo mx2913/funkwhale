@@ -45,3 +45,14 @@ To follow a channel located on another pod, you need its __Federation handle__. 
 ```
 
 That's it! You can now see the channel's content on your pod. Other users of your pod can also see this channel.
+
+## Follow a Funkwhale podcast with a podcatcher
+
+You can follow podcasts published in channels using a standard podcatcher. To do this:
+
+1. Select the channel you want to follow. The channel details page opens.
+2. Select the feed button ({fa}`feed`). The {guilabel}`Subscribe to this channel` window appears.
+3. Select {guilabel}`Copy` under the {guilabel}`Subscribe via RSS` to copy the channel's {abbr}`RSS (Really Simple Syndication)` feed URL.
+4. Paste the URL in your podcatcher.
+
+That's it! Your podcatcher fetches the podcast details from Funkwhale.
