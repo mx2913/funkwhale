@@ -29,7 +29,7 @@ That's it! The currently playing track is now in your playlist.
 
 ## Add content from queue
 
-You can add all content that is currently in your player queue. To do this:
+You can add all content that is currently in your [player queue](../queue/index.md). To do this:
 
 ```{tabbed} Desktop
 

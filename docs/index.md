@@ -12,6 +12,7 @@ caption: User documentation
 user_documentation/accounts/index
 user_documentation/libraries/index
 user_documentation/channels/index
+user_documentation/queue/index
 user_documentation/playlists/index
 user_documentation/radios/index
 user_documentation/favorites/index
