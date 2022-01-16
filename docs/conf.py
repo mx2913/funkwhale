@@ -46,7 +46,12 @@ for key, value in FUNKWHALE_CONFIG.items():
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx.ext.graphviz", "sphinx.ext.autodoc", "myst_parser", "sphinx_panels"]
+extensions = [
+    "sphinx.ext.graphviz",
+    "sphinx.ext.autodoc", 
+    "myst_parser", 
+    "sphinx_panels",
+]
 autodoc_mock_imports = [
     "celery",
     "django_auth_ldap",
