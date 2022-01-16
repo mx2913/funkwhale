@@ -31,7 +31,7 @@ To listen to playlists you created:
 
 ```
 
-You're done! Your playlist's content appears in your queue.
+You're done! Your playlist's content appears in your [queue](../queue/index.md).
 
 ## Listen to public playlists from your pod
 
@@ -54,4 +54,4 @@ To listen to public playlists other users created:
 
 ```
 
-That's it! The playlist's content appears in your queue.
+That's it! The playlist's content appears in your [queue](../queue/index.md).
