@@ -1,6 +1,6 @@
 # Upload content to an Podcast channel
 
-Once you have [created a channel](create_channel.md), you can start to add content to it. Users who follow your channel can see and play your content. 
+Once you have [created a channel](create_channel.md), you can start to add content to it. Users who follow your channel can see and play your content.
 
 You can also create series to organize your channel content.
 
