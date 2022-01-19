@@ -230,7 +230,7 @@ redirect_files = [
     ("users/followchannel.html", "../user_documentation/channels/follow_channel.html"),
     ("users/follow.html", "../user_documentation/libraries/follow_library.html"),
     ("users/reports.html", "../user_documentation/reports/index.html"),
-    ("users/builtinplugins.html", "../user_documentation/plugins/index.html")
+    ("users/builtinplugins.html", "../user_documentation/plugins/index.html"),
 ]
 
 # Generate redirect template
