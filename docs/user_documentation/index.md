@@ -28,7 +28,7 @@ Want to listen to something new or enjoy an old favorite? Follow the guides in t
 
 ## Report content and users
 
-If you've come across something that doesn't abide by a pod's rules or the law, you can report it. Follow the guides in the [Reporting](reporting/index.md) section to see how.
+If you've come across something that doesn't abide by a pod's rules or the law, you can report it. Follow the guides in the [Reporting](reports/index.md) section to see how.
 
 ## Access Funkwhale from other apps
 
