@@ -2,7 +2,7 @@
 
 Funkwhale is a self-hosted audio player and publication platform. It enables users to build libraries of existing content and publish their own.
 
-Funkwhale uses the [ActivityPub protocol](https://www.w3.org/TR/activitypub/) to talk to other apps across the {term}`Fediverse`. Users can share content between Funkwhale pods or with other Fediverse software.
+Funkwhale uses the [ActivityPub protocol](https://www.w3.org/TR/activitypub/) to talk to other apps across the {term}`Fediverse`. Users can share content between {term}`Funkwhale pods <Pod>` or with other Fediverse software.
 
 ```{toctree}
 ---
@@ -11,9 +11,10 @@ hidden: true
 caption: User documentation
 ---
 
+user_documentation/index
 user_documentation/accounts/index
-user_documentation/libraries/index
 user_documentation/channels/index
+user_documentation/libraries/index
 user_documentation/queue/index
 user_documentation/playlists/index
 user_documentation/radios/index
@@ -104,7 +105,7 @@ Looking to use Funkwhale for your content? Read through our guides to master the
 
 +++
 
-```{link-button} user_documentation/accounts/index
+```{link-button} user_documentation/index
 :type: ref
 :text: Get started
 :classes: btn-outline-primary btn-block stretched-link 

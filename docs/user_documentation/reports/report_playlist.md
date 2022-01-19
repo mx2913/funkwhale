@@ -1,6 +1,6 @@
 # Report a playlist
 
-If a playlist's content violates a pod's rules or the law, you can report it. To do this:
+If a playlist's content violates a {term}`pod's <Pod>` rules or the law, you can report it. To do this:
 
 ```{tabbed} Desktop
 

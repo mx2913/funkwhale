@@ -9,7 +9,7 @@ You can delete content from your podcast channel. This means that your followers
 ## Delete an episode
 
 ```{warning}
-Deleting an episode also removes the file from the server. This action is irreversible.
+Deleting an episode also deletes the file from the {term}`pod`. This action is irreversible.
 ```
 
 To delete a single episode from a channel:
@@ -47,7 +47,7 @@ That's it! You've deleted your episode. You can add it again by [uploading it to
 ## Delete a series
 
 ```{warning}
-Deleting a series also deletes all episodes in the series and removes the files from the server. This action is irreversible.
+Deleting a series also deletes all episodes in the series and deletes the files from the {term}`pod`. This action is irreversible.
 ```
 
 Delete a series to remove all episodes it contains. To do this:

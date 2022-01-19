@@ -1,6 +1,6 @@
 # Share a library
 
-Sharing a library gives another user access to the library's content. When a user follows your library, they'll be able to play and download any content it contains. Share private libraries with friends and family or share public libraries with everyone!
+Sharing a library gives another user access to the library's content. When a user follows your library, they'll be able to play and download any content it contains from their {term}`pod`. Share private libraries with friends and family or share public libraries with everyone!
 
 To share a library you own:
 

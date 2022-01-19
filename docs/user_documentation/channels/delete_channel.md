@@ -8,7 +8,7 @@ If you want to delete your channel, follow these steps:
 
 ```{tabbed} Desktop
 
-1. Log in to your pod.
+1. Log in to your {term}`pod`.
 2. Select the upload icon ({fa}`upload`) in the top of the sidebar.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select the channel you want to delete under the {guilabel}`Channels` header. The channel's page opens.
@@ -20,7 +20,7 @@ If you want to delete your channel, follow these steps:
 
 ```{tabbed} Mobile
 
-1. Log in to your pod.
+1. Log in to your {term}`pod`.
 2. Select the upload icon ({fa}`upload`) at the top of the screen.
 3. Select {guilabel}`Get started` under {guilabel}`Publish your work in a channel`. Your user profile opens.
 4. Select the channel you want to delete under the {guilabel}`Channels` header. The channel's page opens.

@@ -1,6 +1,6 @@
 # Report an account
 
-You can report a user account if the user is breaking the pod's rules. To do this:
+You can report a user account if the user is breaking the {term}`pod's <Pod>` rules. To do this:
 
 1. Select the user's username to go to their profile page.
 2. Select the kebab menu ({fa}`ellipsis-v`) to open the options menu.

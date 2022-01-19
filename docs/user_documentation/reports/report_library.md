@@ -1,6 +1,6 @@
 # Report a library
 
-If a channel's content violates a pod's rules or the law, you can report it. To do this:
+If a channel's content violates a {term}`pod's <Pod>` rules or the law, you can report it. To do this:
 
 1. Go to the library's details page.
 2. Select the kebab menu ({fa}`ellipsis-v`) to open the options menu.

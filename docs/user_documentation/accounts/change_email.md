@@ -26,4 +26,4 @@ You can update your email address whenever you need to. To do this:
 
 ```
 
-That's it! If your pod's admin has email verification enabled, you'll receive a confirmation email. Follow the instructions in this email to finish changing your email address.
+That's it! If your pod admin has email verification enabled, you'll receive a confirmation email. Follow the instructions in this email to finish changing your email address.

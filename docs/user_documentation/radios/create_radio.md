@@ -14,7 +14,7 @@ To create a new radio:
 2. Select {guilabel}` Create your own radio` under the {guilabel}`User radios` section. The {guilabel}`Builder` screen opens.
 3. Enter a {guilabel}`Radio name`.
 4. __Optional__ – enter a {guilabel}`Description` for your radio.
-5. To make your radio available to other users on your pod, enable the {guilabel}`Display publicly` switch. If you disable this switch, only you can see the radio.
+5. To make your radio available to other users on your {term}`pod`, enable the {guilabel}`Display publicly` switch. If you disable this switch, only you can see the radio.
 6. Select {guilabel}`Artist` or {guilabel}`Tag` from the {guilabel}`Select a filter` dropdown.
 7. Select {guilabel}`Add filter` to add the filter to your radio.
 8. Configure your filter:
@@ -33,7 +33,7 @@ To create a new radio:
 3. Select {guilabel}` Create your own radio` under the {guilabel}`User radios` section. The {guilabel}`Builder` screen opens.
 4. Enter a {guilabel}`Radio name`.
 5. __Optional__ – enter a {guilabel}`Description` for your radio.
-6. To make your radio available to other users on your pod, enable the {guilabel}`Display publicly` switch. If you disable this switch, only you can see the radio.
+6. To make your radio available to other users on your {term}`pod`, enable the {guilabel}`Display publicly` switch. If you disable this switch, only you can see the radio.
 7. Select {guilabel}`Artist` or {guilabel}`Tag` from the {guilabel}`Select a filter` dropdown.
 8. Select {guilabel}`Add filter` to add the filter to your radio.
 9. Configure your filter:

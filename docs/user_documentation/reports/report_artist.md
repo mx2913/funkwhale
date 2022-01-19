@@ -1,6 +1,6 @@
 # Report an artist
 
-If an artist's content violates a pod's rules or the law, you can report it. To do this:
+If an artist's content violates a {term}`pod's <Pod>` rules or the law, you can report it. To do this:
 
 1. Go to the artist details page.
 2. Select {guilabel}`More…` to open the options menu.

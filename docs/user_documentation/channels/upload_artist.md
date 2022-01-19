@@ -1,6 +1,6 @@
 # Upload content to an Artist channel
 
-Once you have [created a channel](create_channel.md), you can start to add content to it. Users who follow your channel can see and play your content.
+Once you have [created a channel](create_channel.md), you can start to add content to it. Users who follow your channel can see and play your content from their {term}`pods <Pod>`.
 
 You can also create albums to organize your channel content.
 

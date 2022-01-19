@@ -1,7 +1,7 @@
 # Delete content from a library
 
 ```{warning}
-When you delete content from a library you delete the audio files from the server. Make sure you have a backup of any files you want to keep.
+When you delete content from a library you delete the audio files from your {term}`pod`. Make sure you have a backup of any files you want to keep.
 ```
 
 You can delete content from a library at any time. To do this:

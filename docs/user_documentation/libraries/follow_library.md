@@ -32,7 +32,7 @@ If you've received a sharing link, you can use this to follow a library. To do t
 
 ```
 
-That's it! The server then scans the content and you can see it on your pod.
+That's it! The server then scans the content and you can see it on your {term}`pod`.
 
 ## Follow from content on your pod
 
@@ -40,7 +40,7 @@ That's it! The server then scans the content and you can see it on your pod.
 You can only follow a library from content pages if its privacy level is not {guilabel}`Nobody except me`.
 ```
 
-If a user on your pod has already followed a library, you can find it by selecting content from that library. To do this:
+If a user on your {term}`pod` has already followed a library, you can find it by selecting content from that library. To do this:
 
 1. Log in to your pod.
 2. Select a track, album, or artist from the library you want to follow.

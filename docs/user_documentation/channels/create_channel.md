@@ -4,7 +4,7 @@
 Your channel's __Fediverse handle__ needs to be unique. This is how other {term}`Fediverse` software identifies your channel. You can't change the __Fediverse handle__ once you've created your channel.
 ```
 
-Create a channel to start publishing your content on Funkwhale. Users can access channel content from Funkwhale or other Fediverse software.
+Create a channel to start publishing your content on your {term}`Funkwhale pod <Pod>`. Users can access channel content from Funkwhale or other Fediverse software.
 
 You can create two types of channel:
 

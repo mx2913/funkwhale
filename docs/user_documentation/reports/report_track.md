@@ -1,6 +1,6 @@
 # Report a track
 
-If a track violates a pod's rules or the law, you can report it. To do this:
+If a track violates a {term}`pod's <Pod>` rules or the law, you can report it. To do this:
 
 1. Go to the track details page or locate the track in a track table.
 2. Select the kebab menu ({fa}`ellipsis-v`) to open the options menu.

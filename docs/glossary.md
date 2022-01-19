@@ -1,5 +1,14 @@
 # Glossary of terms
 
+## Funkwhale glossary
+
+```{glossary}
+
+Pod
+  A pod is an instance of Funkwhale running on a server. Pods can communicate with one another across the {term}`Fediverse`.
+
+```
+
 ## Channel glossary
 
 ```{glossary}

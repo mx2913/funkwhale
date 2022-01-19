@@ -4,7 +4,7 @@
 You can only listen to content in libraries you have access to. For more information, see [Follow a library](../libraries/follow_library).
 ```
 
-You can listen to your playlists or playlists created by other users of your pod.
+You can listen to your playlists or playlists created by other users of your {term}`pod`.
 
 ```{contents}
 :local:

@@ -1,6 +1,6 @@
 # Delete your Funkwhale account
 
-If you have decided you no longer want your Funkwhale account, you can delete it. This action removes your profile and all your data from your pod, including:
+If you have decided you no longer want your Funkwhale account, you can delete it. This action removes your profile and all your data from your {term}`pod`, including:
 
 - Your user avatar.
 - Your email address.

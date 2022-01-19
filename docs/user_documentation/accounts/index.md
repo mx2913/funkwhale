@@ -1,6 +1,6 @@
 # Your account
 
-Your Funkwhale account is the key to your Funkwhale experience. Creating an account on a pod gives you the ability to upload content, follow channels, and listen to audio.
+Your Funkwhale account is the key to your Funkwhale experience. Creating an account on a {term}`pod` gives you the ability to upload content, follow channels, and listen to audio.
 
 Follow the guides in this section to manage your Funkwhale account.
 

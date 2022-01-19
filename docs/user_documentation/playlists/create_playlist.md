@@ -11,7 +11,7 @@ To create a playlist:
 3. Select {guilabel}`Manage your playlists`. The {guilabel}`Manage playlists` screen appears.
 4. Enter a {guilabel}`Playlist name` for your new playlist.
 5. Select the {guilabel}`Playlist visibility` for your playlist. Choose from the following options:
-   - {guilabel}`Everyone, across all instances` – the playlist is available to everybody who interacts with your pod. This includes users of other pods.
+   - {guilabel}`Everyone, across all instances` – the playlist is available to everybody who interacts with your {term}`pod`. This includes users of other pods.
    - {guilabel}`Everyone on this instance` – the playlist is available to all users on your pod. This does not include users of other pods.
    - {guilabel}`Nobody except me` – the playlist is only available to you and people you share it with.
 6. Select {guilabel}`Create playlist`. A {guilabel}`Playlist created` message appears.

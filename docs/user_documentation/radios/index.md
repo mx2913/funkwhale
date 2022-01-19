@@ -7,7 +7,7 @@ Funkwhale offers the following radios out of the box:
 - __Your content__ – listen to content from [libraries](../libraries/index.md) you own.
 - __Favorites__ – listen to tracks from your [favorites](../favorites/index.md) list.
 - __Random__ – discover something new by letting Funkwhale choose tracks at random.
-- __Recently Added__ – listen to the latest content added to your pod.
+- __Recently Added__ – listen to the latest content added to your {term}`pod`.
 - __Less listened__ – check out tracks you've not heard, or things you haven't given as much attention.
 
 ```{toctree}

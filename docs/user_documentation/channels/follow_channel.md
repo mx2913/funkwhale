@@ -1,6 +1,6 @@
 # Follow a channel
 
-Get access to a channel's content by following it. Following a channel makes its content visible to all users on your pod.
+Get access to a channel's content by following it. Following a channel makes its content visible to all users on your {term}`pod`.
 
 You can follow channels in a few different ways:
 

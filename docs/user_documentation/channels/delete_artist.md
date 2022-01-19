@@ -9,7 +9,7 @@ You can delete content from your artist channel. This means that your followers 
 ## Delete a track
 
 ```{warning}
-Deleting a track also removes the file from the server. This action is irreversible.
+Deleting a track also deletes the file from your {term}`Funkwhale pod <Pod>`. This action is irreversible.
 ```
 
 To delete a single track from a channel:
