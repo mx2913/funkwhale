@@ -229,11 +229,11 @@ build_docs:
     CACHE_URL: "redis://redis:6379/0"
   before_script:
     - cd api
-    - pip3 install -r requirements/base.txt
-    - pip3 install -r requirements/local.txt
-    - ./manage.py migrate
+    - pip3 install poetry
+    - poetry install
+    - poetry run python manage.py migrate
   script:
-    - ./manage.py spectacular --file ../docs/schema.yml
+    - poetry run python manage.py spectacular --file ../docs/schema.yml
   tags:
     - docker
   artifacts:
