@@ -212,7 +212,7 @@ export default {
     }
   },
   created () {
-    if (this.tracks.length == 0) {
+    if (this.tracks.length === 0) {
       this.fetchData('tracks/')
     }
   },
@@ -224,10 +224,10 @@ export default {
       this.isLoading = true
       const self = this
       const params = _.clone(this.filters)
+      const tracksPromise = await axios.get(url, { params: params })
       params.page_size = this.limit
       params.page = this.page
       params.include_channels = true
-      const tracksPromise = await axios.get(url, { params: params })
       try {
         self.nextUrl = tracksPromise.data.next
         self.tracks = tracksPromise.data.results
