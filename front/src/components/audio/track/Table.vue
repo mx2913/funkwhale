@@ -5,8 +5,9 @@
       v-if="search"
       v-model="query"
       @search="
+        currentPage = 1;
         additionalTracks = [];
-        fetchData();
+        fetchData('tracks/');
       "
     />
 
@@ -106,10 +107,10 @@
         class="ui center aligned basic segment desktop-and-up"
       >
         <pagination
-          :total="total"
-          :current="page"
+          :total="totalTracks"
+          :current="currentPage"
           :paginate-by="paginateBy"
-          v-on="$listeners"
+         @page-changed="updatePage"
         />
       </div>
     </div>
@@ -140,13 +141,14 @@
         :is-podcast="isPodcast"
       />
       <div
-        v-if="paginateResults"
+        v-if="paginateResults && totalTracks > paginateBy"
         class="ui center aligned basic segment tablet-and-below"
       >
         <pagination
-          v-if="paginateResults"
-          :total="total"
-          :current="page"
+          v-if="paginateResults && totalTracks > paginateBy"
+          :paginate-by="paginateBy"
+          :total="totalTracks"
+          :current="currentPage"
           :compact="true"
           v-on="$listeners"
         />
@@ -194,10 +196,11 @@ export default {
       fetchDataUrl: this.nextUrl,
       isLoading: false,
       additionalTracks: [],
-      query: ''
+      query: '',
+      totalTracks: this.total,
+      currentPage: this.page,
     }
   },
-
   computed: {
     allTracks () {
       return (this.tracks || []).concat(this.additionalTracks)
@@ -224,14 +227,15 @@ export default {
       this.isLoading = true
       const self = this
       const params = _.clone(this.filters)
-      const tracksPromise = await axios.get(url, { params: params })
-      params.page_size = this.limit
-      params.page = this.page
+      params.page_size = this.paginateBy
+      params.page = this.currentPage
       params.include_channels = true
+      params.q = this.query
+      const tracksPromise = await axios.get(url, { params: params })
       try {
-        self.nextUrl = tracksPromise.data.next
-        self.tracks = tracksPromise.data.results
-        self.total = tracksPromise.data.count
+        self.fetchDataUrl = tracksPromise.data.next
+        self.additionalTracks = tracksPromise.data.results
+        self.totalTracks = tracksPromise.data.count
         self.$emit('fetched', tracksPromise.data)
         self.isLoading = false
       } catch (e) {
@@ -239,8 +243,13 @@ export default {
         self.errors = e.backendErrors
       }
     },
-    updatePage: function (page) {
+   updatePage: function (page) {
+      if (this.tracks.length === 0) {
+         this.currentPage = page
+         this.fetchData('tracks/')
+      } else {
       this.$emit('page-changed', page)
+      }
     }
   }
 }
