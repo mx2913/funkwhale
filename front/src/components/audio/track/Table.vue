@@ -108,7 +108,7 @@
       >
         <pagination
           :total="totalTracks"
-          :current="currentPage"
+          :current=" tracks.length > 0 ? page : {currentPage}"
           :paginate-by="paginateBy"
          @page-changed="updatePage"
         />
@@ -148,9 +148,9 @@
           v-if="paginateResults && totalTracks > paginateBy"
           :paginate-by="paginateBy"
           :total="totalTracks"
-          :current="currentPage"
+          :current=" tracks.length > 0 ? page : {currentPage}"
           :compact="true"
-          v-on="$listeners"
+          @page-changed="updatePage"
         />
       </div>
     </div>
@@ -248,7 +248,7 @@ export default {
          this.currentPage = page
          this.fetchData('tracks/')
       } else {
-      this.$emit('page-changed', page)
+         this.$emit('page-changed', page)
       }
     }
   }
