@@ -212,7 +212,7 @@ export default {
     }
   },
   created () {
-    if (!this.tracks) {
+    if (this.tracks.length == 0) {
       this.fetchData('tracks/')
     }
   },
@@ -224,15 +224,14 @@ export default {
       this.isLoading = true
       const self = this
       const params = _.clone(this.filters)
-      const tracksPromise = axios.get(url, { params: params })
       params.page_size = this.limit
       params.page = this.page
       params.include_channels = true
+      const tracksPromise = await axios.get(url, { params: params })
       try {
-        await tracksPromise
-        self.nextPage = tracksPromise.data.next
-        self.objects = tracksPromise.data.results
-        self.count = tracksPromise.data.count
+        self.nextUrl = tracksPromise.data.next
+        self.tracks = tracksPromise.data.results
+        self.total = tracksPromise.data.count
         self.$emit('fetched', tracksPromise.data)
         self.isLoading = false
       } catch (e) {
