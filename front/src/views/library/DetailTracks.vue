@@ -36,7 +36,7 @@ export default {
     TrackTable
   },
   props: {
-    object: { type: Object, required: true },
+    object: { type: [Object, String], required: true },
     isOwner: { type: Boolean, required: true }
   }
 }

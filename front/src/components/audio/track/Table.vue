@@ -148,7 +148,7 @@
           v-if="paginateResults && totalTracks > paginateBy"
           :paginate-by="paginateBy"
           :total="totalTracks"
-          :current=" tracks.length > 0 ? page : {currentPage}"
+          :current="tracks.length > 0 ? page : {currentPage}"
           :compact="true"
           @page-changed="updatePage"
         />
@@ -200,7 +200,7 @@ export default {
       totalTracks: this.total,
       currentPage: this.page,
     }
-  },
+  }
   computed: {
     allTracks () {
       return (this.tracks || []).concat(this.additionalTracks)
@@ -245,10 +245,10 @@ export default {
     },
     updatePage: function (page) {
       if (this.tracks.length === 0) {
-         this.currentPage = page
-         this.fetchData('tracks/')
+        this.currentPage = page
+        this.fetchData('tracks/')
       } else {
-         this.$emit('page-changed', page)
+        this.$emit('page-changed', page)
       }
     }
   }
