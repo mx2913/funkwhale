@@ -200,7 +200,7 @@ export default {
       totalTracks: this.total,
       currentPage: this.page,
     }
-  }
+  },
   computed: {
     allTracks () {
       return (this.tracks || []).concat(this.additionalTracks)
