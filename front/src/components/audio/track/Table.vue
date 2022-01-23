@@ -110,7 +110,7 @@
           :total="totalTracks"
           :current=" tracks.length > 0 ? page : {currentPage}"
           :paginate-by="paginateBy"
-         @page-changed="updatePage"
+          @page-changed="updatePage"
         />
       </div>
     </div>
@@ -243,7 +243,7 @@ export default {
         self.errors = e.backendErrors
       }
     },
-   updatePage: function (page) {
+    updatePage: function (page) {
       if (this.tracks.length === 0) {
          this.currentPage = page
          this.fetchData('tracks/')
