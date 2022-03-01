@@ -31,4 +31,11 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  test: {
+    coverage: {
+      all: true,
+      src: ["src"],
+      reporter: [ "text-summary", "text", "cobertura" ]
+    }
+  }
 })

@@ -212,6 +212,8 @@ test_front:
       - front/dist/
     reports:
       junit: front/test-results.xml
+      cobertura: front/coverage/cobertura-coverage.xml
+  coverage: '/Statements\s*:\s\d+\.\d+%\s\(\s\d+\/\d+\s\)/'
   tags:
     - docker
 

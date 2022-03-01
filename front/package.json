@@ -9,7 +9,7 @@
     "build": "vite build",
     "build:deployment": "vite build --base /front/",
     "serve": "vite preview",
-    "test:unit": "true",
+    "test:unit": "vitest run --dom --coverage",
     "lint": "eslint --ext .js,.vue src",
     "fix-fomantic-css": "scripts/fix-fomantic-css.sh",
     "i18n-compile": "scripts/i18n-compile.sh",
@@ -45,7 +45,9 @@
     "vuex-router-sync": "5.0.0"
   },
   "devDependencies": {
+    "@vue/test-utils": "1",
     "autoprefixer": "10.4.2",
+    "c8": "^7.11.0",
     "easygettext": "2.17.0",
     "eslint": "8.9.0",
     "eslint-config-standard": "16.0.3",
@@ -55,8 +57,11 @@
     "eslint-plugin-promise": "6.0.0",
     "eslint-plugin-vue": "7.20.0",
     "glob-all": "3.2.1",
+    "happy-dom": "^2.41.0",
+    "moxios": "^0.4.0",
     "vite": "2.8.4",
     "vite-plugin-vue2": "1.9.3",
+    "vitest": "^0.5.9",
     "vue-template-compiler": "2.6.14"
   },
   "eslintConfig": {
