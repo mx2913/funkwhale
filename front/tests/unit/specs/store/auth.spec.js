@@ -4,7 +4,6 @@ import store from '@/store/auth'
 import { testAction } from '../../utils'
 
 describe('store/auth', () => {
-
   describe('mutations', () => {
     it('profile', () => {
       const state = {}
@@ -42,47 +41,47 @@ describe('store/auth', () => {
     })
     it('token real', () => {
       const state = {}
-      let token = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL2p3dC1pZHAuZXhhbXBsZS5jb20iLCJzdWIiOiJtYWlsdG86bWlrZUBleGFtcGxlLmNvbSIsIm5iZiI6MTUxNTUzMzQyOSwiZXhwIjoxNTE1NTM3MDI5LCJpYXQiOjE1MTU1MzM0MjksImp0aSI6ImlkMTIzNDU2IiwidHlwIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9yZWdpc3RlciJ9.'
+      const token = 'eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpc3MiOiJodHRwczovL2p3dC1pZHAuZXhhbXBsZS5jb20iLCJzdWIiOiJtYWlsdG86bWlrZUBleGFtcGxlLmNvbSIsIm5iZiI6MTUxNTUzMzQyOSwiZXhwIjoxNTE1NTM3MDI5LCJpYXQiOjE1MTU1MzM0MjksImp0aSI6ImlkMTIzNDU2IiwidHlwIjoiaHR0cHM6Ly9leGFtcGxlLmNvbS9yZWdpc3RlciJ9.'
       store.mutations.token(state, token)
       expect(state.token).to.equal(token)
     })
     it('permissions', () => {
       const state = { availablePermissions: {} }
-      store.mutations.permission(state, {key: 'admin', status: true})
-      expect(state.availablePermissions).to.deep.equal({admin: true})
+      store.mutations.permission(state, { key: 'admin', status: true })
+      expect(state.availablePermissions).to.deep.equal({ admin: true })
     })
   })
   describe('getters', () => {
     it('header', () => {
-      const state = { oauth: {accessToken: 'helloworld' }}
-      expect(store.getters['header'](state)).to.equal('Bearer helloworld')
+      const state = { oauth: { accessToken: 'helloworld' } }
+      expect(store.getters.header(state)).to.equal('Bearer helloworld')
     })
   })
   describe('actions', () => {
     it('logout', () => {
       testAction({
         action: store.actions.logout,
-        params: {state: {}},
+        params: { state: {} },
         expectedMutations: [
-          { type: 'auth/reset', payload: null, options: {root: true} },
-          { type: 'favorites/reset', payload: null, options: {root: true} },
-          { type: 'player/reset', payload: null, options: {root: true} },
-          { type: 'playlists/reset', payload: null, options: {root: true} },
-          { type: 'queue/reset', payload: null, options: {root: true} },
-          { type: 'radios/reset', payload: null, options: {root: true} }
+          { type: 'auth/reset', payload: null, options: { root: true } },
+          { type: 'favorites/reset', payload: null, options: { root: true } },
+          { type: 'player/reset', payload: null, options: { root: true } },
+          { type: 'playlists/reset', payload: null, options: { root: true } },
+          { type: 'queue/reset', payload: null, options: { root: true } },
+          { type: 'radios/reset', payload: null, options: { root: true } }
         ]
       })
     })
     it('check jwt null', () => {
       testAction({
         action: store.actions.check,
-        params: {state: {}},
+        params: { state: {} },
         expectedMutations: [
           { type: 'authenticated', payload: false },
-          { type: 'authenticated', payload: true },
+          { type: 'authenticated', payload: true }
         ],
         expectedActions: [
-          { type: 'fetchProfile' },
+          { type: 'fetchProfile' }
         ]
       })
     })
@@ -99,17 +98,17 @@ describe('store/auth', () => {
           { type: 'authenticated', payload: true },
           { type: 'profile', payload: profile },
           { type: 'username', payload: profile.username },
-          { type: 'permission', payload: {key: 'admin', status: true} }
+          { type: 'permission', payload: { key: 'admin', status: true } }
         ],
         expectedActions: [
           { type: 'ui/initSettings', payload: { root: true } },
           { type: 'updateProfile', payload: profile },
           { type: 'ui/fetchUnreadNotifications', payload: null },
-          { type: 'favorites/fetch', payload: null, options: {root: true} },
-          { type: 'channels/fetchSubscriptions', payload: null, options: {root: true} },
-          { type: 'libraries/fetchFollows', payload: null, options: {root: true} },
-          { type: 'moderation/fetchContentFilters', payload: null, options: {root: true} },
-          { type: 'playlists/fetchOwn', payload: null, options: {root: true} }
+          { type: 'favorites/fetch', payload: null, options: { root: true } },
+          { type: 'channels/fetchSubscriptions', payload: null, options: { root: true } },
+          { type: 'libraries/fetchFollows', payload: null, options: { root: true } },
+          { type: 'moderation/fetchContentFilters', payload: null, options: { root: true } },
+          { type: 'playlists/fetchOwn', payload: null, options: { root: true } }
         ]
       })
     })

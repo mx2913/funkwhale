@@ -18,7 +18,7 @@ describe('PasswordInput', () => {
     const inputElement = wrapper.find('input')
     expect(inputElement.element.value).to.equal(password)
   })
-  //it('copy password function called', () => {
+  // it('copy password function called', () => {
   //  const spy = sandbox.spy()
   //  wrapper.setMethods({
   //    copyPassword: spy
@@ -27,5 +27,5 @@ describe('PasswordInput', () => {
   //  const copyButton = wrapper.findAll('button').at(1)
   //  copyButton.trigger('click')
   //  sandbox.assert.calledOnce(spy)
-  //})
+  // })
 })

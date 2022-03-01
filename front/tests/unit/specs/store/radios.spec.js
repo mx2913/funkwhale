@@ -1,10 +1,9 @@
-import { describe, beforeEach, it, afterEach, expect } from 'vitest'
+import { describe, it, expect } from 'vitest'
 
 import store from '@/store/radios'
 import { testAction } from '../../utils'
 
 describe('store/radios', () => {
-
   describe('mutations', () => {
     it('current', () => {
       const state = {}
@@ -21,7 +20,7 @@ describe('store/radios', () => {
     it('start', () => {
       testAction({
         action: store.actions.start,
-        payload: {type: 'favorites', objectId: 0, customRadioId: null},
+        payload: { type: 'favorites', objectId: 0, customRadioId: null },
         expectedMutations: [
           {
             type: 'current',
@@ -42,7 +41,7 @@ describe('store/radios', () => {
     it('stop', () => {
       return testAction({
         action: store.actions.stop,
-        params: {state: {}},
+        params: { state: {} },
         expectedMutations: [
           { type: 'current', payload: null },
           { type: 'running', payload: false }
@@ -53,29 +52,29 @@ describe('store/radios', () => {
       return testAction({
         action: store.actions.populateQueue,
         params: {
-          state: {running: true, current: {session: 1}},
-          rootState: {player: {errorCount: 0, maxConsecutiveErrors: 5}}
+          state: { running: true, current: { session: 1 } },
+          rootState: { player: { errorCount: 0, maxConsecutiveErrors: 5 } }
 
         },
         expectedActions: [
-          { type: 'queue/append', payload: {track: {id: 1}}, options: {root: true} }
+          { type: 'queue/append', payload: { track: { id: 1 } }, options: { root: true } }
         ]
       })
     })
     it('populateQueue does nothing when not running', () => {
       testAction({
         action: store.actions.populateQueue,
-        params: {state: {running: false}},
+        params: { state: { running: false } },
         expectedActions: []
       })
     })
     it('populateQueue does nothing when too much errors', () => {
       return testAction({
         action: store.actions.populateQueue,
-        payload: {test: 'track'},
+        payload: { test: 'track' },
         params: {
-          rootState: {player: {errorCount: 5, maxConsecutiveErrors: 5}},
-          state: {running: true}
+          rootState: { player: { errorCount: 5, maxConsecutiveErrors: 5 } },
+          state: { running: true }
         },
         expectedActions: []
       })

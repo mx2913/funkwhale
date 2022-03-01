@@ -90,15 +90,15 @@ describe('store/player', () => {
   describe('getters', () => {
     it('durationFormatted', () => {
       const state = { duration: 12.51 }
-      expect(store.getters['durationFormatted'](state)).to.equal('0:13')
+      expect(store.getters.durationFormatted(state)).to.equal('0:13')
     })
     it('currentTimeFormatted', () => {
       const state = { currentTime: 12.51 }
-      expect(store.getters['currentTimeFormatted'](state)).to.equal('0:13')
+      expect(store.getters.currentTimeFormatted(state)).to.equal('0:13')
     })
     it('progress', () => {
       const state = { currentTime: 4, duration: 10 }
-      expect(store.getters['progress'](state)).to.equal(40)
+      expect(store.getters.progress(state)).to.equal(40)
     })
   })
   describe('actions', () => {
@@ -106,7 +106,7 @@ describe('store/player', () => {
       testAction({
         action: store.actions.incrementVolume,
         payload: 0.2,
-        params: {state: {volume: 0.7}},
+        params: { state: { volume: 0.7 } },
         expectedMutations: [
           { type: 'volume', payload: 0.7 + 0.2 }
         ]
@@ -115,7 +115,7 @@ describe('store/player', () => {
     it('toggle playback false', () => {
       testAction({
         action: store.actions.togglePlayback,
-        params: {state: {playing: false}},
+        params: { state: { playing: false } },
         expectedMutations: [
           { type: 'playing', payload: true }
         ]
@@ -124,7 +124,7 @@ describe('store/player', () => {
     it('toggle playback true', () => {
       testAction({
         action: store.actions.togglePlayback,
-        params: {state: {playing: true}},
+        params: { state: { playing: true } },
         expectedMutations: [
           { type: 'playing', payload: false }
         ]
@@ -133,7 +133,7 @@ describe('store/player', () => {
     it('resume playback', () => {
       testAction({
         action: store.actions.resumePlayback,
-        params: {state: {}},
+        params: { state: {} },
         expectedMutations: [
           { type: 'playing', payload: true }
         ]
@@ -150,35 +150,35 @@ describe('store/player', () => {
     it('trackEnded', () => {
       testAction({
         action: store.actions.trackEnded,
-        payload: {test: 'track'},
-        params: {rootState: {queue: {currentIndex: 0, tracks: [1, 2]}}},
+        payload: { test: 'track' },
+        params: { rootState: { queue: { currentIndex: 0, tracks: [1, 2] } } },
         expectedActions: [
-          { type: 'queue/next', payload: null, options: {root: true} }
+          { type: 'queue/next', payload: null, options: { root: true } }
         ]
       })
     })
     it('trackEnded calls populateQueue if last', () => {
       testAction({
         action: store.actions.trackEnded,
-        payload: {test: 'track'},
-        params: {rootState: {queue: {currentIndex: 1, tracks: [1, 2]}}},
+        payload: { test: 'track' },
+        params: { rootState: { queue: { currentIndex: 1, tracks: [1, 2] } } },
         expectedActions: [
-          { type: 'radios/populateQueue', payload: null, options: {root: true} },
-          { type: 'queue/next', payload: null, options: {root: true} }
+          { type: 'radios/populateQueue', payload: null, options: { root: true } },
+          { type: 'queue/next', payload: null, options: { root: true } }
         ]
       })
     })
     it('trackErrored', () => {
       testAction({
         action: store.actions.trackErrored,
-        payload: {test: 'track'},
-        params: {state: {errorCount: 0, maxConsecutiveErrors: 5}},
+        payload: { test: 'track' },
+        params: { state: { errorCount: 0, maxConsecutiveErrors: 5 } },
         expectedMutations: [
           { type: 'errored', payload: true },
           { type: 'incrementErrorCount' }
         ],
         expectedActions: [
-          { type: 'queue/next', payload: null, options: {root: true} }
+          { type: 'queue/next', payload: null, options: { root: true } }
         ]
       })
     })
@@ -194,19 +194,19 @@ describe('store/player', () => {
     it('mute', () => {
       testAction({
         action: store.actions.mute,
-        params: {state: { volume: 0.7, tempVolume: 0}},
+        params: { state: { volume: 0.7, tempVolume: 0 } },
         expectedMutations: [
           { type: 'tempVolume', payload: 0.7 },
-          { type: 'volume', payload: 0 },
+          { type: 'volume', payload: 0 }
         ]
       })
     })
     it('unmute', () => {
       testAction({
         action: store.actions.unmute,
-        params: {state: { volume: 0, tempVolume: 0.8}},
+        params: { state: { volume: 0, tempVolume: 0.8 } },
         expectedMutations: [
-          { type: 'volume', payload: 0.8 },
+          { type: 'volume', payload: 0.8 }
         ]
       })
     })

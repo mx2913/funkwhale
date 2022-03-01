@@ -1,14 +1,13 @@
 // helper for testing action with expected mutations
 import Vue from 'vue'
-import {expect} from 'chai'
-
+import { expect } from 'chai'
 
 export const render = (Component, propsData) => {
   const Constructor = Vue.extend(Component)
   return new Constructor({ propsData: propsData }).$mount()
 }
 
-export const testAction = ({action, payload, params, expectedMutations, expectedActions}, done) => {
+export const testAction = ({ action, payload, params, expectedMutations, expectedActions }, done) => {
   let mutationsCount = 0
   let actionsCount = 0
 
@@ -17,9 +16,6 @@ export const testAction = ({action, payload, params, expectedMutations, expected
   }
   if (!expectedActions) {
     expectedActions = []
-  }
-  const isOver = () => {
-    return mutationsCount >= expectedMutations.length && actionsCount >= expectedActions.length
   }
   // mock commit
   const commit = (type, payload) => {
@@ -31,9 +27,6 @@ export const testAction = ({action, payload, params, expectedMutations, expected
     }
 
     mutationsCount++
-    if (isOver()) {
-      return
-    }
   }
   // mock dispatch
   const dispatch = (type, payload, options) => {
@@ -49,12 +42,9 @@ export const testAction = ({action, payload, params, expectedMutations, expected
       expect(options).to.deep.equal(a.options)
     }
     actionsCount++
-    if (isOver()) {
-      return
-    }
   }
 
-  let end = function () {
+  const end = function () {
     // check if no mutations should have been dispatched
     if (expectedMutations.length === 0) {
       expect(mutationsCount).to.equal(0)
@@ -62,12 +52,9 @@ export const testAction = ({action, payload, params, expectedMutations, expected
     if (expectedActions.length === 0) {
       expect(actionsCount).to.equal(0)
     }
-    if (isOver()) {
-      return
-    }
   }
   // call the action with mocked store and arguments
-  let promise = action({ commit, dispatch, ...params }, payload)
+  const promise = action({ commit, dispatch, ...params }, payload)
   if (promise) {
     promise.then(end)
     return promise

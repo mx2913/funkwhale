@@ -8,13 +8,13 @@ describe('store/favorites', () => {
   describe('mutations', () => {
     it('track true', () => {
       const state = { tracks: [] }
-      store.mutations.track(state, {id: 1, value: true})
+      store.mutations.track(state, { id: 1, value: true })
       expect(state.tracks).to.deep.equal([1])
       expect(state.count).to.deep.equal(1)
     })
     it('track false', () => {
       const state = { tracks: [1] }
-      store.mutations.track(state, {id: 1, value: false})
+      store.mutations.track(state, { id: 1, value: false })
       expect(state.tracks).to.deep.equal([])
       expect(state.count).to.deep.equal(0)
     })
@@ -22,11 +22,11 @@ describe('store/favorites', () => {
   describe('getters', () => {
     it('isFavorite true', () => {
       const state = { tracks: [1] }
-      expect(store.getters['isFavorite'](state)(1)).to.equal(true)
+      expect(store.getters.isFavorite(state)(1)).to.equal(true)
     })
     it('isFavorite false', () => {
       const state = { tracks: [] }
-      expect(store.getters['isFavorite'](state)(1)).to.equal(false)
+      expect(store.getters.isFavorite(state)(1)).to.equal(false)
     })
   })
   describe('actions', () => {
@@ -34,9 +34,9 @@ describe('store/favorites', () => {
       testAction({
         action: store.actions.toggle,
         payload: 1,
-        params: {getters: {isFavorite: () => false}},
+        params: { getters: { isFavorite: () => false } },
         expectedActions: [
-          { type: 'set', payload: {id: 1, value: true} }
+          { type: 'set', payload: { id: 1, value: true } }
         ]
       })
     })
@@ -44,9 +44,9 @@ describe('store/favorites', () => {
       testAction({
         action: store.actions.toggle,
         payload: 1,
-        params: {getters: {isFavorite: () => true}},
+        params: { getters: { isFavorite: () => true } },
         expectedActions: [
-          { type: 'set', payload: {id: 1, value: false} }
+          { type: 'set', payload: { id: 1, value: false } }
         ]
       })
     })
