@@ -30,7 +30,7 @@
 <script>
 export default {
   props: {
-    value: { type: String, default: '' },
+    value: { type: String, default: null },
     defaultShow: { type: Boolean, default: false },
     copyButton: { type: Boolean, default: false },
     fieldId: { type: String, default: 'password' }
