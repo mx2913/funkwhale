@@ -407,7 +407,7 @@ export default {
     FetchButton,
     TagsList
   },
-  props: { id: { type: Number, default: 0 } },
+  props: { id: { type: Number, required: true } },
   data () {
     return {
       isLoading: true,
