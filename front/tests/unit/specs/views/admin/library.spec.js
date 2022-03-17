@@ -30,6 +30,9 @@ describe('views/admin/library', () => {
       sandbox.stub(AlbumDetail.methods, "fetchStats").callsFake(() => null)
       wrapper = shallowMount(AlbumDetail, {
         localVue,
+        propsData: {
+          'id': 0
+        },
         data() {
           return {
             isLoading: false,
