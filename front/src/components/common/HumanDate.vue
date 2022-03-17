@@ -14,7 +14,7 @@
 import { mapState } from 'vuex'
 export default {
   props: {
-    date: { type: String, default: '' },
+    date: { type: String, required: true },
     icon: { type: Boolean, required: false, default: false }
   },
   computed: {
