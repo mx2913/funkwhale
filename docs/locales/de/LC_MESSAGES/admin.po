@@ -1,0 +1,3614 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022, The Funkwhale Collective
+# This file is distributed under the same license as the funkwhale package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: funkwhale 1.2.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-02 19:17+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../admin/0.17.rst:2
+msgid "About Funkwhale 0.17"
+msgstr ""
+
+#: ../../admin/0.17.rst:4
+msgid ""
+"Funkwhale 0.17 is a special version, which contains a lot of breaking "
+"changes."
+msgstr ""
+
+#: ../../admin/0.17.rst:6
+msgid "Before doing the upgrade, please read this document carefully."
+msgstr ""
+
+#: ../../admin/0.17.rst:10
+msgid "Overview of the changes"
+msgstr ""
+
+#: ../../admin/0.17.rst:15
+msgid ""
+"The what and why are described more thoroughly in this page: "
+"https://dev.funkwhale.audio/funkwhale/funkwhale/merge_requests/368"
+msgstr ""
+
+#: ../../admin/0.17.rst:17
+msgid ""
+"To sum it up, this release big completely changes the way audio content "
+"is managed in Funkwhale. As you may guess, this has a huge impact on the "
+"whole project, because audio is at the core of Funkwhale."
+msgstr ""
+
+#: ../../admin/0.17.rst:21
+msgid ""
+"Here is a side by side comparison of earlier versions and this release to"
+" help you understand the scale of the changes:"
+msgstr ""
+
+#: ../../admin/0.17.rst:25
+msgid "Before"
+msgstr ""
+
+#: ../../admin/0.17.rst:25
+msgid "After"
+msgstr ""
+
+#: ../../admin/0.17.rst:25
+msgid "Reason"
+msgstr ""
+
+#: ../../admin/0.17.rst:27
+msgid "There is one big audio library, managed at the instance level"
+msgstr ""
+
+#: ../../admin/0.17.rst:27
+msgid ""
+"Each user can have their own libraries (either public, private or shared "
+"at the instance level)"
+msgstr ""
+
+#: ../../admin/0.17.rst:27
+msgid ""
+"Managing the library at instance was cumbersome and dangerous: sharing  "
+"an instance library over federation would quickly pose copyright issues,"
+"  as well as opening public instances. It also made it impossible to only"
+"  share a subset of the music."
+msgstr ""
+
+#: ../../admin/0.17.rst:29
+msgid ""
+"Users needed a specific permissions from instance owners to upload audio "
+"content"
+msgstr ""
+
+#: ../../admin/0.17.rst:29
+msgid ""
+"Users can upload music to their own libraries without any specific "
+"permissions"
+msgstr ""
+
+#: ../../admin/0.17.rst:29
+msgid ""
+"This change makes it easier for new users to start using Funkwhale, and "
+"for creators to share their content on the network."
+msgstr ""
+
+#: ../../admin/0.17.rst:31
+msgid ""
+"Users with permissions can upload as much content as they want in the "
+"instance library"
+msgstr ""
+
+#: ../../admin/0.17.rst:31
+msgid "Users have a storage quota and cannot exceed that storage"
+msgstr ""
+
+#: ../../admin/0.17.rst:31
+msgid ""
+"This change gives visibiliy to instance owners about their resource "
+"usage. If you host 100 users with a 1Gb quota, you know that your "
+"Funkwhale instance will not store more than 100Gb of music files."
+msgstr ""
+
+#: ../../admin/0.17.rst:33
+msgid "N/A"
+msgstr ""
+
+#: ../../admin/0.17.rst:33
+msgid "Users can upload private content or share content with only specific users"
+msgstr ""
+
+#: ../../admin/0.17.rst:33
+msgid ""
+"This is a new feature, and we think it will enable users to upload their "
+"own music libraries to their instance, without breaking the law or "
+"putting their admins in trouble, since their media will remain private."
+msgstr ""
+
+#: ../../admin/0.17.rst:35
+msgid "Youtube Import"
+msgstr ""
+
+#: ../../admin/0.17.rst:35 ../../admin/0.17.rst:37
+msgid "This feature is removed"
+msgstr ""
+
+#: ../../admin/0.17.rst:35
+msgid ""
+"This feature posed copyright issues and impacted the credibility of the "
+"project, so we removed it."
+msgstr ""
+
+#: ../../admin/0.17.rst:37
+msgid "Music requests"
+msgstr ""
+
+#: ../../admin/0.17.rst:37
+msgid ""
+"Since all users can now upload content without specific permissions, we "
+"think this feature is less-likely to be useful in its current state."
+msgstr ""
+
+#: ../../admin/0.17.rst:41
+msgid "From a shared, instance-wide library to users libraries"
+msgstr ""
+
+#: ../../admin/0.17.rst:43
+msgid ""
+"As you can see, there is a big switch: in earlier versions, each instance"
+" had one big library, that was available to all its users. This model "
+"don't scale well (especially if you put federation on top of that), "
+"because it's an all-or-nothing choice if you want to share it."
+msgstr ""
+
+#: ../../admin/0.17.rst:47
+msgid ""
+"Starting from version 0.17, each user will be able to create personal "
+"libraries and upload content in those, up to a configurable quota."
+msgstr ""
+
+#: ../../admin/0.17.rst:50
+msgid "Those libraries can have one of the following visibility level:"
+msgstr ""
+
+#: ../../admin/0.17.rst:52
+msgid "**Private**: only the owner of the library can access its content"
+msgstr ""
+
+#: ../../admin/0.17.rst:53
+msgid "**Instance**: users from the same instance can access the library content"
+msgstr ""
+
+#: ../../admin/0.17.rst:54
+msgid ""
+"**Public**: everyone (including other instances) can access the library "
+"content"
+msgstr ""
+
+#: ../../admin/0.17.rst:56
+msgid ""
+"Regardless of this visibility level, library owners can also share them "
+"manually with other users, both from the same instance or from the "
+"federation."
+msgstr ""
+
+#: ../../admin/0.17.rst:59
+msgid "We think this change will have a really positive impact:"
+msgstr ""
+
+#: ../../admin/0.17.rst:61
+msgid ""
+"Admins should be more inclined to open their instance to strangers, "
+"because copyrighted media can be upload and shared privately"
+msgstr ""
+
+#: ../../admin/0.17.rst:63
+msgid ""
+"Creators should have a better experience when joining the network, "
+"because they can now upload their own content and share it over the "
+"federation without any admin intervention"
+msgstr ""
+
+#: ../../admin/0.17.rst:65
+msgid ""
+"The federation should grow faster, because user libraries can contain "
+"copyrighted content and be shared, without putting the admins at risk"
+msgstr ""
+
+#: ../../admin/0.17.rst:69
+msgid "Accessing music"
+msgstr ""
+
+#: ../../admin/0.17.rst:71
+msgid ""
+"From an end-user perspective, you will be able to browse any artist or "
+"album or track that is known by your instance, but you'll only be able to"
+" listen to content that match one of those criteria:"
+msgstr ""
+
+#: ../../admin/0.17.rst:75
+msgid "The content is available is one of your libraries"
+msgstr ""
+
+#: ../../admin/0.17.rst:76
+msgid "The content is available in a public library"
+msgstr ""
+
+#: ../../admin/0.17.rst:77
+msgid ""
+"The content is available in one library from your instance that has a "
+"visibility level set to \"instance\""
+msgstr ""
+
+#: ../../admin/0.17.rst:78
+msgid "The content is available in one of the libraries you follow"
+msgstr ""
+
+#: ../../admin/0.17.rst:80
+msgid "Following someone else's library is a four step process:"
+msgstr ""
+
+#: ../../admin/0.17.rst:82
+msgid "Get the library link from its owner"
+msgstr ""
+
+#: ../../admin/0.17.rst:83
+msgid "Use this link on your instance to follow the library"
+msgstr ""
+
+#: ../../admin/0.17.rst:84
+msgid "Wait until your follow request is approved by the library owner"
+msgstr ""
+
+#: ../../admin/0.17.rst:85
+msgid ""
+"If this library is unknown on your instance, it will be scanned to import"
+" its content, which may take a few minutes"
+msgstr ""
+
+#: ../../admin/0.17.rst:87
+msgid ""
+"Libraries owner can revoke follows at any time, which will effectively "
+"prevent the ancient follower from accessing the library content."
+msgstr ""
+
+#: ../../admin/0.17.rst:91
+msgid "A brand new federation"
+msgstr ""
+
+#: ../../admin/0.17.rst:93
+msgid ""
+"This is more \"under the hood\" work, but the whole "
+"federation/ActivityPub logic was rewritten for this release. This new "
+"implementation is more spec compliant and should scale better."
+msgstr ""
+
+#: ../../admin/0.17.rst:97
+msgid "The following activities are propagated over federation:"
+msgstr ""
+
+#: ../../admin/0.17.rst:99
+msgid "Library follow creation, accept and reject"
+msgstr ""
+
+#: ../../admin/0.17.rst:100
+msgid "Audio creation and deletion"
+msgstr ""
+
+#: ../../admin/0.17.rst:101
+msgid "Library deletion"
+msgstr ""
+
+#: ../../admin/0.17.rst:104
+msgid "A better import UI"
+msgstr ""
+
+#: ../../admin/0.17.rst:106
+msgid ""
+"This version includes a completely new import UI which should make file "
+"uploading less annoying. In particular, the UI updates in real-time and "
+"has a better error reporting."
+msgstr ""
+
+#: ../../admin/0.17.rst:111
+msgid "A better import engine"
+msgstr ""
+
+#: ../../admin/0.17.rst:113
+msgid ""
+"Funkwhale is known for its quircks during music import. Missing covers, "
+"split albums, bad management of tracks with multiple artists, missing "
+"data for files imported over federation, bad performance, discrepancies "
+"between the user-provided tags and what is actually stored in the "
+"database..."
+msgstr ""
+
+#: ../../admin/0.17.rst:118
+msgid ""
+"This should be greatly improved now, as the whole import logic was "
+"rewritten from scratch."
+msgstr ""
+
+#: ../../admin/0.17.rst:121
+msgid ""
+"Import is done completely offline and no longer calls the MusicBrainz "
+"API, except to retrieve covers if those are not embedded in the imported "
+"files. MusicBrainz references are still stored in the database, but we "
+"rely solely on the tags from the audio file now."
+msgstr ""
+
+#: ../../admin/0.17.rst:126
+msgid "This has two positive consequences:"
+msgstr ""
+
+#: ../../admin/0.17.rst:128
+msgid ""
+"Improved performance for both small and big imports (possibly by a factor"
+" of 10)"
+msgstr ""
+
+#: ../../admin/0.17.rst:129
+msgid ""
+"More reliable import result: if your file is tagged in a specific way, we"
+" will only use tags for the import."
+msgstr ""
+
+#: ../../admin/0.17.rst:132
+msgid ""
+"Imports from federation, command-line and UI/API all use the same code, "
+"which should greatly reduce the bugs/discrepencies."
+msgstr ""
+
+#: ../../admin/0.17.rst:135
+msgid ""
+"Finally, the import engine now understands the difference between a track"
+" artist and an album artist, which should put an end to the album "
+"splitting issues for tracks that had a different artist than the album "
+"artist."
+msgstr ""
+
+#: ../../admin/0.17.rst:140
+msgid "What will break"
+msgstr ""
+
+#: ../../admin/0.17.rst:142
+msgid ""
+"If you've read until here, you can probably understand that all of these "
+"changes comes at a cost: version 0.17 contains breaking changes, removed "
+"features and other changes."
+msgstr ""
+
+#: ../../admin/0.17.rst:146
+msgid "The following features were removed:"
+msgstr ""
+
+#: ../../admin/0.17.rst:148
+msgid ""
+"YouTube imports: for copyright reasons, keeping this in the core was not "
+"possible"
+msgstr ""
+
+#: ../../admin/0.17.rst:149
+msgid "Music requests: those are now less useful since anyone can upload content"
+msgstr ""
+
+#: ../../admin/0.17.rst:151
+msgid ""
+"Also, the current federation will break, as it's absolutely not "
+"compatible with what we've built in version 0.17, and maintaining "
+"compatibility was simply not possible."
+msgstr ""
+
+#: ../../admin/0.17.rst:154
+msgid ""
+"Apart from that, other features should work the same way as they did "
+"before."
+msgstr ""
+
+#: ../../admin/0.17.rst:157
+msgid "Migration path"
+msgstr ""
+
+#: ../../admin/0.17.rst:161
+msgid ""
+"This migration is huge. Do a backup. Please. The database, and the music "
+"files. Please."
+msgstr ""
+
+#: ../../admin/0.17.rst:164
+msgid "I'm not kidding."
+msgstr ""
+
+#: ../../admin/0.17.rst:167
+msgid ""
+"Migration will be similar to previous ones, with an additional script to "
+"run that will take care of updating existing rows in the database. "
+"Especially, this script will be responsible to create a library for each "
+"registered user, and to bind content imported by each one to this "
+"library."
+msgstr ""
+
+#: ../../admin/0.17.rst:172
+msgid ""
+"Libraries created this way will have a different visibility level "
+"depending of your instance configuration:"
+msgstr ""
+
+#: ../../admin/0.17.rst:174
+msgid ""
+"If your instance requires authentication to access the API / listen to "
+"music, libraries will be marked with \"instance\"  visibility. As a "
+"result, all users from the instance will still be able to listen to all "
+"the music of the instance after the migration"
+msgstr ""
+
+#: ../../admin/0.17.rst:177
+msgid ""
+"If your instance does not require authentication to access the API / "
+"listen to music, libraries will be completely public, allowing anyone to "
+"access the content (including federation)"
+msgstr ""
+
+#: ../../admin/0.17.rst:180
+msgid ""
+"This script will also contain other database-related operations, but the "
+"impact will remain invisible."
+msgstr ""
+
+#: ../../admin/0.17.rst:185
+msgid "Upgrade instructions"
+msgstr ""
+
+#: ../../admin/0.17.rst:187
+msgid ""
+"Follow instructions from "
+"https://docs.funkwhale.audio/upgrading/index.html, then run the "
+"migrations script."
+msgstr ""
+
+#: ../../admin/0.17.rst:190
+msgid "On docker-setups::"
+msgstr ""
+
+#: ../../admin/0.17.rst:196
+msgid "On non docker-setups::"
+msgstr ""
+
+#: ../../admin/0.17.rst:202
+msgid ""
+"If the scripts complete without errors, your instance should be updated "
+"and ready to use :)"
+msgstr ""
+
+#: ../../admin/0.17.rst:206
+msgid ""
+"If you use nginx, ensure your funkwhale_proxy.conf file does not contain "
+"this:"
+msgstr ""
+
+#: ../../admin/0.17.rst:208
+msgid "proxy_set_header X-Forwarded-Host $host:$server_port;"
+msgstr ""
+
+#: ../../admin/0.17.rst:210
+msgid "If you have this line present, replace it with:"
+msgstr ""
+
+#: ../../admin/0.17.rst:212
+msgid "proxy_set_header X-Forwarded-Host $host;"
+msgstr ""
+
+#: ../../admin/0.17.rst:214
+msgid "And reload your nginx server."
+msgstr ""
+
+#: ../../admin/backup.rst:2
+msgid "Backup your Funkwhale instance"
+msgstr ""
+
+#: ../../admin/backup.rst:6 ../../admin/upgrading.rst:6
+msgid ""
+"Before upgrading your instance, we strongly advise you to make at least a"
+" database backup. Ideally, you should make a full backup, including the "
+"database and the media files."
+msgstr ""
+
+#: ../../admin/backup.rst:10 ../../admin/upgrading.rst:34
+msgid "Docker setup"
+msgstr ""
+
+#: ../../admin/backup.rst:12
+msgid ""
+"If you've followed the setup instructions in "
+":doc:`../installation/docker`, here is the backup path:"
+msgstr ""
+
+#: ../../admin/backup.rst:15 ../../admin/upgrading.rst:60
+msgid "Multi-container installation"
+msgstr ""
+
+#: ../../admin/backup.rst:18 ../../admin/backup.rst:51
+msgid "Backup the database"
+msgstr ""
+
+#: ../../admin/backup.rst:20
+msgid ""
+"On docker setups, you have to ``pg_dumpall`` in container "
+"``funkwhale_postgres_1``:"
+msgstr ""
+
+#: ../../admin/backup.rst:27 ../../admin/backup.rst:60
+msgid "Backup the media files"
+msgstr ""
+
+#: ../../admin/backup.rst:29
+msgid ""
+"To backup docker data volumes, as the volumes are bound mounted to the "
+"host, the ``rsync`` way would go like this:"
+msgstr ""
+
+#: ../../admin/backup.rst:38 ../../admin/backup.rst:70
+msgid "Backup the configuration files"
+msgstr ""
+
+#: ../../admin/backup.rst:40
+msgid "On docker setups, the configuration file is located at the root level:"
+msgstr ""
+
+#: ../../admin/backup.rst:48 ../../admin/upgrading.rst:126
+msgid "Non-docker setup"
+msgstr ""
+
+#: ../../admin/backup.rst:53
+msgid "On non-docker setups, you have to ``pg_dump`` as user ``postgres``:"
+msgstr ""
+
+#: ../../admin/backup.rst:62
+msgid "A simple way to backup your media files is to use ``rsync``:"
+msgstr ""
+
+#: ../../admin/backup.rst:77
+msgid "You may also want to backup your proxy configuration file."
+msgstr ""
+
+#: ../../admin/backup.rst:79
+msgid ""
+"For frequent backups, you may want to use deduplication and compression "
+"to keep the backup size low. In this case, a tool like ``borg`` will be "
+"more appropriate."
+msgstr ""
+
+#: ../../admin/commands.rst:2
+msgid "Management commands"
+msgstr ""
+
+#: ../../admin/commands.rst:5
+msgid "User management"
+msgstr ""
+
+#: ../../admin/commands.rst:7
+msgid ""
+"It's possible to create, remove and update users directly from the "
+"command line."
+msgstr ""
+
+#: ../../admin/commands.rst:9
+msgid ""
+"This feature is useful if you want to experiment, automate or perform "
+"batch actions that would be too repetitive through the web UI."
+msgstr ""
+
+#: ../../admin/commands.rst:12
+msgid ""
+"All users-related commands are available under the ``python manage.py fw "
+"users`` namespace:"
+msgstr ""
+
+#: ../../admin/commands.rst:21
+msgid "Creation"
+msgstr ""
+
+#: ../../admin/commands.rst:38
+msgid ""
+"Additional options are available to further configure the user during "
+"creation, such as setting permissions or user quota. Please refer to the "
+"command help."
+msgstr ""
+
+#: ../../admin/commands.rst:43
+msgid "Update"
+msgstr ""
+
+#: ../../admin/commands.rst:73
+msgid "Deletion"
+msgstr ""
+
+#: ../../admin/commands.rst:93
+msgid "Pruning library"
+msgstr ""
+
+#: ../../admin/commands.rst:95
+msgid ""
+"Because Funkwhale is a multi-user and federated audio server, we don't "
+"delete any artist, album and track objects in the database when you "
+"delete the corresponding files."
+msgstr ""
+
+#: ../../admin/commands.rst:98
+msgid ""
+"This is on purpose, because those objects may be referenced in user "
+"playlists, favorites, listening history or on other instances, or other "
+"users could have upload files matching linked to those entities in their "
+"own private libraries."
+msgstr ""
+
+#: ../../admin/commands.rst:102
+msgid ""
+"Therefore, Funkwhale has a really conservative approach and doesn't "
+"delete metadata when audio files are deleted."
+msgstr ""
+
+#: ../../admin/commands.rst:105
+msgid ""
+"This behaviour can be problematic in some situations though, e.g. if you "
+"imported a lot of wrongly tagged files, then deleted the files to "
+"reimport them later."
+msgstr ""
+
+#: ../../admin/commands.rst:108
+msgid ""
+"To help with that, we provide a management you can run on the server and "
+"that will effectively prune you library from track, album and artist "
+"metadata that is not tied to any file:"
+msgstr ""
+
+#: ../../admin/commands.rst:128
+msgid ""
+"The ``prune_library`` command will not delete anything by default, and "
+"only gives you an estimate of how many database objects would be affected"
+" by the pruning."
+msgstr ""
+
+#: ../../admin/commands.rst:131
+msgid ""
+"Once you have reviewed the output and are comfortable with the changes, "
+"you should rerun the command with the ``--no-dry-run`` flag to disable "
+"dry run mode and actually apply the changes on the database."
+msgstr ""
+
+#: ../../admin/commands.rst:137 ../../admin/commands.rst:169
+msgid ""
+"Running this command with ``--no-dry-run`` is irreversible. Unless you "
+"have a backup, there will be no way to retrieve the deleted data."
+msgstr ""
+
+#: ../../admin/commands.rst:142
+msgid ""
+"The command will exclude tracks that are favorited, included in playlists"
+" or listening history by default. If you want to include those in the "
+"pruning process as well, add the corresponding ``--ignore-favorites``, "
+"``--ignore-playlists`` and ``--ignore-listenings`` flags."
+msgstr ""
+
+#: ../../admin/commands.rst:148
+msgid "Remove obsolete files from database"
+msgstr ""
+
+#: ../../admin/commands.rst:150
+msgid ""
+"When importing using the :ref:`in-place method <in-place-import>`, if you"
+" move or remove in-place imported files on disk, Funkwhale will still "
+"have a reference to those files and won't be able to serve them properly."
+msgstr ""
+
+#: ../../admin/commands.rst:154
+msgid ""
+"To help with that, whenever you remove or move files that were previously"
+" imported with the ``--in-place`` flag, you can run the following "
+"command::"
+msgstr ""
+
+#: ../../admin/commands.rst:159
+msgid ""
+"This command will loop through all the database objects that reference an"
+" in-place imported file, check that the file is accessible on disk, or "
+"delete the database object if it's not."
+msgstr ""
+
+#: ../../admin/commands.rst:163
+msgid ""
+"Once you have reviewed the output and are comfortable with the changes, "
+"you should rerun the command with the ``--no-dry-run`` flag to disable "
+"dry run mode and actually delete the database objects."
+msgstr ""
+
+#: ../../admin/commands.rst:173
+msgid "Adding tags from tracks"
+msgstr ""
+
+#: ../../admin/commands.rst:175
+msgid ""
+"By default, genre tags found imported files are associated with the "
+"corresponding track."
+msgstr ""
+
+#: ../../admin/commands.rst:177
+msgid ""
+"While you can always associate genre information with an artist or album "
+"through the web UI, it may be tedious to do so by hand for a large number"
+" of objects."
+msgstr ""
+
+#: ../../admin/commands.rst:180
+msgid ""
+"We offer a command you can run after an import to do this for you. It "
+"will:"
+msgstr ""
+
+#: ../../admin/commands.rst:182
+msgid "Find all local artists or albums with no tags"
+msgstr ""
+
+#: ../../admin/commands.rst:183
+msgid "Get all the tags associated with the corresponding tracks"
+msgstr ""
+
+#: ../../admin/commands.rst:184
+msgid ""
+"Associate tags that are found on all tracks to the corresponding artist "
+"or album"
+msgstr ""
+
+#: ../../admin/commands.rst:186
+msgid "..note::"
+msgstr ""
+
+#: ../../admin/commands.rst:190
+msgid "Usage:"
+msgstr ""
+
+#: ../../admin/configuration.rst:2
+msgid "Instance configuration"
+msgstr ""
+
+#: ../../admin/configuration.rst:4
+msgid "General configuration is achieved using two type of settings:"
+msgstr ""
+
+#: ../../admin/configuration.rst:6
+msgid ":ref:`environment variables <environment-variables>` and"
+msgstr ""
+
+#: ../../admin/configuration.rst:7
+msgid ":ref:`instance settings <instance-settings>`."
+msgstr ""
+
+#: ../../admin/configuration.rst:12 ../../admin/ldap.rst:18
+msgid "Environment variables"
+msgstr ""
+
+#: ../../admin/configuration.rst:14
+msgid ""
+"Those are located in your ``.env`` file, which you should have created "
+"during installation. A full list of available variables is given "
+":ref:`below <environment-variables>`."
+msgstr ""
+
+#: ../../admin/configuration.rst:17
+msgid ""
+"Options from this file are heavily commented, and usually target lower "
+"level and technical aspects of your instance, such as database "
+"credentials."
+msgstr ""
+
+#: ../../admin/configuration.rst:22
+msgid ""
+"You should restart all Funkwhale processes when you change the values on "
+"environment variables::"
+msgstr ""
+
+#: ../../admin/configuration.rst:30
+msgid ""
+"Some characters are unsafe to use in configuration variables that are "
+"URLs, such as the user and password in the database and SMTP sections. If"
+" those variables contain such characters, they must be urlencoded, for "
+"instance using the following command::"
+msgstr ""
+
+#: ../../admin/configuration.rst:37
+msgid ""
+"See as well https://github.com/joke2k/django-environ#using-unsafe-"
+"characters-in-urls"
+msgstr ""
+
+#: ../../admin/configuration.rst:42
+msgid "Instance settings"
+msgstr ""
+
+#: ../../admin/configuration.rst:44
+msgid ""
+"These settings are stored in the database and do not require a restart of"
+" your instance after modification. They typically relate to higher level "
+"configuration, such your instance description, signup policy and so on."
+msgstr ""
+
+#: ../../admin/configuration.rst:48
+msgid ""
+"You can edit those settings directly from the web application, assuming "
+"you have the required permissions. The URL is ``/manage/settings``, and "
+"you will also find a link to this page in the sidebar."
+msgstr ""
+
+#: ../../admin/configuration.rst:52
+msgid ""
+"If you plan to use acoustid and external imports (e.g. with the YouTube "
+"backends), you should edit the corresponding settings in this interface."
+msgstr ""
+
+#: ../../admin/configuration.rst:58
+msgid ""
+"If you have any issue with the web application, a management interface is"
+" also available for those settings from :doc:`Django's administration "
+"interface <django>`. It's less user friendly, though, and we recommend "
+"you use the web app interface whenever possible."
+msgstr ""
+
+#: ../../admin/configuration.rst:63
+msgid ""
+"The URL should be "
+"``/api/admin/dynamic_preferences/globalpreferencemodel/`` (prepend your "
+"domain in front of it, of course)."
+msgstr ""
+
+#: ../../admin/configuration.rst:67
+msgid "Configuration reference"
+msgstr ""
+
+#: ../../admin/configuration.rst:70
+msgid "Pod"
+msgstr ""
+
+#: ../../docstring config.settings.common.FUNKWHALE_HOSTNAME:1 of
+msgid "Hostname of your Funkwhale pod, e.g. ``mypod.audio``"
+msgstr ""
+
+#: ../../docstring config.settings.common.FUNKWHALE_PROTOCOL:1 of
+msgid ""
+"Protocol end users will use to access your pod, either ``http`` or "
+"``https``."
+msgstr ""
+
+#: ../../admin/configuration.rst:77
+msgid "Database and redis"
+msgstr ""
+
+#: ../../docstring config.settings.common.DATABASE_URL:1 of
+msgid "URL to connect to the PostgreSQL database. Examples:"
+msgstr ""
+
+#: ../../docstring config.settings.common.DATABASE_URL:3 of
+msgid "``postgresql://funkwhale@:5432/funkwhale``"
+msgstr ""
+
+#: ../../docstring config.settings.common.DATABASE_URL:4 of
+msgid "``postgresql://<user>:<password>@<host>:<port>/<database>``"
+msgstr ""
+
+#: ../../docstring config.settings.common.DATABASE_URL:5 of
+msgid "``postgresql://funkwhale:passw0rd@localhost:5432/funkwhale_database``"
+msgstr ""
+
+#: ../../docstring config.settings.common.DB_CONN_MAX_AGE:1 of
+msgid "Max time, in seconds, before database connections are closed."
+msgstr ""
+
+#: ../../docstring config.settings.common.CACHE_URL:1 of
+msgid "URL to your redis server. Examples:"
+msgstr ""
+
+#: ../../docstring config.settings.common.CACHE_URL:3 of
+msgid "``redis://<host>:<port>/<database>``"
+msgstr ""
+
+#: ../../docstring config.settings.common.CACHE_URL:4
+#: config.settings.common.CELERY_BROKER_URL:7 of
+msgid "``redis://127.0.0.1:6379/0``"
+msgstr ""
+
+#: ../../docstring config.settings.common.CACHE_URL:5 of
+msgid "``redis://:password@localhost:6379/0``"
+msgstr ""
+
+#: ../../docstring config.settings.common.CACHE_URL:6 of
+msgid ""
+"for password auth (the extra semicolon is important) - "
+"``redis:///run/redis/redis.sock?db=0`` over unix sockets"
+msgstr ""
+
+#: ../../docstring config.settings.common.CACHE_URL:11 of
+msgid ""
+"If you want to use Redis over unix sockets, you'll also need to update "
+":attr:`CELERY_BROKER_URL`"
+msgstr ""
+
+#: ../../docstring config.settings.common.CELERY_BROKER_URL:1 of
+msgid ""
+"URL to celery's task broker. Defaults to :attr:`CACHE_URL`, so you "
+"shouldn't have to tweak this, unless you want to use a different one, or "
+"use Redis sockets to connect."
+msgstr ""
+
+#: ../../docstring config.settings.common.CELERY_BROKER_URL:5 of
+msgid "Exemple:"
+msgstr ""
+
+#: ../../docstring config.settings.common.CELERY_BROKER_URL:8 of
+msgid "``redis+socket:///run/redis/redis.sock?virtual_host=0``"
+msgstr ""
+
+#: ../../admin/configuration.rst:88
+msgid "Accounts and registration"
+msgstr ""
+
+#: ../../docstring config.settings.common.ACCOUNT_EMAIL_VERIFICATION_ENFORCE:1
+#: of
+msgid ""
+"Determine wether users need to verify their e-mail address before using "
+"the service. Enabling this can be useful to reduce spam or bots accounts,"
+" however, you'll need to configure a mail server so that your users can "
+"receive the verification e-mails, using :attr:`EMAIL_CONFIG`."
+msgstr ""
+
+#: ../../docstring config.settings.common.ACCOUNT_EMAIL_VERIFICATION_ENFORCE:5
+#: config.settings.common.ACCOUNT_EMAIL_VERIFICATION_ENFORCE:7 of
+msgid ""
+"Note that regardless of the setting value, superusers created through the"
+" command line will never require verification."
+msgstr ""
+
+#: ../../docstring config.settings.common.USERS_INVITATION_EXPIRATION_DAYS:1 of
+msgid "Expiration delay, in days, for user invitations."
+msgstr ""
+
+#: ../../docstring config.settings.common.DISABLE_PASSWORD_VALIDATORS:1 of
+msgid ""
+"Wether to disable password validators (length, common words, similarity "
+"with username…) used during regitration."
+msgstr ""
+
+#: ../../docstring config.settings.common.ACCOUNT_USERNAME_BLACKLIST:1 of
+msgid ""
+"List of usernames that will be unavailable during registration, given as "
+"a list of strings."
+msgstr ""
+
+#: ../../docstring config.settings.common.AUTH_LDAP_ENABLED:1 of
+msgid "Wether to enable LDAP authentication."
+msgstr ""
+
+#: ../../docstring config.settings.common.AUTH_LDAP_ENABLED:3 of
+msgid "See :doc:`/installation/ldap` for more information."
+msgstr ""
+
+#: ../../admin/configuration.rst:102
+msgid "Media storage and serving"
+msgstr ""
+
+#: ../../docstring config.settings.common.MEDIA_URL:1 of
+msgid ""
+"URL where media files are served. The default value should work fine on "
+"most configurations, but could can tweak this if you are hosting media "
+"files on a separate domain, or if you host Funkwhale on a non-standard "
+"port."
+msgstr ""
+
+#: ../../docstring config.settings.common.MEDIA_ROOT:1 of
+msgid ""
+"Path where media files (such as album covers or audio tracks) are stored "
+"on your system. Ensure this directory actually exists."
+msgstr ""
+
+#: ../../docstring config.settings.common.PROXY_MEDIA:1 of
+msgid ""
+"Wether to proxy audio files through your reverse proxy. It's recommended "
+"to keep this on, as a way to enforce access control, however, if you're "
+"using S3 storage with :attr:`AWS_QUERYSTRING_AUTH`, it's safe to disable "
+"it."
+msgstr ""
+
+#: ../../docstring config.settings.common.EXTERNAL_MEDIA_PROXY_ENABLED:1 of
+msgid ""
+"Wether to proxy attachment files hosted on third party pods and and "
+"servers. Keeping this to true is recommended, to reduce leaking browsing "
+"information of your users, and reduce the bandwidth used on remote pods."
+msgstr ""
+
+#: ../../docstring config.settings.common.ATTACHMENTS_UNATTACHED_PRUNE_DELAY:1
+#: of
+msgid ""
+"Delay in seconds before uploaded but unattached attachements are pruned "
+"from the system."
+msgstr ""
+
+#: ../../docstring config.settings.common.REVERSE_PROXY_TYPE:1 of
+msgid ""
+"Depending on the reverse proxy used in front of your funkwhale instance, "
+"the API will use different kind of headers to serve audio files"
+msgstr ""
+
+#: ../../docstring config.settings.common.REVERSE_PROXY_TYPE:4 of
+msgid "Allowed values: ``nginx``, ``apache2``"
+msgstr ""
+
+#: ../../docstring config.settings.common.PROTECT_FILES_PATH:1 of
+msgid ""
+"Which path will be used to process the internal redirection to the "
+"reverse proxy **DO NOT** put a slash at the end."
+msgstr ""
+
+#: ../../docstring config.settings.common.PROTECT_FILES_PATH:4 of
+msgid "You shouldn't have to tweak this."
+msgstr ""
+
+#: ../../admin/configuration.rst:117
+msgid "Audio acquisition"
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSIC_DIRECTORY_PATH:1 of
+msgid ""
+"The path on your server where Funkwhale can import files using :ref:`in-"
+"place import <in-place-import>`. It must be readable by the webserver and"
+" Funkwhale api and worker processes."
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSIC_DIRECTORY_PATH:5 of
+msgid ""
+"On docker installations, we recommend you use the default of ``/music`` "
+"for this value. For non-docker installation, you can use any absolute "
+"path. ``/srv/funkwhale/data/music`` is a safe choice if you don't know "
+"what to use."
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSIC_DIRECTORY_PATH:9
+#: config.settings.common.MUSIC_DIRECTORY_SERVE_PATH:16 of
+msgid "This path should not include any trailing slash."
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSIC_DIRECTORY_PATH:13 of
+msgid ""
+"You need to adapt your :ref:`reverse proxy configuration <reverse-proxy-"
+"setup>` to serve the directory pointed by ``MUSIC_DIRECTORY_PATH`` on "
+"``/_protected/music`` URL."
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSIC_DIRECTORY_SERVE_PATH:1 of
+msgid "Default: :attr:`MUSIC_DIRECTORY_PATH`"
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSIC_DIRECTORY_SERVE_PATH:3 of
+msgid ""
+"When using Docker, the value of :attr:`MUSIC_DIRECTORY_PATH` in your "
+"containers may differ from the real path on your host. Assuming you have "
+"the following directive in your :file:`docker-compose.yml` file::"
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSIC_DIRECTORY_SERVE_PATH:11 of
+msgid ""
+"Then, the value of :attr:`MUSIC_DIRECTORY_SERVE_PATH` should be "
+"``/srv/funkwhale/data/music``. This must be readable by the webserver."
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSIC_DIRECTORY_SERVE_PATH:14 of
+msgid "On non-docker setup, you don't need to configure this setting."
+msgstr ""
+
+#: ../../admin/configuration.rst:123
+msgid "S3 Storage"
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_QUERYSTRING_AUTH:1 of
+msgid ""
+"Whether to include signatures in S3 urls, as a way to enforce access-"
+"control."
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_QUERYSTRING_AUTH:3 of
+msgid "Defaults to the inverse of :attr:`PROXY_MEDIA`."
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_QUERYSTRING_EXPIRE:1 of
+msgid ""
+"Expiration delay, in seconds, of signatures generated when "
+":attr:`AWS_QUERYSTRING_AUTH` is enabled."
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_ACCESS_KEY_ID:1 of
+msgid "Access-key ID for your S3 storage."
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_SECRET_ACCESS_KEY:1 of
+msgid "Secret access key for your S3 storage."
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_STORAGE_BUCKET_NAME:1 of
+msgid "Bucket name of your S3 storage."
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_S3_CUSTOM_DOMAIN:1 of
+msgid "Custom domain to use for your S3 storage."
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_S3_ENDPOINT_URL:1 of
+msgid ""
+"If you use a S3-compatible storage such as minio, set the following "
+"variable to the full URL to the storage server. Example:"
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_S3_ENDPOINT_URL:4 of
+msgid "``https://minio.mydomain.com``"
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_S3_ENDPOINT_URL:5 of
+msgid "``https://s3.wasabisys.com``"
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_S3_REGION_NAME:1 of
+msgid ""
+"If you are using Amazon S3 to serve media directly, you will need to "
+"specify your region name in order to access files."
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_S3_REGION_NAME:4
+#: config.settings.common.MUSICBRAINZ_HOSTNAME:4
+#: config.settings.common.THROTTLING_RATES:5 of
+msgid "Example:"
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_S3_REGION_NAME:6 of
+msgid "``eu-west-2``"
+msgstr ""
+
+#: ../../docstring config.settings.common.AWS_LOCATION:1 of
+msgid ""
+"An optional bucket subdirectory were you want to store the files. This is"
+" especially useful if you plan to use share the bucket with other "
+"services."
+msgstr ""
+
+#: ../../admin/configuration.rst:136
+msgid "API configuration"
+msgstr ""
+
+#: ../../docstring config.settings.common.THROTTLING_ENABLED:1 of
+msgid ""
+"Wether to enable throttling (also known as rate-limiting). Leaving this "
+"enabled is recommended especially on public pods, to improve the quality "
+"of service."
+msgstr ""
+
+#: ../../docstring config.settings.common.THROTTLING_RATES:1 of
+msgid ""
+"Throttling rates for specific endpoints and features of the app. You can "
+"tweak this if you are encountering to severe rate limiting issues or, on "
+"the contrary, if you want to reduce the consumption on some endpoints."
+msgstr ""
+
+#: ../../docstring config.settings.common.THROTTLING_RATES:7 of
+msgid "``signup=5/d,password-reset=2/d,anonymous-reports=5/d``"
+msgstr ""
+
+#: ../../docstring config.settings.common.ADMIN_URL:1 of
+msgid "Path to the Django admin area."
+msgstr ""
+
+#: ../../docstring config.settings.common.ADMIN_URL:3 of
+msgid "Examples:"
+msgstr ""
+
+#: ../../docstring config.settings.common.ADMIN_URL:5 of
+msgid "``^api/admin/``"
+msgstr ""
+
+#: ../../docstring config.settings.common.ADMIN_URL:6 of
+msgid "``^api/mycustompath/``"
+msgstr ""
+
+#: ../../docstring config.settings.common.EXTERNAL_REQUESTS_VERIFY_SSL:1 of
+msgid ""
+"Wether to enforce HTTPS certificates verification when doing outgoing "
+"HTTP requests (typically with federation). Disabling this is not "
+"recommended."
+msgstr ""
+
+#: ../../docstring config.settings.common.EXTERNAL_REQUESTS_TIMEOUT:1 of
+msgid "Default timeout for external requests."
+msgstr ""
+
+#: ../../admin/configuration.rst:145
+msgid "Federation"
+msgstr ""
+
+#: ../../docstring config.settings.common.FEDERATION_OBJECT_FETCH_DELAY:1 of
+msgid ""
+"Delay, in minutes, before a remote object will be automatically refetched"
+" when accessed in the UI."
+msgstr ""
+
+#: ../../docstring config.settings.common.FEDERATION_DUPLICATE_FETCH_DELAY:1 of
+msgid "Delay, in seconds, between two manual fetch of the same remote object."
+msgstr ""
+
+#: ../../admin/configuration.rst:151
+msgid "Metadata"
+msgstr ""
+
+#: ../../docstring config.settings.common.TAGS_MAX_BY_OBJ:1 of
+msgid ""
+"Maximum number of tags that can be associated with an object. Extra tags "
+"will be ignored."
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSICBRAINZ_HOSTNAME:1 of
+msgid ""
+"Use this setting to change the MusicBrainz hostname, for instance to use "
+"a mirror. The hostname can also contain a port number."
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSICBRAINZ_HOSTNAME:6 of
+msgid "``mymusicbrainz.mirror``"
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSICBRAINZ_HOSTNAME:7 of
+msgid "``localhost:5000``"
+msgstr ""
+
+#: ../../docstring config.settings.common.MUSICBRAINZ_CACHE_DURATION:1 of
+msgid "How long to cache MusicBrainz results, in seconds."
+msgstr ""
+
+#: ../../admin/configuration.rst:158
+msgid "Channels and podcasts"
+msgstr ""
+
+#: ../../docstring config.settings.common.PODCASTS_RSS_FEED_REFRESH_DELAY:1 of
+msgid "Delay, in seconds, between two fetch of RSS feeds."
+msgstr ""
+
+#: ../../docstring config.settings.common.PODCASTS_RSS_FEED_REFRESH_DELAY:3 of
+msgid ""
+"Reducing this mean you'll receive new episodes faster, but will require "
+"more resources."
+msgstr ""
+
+#: ../../docstring config.settings.common.PODCASTS_RSS_FEED_MAX_ITEMS:1 of
+msgid "Maximum number of RSS items to load in each podcast feed."
+msgstr ""
+
+#: ../../docstring config.settings.common.PODCASTS_THIRD_PARTY_VISIBILITY:1 of
+msgid ""
+"By default, only people who subscribe to a podcast RSS will have access "
+"to their episodes."
+msgstr ""
+
+#: ../../docstring config.settings.common.PODCASTS_THIRD_PARTY_VISIBILITY:4 of
+msgid "Switch to \"instance\" or \"everyone\" to change that."
+msgstr ""
+
+#: ../../docstring config.settings.common.PODCASTS_THIRD_PARTY_VISIBILITY:6 of
+msgid "Changing it only affect new podcasts."
+msgstr ""
+
+#: ../../admin/configuration.rst:165
+msgid "Subsonic"
+msgstr ""
+
+#: ../../docstring config.settings.common.SUBSONIC_DEFAULT_TRANSCODING_FORMAT:1
+#: of
+msgid "Default format for transcoding when using Subsonic API."
+msgstr ""
+
+#: ../../admin/configuration.rst:170
+msgid "Email configuration"
+msgstr ""
+
+#: ../../docstring config.settings.common.EMAIL_CONFIG:1 of
+msgid "SMTP configuration for sending e-mails. Possible values:"
+msgstr ""
+
+#: ../../docstring config.settings.common.EMAIL_CONFIG:3 of
+msgid "``EMAIL_CONFIG=consolemail://``: output e-mails to console (the default)"
+msgstr ""
+
+#: ../../docstring config.settings.common.EMAIL_CONFIG:4 of
+msgid "``EMAIL_CONFIG=dummymail://``: disable e-mail sending completely"
+msgstr ""
+
+#: ../../docstring config.settings.common.EMAIL_CONFIG:6 of
+msgid ""
+"On a production instance, you'll usually want to use an external SMTP "
+"server:"
+msgstr ""
+
+#: ../../docstring config.settings.common.EMAIL_CONFIG:8 of
+msgid "``EMAIL_CONFIG=smtp://user@:password@youremail.host:25``"
+msgstr ""
+
+#: ../../docstring config.settings.common.EMAIL_CONFIG:9 of
+msgid "``EMAIL_CONFIG=smtp+ssl://user@:password@youremail.host:465``"
+msgstr ""
+
+#: ../../docstring config.settings.common.EMAIL_CONFIG:10 of
+msgid "``EMAIL_CONFIG=smtp+tls://user@:password@youremail.host:587``"
+msgstr ""
+
+#: ../../docstring config.settings.common.EMAIL_CONFIG:14 of
+msgid ""
+"If ``user`` or ``password`` contain special characters (eg. "
+"``noreply@youremail.host`` as ``user``), be sure to urlencode them, using"
+" for example the command: ``python3 -c 'import urllib.parse; "
+"print(urllib.parse.quote_plus (\"noreply@youremail.host\"))'`` (returns "
+"``noreply%40youremail.host``)"
+msgstr ""
+
+#: ../../docstring config.settings.common.DEFAULT_FROM_EMAIL:1 of
+msgid "Name and e-mail address used to send system e-mails."
+msgstr ""
+
+#: ../../docstring config.settings.common.DEFAULT_FROM_EMAIL:3 of
+msgid "Default: ``Funkwhale <noreply@yourdomain>``"
+msgstr ""
+
+#: ../../docstring config.settings.common.DEFAULT_FROM_EMAIL:7 of
+msgid ""
+"Both the forms ``Funkwhale <noreply@yourdomain>`` and "
+"``noreply@yourdomain`` work."
+msgstr ""
+
+#: ../../docstring config.settings.common.EMAIL_SUBJECT_PREFIX:1 of
+msgid "Subject prefix for system e-mails."
+msgstr ""
+
+#: ../../admin/configuration.rst:179
+msgid "Other settings"
+msgstr ""
+
+#: ../../docstring config.settings.common.INSTANCE_SUPPORT_MESSAGE_DELAY:1 of
+msgid ""
+"Delay after signup, in days, before the \"support your pod\" message is "
+"shown."
+msgstr ""
+
+#: ../../docstring config.settings.common.FUNKWHALE_SUPPORT_MESSAGE_DELAY:1 of
+msgid ""
+"Delay after signup, in days, before the \"support Funkwhale\" message is "
+"shown."
+msgstr ""
+
+#: ../../docstring config.settings.common.MIN_DELAY_BETWEEN_DOWNLOADS_COUNT:1
+#: of
+msgid ""
+"Minimum required period, in seconds, for two downloads of the same track "
+"by the same IP or user to be recorded in statistics."
+msgstr ""
+
+#: ../../docstring config.settings.common.MARKDOWN_EXTENSIONS:1 of
+msgid "List of markdown extensions to enable."
+msgstr ""
+
+#: ../../docstring config.settings.common.MARKDOWN_EXTENSIONS:3 of
+msgid "See `<https://python-markdown.github.io/extensions/>`_."
+msgstr ""
+
+#: ../../docstring config.settings.common.LINKIFIER_SUPPORTED_TLDS:1 of
+msgid "Additional TLDs to support with our markdown linkifier."
+msgstr ""
+
+#: ../../admin/configuration.rst:188
+msgid "User permissions"
+msgstr ""
+
+#: ../../admin/configuration.rst:190
+msgid "Funkwhale's permission model works as follows:"
+msgstr ""
+
+#: ../../admin/configuration.rst:192
+msgid "Anonymous users cannot do anything unless configured specifically;"
+msgstr ""
+
+#: ../../admin/configuration.rst:193
+msgid ""
+"Logged-in users can use the application, but cannot do things that affect"
+" the whole instance;"
+msgstr ""
+
+#: ../../admin/configuration.rst:194
+msgid "Superusers can do anything."
+msgstr ""
+
+#: ../../admin/configuration.rst:196
+msgid ""
+"To make things more granular and allow some delegation of responsibility,"
+" superusers can grant specific permissions to specific users. Available "
+"permissions are:"
+msgstr ""
+
+#: ../../admin/configuration.rst:200
+msgid ""
+"**Manage instance-level settings**: users with this permission can edit "
+"instance settings as described in :ref:`instance-settings`;"
+msgstr ""
+
+#: ../../admin/configuration.rst:202
+msgid ""
+"**Manage library**: users with this permission can import new music in "
+"the instance;"
+msgstr ""
+
+#: ../../admin/configuration.rst:204
+msgid ""
+"**Manage library federation**: users with this permission can ask to "
+"federate with other instances, and accept/deny federation requests from "
+"other instances."
+msgstr ""
+
+#: ../../admin/configuration.rst:207
+msgid ""
+"There is no dedicated interface to manage users permissions, but "
+"superusers can login on the :doc:`Django's admin <django>` at "
+"``/api/admin/`` and grant permissions to users at "
+"``/api/admin/users/user/``."
+msgstr ""
+
+#: ../../admin/configuration.rst:212
+msgid "Front-end settings"
+msgstr ""
+
+#: ../../admin/configuration.rst:214
+msgid ""
+"We offer a basic mechanism to customize the behavior and look and feel of"
+" Funkwhale's Web UI. To use any of the options below, you will need to "
+"create a custom JSON configuration file and serve it on "
+"``https://yourinstanceurl/settings.json``."
+msgstr ""
+
+#: ../../admin/configuration.rst:218
+msgid ""
+"On typical deployments, this url returns a 404 error, which is simply "
+"ignored."
+msgstr ""
+
+#: ../../admin/configuration.rst:221
+msgid "Set-up"
+msgstr ""
+
+#: ../../admin/configuration.rst:223
+msgid "First, create the settings file:"
+msgstr ""
+
+#: ../../admin/configuration.rst:241
+msgid ""
+"Once the ``settings.json`` file is created, you will need to serve it "
+"from your reverse proxy."
+msgstr ""
+
+#: ../../admin/configuration.rst:243
+msgid ""
+"If you are using nginx, add the following snippet to your vhost "
+"configuration::"
+msgstr ""
+
+#: ../../admin/configuration.rst:249
+msgid "On Apache, add the following to your vhost configuration::"
+msgstr ""
+
+#: ../../admin/configuration.rst:253
+msgid "Then, reload your reverse proxy."
+msgstr ""
+
+#: ../../admin/configuration.rst:255
+msgid ""
+"At this point, visiting ``https://yourinstanceurl/settings.json`` should "
+"serve the content of the settings.json file."
+msgstr ""
+
+#: ../../admin/configuration.rst:260
+msgid ""
+"The settings.json file must be a valid JSON file. If you have any issue, "
+"try linting the file with a tool such as "
+"`<https://github.com/zaach/jsonlint>`_ to detect potential syntax issues."
+msgstr ""
+
+#: ../../admin/configuration.rst:265
+msgid "Available configuration options"
+msgstr ""
+
+#: ../../admin/configuration.rst:267
+msgid "Your :file:`settings.json` can contain the following options:"
+msgstr ""
+
+#: ../../admin/configuration.rst:270
+msgid "Name"
+msgstr ""
+
+#: ../../admin/configuration.rst:270
+msgid "Type"
+msgstr ""
+
+#: ../../admin/configuration.rst:270
+msgid "Example value"
+msgstr ""
+
+#: ../../admin/configuration.rst:270
+msgid "Description"
+msgstr ""
+
+#: ../../admin/configuration.rst:272
+msgid "``additionalStylesheets``"
+msgstr ""
+
+#: ../../admin/configuration.rst:272
+msgid "Array of URLs"
+msgstr ""
+
+#: ../../admin/configuration.rst:272
+msgid "``[\"https://test/theme.css\"]`` (default: ``[]``)"
+msgstr ""
+
+#: ../../admin/configuration.rst:272
+msgid ""
+"A list of stylesheets URL (absolute or relative) that the web UI should "
+"load. see the \"Theming\" section below for a detailed explanation"
+msgstr ""
+
+#: ../../admin/configuration.rst:277
+msgid "``defaultServerUrl``"
+msgstr ""
+
+#: ../../admin/configuration.rst:277
+msgid "URL"
+msgstr ""
+
+#: ../../admin/configuration.rst:277
+msgid "``\"https://api.yourdomain.com\"`` (default: ``null``)"
+msgstr ""
+
+#: ../../admin/configuration.rst:277
+msgid ""
+"The URL of the API server this front-end should connect with. If null, "
+"the UI will use the value of VUE_APP_INSTANCE_URL (specified during "
+"build) or fallback to the current domain"
+msgstr ""
+
+#: ../../admin/configuration.rst:283
+msgid ""
+"Missing options or options with a ``null`` value in the ``settings.json``"
+" file are ignored."
+msgstr ""
+
+#: ../../admin/configuration.rst:286
+msgid "Theming"
+msgstr ""
+
+#: ../../admin/configuration.rst:288
+msgid "To theme your Funkwhale instance, you need:"
+msgstr ""
+
+#: ../../admin/configuration.rst:290
+msgid "A CSS file for your theme, that can be loaded by the front-end;"
+msgstr ""
+
+#: ../../admin/configuration.rst:291
+msgid ""
+"To update the value of ``additionalStylesheets`` in your settings.json "
+"file to point to your CSS file URL."
+msgstr ""
+
+#: ../../admin/configuration.rst:308
+msgid ""
+"The last step to make this work is to ensure your CSS file is served by "
+"the reverse proxy."
+msgstr ""
+
+#: ../../admin/configuration.rst:310
+msgid "On nginx, add the following snippet to your vhost config::"
+msgstr ""
+
+#: ../../admin/configuration.rst:316
+msgid "On Apache, use the following::"
+msgstr ""
+
+#: ../../admin/configuration.rst:326
+msgid ""
+"Once done, reload your reverse proxy, refresh Funkwhale in your web "
+"browser, and you should see a red background."
+msgstr ""
+
+#: ../../admin/configuration.rst:331
+msgid ""
+"You can reference external urls as well in ``additionalStylesheets``, "
+"simply use the full urls. Be especially careful with external urls as "
+"they may affect your users privacy."
+msgstr ""
+
+#: ../../admin/configuration.rst:337
+msgid ""
+"Loading additional stylesheets and CSS rules can affect the performance "
+"and usability of your instance. If you encounter issues with the "
+"interfaces and use custom stylesheets, try to disable those to ensure the"
+" issue is not caused by your customizations."
+msgstr ""
+
+#: ../../admin/debugging.rst:2
+msgid "Debugging Funkwhale"
+msgstr ""
+
+#: ../../admin/debugging.rst:4
+msgid ""
+"In order to track down errors its useful to provide as many information "
+"as possible. Usually pasting the logs should be sufficient, but there are"
+" some tools for some deeper debugging."
+msgstr ""
+
+#: ../../admin/debugging.rst:8
+msgid "Frontend Logs"
+msgstr ""
+
+#: ../../admin/debugging.rst:10
+msgid ""
+"Logs and errors written by the Frontend can be accessed with Firefox. "
+"When opening the website of your Funkwhale instance, simply hit ``Ctlr + "
+"Shift + J``. Alternatively open the Firefox Menu and open the Browser "
+"Console in the developers menu."
+msgstr ""
+
+#: ../../admin/debugging.rst:14
+msgid ""
+"In the opening window you can see all the output. You can copy what you "
+"want to share or repeat the failing operation to see what error occurs."
+msgstr ""
+
+#: ../../admin/debugging.rst:18
+msgid "Backend Logs"
+msgstr ""
+
+#: ../../admin/debugging.rst:20
+msgid ""
+"Depending on your setup you can see the logs from our API server in "
+"different ways."
+msgstr ""
+
+#: ../../admin/debugging.rst:23 ../../admin/importing-music.rst:118
+#: ../../admin/migration.rst:69
+msgid "Docker"
+msgstr ""
+
+#: ../../admin/debugging.rst:25
+msgid ""
+"Simply run ``docker-compose logs --tail=100 api`` If you want continuous "
+"logs, add the ``f`` flag."
+msgstr ""
+
+#: ../../admin/debugging.rst:28
+msgid "Quick install"
+msgstr ""
+
+#: ../../admin/debugging.rst:30
+msgid "To get the logs, run ``journalctl -xn -u funkwhale-server``"
+msgstr ""
+
+#: ../../admin/debugging.rst:33
+msgid "Profiling"
+msgstr ""
+
+#: ../../admin/debugging.rst:35
+msgid ""
+"In order to find performance issues, its possible to run API requests "
+"with activated profiling. In order to do this,  add "
+"``funkwhale_api.common.middleware.ProfilerMiddleware`` to the environment"
+" variable ``ADDITIONAL_MIDDLEWARES_BEFORE``"
+msgstr ""
+
+#: ../../admin/debugging.rst:39
+msgid ""
+"If enabled, simply add ``?prof`` to the request URL you want to profile. "
+"You should get an HTML-Report of the running request."
+msgstr ""
+
+#: ../../admin/debugging.rst:43
+msgid "Memory Tracing"
+msgstr ""
+
+#: ../../admin/debugging.rst:45
+msgid ""
+"Its possible to print memory traces for each API request to the API logs."
+" In order to do this, add "
+"``funkwhale_api.common.middleware.PymallocMiddleware`` to the environment"
+" variable ``ADDITIONAL_MODDLEWARES_BEFORE`` This adds a middleware which "
+"should not do anything by default. Tracing can be activated by setting "
+"``PYTHONTRACEMALLOC=1`` This might has some inpact on the performance, "
+"please report how it goes. The Middleware now prints the top 25 memory "
+"allocations to the API logs."
+msgstr ""
+
+#: ../../admin/django.rst:2
+msgid "Using the Django Administration Backend"
+msgstr ""
+
+#: ../../admin/django.rst:4
+msgid ""
+"Funkwhale is being actively developed, and new features are being added "
+"to the frontend all the time. However, there are some administrative "
+"tasks that can only be undertaken in the Django Administration backend."
+msgstr ""
+
+#: ../../admin/django.rst:7
+msgid ""
+"Deleting items on the backend is **not** recommended. Deletions performed"
+" on the backend are permanent. If you remove something in the backend, "
+"you will need to re-add it from scratch."
+msgstr ""
+
+#: ../../admin/django.rst:10
+msgid "Accessing the Django Backend"
+msgstr ""
+
+#: ../../admin/django.rst:12
+msgid ""
+"To access your instance's backend, navigate to "
+"``https://yourdomain/api/admin``. You will be prompted to log in. By "
+"default, the login details will be those of the priviliged user created "
+"during the setup process."
+msgstr ""
+
+#: ../../admin/django.rst:15
+msgid "Deleting Items"
+msgstr ""
+
+#: ../../admin/django.rst:17
+msgid ""
+"By default, deleting items in the front end removes the file from the "
+"server but **does not** delete associated entities such as artists, "
+"albums, and track data, meaning that they will still be viewable but no "
+"longer playable. Items deleted in this way will also still count on the "
+"instance statistics. To remove them completely, it is necessary to remove"
+" them from the database entirely using the Django Administration backend."
+msgstr ""
+
+#: ../../admin/django.rst:20
+msgid ""
+"Deleting tracks, albums, or artists will also remove them completely from"
+" any associated playlists, radios, or favorites lists. Before continuing,"
+" make sure other users on the instance are aware of the deletion(s)."
+msgstr ""
+
+#: ../../admin/django.rst:23
+msgid "Deleting a Track"
+msgstr ""
+
+#: ../../admin/django.rst:25
+msgid "Navigate to ``https://yourdomain/api/admin/music/track``"
+msgstr ""
+
+#: ../../admin/django.rst:26
+msgid "Select the track(s) you wish to delete"
+msgstr ""
+
+#: ../../admin/django.rst:27 ../../admin/django.rst:35
+#: ../../admin/django.rst:47 ../../admin/django.rst:61
+msgid "In the ``Action`` dropdown menu, select \"Delete Selected Items\""
+msgstr ""
+
+#: ../../admin/django.rst:28
+msgid "Click on \"Go\". You will be prompted to confirm the track's deletion"
+msgstr ""
+
+#: ../../admin/django.rst:31
+msgid "Deleting an Album"
+msgstr ""
+
+#: ../../admin/django.rst:33 ../../admin/django.rst:69
+msgid "Navigate to ``https://yourdomain/api/admin/music/album``"
+msgstr ""
+
+#: ../../admin/django.rst:34
+msgid "Select the album(s) you wish to delete"
+msgstr ""
+
+#: ../../admin/django.rst:36
+msgid "Click on \"Go\". You will be prompted to confirm the album's deletion"
+msgstr ""
+
+#: ../../admin/django.rst:40
+msgid "Deleting an album will remove all tracks associated with the album"
+msgstr ""
+
+#: ../../admin/django.rst:43
+msgid "Deleting an Artist"
+msgstr ""
+
+#: ../../admin/django.rst:45
+msgid "Navigate to ``https://yourdomain/api/admin/music/artist``"
+msgstr ""
+
+#: ../../admin/django.rst:46
+msgid "Select the artist(s) you wish to delete"
+msgstr ""
+
+#: ../../admin/django.rst:48
+msgid "Click on \"Go\". You will be prompted to confirm the artist's deletion"
+msgstr ""
+
+#: ../../admin/django.rst:52
+msgid ""
+"Deleting an artist will remove all tracks and albums associated with the "
+"artist"
+msgstr ""
+
+#: ../../admin/django.rst:55
+msgid "Removing a Followed Library"
+msgstr ""
+
+#: ../../admin/django.rst:57
+msgid ""
+"In Funkwhale, unfollowing a library will leave the items in place but "
+"inaccessible. To completely remove them:"
+msgstr ""
+
+#: ../../admin/django.rst:59
+msgid "Navigate to ``https://yourdomain/api/admin/music/library/``"
+msgstr ""
+
+#: ../../admin/django.rst:60
+msgid "Tick the box next to the library you wish to remove"
+msgstr ""
+
+#: ../../admin/django.rst:62
+msgid "Click on \"Go\". You will be prompted to confirm the library's deletion"
+msgstr ""
+
+#: ../../admin/django.rst:65
+msgid "Adding Missing Album Art"
+msgstr ""
+
+#: ../../admin/django.rst:67
+msgid ""
+"Sometimes album art can fail to appear despite music being properly "
+"tagged. When this happens, it is possible to replace the missing art."
+msgstr ""
+
+#: ../../admin/django.rst:70
+msgid "Search for and select the album in question"
+msgstr ""
+
+#: ../../admin/django.rst:71
+msgid "Find the item marked \"Cover\""
+msgstr ""
+
+#: ../../admin/django.rst:72
+msgid "Click \"Browse\" and select the file from your computer"
+msgstr ""
+
+#: ../../admin/django.rst:73
+msgid "Click \"Save\" to confirm the changes"
+msgstr ""
+
+#: ../../admin/django.rst:75
+msgid "The album art will now be present on the frontend."
+msgstr ""
+
+#: ../../admin/django.rst:79
+msgid ""
+"You can also clear currently loaded album art by checking the checkbox "
+"next to the current item and selecting \"Clear\""
+msgstr ""
+
+#: ../../admin/external-storages.rst:2
+msgid "Using external storages to store Funkwhale content"
+msgstr ""
+
+#: ../../admin/external-storages.rst:4
+msgid ""
+"By default, Funkwhale will store user-uploaded and related media such as "
+"audio files, transcoded files, avatars and album covers on a server "
+"directory."
+msgstr ""
+
+#: ../../admin/external-storages.rst:7
+msgid ""
+"However, for bigger instances or more complex deployment scenarios, you "
+"may want to use distributed or external storages."
+msgstr ""
+
+#: ../../admin/external-storages.rst:11
+msgid "S3 and S3-compatible servers"
+msgstr ""
+
+#: ../../admin/external-storages.rst:15
+msgid ""
+"This feature was released in Funkwhale 0.19 and is still considered "
+"experimental. Please let us know if you see anything unusual while using "
+"it."
+msgstr ""
+
+#: ../../admin/external-storages.rst:18
+msgid ""
+"Funkwhale supports storing media files Amazon S3 and compatible "
+"implementations such as Minio or Wasabi."
+msgstr ""
+
+#: ../../admin/external-storages.rst:20
+msgid ""
+"In this scenario, the content itself is stored in the S3 bucket. Non-"
+"sensitive media such as album covers or user avatars are served directly "
+"from the bucket. However, audio files are still served by the reverse "
+"proxy, to enforce proper authentication."
+msgstr ""
+
+#: ../../admin/external-storages.rst:24
+msgid "To enable S3 on Funkwhale, add the following environment variables::"
+msgstr ""
+
+#: ../../admin/external-storages.rst:38
+msgid ""
+"Then, edit your nginx configuration. On docker setups, the file is "
+"located at ``/srv/funkwhale/nginx/funkwhale.template``, and at "
+"``/etc/nginx/sites-available/funkwhale.template`` on non-docker setups."
+msgstr ""
+
+#: ../../admin/external-storages.rst:41
+msgid "Replace the ``location /_protected/media`` block with the following::"
+msgstr ""
+
+#: ../../admin/external-storages.rst:50
+msgid "Add your S3 store URL to the ``img-src`` and ``media-src`` headers"
+msgstr ""
+
+#: ../../admin/external-storages.rst:56
+msgid "Then restart Funkwhale and nginx."
+msgstr ""
+
+#: ../../admin/external-storages.rst:58
+msgid ""
+"From now on, media files will be stored on the S3 bucket you configured. "
+"If you already had media files before configuring the S3 bucket, you also"
+" have to move those on the bucket by hand (which is outside the scope of "
+"this guide)."
+msgstr ""
+
+#: ../../admin/external-storages.rst:64
+msgid "At the moment, we do not support S3 when using Apache as a reverse proxy."
+msgstr ""
+
+#: ../../admin/external-storages.rst:68
+msgid ""
+"If you are attempting to integrate your docker deployment with an "
+"existing nginx webserver, such as the one provided by `linuxserver/swag "
+"<https://docs.linuxserver.io/images/docker-swag>`_ (formerly "
+"`linuxserver/letsencrypt <https://docs.linuxserver.io/images/docker-swag"
+"#migrating-from-the-old-linuxserver-letsencrypt-image>`_), you may run "
+"into an issue where an additional ``Content-Security-Policy`` header "
+"appears in responses from the server, without the newly included S3 URL "
+"values."
+msgstr ""
+
+#: ../../admin/external-storages.rst:74
+msgid ""
+"In this case, you can suppress the extraneous ``Content-Security-Policy``"
+" header by specifying it in a ``proxy_hide_header`` `directive "
+"<http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_hide_header>`_"
+" in the ``location /`` block."
+msgstr ""
+
+#: ../../admin/external-storages.rst:89
+msgid "Serving audio files directly from the bucket"
+msgstr ""
+
+#: ../../admin/external-storages.rst:91
+msgid ""
+"Depending on your setup, you may want to serve audio files directly from "
+"the S3 bucket instead of proxying them through Funkwhale, e.g to reduce "
+"the bandwidth consumption on your server, or get better performance."
+msgstr ""
+
+#: ../../admin/external-storages.rst:95
+msgid ""
+"You can achieve that by adding ``PROXY_MEDIA=false`` to your ``.env`` "
+"file."
+msgstr ""
+
+#: ../../admin/external-storages.rst:97
+msgid ""
+"When receiving a request on the stream endpoint, Funkwhale will check for"
+" authentication and permissions, then issue a 302 redirect to the file "
+"URL in the bucket."
+msgstr ""
+
+#: ../../admin/external-storages.rst:100
+msgid ""
+"This URL is actually be visible by the client, but contains a signature "
+"valid only for one hour, to ensure no one can reuse this URL or share it "
+"publicly to distribute unauthorized content."
+msgstr ""
+
+#: ../../admin/external-storages.rst:105
+msgid ""
+"If you are using Amazon S3, you will need to set your "
+"``AWS_S3_REGION_NAME`` in the ``.env`` file to use this feature."
+msgstr ""
+
+#: ../../admin/external-storages.rst:110
+msgid ""
+"Since some Subsonic clients don't support 302 redirections, Funkwhale "
+"will ignore the ``PROXY_MEDIA`` setting and always proxy file when "
+"accessed through the Subsonic API."
+msgstr ""
+
+#: ../../admin/external-storages.rst:115
+msgid "Securing your S3 bucket"
+msgstr ""
+
+#: ../../admin/external-storages.rst:117
+msgid ""
+"It's important to ensure your the root of your bucket doesn't list its "
+"content, which is the default on many S3 servers. Otherwise, anyone could"
+" find out the true URLs of your audio files and bypass authentication."
+msgstr ""
+
+#: ../../admin/external-storages.rst:121
+msgid "To avoid that, you can set the following policy on your bucket::"
+msgstr ""
+
+#: ../../admin/external-storages.rst:144
+msgid ""
+"If you are using ``awscli``, you can store this policy in a "
+"``/tmp/policy`` file, and apply it using the following command::"
+msgstr ""
+
+#: ../../admin/external-storages.rst:150 ../../admin/index.rst:37
+#: ../../admin/troubleshooting.rst:2
+msgid "Troubleshooting"
+msgstr ""
+
+#: ../../admin/external-storages.rst:153
+msgid "No Resolver Found"
+msgstr ""
+
+#: ../../admin/external-storages.rst:155
+msgid ""
+"Depending on your setup, you may experience the following issue when "
+"trying to stream music directly from your S3-compatible store."
+msgstr ""
+
+#: ../../admin/external-storages.rst:162
+msgid ""
+"This happpens when the nginx config is unable to use your server's DNS "
+"resolver. This issue is still under investigation, but in the meantime "
+"can be worked around by specifying a resolver in your "
+"``funkwhale.template`` under the ``location ~/_protected/media/(.+)`` "
+"section."
+msgstr ""
+
+#: ../../admin/external-storages.rst:176
+msgid "No Images or Media Loading"
+msgstr ""
+
+#: ../../admin/external-storages.rst:178
+msgid ""
+"If you are serving media from an S3-compatible store, you may experience "
+"an issue where nothing loads in the front end. The error logs in your "
+"browser may show something like the following:"
+msgstr ""
+
+#: ../../admin/external-storages.rst:187
+msgid ""
+"This happens when your S3 store isn't defined in the ``Content-Security-"
+"Policy`` headers in your Nginx files. To resolve the issue, add the base "
+"URL of your S3 store to the ``img-src`` and ``media-src`` headers and "
+"reload nginx."
+msgstr ""
+
+#: ../../admin/external-storages.rst:196
+msgid "Broken Images in Audio Player On Page Reload"
+msgstr ""
+
+#: ../../admin/external-storages.rst:198
+msgid ""
+"If you are serving media directly from an S3-compatible store, you may "
+"find that images in the queue and the player won't load after the page is"
+" refreshed. This happens if the generated URL has expired and the "
+"authorization is no longer valid. You can extend the expiry time using "
+"the following setting in your ``.env`` file:"
+msgstr ""
+
+#: ../../admin/importing-music.rst:2
+msgid "Importing music from the server"
+msgstr ""
+
+#: ../../admin/importing-music.rst:4
+msgid ""
+"Funkwhale can import music files saved on the server assuming they are "
+"readable by the Funkwhale application. Your music files should contain at"
+" least ``artist``, ``album`` and ``title`` tags, but we recommend you tag"
+" extensively using a proper tool, such as Beets or Musicbrainz Picard."
+msgstr ""
+
+#: ../../admin/importing-music.rst:11
+msgid "Funkwhale supports two different import modes:"
+msgstr ""
+
+#: ../../admin/importing-music.rst:13
+msgid ""
+"copy(default): files are copied into Funkwhale's internal storage. This "
+"means importing a 1GB library will result in the same amount of space "
+"being used by Funkwhale."
+msgstr ""
+
+#: ../../admin/importing-music.rst:14
+msgid ""
+":ref:`in-place <in-place-import>` (with ``--in-place`` flag): files are "
+"referenced in Funkwhale's DB but not copied or touched in anyway. This is"
+" useful if you have a huge library, or one that is updated by an external"
+" tool such as Beets."
+msgstr ""
+
+#: ../../admin/importing-music.rst:16
+msgid ""
+"Regardless of the mode you choose, follow the below steps to import "
+"music, assuming your files are located in ``/srv/funkwhale/data/music``:"
+msgstr ""
+
+#: ../../admin/importing-music.rst:27
+msgid ""
+"You have to create a library in the Web UI to get your library ID. Simply"
+" visit https://yourdomain/content/libraries/ to create one."
+msgstr ""
+
+#: ../../admin/importing-music.rst:30
+msgid ""
+"Library IDs are part of the library url or sharing link. For example, the"
+" library ID of https://funkwhale.instance/content/libraries/769a2ae3"
+"-eb3d-4aff-9f94-2c4d80d5c2d1, is 769a2bc3-eb1d-4aff-9f84-2c4d80d5c2d1"
+msgstr ""
+
+#: ../../admin/importing-music.rst:35
+msgid ""
+"You can use only the first characters of the ID when calling the command,"
+" like that: ``export LIBRARY_ID=\"769a2bc3\"``"
+msgstr ""
+
+#: ../../admin/importing-music.rst:38
+msgid ""
+"When you use docker, ``/srv/funkwhale/data/music`` is mounted from the "
+"host to the ``/music`` directory on the container:"
+msgstr ""
+
+#: ../../admin/importing-music.rst:46
+msgid ""
+"When you installed Funkwhale via ansible, you need to call a script "
+"instead of Python, and the folder path must be adapted accordingly:"
+msgstr ""
+
+#: ../../admin/importing-music.rst:54
+msgid "The import command supports several options, check the help for details::"
+msgstr ""
+
+#: ../../admin/importing-music.rst:61
+msgid ""
+"We recommend tagging your music collection using `Picard "
+"<http://picard.musicbrainz.org/>`_ to have the best quality metadata."
+msgstr ""
+
+#: ../../admin/importing-music.rst:65
+msgid ""
+"This command is idempotent, meaning you can run it multiple times on the "
+"same files and already imported files are simply skipped."
+msgstr ""
+
+#: ../../admin/importing-music.rst:71
+msgid ""
+"At the moment, only Flac, OGG/Vorbis and MP3 or AIFF files with ID3 tags "
+"are supported."
+msgstr ""
+
+#: ../../admin/importing-music.rst:77
+msgid "In-place import"
+msgstr ""
+
+#: ../../admin/importing-music.rst:79
+msgid ""
+"By default, the CLI-importer will copy imported files to Funkwhale's "
+"internal storage. This means importing a 1GB library will result in the "
+"same amount of space being used by Funkwhale."
+msgstr ""
+
+#: ../../admin/importing-music.rst:83
+msgid ""
+"While this behaviour has some benefits (easier backups and "
+"configuration), it is not always the best choice, especially if you have "
+"a huge library to import and don't want to double your disk usage."
+msgstr ""
+
+#: ../../admin/importing-music.rst:88
+msgid ""
+"The CLI importer supports an additional ``--in-place`` option through "
+"which Funkwhale will store file paths rather than file content."
+msgstr ""
+
+#: ../../admin/importing-music.rst:92
+msgid "Structure"
+msgstr ""
+
+#: ../../admin/importing-music.rst:94
+msgid ""
+"Because imported files are not managed by Funkwhale, we offer additional "
+"configuration options to ensure the webserver can serve them properly:"
+msgstr ""
+
+#: ../../admin/importing-music.rst:98
+msgid ":data:`MUSIC_DIRECTORY_PATH <config.settings.common.MUSIC_DIRECTORY_PATH>`"
+msgstr ""
+
+#: ../../admin/importing-music.rst:99
+msgid ""
+":data:`MUSIC_DIRECTORY_SERVING_PATH "
+"<config.settings.common.MUSIC_DIRECTORY_SERVE_PATH>`"
+msgstr ""
+
+#: ../../admin/importing-music.rst:101
+msgid ""
+"We recommend you symlink all your music directories into "
+"``/srv/funkwhale/data/music`` and run the `import_files` command from "
+"that directory. This will make it possible to use multiple music "
+"directories without any additional configuration on the webserver side."
+msgstr ""
+
+#: ../../admin/importing-music.rst:106
+msgid ""
+"For instance, if you have an NFS share with your music mounted at "
+"``/media/mynfsshare``, you can create a symlink like this::"
+msgstr ""
+
+#: ../../admin/importing-music.rst:112
+msgid "And import music from the share::"
+msgstr ""
+
+#: ../../admin/importing-music.rst:120
+msgid ""
+"Docker setups require a bit more work, because while the "
+"``/srv/funkwhale/data/music`` is mounted in containers, symlinked "
+"directories are not."
+msgstr ""
+
+#: ../../admin/importing-music.rst:124
+msgid ""
+"To fix that, you can use bind mounts instead of symbolic links, as they "
+"replicate the source directory tree. With the previous NFS share, use "
+"this command::"
+msgstr ""
+
+#: ../../admin/importing-music.rst:130
+msgid ""
+"If you want to go with symlinks, ensure each symlinked directory is "
+"mounted as a volume as well as in your ``docker-compose.yml`` file::"
+msgstr ""
+
+#: ../../admin/importing-music.rst:149
+msgid "Metadata updates"
+msgstr ""
+
+#: ../../admin/importing-music.rst:151
+msgid ""
+"When doing an import with in ``in-place`` mode, the importer will also "
+"check and update existing entries found in the database. For instance, if"
+" the ID3 Title tag of an existing song was updated since the last scan, "
+"Funkwhale picks up the new title. The following fields can be updated "
+"this way:"
+msgstr ""
+
+#: ../../admin/importing-music.rst:156
+msgid "Track mbid"
+msgstr ""
+
+#: ../../admin/importing-music.rst:157
+msgid "Track title"
+msgstr ""
+
+#: ../../admin/importing-music.rst:158
+msgid "Track position and disc number"
+msgstr ""
+
+#: ../../admin/importing-music.rst:159
+msgid "Track license and copyright"
+msgstr ""
+
+#: ../../admin/importing-music.rst:160
+msgid ""
+"Track genre (`from version 1.2 "
+"<https://dev.funkwhale.audio/funkwhale/funkwhale/-/merge_requests/1225>`_)"
+msgstr ""
+
+#: ../../admin/importing-music.rst:161
+msgid "Album cover"
+msgstr ""
+
+#: ../../admin/importing-music.rst:162
+msgid "Album title"
+msgstr ""
+
+#: ../../admin/importing-music.rst:163
+msgid "Album mbid"
+msgstr ""
+
+#: ../../admin/importing-music.rst:164
+msgid "Album release date"
+msgstr ""
+
+#: ../../admin/importing-music.rst:165
+msgid "Artist name"
+msgstr ""
+
+#: ../../admin/importing-music.rst:166
+msgid "Artist mbid"
+msgstr ""
+
+#: ../../admin/importing-music.rst:167
+msgid "Album artist name"
+msgstr ""
+
+#: ../../admin/importing-music.rst:168
+msgid "Album artist mbid"
+msgstr ""
+
+#: ../../admin/importing-music.rst:170
+msgid ""
+"Changes in artist name can lead to multiple artists with the same name in"
+" the database, `this is a known issue "
+"<https://dev.funkwhale.audio/funkwhale/funkwhale/-/issues/1318>`_ and can"
+" be remedied by adding mbids."
+msgstr ""
+
+#: ../../admin/importing-music.rst:175
+msgid "React to filesystem events with ``--watch``"
+msgstr ""
+
+#: ../../admin/importing-music.rst:177
+msgid ""
+"If you have a really big library or update it regularly, running the "
+"``import_files`` command by hand may not be practical. For this use case,"
+" the ``import_files`` command supports a ``--watch`` flag through which "
+"it observes filesystem events instead of performing a full import."
+msgstr ""
+
+#: ../../admin/importing-music.rst:183
+msgid ""
+"File creation, move, update and removal are handled when ``--watch`` is "
+"provided:"
+msgstr ""
+
+#: ../../admin/importing-music.rst:186
+msgid "Files created in the watched directory are imported immediately"
+msgstr ""
+
+#: ../../admin/importing-music.rst:187
+msgid ""
+"If using ``in-place`` mode, files updates trigger a metadata update on "
+"the corresponding entries"
+msgstr ""
+
+#: ../../admin/importing-music.rst:188
+msgid ""
+"If using ``in-place`` mode, files that are moved and known by Funkwhale "
+"will see their path updated in Funkwhale's DB"
+msgstr ""
+
+#: ../../admin/importing-music.rst:189
+msgid ""
+"If using ``in-place`` mode, files that are removed and known by Funkwhale"
+" will be removed from Funkwhale's DB"
+msgstr ""
+
+#: ../../admin/importing-music.rst:192
+msgid "Pruning dangling metadata with ``--prune``"
+msgstr ""
+
+#: ../../admin/importing-music.rst:194
+msgid ""
+"Funkwhale is, by design, conservative with music metadata in its "
+"database. If you remove a file from Funkwhale's DB, the corresponding "
+"artist, album and track object won't be deleted by default."
+msgstr ""
+
+#: ../../admin/importing-music.rst:198
+msgid ""
+"If you want to prune dangling metadata from the database once the "
+"``import_files`` command is over, simply add the ``--prune`` flag. This "
+"also works in with ``--watch``."
+msgstr ""
+
+#: ../../admin/importing-music.rst:202
+msgid "Album covers"
+msgstr ""
+
+#: ../../admin/importing-music.rst:204
+msgid ""
+"Whenever possible, Funkwhale obtains album covers for tracks, with the "
+"following precedence:"
+msgstr ""
+
+#: ../../admin/importing-music.rst:207
+msgid "The cover embedded in the audio files themeselves, if any (Flac/MP3 only)"
+msgstr ""
+
+#: ../../admin/importing-music.rst:208
+msgid ""
+"Use a cover.jpg or a cover.png file from the imported track directory, if"
+" any"
+msgstr ""
+
+#: ../../admin/importing-music.rst:209
+msgid "Fetch cover art from musicbrainz, assuming the file is tagged correctly"
+msgstr ""
+
+#: ../../admin/importing-music.rst:212
+msgid "Getting demo tracks"
+msgstr ""
+
+#: ../../admin/importing-music.rst:214
+msgid ""
+"If you do not have any music on your server but want to test the import "
+"process, you can call the following methods to download a few albums "
+"licenced under creative commons (courtesy of Jamendo):"
+msgstr ""
+
+#: ../../admin/importing-music.rst:226
+msgid ""
+"This will download a bunch of zip archives (one per album) under the "
+"``data/music`` directory and unzip their content."
+msgstr ""
+
+#: ../../admin/index.rst:2
+msgid "Administrator Documentation"
+msgstr ""
+
+#: ../../admin/index.rst:4
+msgid ""
+"This documentation is targeted at administrators of instances. This "
+"typically refers to the person(s) responsible for running the server and "
+"managing the software on a technical level."
+msgstr ""
+
+#: ../../admin/index.rst:9
+msgid "Setup Guides"
+msgstr ""
+
+#: ../../admin/index.rst:25
+msgid "Administration"
+msgstr ""
+
+#: ../../admin/ldap.rst:2
+msgid "LDAP configuration"
+msgstr ""
+
+#: ../../admin/ldap.rst:4
+msgid ""
+"LDAP is a protocol for providing directory services, in practice allowing"
+" a central authority for user login information."
+msgstr ""
+
+#: ../../admin/ldap.rst:6
+msgid ""
+"Funkwhale supports LDAP through the Django LDAP authentication module and"
+" by setting several configuration options."
+msgstr ""
+
+#: ../../admin/ldap.rst:10
+msgid "Note that LDAP-based users cannot change their password inside the app."
+msgstr ""
+
+#: ../../admin/ldap.rst:13
+msgid "Dependencies"
+msgstr ""
+
+#: ../../admin/ldap.rst:15
+msgid ""
+"LDAP support requires some additional dependencies to enable. On the OS "
+"level both ``libldap2-dev`` and ``libsasl2-dev`` are required, and the "
+"Python modules ``python-ldap`` and ``python-django-auth-ldap`` must be "
+"installed. These dependencies are all included in the ``requirements.*`` "
+"files so deploying with those will install these dependencies by default."
+" However, they are not required unless LDAP support is explicitly "
+"enabled."
+msgstr ""
+
+#: ../../admin/ldap.rst:20
+msgid ""
+"LDAP authentication is configured entirely through the environment "
+"variables. The following options enable the LDAP features:"
+msgstr ""
+
+#: ../../admin/ldap.rst:23
+msgid "Basic features"
+msgstr ""
+
+#: ../../admin/ldap.rst:25
+msgid ""
+"``LDAP_ENABLED``: Set to ``True`` to enable LDAP support. Default: "
+"``False``."
+msgstr ""
+
+#: ../../admin/ldap.rst:26
+msgid ""
+"``LDAP_SERVER_URI``: LDAP URI to the authentication server, e.g. "
+"``ldap://my.host:389``."
+msgstr ""
+
+#: ../../admin/ldap.rst:27
+msgid "``LDAP_BIND_DN``: LDAP user DN to bind as to perform searches."
+msgstr ""
+
+#: ../../admin/ldap.rst:28
+msgid "``LDAP_BIND_PASSWORD``: LDAP user password for bind DN."
+msgstr ""
+
+#: ../../admin/ldap.rst:29
+msgid ""
+"``LDAP_SEARCH_FILTER``: The LDAP user filter, using ``{0}`` as the "
+"username placeholder, e.g. ``(|(cn={0})(mail={0}))``; uses standard LDAP "
+"search syntax. Default: ``(uid={0})``."
+msgstr ""
+
+#: ../../admin/ldap.rst:30
+msgid ""
+"``LDAP_START_TLS``: Set to ``True`` to enable LDAP StartTLS support. "
+"Default: ``False``."
+msgstr ""
+
+#: ../../admin/ldap.rst:31
+msgid ""
+"``LDAP_ROOT_DN``: The LDAP search root DN, e.g. "
+"``dc=my,dc=domain,dc=com``; supports multiple entries in a space-"
+"delimited list, e.g. ``dc=users,dc=domain,dc=com "
+"dc=admins,dc=domain,dc=com``."
+msgstr ""
+
+#: ../../admin/ldap.rst:32
+msgid ""
+"``LDAP_USER_ATTR_MAP``: A mapping of Django user attributes to LDAP "
+"values, e.g. ``first_name:givenName, last_name:sn, username:cn, "
+"email:mail``. Default: ``first_name:givenName, last_name:sn, username:cn,"
+" email:mail``."
+msgstr ""
+
+#: ../../admin/ldap.rst:33
+msgid ""
+"``AUTH_LDAP_BIND_AS_AUTHENTICATING_USER``: Controls whether direct "
+"binding is used. Default: ``False``."
+msgstr ""
+
+#: ../../admin/ldap.rst:36
+msgid "Group features"
+msgstr ""
+
+#: ../../admin/ldap.rst:38
+msgid ""
+"For details on these options, see the `Django documentation <https"
+"://django-auth-ldap.readthedocs.io/en/latest/groups.html>`_. Group "
+"configuration is disabled unless an ``LDAP_GROUP_DN`` is set. This is an "
+"advanced LDAP feature and most users should not need to configure these "
+"settings."
+msgstr ""
+
+#: ../../admin/ldap.rst:40
+msgid ""
+"``LDAP_GROUP_DN``: The LDAP group search root DN, e.g. "
+"``ou=groups,dc=domain,dc=com``."
+msgstr ""
+
+#: ../../admin/ldap.rst:41
+msgid ""
+"``LDAP_GROUP_FILTER``: The LDAP group filter, e.g. "
+"``(objectClass=groupOfNames)``."
+msgstr ""
+
+#: ../../admin/ldap.rst:42
+msgid ""
+"``LDAP_REQUIRE_GROUP``: A group users must be a part of to authenticate, "
+"e.g. ``cn=enabled,ou=groups,dc=domain,dc=com``."
+msgstr ""
+
+#: ../../admin/ldap.rst:43
+msgid ""
+"``LDAP_DENY_GROUP``: A group users must not be a part of to authenticate,"
+" e.g. ``cn=disabled,ou=groups,dc=domain,dc=com``."
+msgstr ""
+
+#: ../../admin/migration.rst:2
+msgid "Migrating to a New Server"
+msgstr ""
+
+#: ../../admin/migration.rst:4
+msgid ""
+"Sometimes, it may be necessary or desirable to migrate your existing "
+"Funkwhale setup to a new server. This can be helpful if you need to boost"
+" resources or if you wish to use a different hosting platform."
+msgstr ""
+
+#: ../../admin/migration.rst:9
+msgid ""
+"In this guide, the existing Funkwhale setup is called the origin server, "
+"and the new setup the destination server."
+msgstr ""
+
+#: ../../admin/migration.rst:12
+msgid "Requirements"
+msgstr ""
+
+#: ../../admin/migration.rst:14
+msgid "To get started with your new setup, you will need to have the following:"
+msgstr ""
+
+#: ../../admin/migration.rst:17
+msgid ""
+"`rsync <https://linux.die.net/man/1/rsync>`_ installed on the "
+"**destination** server"
+msgstr ""
+
+#: ../../admin/migration.rst:18
+msgid "SSH access set up between the two servers"
+msgstr ""
+
+#: ../../admin/migration.rst:21
+msgid "Non-Docker"
+msgstr ""
+
+#: ../../admin/migration.rst:23
+msgid ""
+"On the destination server, run through the :doc:`installation "
+"steps<../installation/debian>` with the exception of the following "
+"points:"
+msgstr ""
+
+#: ../../admin/migration.rst:25
+msgid ""
+"Do not enable the extensions ``unaccent`` and ``citext`` when setting up "
+"the database;"
+msgstr ""
+
+#: ../../admin/migration.rst:26
+msgid "Do not initialize the database by applying the migrate command;"
+msgstr ""
+
+#: ../../admin/migration.rst:27
+msgid "Do not create an admin account."
+msgstr ""
+
+#: ../../admin/migration.rst:29
+msgid "Stop all funkwhale related services on the destination server:"
+msgstr ""
+
+#: ../../admin/migration.rst:35 ../../admin/migration.rst:75
+msgid "On the origin server, create a database backup:"
+msgstr ""
+
+#: ../../admin/migration.rst:41
+msgid ""
+"On the destination server, use rsync to fetch the contents of "
+"``/srv/funwkhale/data/media/music/`` and ``/srv/funkwhale/data/media/`` "
+"from the origin server, as well as the database dump and the ``.env`` "
+"file:"
+msgstr ""
+
+#: ../../admin/migration.rst:54
+msgid "On the destination server, restore the database dump:"
+msgstr ""
+
+#: ../../admin/migration.rst:60
+msgid ""
+"Once the database has been restored, follow the database migration steps "
+"from the non-docker installation guide to complete the installation on "
+"the destination server."
+msgstr ""
+
+#: ../../admin/migration.rst:62
+msgid "Ensure that all DNS changes have been made and start the services:"
+msgstr ""
+
+#: ../../admin/migration.rst:71
+msgid ""
+"On the destination server, run through the :doc:`installation "
+"steps<../installation/docker>` but skip the ``docker-compose run --rm api"
+" python manage.py migrate`` step."
+msgstr ""
+
+#: ../../admin/migration.rst:73
+msgid "Stop all funkwhale related containers on the destination server."
+msgstr ""
+
+#: ../../admin/migration.rst:81
+msgid ""
+"On the destination server, use rsync to fetch the contents of "
+"``/srv/funwkhale/data/media/music`` and ``/srv/funkwhale/data/media`` "
+"from the origin server, as well as the database dump nd the ``.env`` "
+"file:"
+msgstr ""
+
+#: ../../admin/migration.rst:94
+msgid ""
+"Initialize the Postgres container with the funkwhale database and its "
+"user. For easier, we create a db init dump file than we import in the "
+"postgres container:"
+msgstr ""
+
+#: ../../admin/migration.rst:105
+msgid "After that, we can restore the database dump:"
+msgstr ""
+
+#: ../../admin/migration.rst:111
+msgid ""
+"Once the database has been restored, run the migrations following the "
+"docker installation guide."
+msgstr ""
+
+#: ../../admin/migration.rst:113
+msgid "Ensure that all DNS changes have been made and start the services."
+msgstr ""
+
+#: ../../admin/mrf.rst:2
+msgid "Message Rewrite Facility (MRF)"
+msgstr ""
+
+#: ../../admin/mrf.rst:4
+msgid ""
+"Funkwhale includes a feature that mimics `Pleroma's Message Rewrite "
+"Facility <https://docs-"
+"develop.pleroma.social/backend/configuration/mrf/>`_. Using the MRF, "
+"instance admins can write and configure custom and automated moderation "
+"rules that couldn't be implemented otherwise using :doc:`our other built-"
+"in moderation tools <../moderator/index>`."
+msgstr ""
+
+#: ../../admin/mrf.rst:9
+msgid "Architecture"
+msgstr ""
+
+#: ../../admin/mrf.rst:11
+msgid ""
+"The MRF is a pluggable system that will process messages and forward "
+"those to the list of registered policies, in turn. Each policy can mutate"
+" the message, leave it as is, or discard it entirely."
+msgstr ""
+
+#: ../../admin/mrf.rst:14
+msgid ""
+"Some of our built-in moderation tools are actually implemented as a MRF "
+"policy, e.g:"
+msgstr ""
+
+#: ../../admin/mrf.rst:16
+msgid ""
+"Allow-list, when checking incoming messages (`code "
+"<https://dev.funkwhale.audio/funkwhale/funkwhale/blob/develop/api/funkwhale_api/moderation/mrf_policies.py>`__)"
+msgstr ""
+
+#: ../../admin/mrf.rst:17
+msgid ""
+"Domain and user blocking, when checking incoming messages (`code "
+"<https://dev.funkwhale.audio/funkwhale/funkwhale/blob/develop/api/funkwhale_api/federation/mrf_policies.py>`__)"
+msgstr ""
+
+#: ../../admin/mrf.rst:21
+msgid ""
+"While Pleroma MRF policies can also affect outgoing messages, this is not"
+" supported yet in Funkwhale."
+msgstr ""
+
+#: ../../admin/mrf.rst:25
+msgid "Disclaimer"
+msgstr ""
+
+#: ../../admin/mrf.rst:27
+msgid ""
+"Writing custom MRF can impact negatively the performance and stability of"
+" your pod, as well as message delivery. Your policy will be called "
+"everytime a message is delivered, so ensure you don't execute any slow "
+"operation here."
+msgstr ""
+
+#: ../../admin/mrf.rst:31
+msgid ""
+"Please note that the Funkwhale developers consider custom MRF policy "
+"modules to fall under the purview of the AGPL. As such, you are obligated"
+" to release the sources to your custom MRF policy modules upon request."
+msgstr ""
+
+#: ../../admin/mrf.rst:34
+msgid "Writing your first MRF policy"
+msgstr ""
+
+#: ../../admin/mrf.rst:36
+msgid ""
+"MRF Policies are written as Python 3 functions that take at least one "
+"``payload`` parameter. This payload is the raw ActivityPub message, "
+"received via HTTP, after the HTTP signature check."
+msgstr ""
+
+#: ../../admin/mrf.rst:39
+msgid ""
+"In the example below we write a policy that discards all Follow requests "
+"from listed domains:"
+msgstr ""
+
+#: ../../admin/mrf.rst:66
+msgid ""
+"This code must be stored in a Funkwhale plugin. To create one, just "
+"execute the following:"
+msgstr ""
+
+#: ../../admin/mrf.rst:89
+msgid ""
+"Once you have a Funkwhale plugin, simply put your MRF policy code inside "
+"a ``mrf_policies.py`` file whithin the plugin directory. Then enable the "
+"plugin in your ``.env`` by adding its name to the coma-separated list of "
+"``FUNKWHALE_PLUGINS`` (add the variable if it's not there)."
+msgstr ""
+
+#: ../../admin/mrf.rst:95
+msgid "Testing a MRF policy"
+msgstr ""
+
+#: ../../admin/mrf.rst:97
+msgid ""
+"To make the job of writing and debugging MRF policies easier, we provide "
+"a management command:"
+msgstr ""
+
+#: ../../admin/optimization.rst:2
+msgid "Optimizing your Funkwhale instance"
+msgstr ""
+
+#: ../../admin/optimization.rst:4
+msgid ""
+"Depending on your requirements, you may want to reduce as much as "
+"possible Funkwhale's memory footprint."
+msgstr ""
+
+#: ../../admin/optimization.rst:8
+msgid "Reduce workers concurrency"
+msgstr ""
+
+#: ../../admin/optimization.rst:10
+msgid ""
+"Asynchronous tasks are handled by a celery worker, which will by default "
+"spawn a worker process per CPU available. This can lead to a higher "
+"memory usage."
+msgstr ""
+
+#: ../../admin/optimization.rst:14
+msgid ""
+"You can control this behavior using the ``--concurrency`` flag. For "
+"instance, setting ``--concurrency=1`` will spawn only one worker."
+msgstr ""
+
+#: ../../admin/optimization.rst:17
+msgid ""
+"This flag should be appended after the ``celery -A funkwhale_api.taskapp "
+"worker`` command in your :file:`docker-compose.yml` file if your using "
+"Docker, or in your :file:`/etc/systemd/system/funkwhale-worker.service` "
+"otherwise."
+msgstr ""
+
+#: ../../admin/optimization.rst:23
+msgid ""
+"Reducing concurrency comes at a cost: asynchronous tasks will be "
+"processed more slowly. However, on small instances, this should not be an"
+" issue."
+msgstr ""
+
+#: ../../admin/optimization.rst:28
+msgid "Switch from prefork to solo pool"
+msgstr ""
+
+#: ../../admin/optimization.rst:30
+msgid "Using a different pool implementation for Celery tasks may also help."
+msgstr ""
+
+#: ../../admin/optimization.rst:32
+msgid ""
+"Using the ``solo`` pool type should reduce your memory consumption. You "
+"can control this behavior using the ``--pool=solo`` flag."
+msgstr ""
+
+#: ../../admin/optimization.rst:35
+msgid ""
+"This flag should be appended after the ``celery -A funkwhale_api.taskapp "
+"worker`` command in your :file:`docker-compose.yml` file if you're using "
+"Docker, or in your :file:`/etc/systemd/system/funkwhale-worker.service` "
+"otherwise."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:4
+msgid ""
+"Various errors and issues can arise on your Funkwhale instance, caused by"
+" configuration errors, deployment/environment specific issues, or bugs in"
+" the software itself."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:7
+msgid "On this document, you'll find:"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:9
+msgid "Tools and commands you can use to better understand the issues"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:10
+msgid "A list of common pitfalls and errors and how to solve them"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:11
+msgid ""
+"A collection of links and advice to get help from the community and "
+"report new issues"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:14
+msgid "Diagnose problems"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:16
+msgid ""
+"Funkwhale is made of several components, each one being a potential cause"
+" for failure. Having an even basic overview of Funkwhale's technical "
+"architecture can help you understand what is going on. You can refer to "
+":doc:`the technical architecture <../developers/architecture>` for that."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:19
+msgid "Problems usually fall into one of those categories:"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:21
+msgid ""
+"**Frontend**: Funkwhale's interface is not loading, not behaving as "
+"expected, music is not playing"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:22
+msgid "**API**: the interface do not display any data or show errors"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:23
+msgid "**Import**: uploaded/imported tracks are not imported correctly or at all"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:24
+msgid ""
+"**Federation**: you cannot contact other Funkwhale servers, access their "
+"library, play federated tracks"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:25
+msgid "**Everything else**"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:27
+msgid ""
+"Each category comes with its own set of diagnose tools and/or commands we"
+" will detail below. We'll also give you simple steps for each type of "
+"problem. Please try those to see if it fix your issues. If none of those "
+"works, please report your issue on our issue tracker."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:33
+msgid ""
+"To get detailed log messages, set the environment variable "
+"``LOGLEVEL=debug``. If you are using the docker setup you can configure "
+"this in the ``.env`` file."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:37
+msgid "Backend issues"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:39 ../../admin/troubleshooting.rst:98
+#: ../../admin/troubleshooting.rst:109
+msgid "Diagnostic tools:"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:42
+msgid "Reverse proxy logs:"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:42
+msgid ""
+"Apache logs should be available at :file:`/var/log/apache/access.log` and"
+" :file:`/var/log/apache/error.log`"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:43
+msgid ""
+"Nginx logs should be available at :file:`/var/log/nginx/access.log` and "
+":file:`/var/log/nginx/error.log`"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:46 ../../admin/troubleshooting.rst:112
+msgid "API logs:"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:45 ../../admin/troubleshooting.rst:112
+msgid ""
+"Docker setup: ``docker-compose logs -f --tail=50 api`` (remove the "
+"``--tail`` flag to get the full logs)"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:46 ../../admin/troubleshooting.rst:113
+msgid "Non-docker setup: ``journalctl -xn -u funkwhale-server``"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:50
+msgid ""
+"If you edit your .env file to test a new configuration, you have to "
+"restart your services to pick up the changes:"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:52
+msgid "Docker setup: ``docker-compose up -d``"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:53
+msgid "Non-docker setup: ``systemctl restart funkwhale.target``"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:56 ../../admin/troubleshooting.rst:119
+msgid "Common problems"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:59
+msgid "Instance works properly, but audio files are not served (404 error)"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:61
+msgid ""
+"If you're using docker, ensure the ``MEDIA_ROOT`` variable is commented "
+"in your env file"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:62
+msgid ""
+"Ensure the ``_protected/media`` block points toward the path where media "
+"files are stored (``/srv/funkwhale/data/media``, by default)"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:63
+msgid ""
+"If you're using in-place import, ensure :data:`MUSIC_DIRECTORY_PATH "
+"<config.settings.common.MUSIC_DIRECTORY_PATH>`, "
+":data:`MUSIC_DIRECTORY_SERVE_PATH "
+"<config.settings.common.MUSIC_DIRECTORY_SERVE_PATH>` and "
+":data:`REVERSE_PROXY_TYPE <config.settings.common.REVERSE_PROXY_TYPE>` "
+"are configured properly, and that the files are readable by the webserver"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:66
+msgid "Weakref error when running ``python manage.py <command>``"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:68
+msgid ""
+"On Python <3.6, you may see this kind of errors when running commands "
+"like ``python manage.py migrate``::"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:75
+msgid ""
+"This is caused by a bug in Python (cf "
+"https://github.com/celery/celery/issues/3818), and is not affecting in "
+"any way the command you execute. You can safely ignore this error."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:79
+msgid ""
+"``Your models have changes that are not yet reflected in a migration`` "
+"warning"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:81
+msgid ""
+"When running ``python manage.py migrate`` (both in docker or non-docker),"
+" you may end-up with this::"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:91
+msgid ""
+"This warning can be safely ignored. You should not run the suggested "
+"``manage.py makemigrations`` command."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:94
+msgid "File import issues"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:96
+msgid ""
+"Unless you are using the CLI to import files, imports are send as tasks "
+"in a queue to a celery worker that will process them."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:102 ../../admin/troubleshooting.rst:116
+msgid "Celery worker logs:"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:101 ../../admin/troubleshooting.rst:115
+msgid ""
+"Docker setup: ``docker-compose logs -f --tail=50 celeryworker`` (remove "
+"the ``--tail`` flag to get the full logs)"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:102 ../../admin/troubleshooting.rst:116
+msgid "Non-docker setup: ``journalctl -xn -u funkwhale-worker``"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:105
+msgid "Federation issues"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:107
+msgid ""
+"Received federations messages are sent to a dedicated task queue and "
+"processed asynchronously by a celery worker."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:122
+msgid "I have no access to another instance library"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:124
+msgid "Check if it works with the demo library (library@demo.funkwhale.audio)"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:125
+msgid "Check if the remote library received your follow request and approved it"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:126
+msgid "Trigger a scan via the interface"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:127
+msgid "Have a look in the celery logs for potential errors during the scan"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:130
+msgid "Other problems"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:132
+msgid ""
+"It's a bit hard to give targeted advice about problems that do not fit in"
+" the previous categories. However, we can recommend to:"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:134
+msgid "Try to identify the scope of the issue and reproduce it reliably"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:135
+msgid ""
+"Ensure your instance is configured as detailed in the installation "
+"documentation, and if you did not use the default values, to check what "
+"you changed"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:137
+msgid ""
+"To read the .env file carefully, as most of the options are described in "
+"the comments"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:141
+msgid "Report an issue or get help"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:143
+msgid ""
+"Well be more than happy to help you to debug installation and "
+"configuration issues. The main channel for receiving support about your "
+"Funkwhale installation is the `#funkwhale-troubleshooting:matrix.org "
+"<https://matrix.to/#/#funkwhale-troubleshooting:matrix.org>`_ Matrix "
+"channel."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:146
+msgid ""
+"Before asking for help, we'd really appreciate if you took the time to go"
+" through this document and try to diagnose the problem yourself. But if "
+"you don't find anything relevant or don't have the time, we'll be there "
+"for you!"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:149
+msgid ""
+"Here are a few recommendations on how to structure and what to include in"
+" your help requests:"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:151
+msgid ""
+"Give us as much context as possible about your installation (OS, version,"
+" Docker/non-docker, reverse-proxy type, relevant logs and errors, etc.)"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:152
+msgid ""
+"Including screenshots or small gifs or videos can help us considerably "
+"when debugging front-end issues"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:154
+msgid ""
+"You can also open issues on our `issue tracker "
+"<https://dev.funkwhale.audio/funkwhale/funkwhale/issues>`_. Please have a"
+" quick look for similar issues before doing that, and use the issue "
+"tracker only to report bugs, suggest enhancements (both in the software "
+"and the documentation) or new features."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:159
+msgid ""
+"If you ever need to share screenshots or urls with someone else, ensure "
+"those do not include your personal token. This token is binded to your "
+"account and can be used to connect and use your account."
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:162
+msgid ""
+"Urls that includes your token looks like: "
+"``https://your.instance/api/v1/uploads/42/serve/?jwt=yoursecrettoken``"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:165
+msgid "Improving this documentation"
+msgstr ""
+
+#: ../../admin/troubleshooting.rst:167
+msgid ""
+"If you feel like something should be improved in this document (and in "
+"the documentation in general), feel free to :doc:`contribute to the "
+"documentation <../documentation/creating>`. If you're not comfortable "
+"contributing or would like to ask somebody else to do it, feel free to "
+":doc:`request a change in documentation <../documentation/identifying>`."
+msgstr ""
+
+#: ../../admin/uninstall.rst:2
+msgid "Uninstall Funkwhale"
+msgstr ""
+
+#: ../../admin/uninstall.rst:4
+msgid ""
+"The following instructions helps you remove Funkwhale from your server, "
+"for instance after migrating to another server, or if you do not want to "
+"use Funkwhale anymore."
+msgstr ""
+
+#: ../../admin/uninstall.rst:8
+msgid ""
+"The following instructions cannot be undone and might result in loss of "
+"data. If necessary, please make a backup of your server following the "
+":doc:`backup instructions<backup>`."
+msgstr ""
+
+#: ../../admin/uninstall.rst:10
+msgid "Especially, it must be noted that:"
+msgstr ""
+
+#: ../../admin/uninstall.rst:12 ../../admin/uninstall.rst:81
+msgid ""
+"Remote content hosted on an S3 or S3-compatible server will not be "
+"removed."
+msgstr ""
+
+#: ../../admin/uninstall.rst:13
+msgid ""
+"In place imports will not be removed, provided they are located outside "
+"``/srv/funkwhale/``"
+msgstr ""
+
+#: ../../admin/uninstall.rst:17
+msgid ""
+"These instructions apply only for the manual installation on Debian or "
+"Arch Linux. It matches the default setup."
+msgstr ""
+
+#: ../../admin/uninstall.rst:19
+msgid "First, stop the all funkwhale related services:"
+msgstr ""
+
+#: ../../admin/uninstall.rst:25
+msgid "Remove the reverse proxy configuration data and reload the reverse proxy."
+msgstr ""
+
+#: ../../admin/uninstall.rst:27
+msgid "If you are using nginx:"
+msgstr ""
+
+#: ../../admin/uninstall.rst:37
+msgid "If you are using Apache2:"
+msgstr ""
+
+#: ../../admin/uninstall.rst:46
+msgid "Remove the systemd services:"
+msgstr ""
+
+#: ../../admin/uninstall.rst:62
+msgid "Then, remove the database:"
+msgstr ""
+
+#: ../../admin/uninstall.rst:69
+msgid ""
+"Finally, remove the user ``funkwhale`` and all funkwhale related data, "
+"including the server and the data:"
+msgstr ""
+
+#: ../../admin/uninstall.rst:77
+msgid ""
+"The last command will remove ``/srv/funkwhale/``. On the default setup, "
+"this directory contains all user data. Please proceed cautiously!"
+msgstr ""
+
+#: ../../admin/uninstall.rst:79
+msgid "However, it must be noted that:"
+msgstr ""
+
+#: ../../admin/uninstall.rst:82
+msgid ""
+"In place imports will not be removed, provided they are not located in "
+"the directory ``/srv/funkwhale/``"
+msgstr ""
+
+#: ../../admin/uninstall.rst:86
+msgid "If relevant, you might also want to:"
+msgstr ""
+
+#: ../../admin/uninstall.rst:88
+msgid "remove the SSL certificates;"
+msgstr ""
+
+#: ../../admin/uninstall.rst:89
+msgid "remove the corresponding DNS entries."
+msgstr ""
+
+#: ../../admin/upgrading.rst:2
+msgid "Upgrading your Funkwhale instance to a newer version"
+msgstr ""
+
+#: ../../admin/upgrading.rst:9
+msgid ""
+"We're commited to make upgrade as easy and straightforward as possible, "
+"however, Funkwhale is still in development and you'll be safer with a "
+"backup."
+msgstr ""
+
+#: ../../admin/upgrading.rst:14
+msgid "Reading the release notes"
+msgstr ""
+
+#: ../../admin/upgrading.rst:16
+msgid ""
+"Please take a few minutes to read the :doc:`../changelog`: updates should"
+" work similarly from version to version, but some of them may require "
+"additional steps. Those steps would be described in the version release "
+"notes."
+msgstr ""
+
+#: ../../admin/upgrading.rst:22
+msgid "Insights about new versions"
+msgstr ""
+
+#: ../../admin/upgrading.rst:24
+msgid ""
+"Some versions may be bigger than usual, and we'll try to detail the "
+"changes when possible."
+msgstr ""
+
+#: ../../admin/upgrading.rst:36
+msgid ""
+"If you've followed the setup instructions in "
+":doc:`../installation/docker`, upgrade path is easy:"
+msgstr ""
+
+#: ../../admin/upgrading.rst:40
+msgid "Mono-container installation"
+msgstr ""
+
+#: ../../admin/upgrading.rst:42
+msgid ""
+"Basically, you need to pull the new container image, stop and delete your"
+" existing container, and relaunch a new one:"
+msgstr ""
+
+#: ../../admin/upgrading.rst:45
+msgid ""
+"To upgrade your service, change the version number of the image in "
+"``docker-compose.yml`` with the latest release (i.e. |version|)."
+msgstr ""
+
+#: ../../admin/upgrading.rst:47
+msgid "Pull the new images:"
+msgstr ""
+
+#: ../../admin/upgrading.rst:53
+msgid "Restart the service:"
+msgstr ""
+
+#: ../../admin/upgrading.rst:86 ../../admin/upgrading.rst:194
+msgid "You may sometimes get the following warning while applying migrations::"
+msgstr ""
+
+#: ../../admin/upgrading.rst:90 ../../admin/upgrading.rst:198
+msgid ""
+"This is a warning, not an error, and it can be safely ignored. Never run "
+"the ``makemigrations`` command yourself."
+msgstr ""
+
+#: ../../admin/upgrading.rst:94
+msgid "Upgrading the Postgres container"
+msgstr ""
+
+#: ../../admin/upgrading.rst:96
+msgid ""
+"With some Funkwhale releases, it is recommended to upgrade the version of"
+" the Postgres database server container. For example, Funkwhale 0.17 "
+"recommended Postgres 9.4, but Funkwhale 0.18 recommends Postgres 11. When"
+" upgrading Postgres, it is not sufficient to change the container "
+"referenced in ``docker-compose.yml``. New major versions of Postgres "
+"cannot read the databases created by older major versions. The data has "
+"to be exported from a running instance of the old version and imported by"
+" the new version."
+msgstr ""
+
+#: ../../admin/upgrading.rst:104
+msgid ""
+"Thankfully, there is a Docker container available to automate this "
+"process. You can use the following snippet to upgrade your database in "
+"``./postgres``, keeping a backup of the old version in ``./postgres-"
+"old``:"
+msgstr ""
+
+#: ../../admin/upgrading.rst:128
+msgid ""
+"If you installed Funkwhale using the install script, upgrading is done "
+"using ``sh -c \"$(curl -sSL https://get.funkwhale.audio/upgrade.sh)\"``. "
+"Make sure to run this command with root permissions."
+msgstr ""
+
+#: ../../admin/upgrading.rst:130
+msgid ""
+"If you manually installed Funkwhale, please use the following "
+"instructions."
+msgstr ""
+
+#: ../../admin/upgrading.rst:133
+msgid "Upgrade the static files"
+msgstr ""
+
+#: ../../admin/upgrading.rst:135
+msgid ""
+"On non-docker setups, the front-end app is updated separately from the "
+"API. This is as simple as downloading the zip with the static files and "
+"extracting it in the correct place."
+msgstr ""
+
+#: ../../admin/upgrading.rst:139
+msgid "The following example assume your setup match :ref:`frontend-setup`."
+msgstr ""
+
+#: ../../admin/upgrading.rst:151
+msgid "Upgrading the API"
+msgstr ""
+
+#: ../../admin/upgrading.rst:153
+msgid ""
+"On non-docker, upgrade involves a few more commands. We assume your setup"
+" match what is described in :doc:`/installation/debian`:"
+msgstr ""
+
+#: ../../admin/upgrading.rst:187
+msgid ""
+"If you see a PermissionError when running the ``migrate`` command, try "
+"running the following commands by hand, and relaunch the migrations::"
+msgstr ""
+
+#: ../../admin/url.rst:2
+msgid "Changing Your Instance URL"
+msgstr ""
+
+#: ../../admin/url.rst:6
+msgid ""
+"We highly recommend not to change your instance URL. Members of the "
+"community tried to do this and documented their steps here. This guide "
+"might be incomplete or fail for your instance. There is no support for "
+"this procedure and likely no way back."
+msgstr ""
+
+#: ../../admin/url.rst:9
+msgid ""
+"At some point, you may wish to change your instance URL. In order to do "
+"this, you will need to change the following:"
+msgstr ""
+
+#: ../../admin/url.rst:12
+msgid "The instance URL in your .env file"
+msgstr ""
+
+#: ../../admin/url.rst:13
+msgid ""
+"The instance URL in your ``/etc/nginx/sites-enabled/funkwhale.conf`` or "
+"``/etc/apache2/sites-enabled/funkwhale.conf`` depending on your web "
+"server setup"
+msgstr ""
+
+#: ../../admin/url.rst:14
+msgid "Any references to the old URL in your database"
+msgstr ""
+
+#: ../../admin/url.rst:16
+msgid ""
+"The changes to the database can be achieved with the "
+"``fix_federation_ids`` script in the ``manage.py`` file."
+msgstr ""
+
+#: ../../admin/url.rst:19
+msgid "Example output:"
+msgstr ""
+
+#: ../../admin/url.rst:53
+msgid "On Docker Installations"
+msgstr ""
+
+#: ../../admin/url.rst:55
+msgid ""
+"If you have followed the :doc:`Docker installation instructions "
+"<../installation/docker>`, you will need to do the following:"
+msgstr ""
+
+#: ../../admin/url.rst:58 ../../admin/url.rst:81
+msgid ""
+"Edit your .env file to change the ``FUNKWHALE_HOSTNAME``  and "
+"``DJANGO_ALLOWED_HOSTS`` value to your new URL"
+msgstr ""
+
+#: ../../admin/url.rst:59 ../../admin/url.rst:82
+msgid ""
+"Edit your ``/etc/nginx/sites-enabled/funkwhale.conf`` file to change the "
+"``server_name`` values to your new URL"
+msgstr ""
+
+#: ../../admin/url.rst:60 ../../admin/url.rst:83
+msgid ""
+"Run the following command to change all mentions of your old instance URL"
+" in the database:"
+msgstr ""
+
+#: ../../admin/url.rst:66 ../../admin/url.rst:89
+msgid "Restart Nginx or Apache to pick up the new changes"
+msgstr ""
+
+#: ../../admin/url.rst:77
+msgid "On Non-Docker Installations"
+msgstr ""
+
+#: ../../admin/url.rst:79
+msgid ""
+"If you have followed the :doc:`non-docker setup "
+"<../installation/debian>`, you will need to do the following:"
+msgstr ""
+

@@ -1,0 +1,663 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022, The Funkwhale Collective
+# This file is distributed under the same license as the funkwhale package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: funkwhale 1.2.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-02 19:17+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../documentation/creating.rst:2
+msgid "Adding New Documents"
+msgstr ""
+
+#: ../../documentation/creating.rst:5
+msgid "Writing Documents"
+msgstr ""
+
+#: ../../documentation/creating.rst:7
+msgid "Before you start writing documents:"
+msgstr ""
+
+#: ../../documentation/creating.rst:9
+msgid ""
+"Make sure you have all the necessary information and :doc:`tools you need"
+" <tools>` to get started"
+msgstr ""
+
+#: ../../documentation/creating.rst:10
+msgid ""
+"Check the `current documents <https://docs.funkwhale.audio>`_ carefully "
+"to make sure you're not repeating something somebody has already said"
+msgstr ""
+
+#: ../../documentation/creating.rst:11
+msgid ""
+"Familiarize yourself with :doc:`reStructuredText <restructured>` and "
+":doc:`the recommended document style <style>`"
+msgstr ""
+
+#: ../../documentation/creating.rst:13
+msgid ""
+"Once you're ready to get started, you can start :ref:`working with Gitlab"
+" <work-with-gitlab>`"
+msgstr ""
+
+#: ../../documentation/creating.rst:18
+msgid "Working With Gitlab"
+msgstr ""
+
+#: ../../documentation/creating.rst:20
+msgid ""
+"Documents are managed in the Funkwhale `Gitlab "
+"<https://dev.funkwhale.audio>`_ repository along with the code. In order "
+"to add new documents, you will need to follow this process:"
+msgstr ""
+
+#: ../../documentation/creating.rst:23
+msgid ":ref:`Sign up to Gitlab <sign-up>`"
+msgstr ""
+
+#: ../../documentation/creating.rst:24
+msgid ":ref:`Fork the project <fork-project>`"
+msgstr ""
+
+#: ../../documentation/creating.rst:25
+msgid ":ref:`Clone the Repository <clone-repo>`"
+msgstr ""
+
+#: ../../documentation/creating.rst:26
+msgid ":ref:`Add documents to your branch <add-docs>`"
+msgstr ""
+
+#: ../../documentation/creating.rst:27
+msgid ":ref:`Create a Merge Request <merge-request>`"
+msgstr ""
+
+#: ../../documentation/creating.rst:32
+msgid "Signing up to Gitlab"
+msgstr ""
+
+#: ../../documentation/creating.rst:34
+msgid ""
+"Before you can contribute documents to Funkwhale, you will need to set up"
+" an account on the project's `Gitlab <https://dev.funkwhale.audio>`_. To "
+"do this:"
+msgstr ""
+
+#: ../../documentation/creating.rst:37
+msgid "Navigate to the https://dev.funkwhale.audio"
+msgstr ""
+
+#: ../../documentation/creating.rst:38
+msgid "Click on \"register\" to bring up the registration form"
+msgstr ""
+
+#: ../../documentation/creating.rst:39
+msgid ""
+"Fill in the relevant details, or alternatively sign up with Github if you"
+" already have an account"
+msgstr ""
+
+#: ../../documentation/creating.rst:40
+msgid ""
+"[Optional]: You can then `set up an SSH key "
+"<https://docs.gitlab.com/ee/ssh/>`_ to enable easy management of your "
+":ref:`repository <clone-repo>`"
+msgstr ""
+
+#: ../../documentation/creating.rst:45
+msgid "Fork the project"
+msgstr ""
+
+#: ../../documentation/creating.rst:47
+msgid ""
+"Once you have set up an account, you can `fork the project "
+"<https://help.github.com/en/articles/fork-a-repo>`_ to create a copy of "
+"the repository that you can make changes to."
+msgstr ""
+
+#: ../../documentation/creating.rst:50 ../../documentation/creating.rst:117
+msgid ""
+"Navigate to the `Funkwhale repository "
+"<https://dev.funkwhale.audio/funkwhale/funkwhale>`_"
+msgstr ""
+
+#: ../../documentation/creating.rst:51
+msgid "Click \"Fork\" at the top of the repository"
+msgstr ""
+
+#: ../../documentation/creating.rst:52
+msgid ""
+"You will be redirected to a new version of the project. This one's all "
+"yours!"
+msgstr ""
+
+#: ../../documentation/creating.rst:57
+msgid "Clone the Repository"
+msgstr ""
+
+#: ../../documentation/creating.rst:59
+msgid ""
+"Once you have successfully forked the project, you can safely download a "
+"copy of this to your local computer to create documents."
+msgstr ""
+
+#: ../../documentation/creating.rst:72
+msgid ""
+"Once you've cloned the repository, it's a good idea to create a new "
+"branch for your documents so that you can :ref:`merge it later <merge-"
+"request>`"
+msgstr ""
+
+#: ../../documentation/creating.rst:88
+msgid "Add Documents to Your Branch"
+msgstr ""
+
+#: ../../documentation/creating.rst:90
+msgid ""
+"When you've got your repository all set up, you can start writing your "
+"documents. Remember to keep in mind :doc:`who you are writing for "
+"<style>` when you are writing, and :doc:`check your syntax works "
+"<restructured>`."
+msgstr ""
+
+#: ../../documentation/creating.rst:93
+msgid ""
+"Once you've written what you need to write, you can push these changes to"
+" your forked repository:"
+msgstr ""
+
+#: ../../documentation/creating.rst:112
+msgid "Create a Merge Request"
+msgstr ""
+
+#: ../../documentation/creating.rst:114
+msgid ""
+"Once you've pushed all of your documents, you can create a `Merge Request"
+" <https://docs.gitlab.com/ee/gitlab-basics/add-merge-request.html>`_ to "
+"request the documents be merged into the official Funkwhale develop "
+"branch."
+msgstr ""
+
+#: ../../documentation/creating.rst:118
+msgid "Click \"Merge Requests\" on the left hand side"
+msgstr ""
+
+#: ../../documentation/creating.rst:119
+msgid "Click on the \"New Merge Request\""
+msgstr ""
+
+#: ../../documentation/creating.rst:120
+msgid ""
+"Under the \"Source Branch\" select your forked repository and the branch "
+"to which you've pushed changes"
+msgstr ""
+
+#: ../../documentation/creating.rst:121
+msgid "Under \"Target Branch\", select the \"develop\" branch"
+msgstr ""
+
+#: ../../documentation/creating.rst:122
+msgid "Click \"Compare Branches and Continue\""
+msgstr ""
+
+#: ../../documentation/creating.rst:123
+msgid ""
+"In the form that comes up, provide a title/description of the changes "
+"you've made"
+msgstr ""
+
+#: ../../documentation/creating.rst:124
+msgid "Click \"Submit Merge Request\" to submit"
+msgstr ""
+
+#: ../../documentation/creating.rst:126
+msgid ""
+"That's it! If your merge request is successful, you will get a "
+"notification from one of the maintainers letting you know your changes "
+"have been accepted. Sometimes, you may need to make minor corrections. "
+"Don't worry! We'll let you know what needs correcting."
+msgstr ""
+
+#: ../../documentation/identifying.rst:2
+msgid "Identifying Gaps in Funkwhale Documentation"
+msgstr ""
+
+#: ../../documentation/identifying.rst:4
+msgid ""
+"As Funkwhale and its community continue to grow and develop, more and "
+"more processes and features will need to be documented. As users find "
+"interesting new ways to interact with the software, provide novel "
+"solutions to existing issues, and find information they need missing, the"
+" documents will need to be updated and added to."
+msgstr ""
+
+#: ../../documentation/identifying.rst:9
+msgid ""
+"If you are trying to do something in Funkwhale and can't find any "
+"resources to help, you can help out by contributing in one of the "
+"following ways:"
+msgstr ""
+
+#: ../../documentation/identifying.rst:13
+msgid "Providing Documentation"
+msgstr ""
+
+#: ../../documentation/identifying.rst:15
+msgid ""
+"If you've identified a gap or mistake in the documentation and feel "
+"comfortable writing up new guides/correcting existing ones, please feel "
+"free to do so. The best way to do this is by following the :doc:`document"
+" creation guide <creating>` to make sure your documents get processed as "
+"quickly as possible."
+msgstr ""
+
+#: ../../documentation/identifying.rst:21
+msgid "Requesting Documentation"
+msgstr ""
+
+#: ../../documentation/identifying.rst:23
+msgid ""
+"If you're not comfortable with writing documents or don't feel like you "
+"can, you can help out by requesting a document be written. There are "
+"three ways to request new documents:"
+msgstr ""
+
+#: ../../documentation/identifying.rst:26
+msgid ""
+"Open a new issue on `Gitlab "
+"<https://dev.funkwhale.audio/funkwhale/funkwhale/issues>`_, providing as "
+"much detail as possible"
+msgstr ""
+
+#: ../../documentation/identifying.rst:27
+msgid ""
+"Start a new thread on `the forum <https://forum.funkwhale.audio/>`_ with "
+"more details about your requests"
+msgstr ""
+
+#: ../../documentation/identifying.rst:28
+msgid ""
+"Ask somebody on our `chat room "
+"<https://matrix.to/#/#funkwhale:matrix.org>`_"
+msgstr ""
+
+#: ../../documentation/index.rst:2
+msgid "Contribute to Funkwhale's Documentation"
+msgstr ""
+
+#: ../../documentation/index.rst:4
+msgid ""
+"Funkwhale is constantly growing and changing, so good documentation is "
+"essential. If you find a gap or mistake in existing documents, or you "
+"want to create new documents to cover something that isn't covered yet, "
+"you can follow this procedure to contribute to Funkwhale's documentation "
+"store."
+msgstr ""
+
+#: ../../documentation/index.rst:10
+msgid "Setup"
+msgstr ""
+
+#: ../../documentation/index.rst:20
+msgid "Contributing"
+msgstr ""
+
+#: ../../documentation/rearrange.rst:2
+msgid "Rearranging Files"
+msgstr ""
+
+#: ../../documentation/rearrange.rst:4
+msgid ""
+"Sometimes, rearranging the layout of documents in the docs folder can "
+"help to make things a bit clearer for users. However, this can present "
+"the following issues:"
+msgstr ""
+
+#: ../../documentation/rearrange.rst:7
+msgid ":ref:`Orphaned document links <orphaned-doc>`"
+msgstr ""
+
+#: ../../documentation/rearrange.rst:8
+msgid ":ref:`Orphaned URLs <orphaned-url>`"
+msgstr ""
+
+#: ../../documentation/rearrange.rst:13
+msgid "Orphaned Document Links"
+msgstr ""
+
+#: ../../documentation/rearrange.rst:15
+msgid ""
+"Documents frequently reference other documents to avoid repeating "
+"information. If you move a document, you need to be sure to update any "
+"orphaned references."
+msgstr ""
+
+#: ../../documentation/rearrange.rst:18
+msgid ""
+"Running ``make html`` in the ``docs`` directory (assuming you have "
+":doc:`Sphinx installed <tools>`) will generate a series of warnings "
+"letting you know if any links are orphaned."
+msgstr ""
+
+#: ../../documentation/rearrange.rst:25
+msgid ""
+"You can then go to the file/line in question and update the link to its "
+"new location."
+msgstr ""
+
+#: ../../documentation/rearrange.rst:30
+msgid "Orphaned URLs"
+msgstr ""
+
+#: ../../documentation/rearrange.rst:32
+msgid ""
+"Once internal document links have been resolved, it is important to "
+"consider that the moved file may have also been linked externally "
+"elsewhere before. In order to ensure that anybody trying to access the "
+"file is properly redirected to its new location, we need to make use of "
+"the link redirector in the ``conf.py`` file."
+msgstr ""
+
+#: ../../documentation/rearrange.rst:37
+msgid ""
+"The link redirector takes two arguments: the old location of the file "
+"(passed as a .html file at the relative path ``docs``), and the new "
+"location it should redirect to. For example, if a document was moved from"
+" ``docs/index.html`` to ``docs/admin/index.html``, we would add the "
+"following to the ``redirect_files`` section of ``conf.py``:"
+msgstr ""
+
+#: ../../documentation/rearrange.rst:53
+msgid ""
+"If you are moving something from one folder to another, you would need to"
+" tell the redirect to move to the correct level. For example, if a file "
+"is moving from ``docs/admin/index.html`` to ``docs/users/index.html``, "
+"you will need to add the following to the ``redirect_files`` section of "
+"``conf.py``:"
+msgstr ""
+
+#: ../../documentation/rearrange.rst:69
+msgid ""
+"The script will then take these two arguments and create a redirect file "
+"in the original location so that anybody accessing the existing URL will "
+"be redirected."
+msgstr ""
+
+#: ../../documentation/restructured.rst:2
+msgid "Writing reStructuredText"
+msgstr ""
+
+#: ../../documentation/restructured.rst:4
+msgid ""
+"Funkwhale's documentation is written using a standard markup language "
+"called `reStructuredText <http://docutils.sourceforge.net/rst.html>`_. It"
+" is similar to Markdown and other web-based markup languages, but is "
+"better suited to technical documentation due to its standardized nature. "
+"A full syntax breakdown can be found `here "
+"<http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html>`_, "
+"but the following should be enough to get you started on writing docs for"
+" Funkwhale."
+msgstr ""
+
+#: ../../documentation/restructured.rst:11
+msgid "Headings"
+msgstr ""
+
+#: ../../documentation/restructured.rst:13
+msgid ""
+"Headings are useful for splitting up text into relevant subsections. With"
+" `Sphinx <http://www.sphinx-doc.org/>`_, major headers and direct "
+"subheaders are rendered as navigation links on Index pages, which makes "
+"them ideal for sharing specific information quickly."
+msgstr ""
+
+#: ../../documentation/restructured.rst:17
+msgid "Headers are written like so:"
+msgstr ""
+
+#: ../../documentation/restructured.rst:32
+msgid "Underlines should be **at least** as long as the words they underline"
+msgstr ""
+
+#: ../../documentation/restructured.rst:35
+msgid "Links"
+msgstr ""
+
+#: ../../documentation/restructured.rst:37
+msgid ""
+"Links can be rendered in several different ways depending on where they "
+"link to:"
+msgstr ""
+
+#: ../../documentation/restructured.rst:45
+msgid "Inline references can also be generated using the following syntax:"
+msgstr ""
+
+#: ../../documentation/restructured.rst:56
+msgid "Lists"
+msgstr ""
+
+#: ../../documentation/restructured.rst:58
+msgid "Bullet point lists are usually written using dashes like so:"
+msgstr ""
+
+#: ../../documentation/restructured.rst:67
+msgid "Blocks"
+msgstr ""
+
+#: ../../documentation/restructured.rst:69
+msgid ""
+"Blocks can be used to easily and concisely present information to a "
+"reader and are particularly useful when demonstrating technical steps. "
+"Blocks in reStructuredText can be written as follows:"
+msgstr ""
+
+#: ../../documentation/restructured.rst:87
+msgid "Other syntax highlighting is available. See the spec for full details."
+msgstr ""
+
+#: ../../documentation/restructured.rst:91
+msgid ""
+"Content within code blocks should be indented by three spaces. You can "
+"end the code block by removing the indent."
+msgstr ""
+
+#: ../../documentation/restructured.rst:95
+msgid "Notes and Warnings"
+msgstr ""
+
+#: ../../documentation/restructured.rst:97
+msgid ""
+"Notes are great for presenting important information to users and "
+"providing additional context. Warnings can be very useful if a step "
+"you're writing about could potentially have adverse consequences."
+msgstr ""
+
+#: ../../documentation/restructured.rst:112
+msgid ""
+"Content within notes and warnings should be indented by three spaces. You"
+" can end the block by removing the indent."
+msgstr ""
+
+#: ../../documentation/style.rst:2
+msgid "Documentation Style Guide"
+msgstr ""
+
+#: ../../documentation/style.rst:5
+msgid "End-user Documentation"
+msgstr ""
+
+#: ../../documentation/style.rst:7
+msgid ""
+"End-user documentation is often the most difficult to write as it "
+"requires striking the right balance between technical and non-technical "
+"instruction. Typically, writing a document should start with you asking "
+"yourself the following question:"
+msgstr ""
+
+#: ../../documentation/style.rst:11
+msgid "Why is the user reading this document?"
+msgstr ""
+
+#: ../../documentation/style.rst:13
+msgid "The answer will usually be one of the following:"
+msgstr ""
+
+#: ../../documentation/style.rst:15
+msgid "They are new to the project and are looking to learn more about it"
+msgstr ""
+
+#: ../../documentation/style.rst:16
+msgid "They are trying to do something and are having difficulty"
+msgstr ""
+
+#: ../../documentation/style.rst:18
+msgid ""
+"Documentation should be written with these two answers in mind. "
+"Information should be clearly laid out in small sections with plenty of "
+"clear examples and precise instructions. You should also try to pre-empt "
+"where the user might need to go next in order to ease their journey "
+"through the document by providing logical and relevant links to more "
+"documents."
+msgstr ""
+
+#: ../../documentation/style.rst:24
+msgid "Administrator Documentation"
+msgstr ""
+
+#: ../../documentation/style.rst:26
+msgid ""
+"Funkwhale is quite a technical project and is enjoyed by people who like "
+"setting up their own systems. These users can range from experienced "
+"server administrators to hobbyists, so administrator documentation should"
+" include plenty of technical instructions with an easy-to-read "
+"explanation of each step to cover both use-cases."
+msgstr ""
+
+#: ../../documentation/style.rst:32
+msgid "Developer Documentation"
+msgstr ""
+
+#: ../../documentation/style.rst:34
+msgid ""
+"Developer documentation should aim to be as technical and readable as "
+"possible. Since the reader is likely a developer themselves, providing as"
+" much technical detail as possible is the best course of action as it "
+"allows them to dive in to the project's internals with more confidence. "
+"It is safe to assume they are used to reading more technical work."
+msgstr ""
+
+#: ../../documentation/tools.rst:2
+msgid "Documentation Requirements"
+msgstr ""
+
+#: ../../documentation/tools.rst:4
+msgid ""
+"Funkwhale's documentation is written using :doc:`reStructuredText "
+"<restructured>` and is built using `Sphinx <http://www.sphinx-"
+"doc.org/>`_."
+msgstr ""
+
+#: ../../documentation/tools.rst:8
+msgid "Text Editor"
+msgstr ""
+
+#: ../../documentation/tools.rst:10
+msgid ""
+"As reStructuredText is a writing standard, any text editor can be used to"
+" modify documents depending on preference. User-friendly programs such as"
+" `Retext <https://github.com/retext-project/retext>`_ are good options "
+"for those just getting started with writing reStructuredText. Many other "
+"editors such as `Vim <https://www.vim.org/>`_, `Emacs "
+"<https://www.gnu.org/software/emacs/>`_, `VS Code "
+"<https://code.visualstudio.com/>`_, and `Atom <https://atom.io/>`_ have "
+"addons which can help with syntax highlighting and live previewing."
+msgstr ""
+
+#: ../../documentation/tools.rst:17
+msgid "Sphinx"
+msgstr ""
+
+#: ../../documentation/tools.rst:19
+msgid ""
+"Sphinx is used to generate a static site based on the ``.rst`` files in "
+"the ``docs`` directory. When writing documents, it can be useful to build"
+" the site to see how your changes will look in production. To do this:"
+msgstr ""
+
+#: ../../documentation/tools.rst:22
+msgid "Install Sphinx using `pip <https://pypi.org/project/pip/>`_"
+msgstr ""
+
+#: ../../documentation/tools.rst:28
+msgid "Navigate to your local ``funkwhale/docs`` directory"
+msgstr ""
+
+#: ../../documentation/tools.rst:34
+msgid "Use the make file to build the site"
+msgstr ""
+
+#: ../../documentation/tools.rst:40
+msgid ""
+"Sphinx will generate the site in your ``funkwhale/docs/_build`` directory"
+" unless otherwise stated"
+msgstr ""
+
+#: ../../documentation/tools.rst:42
+msgid ""
+"Once you have generated a local copy of the site, you can open it up by "
+"opening the index.html file in ``funkwhale/docs/_build``."
+msgstr ""
+
+#: ../../documentation/tools.rst:47
+msgid ""
+"If you are familiar with `Docker <https://www.docker.com/>`_ and `docker-"
+"compose <https://docs.docker.com/compose/>`_, you can also hack on the "
+"documentation via a single command: ``docker-compose -f dev.yml up "
+"docs``."
+msgstr ""
+
+#: ../../documentation/tools.rst:50
+msgid ""
+"This will make the documentation available at http://0.0.0.0:8001, with "
+"live-reloading enabled, so any change made in the ``.rst`` files will be "
+"reflected immediately in your browser."
+msgstr ""
+
+#: ../../documentation/tools.rst:55
+msgid "Git"
+msgstr ""
+
+#: ../../documentation/tools.rst:57
+msgid ""
+"In order to work on files on your computer, you will need to install `git"
+" <https://git-scm.com/>`_ for your operating system. Git is used to push "
+"and pull files to and from the Funkwhale repository and track changes "
+"made to documents/code alike."
+msgstr ""
+
+#: ../../documentation/tools.rst:62
+msgid "Gitlab"
+msgstr ""
+
+#: ../../documentation/tools.rst:64
+msgid ""
+"If you are only making minor changes to a document or don't wish to "
+"install anything, you can use `Gitlab's <https://dev.funkwhale.audio>`_ "
+"built-in IDE. Once you have made an account and :doc:`created a pull "
+"request <creating>`, you can click on the \"Open in Web IDE\" button to "
+"open up a fully-fledged editor in your web browser."
+msgstr ""
+

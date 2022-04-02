@@ -284,3 +284,7 @@ def setup(app):
 
 smv_tag_whitelist = None
 smv_branch_whitelist = r"(stable|develop)$"
+
+# Internationalization settings
+locale_dirs = ["locales/"]
+gettext_compact = False

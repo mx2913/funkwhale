@@ -1,0 +1,843 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2022, The Funkwhale Collective
+# This file is distributed under the same license as the funkwhale package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: funkwhale 1.2.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-04-02 19:17+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../developers/architecture.rst:2
+msgid "Architecture"
+msgstr ""
+
+#: ../../developers/architecture.rst:4
+msgid ""
+"Funkwhale is made of several components, each of them fulfilling a "
+"specific mission:"
+msgstr ""
+
+#: ../../developers/architecture.rst:33
+msgid ""
+"This graph may looks a bit scary, so we'll detail the role of each "
+"component below."
+msgstr ""
+
+#: ../../developers/architecture.rst:36
+msgid "The user"
+msgstr ""
+
+#: ../../developers/architecture.rst:38
+msgid "Funkwhale users can interact with your instance using:"
+msgstr ""
+
+#: ../../developers/architecture.rst:40
+msgid "The official web interface"
+msgstr ""
+
+#: ../../developers/architecture.rst:41 ../../developers/architecture.rst:51
+msgid "Third-party apps"
+msgstr ""
+
+#: ../../developers/architecture.rst:44
+msgid "The web interface"
+msgstr ""
+
+#: ../../developers/architecture.rst:46
+msgid ""
+"This refers to Funkwhale's built-in web interface, which is a Single Page"
+" application written in Vue JS. This application will interact with "
+"Funkwhale's API to retrieve or persist data."
+msgstr ""
+
+#: ../../developers/architecture.rst:53
+msgid ""
+"Since Funkwhale implements a subset of the Subsonic API, it's compatible "
+"with existing :doc:`apps <../users/apps>` such as DSub, Ultrasonic or "
+"Clementine that support this API. Those apps can be used as a replacement"
+" or in conjunction of the web interface, but the underlying data is the "
+"same."
+msgstr ""
+
+#: ../../developers/architecture.rst:58
+msgid "The reverse proxy"
+msgstr ""
+
+#: ../../developers/architecture.rst:60
+msgid ""
+"Funkwhale's API server should never be exposed directly to the internet, "
+"as we require a reverse proxy (Apache or Nginx) for performance and "
+"security reasons. The reverse proxy will receive client HTTP or HTTPS "
+"requests, and:"
+msgstr ""
+
+#: ../../developers/architecture.rst:64
+msgid "Proxy them to the API server"
+msgstr ""
+
+#: ../../developers/architecture.rst:65
+msgid ""
+"Serve requested static files (audio files, stylesheets, javascript, "
+"fonts...)"
+msgstr ""
+
+#: ../../developers/architecture.rst:68
+msgid "The API server"
+msgstr ""
+
+#: ../../developers/architecture.rst:70
+msgid ""
+"Funkwhale's API server is the central piece of the project. This "
+"component is responsible for answering and processing user requests, "
+"manipulate data from the database, send long-running tasks to workers, "
+"etc."
+msgstr ""
+
+#: ../../developers/architecture.rst:74
+msgid "It's a Python/Django application."
+msgstr ""
+
+#: ../../developers/architecture.rst:77
+msgid "The database"
+msgstr ""
+
+#: ../../developers/architecture.rst:79
+msgid ""
+"Most of the data such as user accounts, favorites, music metadata or "
+"playlist is stored in a PostgreSQL database."
+msgstr ""
+
+#: ../../developers/architecture.rst:83
+msgid "The cache/message queue"
+msgstr ""
+
+#: ../../developers/architecture.rst:85
+msgid ""
+"Fetching data from the database is sometimes slow or resource hungry. To "
+"reduce the load, Redis act as a cache for data that is considerably "
+"faster than a database."
+msgstr ""
+
+#: ../../developers/architecture.rst:88
+msgid "It is also a message queue that will deliver tasks to the worker."
+msgstr ""
+
+#: ../../developers/architecture.rst:91
+msgid "The worker"
+msgstr ""
+
+#: ../../developers/architecture.rst:93
+msgid ""
+"Some operations are too long to live in the HTTP request/response cycle. "
+"Typically, importing a bunch of uploaded tracks could take a minute or "
+"two."
+msgstr ""
+
+#: ../../developers/architecture.rst:96
+msgid ""
+"To keep the API response time as fast as possible, we offload long-"
+"running tasks to a background process, also known as the Celery worker."
+msgstr ""
+
+#: ../../developers/architecture.rst:99
+msgid "Typical tasks include:"
+msgstr ""
+
+#: ../../developers/architecture.rst:101
+msgid "Handling music imports"
+msgstr ""
+
+#: ../../developers/architecture.rst:102
+msgid "Handling federation/ActivityPub messages"
+msgstr ""
+
+#: ../../developers/architecture.rst:103
+msgid "Scanning other instances libraries"
+msgstr ""
+
+#: ../../developers/architecture.rst:105
+msgid ""
+"This worker is also able to retry failed tasks, or spawn automatically "
+"more process when the number of received tasks increase."
+msgstr ""
+
+#: ../../developers/architecture.rst:109
+msgid "The scheduler"
+msgstr ""
+
+#: ../../developers/architecture.rst:111
+msgid ""
+"Some long-running tasks are not triggered by user or external input, but "
+"on a recurring basis instead. The scheduler is responsible for triggering"
+" those tasks and put the corresponding messages in the message queue so "
+"the worker can process them."
+msgstr ""
+
+#: ../../developers/architecture.rst:115
+msgid "Recurring tasks include:"
+msgstr ""
+
+#: ../../developers/architecture.rst:117
+msgid "Cache cleaning"
+msgstr ""
+
+#: ../../developers/architecture.rst:118
+msgid "Music metadata refreshing"
+msgstr ""
+
+#: ../../developers/authentication.rst:2
+msgid "API Authentication"
+msgstr ""
+
+#: ../../developers/authentication.rst:4
+msgid "Each Funkwhale API endpoint supports access from:"
+msgstr ""
+
+#: ../../developers/authentication.rst:6
+msgid ""
+"Anonymous users (if the endpoint is configured to do so, for exemple via "
+"the ``API Authentication Required`` setting)"
+msgstr ""
+
+#: ../../developers/authentication.rst:7
+msgid "Logged-in users"
+msgstr ""
+
+#: ../../developers/authentication.rst:8
+msgid "Third-party apps (via OAuth2)"
+msgstr ""
+
+#: ../../developers/authentication.rst:10
+msgid ""
+"To seamlessly support this range of access modes, we internally use oauth"
+" scopes to describes what permissions are required to perform any given "
+"operation."
+msgstr ""
+
+#: ../../developers/authentication.rst:14
+msgid "OAuth"
+msgstr ""
+
+#: ../../developers/authentication.rst:17
+msgid "Create an app"
+msgstr ""
+
+#: ../../developers/authentication.rst:19
+msgid ""
+"To connect to Funkwhale API via OAuth, you need to create an application."
+" There are two ways to do that:"
+msgstr ""
+
+#: ../../developers/authentication.rst:22
+msgid ""
+"By visiting ``/settings/applications/new`` when logged in on your "
+"Funkwhale instance."
+msgstr ""
+
+#: ../../developers/authentication.rst:23
+msgid ""
+"By sending a ``POST`` request to ``/api/v1/oauth/apps/``, as described in"
+" `our API documentation <https://docs.funkwhale.audio/swagger/>`_."
+msgstr ""
+
+#: ../../developers/authentication.rst:25
+msgid "Both method will give you a client ID and secret."
+msgstr ""
+
+#: ../../developers/authentication.rst:28
+msgid "Getting an access token"
+msgstr ""
+
+#: ../../developers/authentication.rst:30
+msgid ""
+"Once you have a client ID and secret, you can request access tokens using"
+" the `authorization code grant flow "
+"<https://tools.ietf.org/html/rfc6749#section-4.1>`_."
+msgstr ""
+
+#: ../../developers/authentication.rst:33
+msgid ""
+"We support the ``urn:ietf:wg:oauth:2.0:oob`` redirect URI for non-web "
+"applications, as well as traditionnal redirection-based flow."
+msgstr ""
+
+#: ../../developers/authentication.rst:36
+msgid ""
+"Our authorization endpoint is located at ``/authorize``, and our token "
+"endpoint at ``/api/v1/oauth/token/``."
+msgstr ""
+
+#: ../../developers/authentication.rst:39
+msgid "Refreshing tokens"
+msgstr ""
+
+#: ../../developers/authentication.rst:41
+msgid ""
+"When your access token is expired, you can `request a new one as "
+"described in the OAuth specification "
+"<https://tools.ietf.org/html/rfc6749#section-6>`_."
+msgstr ""
+
+#: ../../developers/authentication.rst:44
+msgid "Security considerations"
+msgstr ""
+
+#: ../../developers/authentication.rst:46
+msgid ""
+"Grant codes are valid for a 5 minutes after authorization request is "
+"approved by the end user."
+msgstr ""
+
+#: ../../developers/authentication.rst:47
+msgid ""
+"Access codes are valid for 10 hours. When expired, you will need to "
+"request a new one using your refresh token."
+msgstr ""
+
+#: ../../developers/authentication.rst:48
+msgid ""
+"We return a new refresh token everytime an access token is requested, and"
+" invalidate the old one. Ensure you store the new refresh token in your "
+"app."
+msgstr ""
+
+#: ../../developers/authentication.rst:52
+msgid "Scopes"
+msgstr ""
+
+#: ../../developers/authentication.rst:54
+msgid ""
+"Scopes are defined in "
+":file:`funkwhale_api/users/oauth/scopes.py:BASE_SCOPES`, and generally "
+"are mapped to a business-logic resources (follows, favorites, etc.). All "
+"those base scopes come in two flawours:"
+msgstr ""
+
+#: ../../developers/authentication.rst:56
+msgid "`read:<base_scope>`: get read-only access to the resource"
+msgstr ""
+
+#: ../../developers/authentication.rst:57
+msgid "`write:<base_scope>`: get write-only access to the ressource"
+msgstr ""
+
+#: ../../developers/authentication.rst:59
+msgid ""
+"For example, ``playlists`` is a base scope, and ``write:playlists`` is "
+"the actual scope needed to perform write operations on playlists (via a "
+"``POST``, ``PATCH``, ``PUT`` or ``DELETE``. ``read:playlists`` is used to"
+" perform read operations on playlists such as fetching a given playlist "
+"via ``GET``."
+msgstr ""
+
+#: ../../developers/authentication.rst:63
+msgid ""
+"Having the generic ``read`` or ``write`` scope give you the corresponding"
+" access on *all* resources."
+msgstr ""
+
+#: ../../developers/authentication.rst:65
+msgid ""
+"This is the list of OAuth scopes that third-party applications can "
+"request:"
+msgstr ""
+
+#: ../../developers/authentication.rst:69
+msgid "Scope"
+msgstr ""
+
+#: ../../developers/authentication.rst:69
+msgid "Description"
+msgstr ""
+
+#: ../../developers/authentication.rst:71
+msgid "``read``"
+msgstr ""
+
+#: ../../developers/authentication.rst:71
+msgid "Read-only access to all data (equivalent to all ``read:*`` scopes)"
+msgstr ""
+
+#: ../../developers/authentication.rst:74
+msgid "``write``"
+msgstr ""
+
+#: ../../developers/authentication.rst:74
+msgid "Write-only access to all data (equivalent to all ``write:*`` scopes)"
+msgstr ""
+
+#: ../../developers/authentication.rst:77
+msgid "``<read/write>:profile``"
+msgstr ""
+
+#: ../../developers/authentication.rst:77
+msgid "Access to profile data (e-mail address, username, etc.)"
+msgstr ""
+
+#: ../../developers/authentication.rst:79
+msgid "``<read/write>:libraries``"
+msgstr ""
+
+#: ../../developers/authentication.rst:79
+msgid "Access to library data (uploads, libraries tracks, albums, artists...)"
+msgstr ""
+
+#: ../../developers/authentication.rst:82
+msgid "``<read/write>:favorites``"
+msgstr ""
+
+#: ../../developers/authentication.rst:82
+msgid "Access to favorites"
+msgstr ""
+
+#: ../../developers/authentication.rst:84
+msgid "``<read/write>:listenings``"
+msgstr ""
+
+#: ../../developers/authentication.rst:84
+msgid "Access to history"
+msgstr ""
+
+#: ../../developers/authentication.rst:86
+msgid "``<read/write>:follows``"
+msgstr ""
+
+#: ../../developers/authentication.rst:86
+msgid "Access to followers"
+msgstr ""
+
+#: ../../developers/authentication.rst:88
+msgid "``<read/write>:playlists``"
+msgstr ""
+
+#: ../../developers/authentication.rst:88
+msgid "Access to playlists"
+msgstr ""
+
+#: ../../developers/authentication.rst:90
+msgid "``<read/write>:radios``"
+msgstr ""
+
+#: ../../developers/authentication.rst:90
+msgid "Access to radios"
+msgstr ""
+
+#: ../../developers/authentication.rst:92
+msgid "``<read/write>:filters``"
+msgstr ""
+
+#: ../../developers/authentication.rst:92
+msgid "Access to content filters"
+msgstr ""
+
+#: ../../developers/authentication.rst:94
+msgid "``<read/write>:notifications``"
+msgstr ""
+
+#: ../../developers/authentication.rst:94
+msgid "Access to notifications"
+msgstr ""
+
+#: ../../developers/authentication.rst:96
+msgid "``<read/write>:edits``"
+msgstr ""
+
+#: ../../developers/authentication.rst:96
+msgid "Access to metadata edits"
+msgstr ""
+
+#: ../../developers/index.rst:2
+msgid "Developer documentation"
+msgstr ""
+
+#: ../../developers/index.rst:4
+msgid ""
+"This documentation is targeted primarily at developers who want to "
+"understand how Funkwhale works and how to build apps that integrate with "
+"Funkwhale's ecosystem."
+msgstr ""
+
+#: ../../developers/plugins.rst:2
+msgid "Funkwhale plugins"
+msgstr ""
+
+#: ../../developers/plugins.rst:4
+msgid ""
+"Starting with Funkwhale 1.0, it is now possible to implement new features"
+" via plugins."
+msgstr ""
+
+#: ../../developers/plugins.rst:7
+msgid ""
+"Some plugins are maintained by the Funkwhale team (e.g. this is the case "
+"of the ``scrobbler`` plugin), or by third-parties."
+msgstr ""
+
+#: ../../developers/plugins.rst:11
+msgid "Installing a plugin"
+msgstr ""
+
+#: ../../developers/plugins.rst:13
+msgid ""
+"To install a plugin, ensure its directory is present in the "
+"``FUNKWHALE_PLUGINS_PATH`` directory."
+msgstr ""
+
+#: ../../developers/plugins.rst:15
+msgid ""
+"Then, add its name to the ``FUNKWHALE_PLUGINS`` environment variable, "
+"like this::"
+msgstr ""
+
+#: ../../developers/plugins.rst:19
+msgid "We provide a command to make it easy to install third-party plugins::"
+msgstr ""
+
+#: ../../developers/plugins.rst:25
+msgid ""
+"If you use the command, you will still need to append the plugin name to "
+"``FUNKWHALE_PLUGINS``"
+msgstr ""
+
+#: ../../developers/plugins.rst:29
+msgid "Types of plugins"
+msgstr ""
+
+#: ../../developers/plugins.rst:31
+msgid "There are two types of plugins:"
+msgstr ""
+
+#: ../../developers/plugins.rst:33
+msgid ""
+"Plugins that are accessible to end-users, a.k.a. user-level plugins. This"
+" is the case of our Scrobbler plugin"
+msgstr ""
+
+#: ../../developers/plugins.rst:34
+msgid ""
+"Pod-level plugins that are configured by pod admins and are not tied to a"
+" particular user"
+msgstr ""
+
+#: ../../developers/plugins.rst:36
+msgid ""
+"Additionally, user-level plugins can be regular plugins or source "
+"plugins. A source plugin provides a way to import files from a third-"
+"party service, e.g via webdav, FTP or something similar."
+msgstr ""
+
+#: ../../developers/plugins.rst:40
+msgid "Hooks and filters"
+msgstr ""
+
+#: ../../developers/plugins.rst:42
+msgid ""
+"Funkwhale includes two kind of entrypoints for plugins to use: hooks and "
+"filters. B"
+msgstr ""
+
+#: ../../developers/plugins.rst:44
+msgid ""
+"Hooks should be used when you want to react to some change. For instance,"
+" the ``LISTENING_CREATED`` hook notify each registered callback that a "
+"listening was created. Our ``scrobbler`` plugin has a callback registered"
+" to this hook, so that it can notify Last.fm properly:"
+msgstr ""
+
+#: ../../developers/plugins.rst:57
+msgid ""
+"Filters work slightly differently, and expect callbacks to return a value"
+" that will be used by Funkwhale."
+msgstr ""
+
+#: ../../developers/plugins.rst:59
+msgid ""
+"For instance, the ``PLUGINS_DEPENDENCIES`` filter can be used as a way to"
+" install additional dependencies needed by your plugin:"
+msgstr ""
+
+#: ../../developers/plugins.rst:72
+msgid ""
+"To sum it up, hooks are used when you need to react to something, and "
+"filters when you need to alter something."
+msgstr ""
+
+#: ../../developers/plugins.rst:75
+msgid "Writing a plugin"
+msgstr ""
+
+#: ../../developers/plugins.rst:77
+msgid ""
+"Regardless of the type of plugin you want to write, lots of concepts are "
+"similar."
+msgstr ""
+
+#: ../../developers/plugins.rst:79
+msgid "First, a plugin need three files:"
+msgstr ""
+
+#: ../../developers/plugins.rst:81
+msgid "a ``__init__.py`` file, since it's a Python package"
+msgstr ""
+
+#: ../../developers/plugins.rst:82
+msgid ""
+"a ``funkwhale_startup.py`` file, that is loaded during Funkwhale "
+"initialization"
+msgstr ""
+
+#: ../../developers/plugins.rst:83
+msgid ""
+"a ``funkwhale_ready.py`` file, that is loaded when Funkwhale is "
+"configured and ready"
+msgstr ""
+
+#: ../../developers/plugins.rst:85
+msgid "So your plugin directory should look like this::"
+msgstr ""
+
+#: ../../developers/plugins.rst:92
+msgid "Now, let's write our plugin!"
+msgstr ""
+
+#: ../../developers/plugins.rst:94
+msgid ""
+"``funkwhale_startup.py`` is where you declare your plugin and it's "
+"configuration options:"
+msgstr ""
+
+#: ../../developers/plugins.rst:114
+msgid ""
+"Now that our plugin is declared and configured, let's implement actual "
+"functionality in ``funkwhale_ready.py``:"
+msgstr ""
+
+#: ../../developers/plugins.rst:149
+msgid ""
+"And that's pretty much it. Now, login, visit "
+"https://yourpod.domain/settings/plugins, set a value in the ``greeting`` "
+"field and enable the plugin."
+msgstr ""
+
+#: ../../developers/plugins.rst:151
+msgid ""
+"After that, you should be greeted properly if you go to "
+"https://yourpod.domain/greeting."
+msgstr ""
+
+#: ../../developers/plugins.rst:154
+msgid "Hooks reference"
+msgstr ""
+
+#: ../../docstring config.plugins.LISTENING_CREATED:1 of
+msgid "Called when a track is being listened"
+msgstr ""
+
+#: ../../developers/plugins.rst:159
+msgid "Filters reference"
+msgstr ""
+
+#: ../../docstring config.plugins.PLUGINS_DEPENDENCIES:1 of
+msgid ""
+"Called with an empty list, use this filter to append pip dependencies to "
+"the list for installation."
+msgstr ""
+
+#: ../../docstring config.plugins.PLUGINS_APPS:1 of
+msgid ""
+"Called with an empty list, use this filter to append apps to "
+"INSTALLED_APPS"
+msgstr ""
+
+#: ../../docstring config.plugins.MIDDLEWARES_BEFORE:1 of
+msgid ""
+"Called with an empty list, use this filter to prepend middlewares to "
+"MIDDLEWARE"
+msgstr ""
+
+#: ../../docstring config.plugins.MIDDLEWARES_AFTER:1 of
+msgid ""
+"Called with an empty list, use this filter to append middlewares to "
+"MIDDLEWARE"
+msgstr ""
+
+#: ../../docstring config.plugins.URLS:1 of
+msgid "Called with an empty list, use this filter to register new urls and views"
+msgstr ""
+
+#: ../../developers/subsonic.rst:2
+msgid "Subsonic API"
+msgstr ""
+
+#: ../../developers/subsonic.rst:4
+msgid ""
+"Funkwhale implements a subset of the `Subsonic API "
+"<http://www.subsonic.org/pages/api.jsp>`_ that makes it compatible with "
+"various apps in the Subsonic ecosystem (See :doc:`../users/apps`)."
+msgstr ""
+
+#: ../../developers/subsonic.rst:8
+msgid "Supported endpoints"
+msgstr ""
+
+#: ../../developers/subsonic.rst:10
+msgid ""
+"We seek the best compatibility with existing apps and will eventually "
+"implement all endpoints that match Funkwhale's feature set. However, the "
+"current implementation do not include folder-based endpoints, as it does "
+"not match our internal model at all and will require substantial effort "
+"to emulate."
+msgstr ""
+
+#: ../../developers/subsonic.rst:15
+msgid ""
+"We'll try to keep this list up-to-date, but you can also browse `the "
+"relevant code "
+"<https://dev.funkwhale.audio/funkwhale/funkwhale/blob/develop/api/funkwhale_api/subsonic/views.py>`_"
+" if needed."
+msgstr ""
+
+#: ../../developers/subsonic.rst:19
+msgid "As of today, the following endpoints are implemented:"
+msgstr ""
+
+#: ../../developers/subsonic.rst:21
+msgid "createPlaylist"
+msgstr ""
+
+#: ../../developers/subsonic.rst:22
+msgid "deletePlaylist"
+msgstr ""
+
+#: ../../developers/subsonic.rst:23
+msgid "getAlbum"
+msgstr ""
+
+#: ../../developers/subsonic.rst:24
+msgid "getAlbumList2"
+msgstr ""
+
+#: ../../developers/subsonic.rst:25
+msgid "getArtist"
+msgstr ""
+
+#: ../../developers/subsonic.rst:26
+msgid "getArtistInfo2"
+msgstr ""
+
+#: ../../developers/subsonic.rst:27
+msgid "getArtists"
+msgstr ""
+
+#: ../../developers/subsonic.rst:28
+msgid "getAvatar"
+msgstr ""
+
+#: ../../developers/subsonic.rst:29
+msgid "getCoverArt"
+msgstr ""
+
+#: ../../developers/subsonic.rst:30
+msgid "getIndexes"
+msgstr ""
+
+#: ../../developers/subsonic.rst:31
+msgid "getLicense"
+msgstr ""
+
+#: ../../developers/subsonic.rst:32
+msgid "getMusicFolders"
+msgstr ""
+
+#: ../../developers/subsonic.rst:33
+msgid "getPlaylist"
+msgstr ""
+
+#: ../../developers/subsonic.rst:34
+msgid "getPlaylists"
+msgstr ""
+
+#: ../../developers/subsonic.rst:35
+msgid "getRandomSongs"
+msgstr ""
+
+#: ../../developers/subsonic.rst:36
+msgid "getSong"
+msgstr ""
+
+#: ../../developers/subsonic.rst:37
+msgid "getStarred"
+msgstr ""
+
+#: ../../developers/subsonic.rst:38
+msgid "getStarred2"
+msgstr ""
+
+#: ../../developers/subsonic.rst:39
+msgid "getUser"
+msgstr ""
+
+#: ../../developers/subsonic.rst:40
+msgid "ping"
+msgstr ""
+
+#: ../../developers/subsonic.rst:41
+msgid "scrobble"
+msgstr ""
+
+#: ../../developers/subsonic.rst:42
+msgid "search3"
+msgstr ""
+
+#: ../../developers/subsonic.rst:43
+msgid "star"
+msgstr ""
+
+#: ../../developers/subsonic.rst:44
+msgid "stream"
+msgstr ""
+
+#: ../../developers/subsonic.rst:45
+msgid "unstar"
+msgstr ""
+
+#: ../../developers/subsonic.rst:46
+msgid "updatePlaylist"
+msgstr ""
+
+#: ../../developers/subsonic.rst:48
+msgid "We support both XML and JSON formats for all those endpoints."
+msgstr ""
+
+#: ../../developers/subsonic.rst:51
+msgid "Additional properties"
+msgstr ""
+
+#: ../../developers/subsonic.rst:53
+msgid ""
+"Regardless of the endpoints, we always return those additional properties"
+" in our payload, which you can use to adapt your client behaviour if "
+"needed:"
+msgstr ""
+
+#: ../../developers/subsonic.rst:66
+msgid "Testing a Subsonic app"
+msgstr ""
+
+#: ../../developers/subsonic.rst:68
+msgid ""
+"We maintain a demo server at https://demo.funkwhale.audio/, which you can"
+" use for your tests. Example with the ping endpoint: "
+"https://demo.funkwhale.audio/rest/ping.view?f=json"
+msgstr ""
+
