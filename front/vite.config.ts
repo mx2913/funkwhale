@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite'
 import { createVuePlugin as Vue2 } from 'vite-plugin-vue2'
-import Components from 'unplugin-vue-components/vite'
 import ScriptSetup from 'unplugin-vue2-script-setup/vite'
 
+// @ts-ignore
 import path from 'path'
 
 const port = process.env.VUE_PORT ?? 8080
@@ -20,19 +20,13 @@ if (process.env.GITPOD_WORKSPACE_URL) {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(() => ({
   plugins: [
     // https://github.com/underfin/vite-plugin-vue2
     Vue2(),
 
     // https://github.com/antfu/unplugin-vue2-script-setup
     ScriptSetup(),
-
-    // https://github.com/antfu/unplugin-vue-components
-    Components({
-      dts: 'src/components.d.ts',
-      transformer: 'vue2'
-    }),
 
     {
       name: 'fix-fomantic-ui-css',
@@ -46,6 +40,9 @@ export default defineConfig({
   server: { port, hmr },
   resolve: {
     alias: {
+      '~': path.resolve(__dirname, './src'),
+
+      // TODO: Remove @/dependency from all files as `@` is used as an organization prefix
       '@': path.resolve(__dirname, './src')
     }
   },
@@ -57,4 +54,4 @@ export default defineConfig({
       }
     }
   }
-})
+}))
