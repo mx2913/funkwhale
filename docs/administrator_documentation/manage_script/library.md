@@ -1,0 +1,1 @@
+# Prune your Funkwhale library

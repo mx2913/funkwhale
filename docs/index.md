@@ -36,6 +36,8 @@ hidden: true
 administrator_documentation/index
 administrator_documentation/installation_docs/index
 administrator_documentation/migration_guide/index
+administrator_documentation/django/index
+administrator_documentation/manage_script/index
 
 ```
 
