@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import PasswordInput from '@/components/forms/PasswordInput.vue'
+import PasswordInput from '~/components/forms/PasswordInput.vue'
 
 export default {
   components: {
