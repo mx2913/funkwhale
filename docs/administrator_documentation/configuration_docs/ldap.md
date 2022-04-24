@@ -113,10 +113,10 @@ Controls whether to use direct binding.
 
 ### Group features
 
-LDAP provides extra features for working with groups. See [Django's documentation](https://django-auth-ldap.readthedocs.io/en/latest/groups.html) for more information. Group configuration is an advanced feature. Most users don't need to configure these settings.
+LDAP provides extra features for working with groups. Group configuration is an advanced feature. Most users don't need to configure these settings.
 
-```{note}
-You need to enable {attr}`LDAP_GROUP_DN` to enable group configuration.
+```{seealso}
+[Django's LDAP documentation](https://django-auth-ldap.readthedocs.io/en/latest/groups.html) for groups.
 ```
 
 ```{py:data} LDAP_GROUP_DN
@@ -125,7 +125,7 @@ type: String
 value: ou=groups,dc=domain,dc=com
 ---
 
-The LDAP group search root {abbr}`DN (Distinguised Name)`.
+The LDAP group search root {abbr}`DN (Distinguised Name)`. This needs to be set to `True` to enable group features.
 ```
 
 ```{py:data} LDAP_GROUP_FILTER

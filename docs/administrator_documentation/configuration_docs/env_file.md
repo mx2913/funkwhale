@@ -30,7 +30,9 @@ Some environment variables accept a URL as a value. To encode URLs and avoid pro
    python3 -c 'import urllib.parse; print(urllib.parse.quote_plus("p@ssword"))
    ```
 
-For more information, see the [django-environ documentation](https://github.com/joke2k/django-environ/blob/main/docs/tips.rst#using-unsafe-characters-in-urls).
+   ```{seealso}
+      The [django-environ documentation](https://github.com/joke2k/django-environ/blob/main/docs/tips.rst#using-unsafe-characters-in-urls).
+   ```
 
 ````
 
