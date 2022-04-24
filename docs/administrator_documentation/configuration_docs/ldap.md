@@ -45,7 +45,7 @@ type: URI
 value: ldap://my.host:389
 ---
 
-The LDAP URI of your authentication server.
+The LDAP {abbr}`URI (Uniform Resource Identifier)` of your authentication server.
 ```
 
 ```{py:data} LDAP_BIND_DN
@@ -72,7 +72,7 @@ type: String
 value: (|(cn={0})(mail={0}))
 ---
 
-The LDAP user filter, using {0} as the username placeholder, e.g. (|(cn={0})(mail={0})). Uses standard [LDAP search syntax](https://social.technet.microsoft.com/wiki/contents/articles/5392.active-directory-ldap-syntax-filters.aspx).
+The LDAP user filter, using `{0}` as the username placeholder. Uses standard [LDAP search syntax](https://social.technet.microsoft.com/wiki/contents/articles/5392.active-directory-ldap-syntax-filters.aspx).
 ```
 
 ```{py:data} LDAP_START_TLS

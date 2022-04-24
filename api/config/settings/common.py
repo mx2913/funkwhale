@@ -514,7 +514,7 @@ if AWS_ACCESS_KEY_ID:
     """
     If you use a S3-compatible storage such as minio,
     set the following variable to the full URL to the storage server.
-    
+
     Examples:
 
     - ``https://minio.mydomain.com``
@@ -602,7 +602,7 @@ ACCOUNT_EMAIL_VERIFICATION_ENFORCE = env.bool(
 )
 """
 Set whether users need to verify their email address before using your pod. Enabling this setting
-is useful for reducing spam and bot accounts. To use this setting you need to configure a mail server 
+is useful for reducing spam and bot accounts. To use this setting you need to configure a mail server
 to send verification emails. See :attr:`EMAIL_CONFIG`.
 
 .. note::
@@ -1099,7 +1099,7 @@ USE_X_FORWARDED_PORT = True
 REVERSE_PROXY_TYPE = env("REVERSE_PROXY_TYPE", default="nginx")
 """
 Set your reverse proxy type. This changes the headers the
-API uses to serve audio files. Allowed values: 
+API uses to serve audio files. Allowed values:
 
 - ``nginx``
 - ``apache2``
@@ -1175,7 +1175,7 @@ List of usernames that can't be used for registration. Given as a list of string
 """
 EXTERNAL_REQUESTS_VERIFY_SSL = env.bool("EXTERNAL_REQUESTS_VERIFY_SSL", default=True)
 """
-Whether to enforce TLS certificate verification 
+Whether to enforce TLS certificate verification
 when performing outgoing HTTP requests.
 
 Disabling this feature is not recommended.
@@ -1196,13 +1196,13 @@ processes.
 
     Don’t insert a slash at the end of this path.
 
-On Docker installations, we recommend you use the default ``/music`` path. 
-On Debian installations you can use any absolute path. Defaults to 
+On Docker installations, we recommend you use the default ``/music`` path.
+On Debian installations you can use any absolute path. Defaults to
 ``/srv/funkwhale/data/music``.
 
 .. note::
 
-    You need to add this path to your reverse proxy configuration. 
+    You need to add this path to your reverse proxy configuration.
     Add the directory to your ``/_protected/music`` server block.
 
 """
@@ -1307,7 +1307,7 @@ MIN_DELAY_BETWEEN_DOWNLOADS_COUNT = env.int(
     "MIN_DELAY_BETWEEN_DOWNLOADS_COUNT", default=60 * 60 * 6
 )
 """
-The required number of seconds between downloads of a track 
+The required number of seconds between downloads of a track
 by the same IP or user to be counted separately in listen statistics.
 """
 MARKDOWN_EXTENSIONS = env.list("MARKDOWN_EXTENSIONS", default=["nl2br", "extra"])
