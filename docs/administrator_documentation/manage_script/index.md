@@ -6,9 +6,9 @@ caption: Administration tasks
 maxdepth: 1
 ---
 
-users
-library
-database
+Manage users <users>
+Prune library <library>
+Clean database <database>
 Add album and artist tags <tags>
 thumbnails
 

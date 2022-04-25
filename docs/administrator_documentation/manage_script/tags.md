@@ -44,7 +44,7 @@ To add tags to untagged albums:
       docker-compose run --rm api python manage.py fw albums add-tags-from-tracks
       ```
 
-``` 
+```
 
 ## Add tags to artists
 
