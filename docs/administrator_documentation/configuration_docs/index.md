@@ -10,5 +10,6 @@ Environment file <env_file>
 Instance settings <instance_settings>
 Frontend customization <frontend>
 ldap
+change_url
 
 ```
