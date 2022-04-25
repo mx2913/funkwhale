@@ -10,6 +10,16 @@ Be sure to check the changelog for any specific instructions relating to upgrade
 
 ```{toctree}
 ---
+caption: Prepare for the upgrade
+maxdepth: 1
+---
+
+backup
+
+```
+
+```{toctree}
+---
 caption: Choose your installation method
 maxdepth: 1
 ---

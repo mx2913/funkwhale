@@ -13,7 +13,7 @@ Your instance URL is your pod's unique identifier in the {term}`fediverse`. If y
 To clean the database, the {file}`manage.py` script contains a `fix_federation_ids` command.
 
 ```{warning}
-Running `fix_federation_ids` with the `--no-dry-run` flag is irreversible. Make sure you back up your data.
+Running `fix_federation_ids` with the `--no-dry-run` flag is irreversible. Make sure you [back up your data](../upgrade_docs/backup.md).
 ```
 
 ## Update your instance URL

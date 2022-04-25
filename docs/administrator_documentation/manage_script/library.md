@@ -7,7 +7,7 @@ Sometimes you may want to clear out dangling metadata. For example, if you impor
 To help with this, the {file}`manage.py` script includes commands to prune dangling metadata from your database. All prune commands are available under the python manage.py prune_library namespace. To ensure you don't remove data by accident, all commands run in dry run mode by default. Run commands with the `--no-dry-run` flag to perform the pruning action.
 
 ```{warning}
-Running `prune_library` commands with the `--no-dry-run` flag is irreversible. Make sure you back up your data.
+Running `prune_library` commands with the `--no-dry-run` flag is irreversible. Make sure you [back up your data](../upgrade_docs/backup.md).
 ```
 
 ## Prune your library
