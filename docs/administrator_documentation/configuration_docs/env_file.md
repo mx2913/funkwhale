@@ -248,6 +248,22 @@ See {doc}`/administrator_documentation/configuration_docs/ldap` for more informa
 
 ```
 
+### Plugin configuration
+
+```{eval-rst}
+
+.. autodata:: config.settings.common.FUNKWHALE_PLUGINS_PATH
+
+```
+
+```{py:data} FUNKWHALE_PLUGINS
+---
+value: "['funkwhale_api.contrib.scrobbler', 'funkwhale_api.contrib.listenbrainz', 'funkwhale_api.contrib.maloja']"
+---
+
+List of Funkwhale plugins to load.
+```
+
 ### Other settings
 
 ```{eval-rst}

@@ -11,5 +11,6 @@ Instance settings <instance_settings>
 Frontend customization <frontend>
 ldap
 change_url
+mrf
 
 ```
