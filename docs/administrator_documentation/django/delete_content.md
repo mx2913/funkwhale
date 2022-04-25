@@ -45,3 +45,15 @@ To delete artists in the Django dashboard:
 5. Select {guilabel}`Delete selected artists` in the {guilabel}`Action` dropdown.
 6. Select {guilabel}`Go`. A confirmation page opens showing you the items that are affected by the action.
 7. Review the information and select {guilabel}`Yes, I'm sure` to delete the item(s).
+
+## Delete followed libraries
+
+In Funkwhale, unfollowing a library leaves the items in place but you can't access them. To completely remove them:
+
+1. Open the Django dashboard.
+2. Select {guilabel}`Librarys` in the {guilabel}`MUSIC` table.
+3. Search for the libraries you want to delete.
+4. Check ({fa}`check-square`) the checkbox next to the libraries you want to delete.
+5. Select {guilabel}`Delete selected libraries` in the {guilabel}`Action` dropdown.
+6. Select {guilabel}`Go`. A confirmation page opens showing you the items that are affected by the action.
+7. Review the information and select {guilabel}`Yes, I'm sure` to delete the item(s).
