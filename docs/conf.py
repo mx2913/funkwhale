@@ -24,6 +24,7 @@ import subprocess
 
 sys.path.insert(0, os.path.abspath("../api"))
 sys.path.insert(0, os.path.abspath("../api/config"))
+sys.path.append(os.path.abspath("../api/funkwhale_api/cli"))
 
 import funkwhale_api  # NOQA
 
