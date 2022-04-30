@@ -13,5 +13,6 @@ Prune library <library>
 Clean database <database>
 Add album and artist tags <tags>
 thumbnails
+fix_uploads
 
 ```
