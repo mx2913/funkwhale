@@ -10,9 +10,9 @@ To help with this, the {file}`manage.py` script includes commands to prune dangl
 Running `prune_library` commands with the `--no-dry-run` flag is irreversible. Make sure you [back up your data](../upgrade_docs/backup.md).
 ```
 
-## Prune your library
+## Commands
 
-- Prune tracks with no associated uploads.
+### Prune tracks with no associated uploads
 
 ````{tabbed} Debian
 
@@ -30,7 +30,7 @@ docker-compose run --rm api python manage.py prune_library --tracks
 
 ````
 
-- Prune albums with no associated tracks.
+### Prune albums with no associated tracks
 
 ````{tabbed} Debian
 
@@ -48,7 +48,7 @@ docker-compose run --rm api python manage.py prune_library --albums
 
 ````
 
-- Prune artists with no associated tracks or albums.
+### Prune artists with no associated tracks or albums
 
 ````{tabbed} Debian
 
@@ -66,7 +66,7 @@ docker-compose run --rm api python manage.py prune_library --artists
 
 ````
 
-- Prune all tracks, albums, and artist without associated data.
+### Prune all tracks, albums, and artist without associated data
 
 ````{tabbed} Debian
 

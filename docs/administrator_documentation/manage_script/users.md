@@ -8,7 +8,7 @@ All users-related commands are available under the `python manage.py fw users` n
 
 You can create users with the {file}`manage.py` script. There are different ways to create users depending on what approach you want to take.
 
-- Create a user interactively.
+### Create a user interactively
 
 ````{tabbed} Debian
 
@@ -26,7 +26,7 @@ docker-compose run --rm api python manage.py fw users create
 
 ````
 
-- Create a user with a random password.
+### Create a user with a random password
 
 ````{tabbed} Debian
 
@@ -44,7 +44,7 @@ docker-compose run --rm api python manage.py fw users create --username <usernam
 
 ````
 
-- Create a user with a password set from an environment variable.
+### Create a user with a password set from an environment variable
 
 ````{tabbed} Debian
 
@@ -86,7 +86,7 @@ docker-compose run --rm api python manage.py fw users --help
 
 You can update user accounts using the {file}`manage.py` script. Update commands are available under the `python manage.py fw users set` namespace.
 
-- Set upload quota for a user.
+### Set upload quota for a user
 
 ````{tabbed} Debian
 
@@ -104,7 +104,7 @@ docker-compose run --rm api python manage.py fw users set --upload-quota 500 <us
 
 ````
 
-- Make users staff members
+### Make users staff members
 
 ````{tabbed} Debian
 
@@ -122,7 +122,7 @@ docker-compose run --rm api python manage.py fw users set --staff --superuser <u
 
 ````
 
-- Remove a user's staff privileges.
+### Remove a user's staff privileges
 
 ````{tabbed} Debian
 
@@ -140,7 +140,7 @@ docker-compose run --rm api python manage.py fw users set --no-staff --no-superu
 
 ````
 
-- Give a user moderation permissions.
+### Give a user moderation permissions
 
 ````{tabbed} Debian
 
@@ -158,7 +158,7 @@ docker-compose run --rm api python manage.py fw users set --permission-moderatio
 
 ````
 
-- Reset a user's password.
+### Reset a user's password
 
 ````{tabbed} Debian
 
@@ -176,7 +176,7 @@ docker-compose run --rm api python manage.py fw users set --password "<password>
 
 ````
 
-- Reset a user's password using an environment variable.
+### Reset a user's password using an environment variable
 
 ````{tabbed} Debian
 
@@ -216,7 +216,9 @@ docker-compose run --rm api python manage.py fw users set --help
 
 ## Delete users
 
-- Delete a user's account but leave a reference to them in the database. This prevents the same username being used in future.
+### Delete a user's account but leave a reference to them in the database
+
+This prevents the same username being used in future.
 
 ````{tabbed} Debian
 
@@ -234,7 +236,9 @@ docker-compose run --rm api python manage.py fw users rm <user>
 
 ````
 
-- Delete a user's account, including all references in the database. This means the username can be reused.
+### Delete a user's account, including all references in the database
+
+This means the username can be reused.
 
 ````{tabbed} Debian
 
