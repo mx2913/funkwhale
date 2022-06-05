@@ -10,6 +10,7 @@ maxdepth: 1
 
 Environment file <env_file>
 Instance settings <instance_settings>
+object_storage
 Frontend customization <frontend>
 ldap
 change_url
