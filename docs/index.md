@@ -41,6 +41,7 @@ administrator_documentation/migration_guide/index
 administrator_documentation/django/index
 administrator_documentation/manage_script/index
 administrator_documentation/uninstall_docs/index
+administrator_documentation/troubleshooting/index
 
 ```
 

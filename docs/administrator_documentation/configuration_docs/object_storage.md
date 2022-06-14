@@ -149,7 +149,7 @@ That's it! Files are now uploaded to and stored from your S3 bucket.
 
 ## Troubleshooting
 
-### No Resolver Found
+````{dropdown} No Resolver Found
 
 You may see the following error when streaming music from your S3-compatible store:
 
@@ -167,3 +167,5 @@ location ~ /_protected/media/(.+) {
     proxy_pass $1;
 }
 ```
+
+````
