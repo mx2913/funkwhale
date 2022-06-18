@@ -12,6 +12,7 @@ Environment file <env_file>
 Instance settings <instance_settings>
 object_storage
 Frontend customization <frontend>
+optimize
 ldap
 change_url
 mrf
