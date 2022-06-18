@@ -72,6 +72,10 @@ source_suffix = ".rst"
 # The root toctree document.
 root_doc = "index"
 
+# Autogenerate anchors
+
+myst_heading_anchors = 3
+
 # General information about the project.
 year = datetime.datetime.now().year
 project = "funkwhale"
