@@ -86,7 +86,7 @@ Once you have your library ID, you can copy content from your server and import 
 3. Run the `import_files` command to copy your files.
 
    ```{code} bash
-   poetry run python manage.py import_files $LIBRARY_ID "[path/to/your/music]" --recursive --noinput
+   poetry run python manage.py import_files $LIBRARY_ID "<path/to/your/music>" --recursive --noinput
    ```
 
 Funkwhale copies your files to your media store.
