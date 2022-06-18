@@ -208,7 +208,7 @@ texinfo_documents = [
 # Define list of redirect files to be build in the Sphinx build process
 
 redirect_list = []
-with open('redirects.txt', 'r') as fp:
+with open("redirects.txt", "r") as fp:
     data_list = [tuple(line.strip().split(",")) for line in fp]
 
 # Generate redirect template
