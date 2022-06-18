@@ -209,7 +209,7 @@ texinfo_documents = [
 
 redirect_list = []
 with open('redirects.txt', 'r') as fp:
-    data_list = [tuple(line.strip().split(",") ) for line in fp]
+    data_list = [tuple(line.strip().split(",")) for line in fp]
 
 # Generate redirect template
 
