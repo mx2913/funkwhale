@@ -30,9 +30,13 @@ tasks:
 
       # Compile frontent
       docker-compose run --rm front yarn run i18n-compile
-    command: docker-compose up nginx
+    command: |
+      docker-compose up -d nginx
+      docker-compose up front api
 
   - name: Welcome to Funkwhale development!
+    env:
+      COMPOSE_FILE: dev.yml
     command: |
       clear
       echo ""
