@@ -49,13 +49,8 @@ ports:
     visibility: public
     onOpen: notify
 
-  - port: 4000
-    visibility: public
-    onOpen: open-preview
-
 vscode:
   extensions:
-    - antfu.vite
     - lukashass.volar
     - lextudio.restructuredtext
     - trond-snekvik.simple-rst
