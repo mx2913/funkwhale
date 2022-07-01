@@ -1,25 +1,33 @@
 tasks:
-  - name: Funkwhale
+  - name: Docker
     env:
       COMPOSE_FILE: dev.yml
     init: |
+      # Install frontend depencencies locally
       cd front
       yarn install
       cd ..
+
+      # Prepare .env
       echo "# Gitpod Environment Variables" > .env
       echo "MEDIA_URL=http://localhost:8000/media/" >> .env
       echo "STATIC_URL=http://localhost:8000/staticfiles/" >> .env
       echo "GITPOD_WORKSPACE_URL=$GITPOD_WORKSPACE_URL" >> .env
       echo "HMR_PORT=8000" >> .env
+
+      # Prepare docker
       docker network create federation
       docker-compose pull
       docker-compose build
       docker-compose up -d postgres redis
       sleep 10 # allow postgres and redis to initialize
+
+      # Prepare backend
       docker-compose run --rm api python manage.py migrate
       docker-compose run --rm api python manage.py createsuperuser --no-input --username gitpod --email gitpod@example.com
-      echo "from django.contrib.auth import get_user_model;u=get_user_model().objects.get(username='gitpod');u.set_password('gitpod');u.save()" | docker-compose run --rm -T api python manage.py shell -i python
-      echo "from funkwhale_api.music import fake_data; fake_data.create_data(25)" | docker-compose run --rm -T api python manage.py shell -i python
+      docker-compose run --rm api python manage.py fw users set --password "gitpod" gitpod --no-input
+
+      # Compile frontent
       docker-compose run --rm front yarn run i18n-compile
     command: docker-compose up nginx
 
