@@ -26,10 +26,14 @@ tasks:
   - name: Welcome to Funkwhale development!
     command: |
       clear
-      echo "You can now start developing Funkwhale with gitpod!"
       echo ""
-      echo "To sign in to the superuser account, please this credentials:"
-      echo "gitpod:gitpod"
+      echo -e "    ⠀⠀⠸⣿⣷⣦⣄⣠⣶⣾⣿⠇⠀⠀    You can now start developing Funkwhale with gitpod!"
+      echo -e "    ⠀⠀⠀⠈⠉⠻⣿⣿⠟⠉⠁⠀⠀⠀"
+      echo -e "    \u1b[34m⣀⠀⢀⡀⢀⣀\u1b[0m⠹⠇\u1b[34m⣀⡀⢀⡀⠀⣀    \u1b[0mTo sign in to the superuser account,"
+      echo -e "    \u1b[34m⢻⣇⠘⣧⡈⠻⠶⠶⠟⢁⣾⠃⣸⡟    \u1b[0mplease use this credentials:"
+      echo -e "    \u1b[34m⠀⠻⣦⡈⠻⠶⣶⣶⠶⠟⢁⣴⠟⠀"
+      echo -e "    \u1b[34m⠀⠀⠈⠻⠷⣦⣤⣤⣴⠾⠟⠁⠀⠀    gitpod\u1b[0m:\u1b[34mgitpod"
+      echo ""
 
 ports:
   - port: 8000
