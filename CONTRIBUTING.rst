@@ -70,6 +70,21 @@ automatically in old and new workspaces.
 The scope ``funkwhale/*`` will ensure that you will be signed into our instance on every
 project that we're hosting, not only Funkwhale itself.
 
+Custom instance url
+^^^^^^^^^^^^^^^^^^^
+
+If you don't plan to use the instance that is provided and reacts to your code changes
+or you prefer to use your own instance and save a couple of clicks every time you create
+a new workspace, you can set a user user environment variable in `your Gitpod settings <https://gitpod.io/variables>`_.
+
++--------- ----------------+-----------------------------------+-------------------------+
+| Name                     | Value                             | Scope                   |
++==========================+===================================+=========================+
+| ``VUE_APP_INSTANCE_URL`` | ``https://funkwhale.example.com`` | ``funkwhale/funkwhale`` |
++--------------------------+-----------------------------------+-------------------------+
+
+The scope ``funkwhale/funkwhale`` will ensure that this variable works only on funkwhale.
+
 A quick path to contribute on the front-end
 -------------------------------------------
 
