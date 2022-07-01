@@ -28,8 +28,22 @@ tasks:
       docker-compose run --rm api python manage.py createsuperuser --no-input --username gitpod --email gitpod@example.com
       docker-compose run --rm api python manage.py fw users set --password "gitpod" gitpod --no-input
 
-      # Compile frontent
+      # Compile frontend locales
       docker-compose run --rm front yarn run i18n-compile
+
+      # Login with cURL to create actors
+      docker-compose up -d nginx
+      gp ports await 8000
+      python .gitpod/init_actor.py
+
+      # Import music
+      git clone https://dev.funkwhale.audio/funkwhale/catalog.git
+      sudo mv catalog/music data
+      sudo chown -R root:root data/music
+      rm -rf catalog
+      LIBRARY_ID=`cat .gitpod/create_library.py | docker-compose run --rm -T api python manage.py shell -i python`
+      docker-compose run --rm api python manage.py import_files $LIBRARY_ID "/music/" --recursive --noinput --in-place
+      docker-compose stop
     command: |
       docker-compose up -d nginx
       docker-compose up front api
