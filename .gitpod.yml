@@ -32,10 +32,9 @@ tasks:
       docker-compose run --rm front yarn run i18n-compile
 
       # Login with cURL to create actors
-      docker-compose down
       docker-compose up -d nginx
       gp ports await 8000
-      sleep 10 # allow django to start
+      sleep 20 # allow django to start
       python .gitpod/init_actor.py
 
       # Import music
