@@ -9,12 +9,11 @@ token = res.cookies['csrftoken']
 
 res = req.post('http://localhost:8000/api/v1/users/login', data={
     'username': 'gitpod',
-    'password': 'gitpod'
-}, headers={
-    'Referer': 'http://localhost:8000/login',
-    'X-CSRFTOKEN': token
+    'password': 'gitpod',
+    'csrfmiddlewaretoken': token,
+    'next': '/api/v1/libraries/?scope=me'
 })
-print(res.status_code)
+print(res.status_code, res.content)
 
-res = req.get('http://localhost:8000/api/v1/libraries/?scope=me')
-print(res.status_code)
+if res.status_code == 401:
+    exit(1)
