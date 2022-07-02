@@ -36,14 +36,13 @@ tasks:
       # Login with cURL to create actors
       docker-compose up -d nginx
       gp ports await 8000
-      sleep 10
-      python .gitpod/init_actor.py
 
       # Import music
       git clone https://dev.funkwhale.audio/funkwhale/catalog.git
       sudo mv catalog/music data
       sudo chown -R root:root data/music
       rm -rf catalog
+      python .gitpod/init_actor.py
       LIBRARY_ID=`cat .gitpod/create_library.py | docker-compose run --rm -T api python manage.py shell -i python`
       docker-compose run --rm api python manage.py import_files $LIBRARY_ID "/music/" --recursive --noinput --in-place
       docker-compose stop

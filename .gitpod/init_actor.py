@@ -4,14 +4,17 @@ import requests
 req = requests.Session()
 
 res = req.get('http://localhost:8000/login')
+print(res.status_code, res.cookies)
 token = res.cookies['csrftoken']
 
-req.post('http://localhost:8000/api/v1/users/login', data={
+res = req.post('http://localhost:8000/api/v1/users/login', data={
     'username': 'gitpod',
     'password': 'gitpod'
 }, headers={
     'Referer': 'http://localhost:8000/login',
     'X-CSRFTOKEN': token
 })
+print(res.status_code)
 
-req.get('http://localhost:8000')
+res = req.get('http://localhost:8000/api/v1/libraries/?scope=me')
+print(res.status_code)
