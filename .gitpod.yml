@@ -12,6 +12,7 @@ tasks:
       echo "# Gitpod Environment Variables" > .env
       echo "MEDIA_URL=http://localhost:8000/media/" >> .env
       echo "STATIC_URL=http://localhost:8000/staticfiles/" >> .env
+      echo "FUNKWHALE_HOSTNAME=`gp url 8000 | sed 's#https://##'`" >> .env
       echo "GITPOD_WORKSPACE_URL=$GITPOD_WORKSPACE_URL" >> .env
       echo "HMR_PORT=8000" >> .env
       echo "VUE_APP_INSTANCE_URL=$VUE_APP_INSTANCE_URL" >> .env
@@ -46,7 +47,6 @@ tasks:
 
       # Import music
       docker-compose down
-      echo "FUNKWHALE_HOSTNAME=`gp url 8000 | sed 's#https://##'`" >> .env
       echo "FUNKWHALE_PROTOCOL=https" >> .env
       LIBRARY_ID=`cat .gitpod/create_library.py | docker-compose run --rm -T api python manage.py shell -i python`
       docker-compose run --rm api python manage.py import_files $LIBRARY_ID "/music/" --recursive --noinput --in-place
