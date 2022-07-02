@@ -1,20 +1,17 @@
-import subprocess
 import requests
-
-INSTANCE_URL = subprocess.check_output(['gp', 'url', '8000']).decode()[:-1]
 
 # Login to initialize user actor
 req = requests.Session()
 
-res = req.get(INSTANCE_URL + '/login')
+res = req.get('http://localhost:8000/login')
 token = res.cookies['csrftoken']
 
-req.post(INSTANCE_URL + '/api/v1/users/login', data={
+req.post('http://localhost:8000/api/v1/users/login', data={
     'username': 'gitpod',
     'password': 'gitpod'
 }, headers={
-    'Referer': INSTANCE_URL + '/login',
+    'Referer': 'http://localhost:8000/login',
     'X-CSRFTOKEN': token
 })
 
-req.get(INSTANCE_URL)
+req.get('http://localhost:8000')

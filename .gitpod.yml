@@ -34,7 +34,7 @@ tasks:
       # Login with cURL to create actors
       docker-compose up -d nginx
       gp ports await 8000
-      sleep 20 # allow django to start
+      sleep 10
       python .gitpod/init_actor.py
 
       # Import music
