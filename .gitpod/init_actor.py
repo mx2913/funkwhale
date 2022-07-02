@@ -11,9 +11,11 @@ res = req.post('http://localhost:8000/api/v1/users/login', data={
     'username': 'gitpod',
     'password': 'gitpod',
     'csrfmiddlewaretoken': token,
-    'next': '/api/v1/libraries/?scope=me'
 })
 print(res.status_code, res.content)
+
+res = req.get('http://localhost:8000/')
+print(res.status_code)
 
 if res.status_code == 401:
     exit(1)
