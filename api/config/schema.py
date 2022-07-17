@@ -1,4 +1,5 @@
 from drf_spectacular.contrib.django_oauth_toolkit import OpenApiAuthenticationExtension
+from drf_spectacular.plumbing import build_bearer_security_scheme_object
 import os
 
 
@@ -26,6 +27,17 @@ class CustomOAuthExt(OpenApiAuthenticationExtension):
             flows[flow_type]["scopes"] = scope_backend.get_all_scopes()
 
         return {"type": "oauth2", "flows": flows}
+
+
+class CustomApplicationTokenExt(OpenApiAuthenticationExtension):
+    target_class = "funkwhale_api.common.authentication.ApplicationTokenAuthentication"
+    name = "ApplicationToken"
+
+    def get_security_definition(self, auto_schema):
+        return build_bearer_security_scheme_object(
+            header_name='Authorization',
+            token_prefix='Bearer',
+        )
 
 
 def custom_preprocessing_hook(endpoints):
