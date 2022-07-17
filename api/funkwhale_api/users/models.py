@@ -29,6 +29,8 @@ from funkwhale_api.federation import keys
 from funkwhale_api.federation import models as federation_models
 from funkwhale_api.federation import utils as federation_utils
 
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
 
 def get_token(length=5):
     wordlist_path = os.path.join(
@@ -307,6 +309,7 @@ class User(AbstractUser):
 
         return groups
 
+    @extend_schema_field(OpenApiTypes.STR)
     def full_username(self):
         return "{}@{}".format(self.username, settings.FEDERATION_HOSTNAME)
 

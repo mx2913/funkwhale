@@ -18,6 +18,9 @@ from funkwhale_api.music import serializers as music_serializers
 from funkwhale_api.tags import models as tags_models
 from funkwhale_api.users import models as users_models
 
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
+
 from . import filters
 
 
@@ -90,6 +93,7 @@ class ManageUserSerializer(serializers.ModelSerializer):
             )
         return instance
 
+    @extend_schema_field(OpenApiTypes.OBJECT)
     def get_actor(self, obj):
         if obj.actor:
             return ManageBaseActorSerializer(obj.actor).data
@@ -151,9 +155,11 @@ class ManageDomainSerializer(serializers.ModelSerializer):
             "nodeinfo_fetch_date",
         ]
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_actors_count(self, o):
         return getattr(o, "actors_count", 0)
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_outbox_activities_count(self, o):
         return getattr(o, "outbox_activities_count", 0)
 
@@ -211,6 +217,7 @@ class ManageBaseActorSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["creation_date", "instance_policy"]
 
+    @extend_schema_field(OpenApiTypes.BOOL)
     def get_is_local(self, o):
         return o.domain_id == settings.FEDERATION_HOSTNAME
 
@@ -228,6 +235,7 @@ class ManageActorSerializer(ManageBaseActorSerializer):
         ]
         read_only_fields = ["creation_date", "instance_policy"]
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_uploads_count(self, o):
         return getattr(o, "uploads_count", 0)
 
@@ -353,6 +361,7 @@ class ManageBaseAlbumSerializer(serializers.ModelSerializer):
             "tracks_count",
         ]
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_tracks_count(self, o):
         return getattr(o, "_tracks_count", None)
 
@@ -385,6 +394,7 @@ class ManageNestedAlbumSerializer(ManageBaseAlbumSerializer):
         model = music_models.Album
         fields = ManageBaseAlbumSerializer.Meta.fields + ["tracks_count"]
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_tracks_count(self, obj):
         return getattr(obj, "tracks_count", None)
 
@@ -411,16 +421,20 @@ class ManageArtistSerializer(
             "content_category",
         ]
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_tracks_count(self, obj):
         return getattr(obj, "_tracks_count", None)
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_albums_count(self, obj):
         return getattr(obj, "_albums_count", None)
 
+    @extend_schema_field({'type': 'array', 'items': {'type': 'string'}})
     def get_tags(self, obj):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]
 
+    @extend_schema_field(OpenApiTypes.STR)
     def get_channel(self, obj):
         if "channel" in obj._state.fields_cache and obj.get_channel():
             return str(obj.channel.uuid)
@@ -446,9 +460,11 @@ class ManageAlbumSerializer(
             "tracks_count",
         ]
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_tracks_count(self, o):
         return len(o.tracks.all())
 
+    @extend_schema_field({'type': 'array', 'items': {'type': 'string'}})
     def get_tags(self, obj):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]
@@ -483,9 +499,11 @@ class ManageTrackSerializer(
             "cover",
         ]
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_uploads_count(self, obj):
         return getattr(obj, "uploads_count", None)
 
+    @extend_schema_field({'type': 'array', 'items': {'type': 'string'}})
     def get_tags(self, obj):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]
@@ -570,9 +588,11 @@ class ManageLibrarySerializer(serializers.ModelSerializer):
             "creation_date",
         ]
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_uploads_count(self, obj):
         return getattr(obj, "_uploads_count", obj.uploads_count)
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_followers_count(self, obj):
         return getattr(obj, "followers_count", None)
 
@@ -652,12 +672,15 @@ class ManageTagSerializer(ManageBaseAlbumSerializer):
             "artists_count",
         ]
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_tracks_count(self, obj):
         return getattr(obj, "_tracks_count", None)
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_albums_count(self, obj):
         return getattr(obj, "_albums_count", None)
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_artists_count(self, obj):
         return getattr(obj, "_artists_count", None)
 
@@ -728,6 +751,7 @@ class ManageReportSerializer(serializers.ModelSerializer):
             "summary",
         ]
 
+    @extend_schema_field(ManageBaseNoteSerializer)
     def get_notes(self, o):
         notes = getattr(o, "_prefetched_notes", [])
         return ManageBaseNoteSerializer(notes, many=True).data
@@ -761,6 +785,7 @@ class ManageUserRequestSerializer(serializers.ModelSerializer):
             "metadata",
         ]
 
+    @extend_schema_field(ManageBaseNoteSerializer)
     def get_notes(self, o):
         notes = getattr(o, "_prefetched_notes", [])
         return ManageBaseNoteSerializer(notes, many=True).data

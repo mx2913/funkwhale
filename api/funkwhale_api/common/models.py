@@ -18,6 +18,9 @@ from django.urls import reverse
 from versatileimagefield.fields import VersatileImageField
 from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
+
 from funkwhale_api.federation import utils as federation_utils
 
 from . import utils
@@ -240,6 +243,7 @@ class Attachment(models.Model):
         return super().save()
 
     @property
+    @extend_schema_field(OpenApiTypes.BOOL)
     def is_local(self):
         return federation_utils.is_local(self.fid)
 

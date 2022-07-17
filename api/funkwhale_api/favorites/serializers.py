@@ -5,6 +5,8 @@ from funkwhale_api.federation import serializers as federation_serializers
 from funkwhale_api.music.serializers import TrackActivitySerializer, TrackSerializer
 from funkwhale_api.users.serializers import UserActivitySerializer, UserBasicSerializer
 
+from drf_spectacular.utils import extend_schema_field
+
 from . import models
 
 
@@ -35,6 +37,7 @@ class UserTrackFavoriteSerializer(serializers.ModelSerializer):
         fields = ("id", "user", "track", "creation_date", "actor")
         actor = serializers.SerializerMethodField()
 
+    @extend_schema_field(federation_serializers.APIActorSerializer)
     def get_actor(self, obj):
         actor = obj.user.actor
         if actor:

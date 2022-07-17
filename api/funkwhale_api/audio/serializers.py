@@ -33,6 +33,9 @@ from funkwhale_api.tags import models as tags_models
 from funkwhale_api.tags import serializers as tags_serializers
 from funkwhale_api.users import serializers as users_serializers
 
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
+
 from . import categories
 from . import models
 
@@ -255,6 +258,7 @@ class ChannelSerializer(serializers.ModelSerializer):
             "downloads_count",
         ]
 
+    @extend_schema_field(OpenApiTypes.OBJECT)
     def get_artist(self, obj):
         return music_serializers.serialize_artist_simple(obj.artist)
 
@@ -264,17 +268,21 @@ class ChannelSerializer(serializers.ModelSerializer):
             data["subscriptions_count"] = self.get_subscriptions_count(obj)
         return data
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_subscriptions_count(self, obj):
         return obj.actor.received_follows.exclude(approved=False).count()
 
+    @extend_schema_field(OpenApiTypes.INT)
     def get_downloads_count(self, obj):
         return getattr(obj, "_downloads_count", None) or 0
 
+    @extend_schema_field(federation_serializers.APIActorSerializer)
     def get_actor(self, obj):
         if obj.attributed_to == actors.get_service_actor():
             return None
         return federation_serializers.APIActorSerializer(obj.actor).data
 
+    @extend_schema_field(OpenApiTypes.URI)
     def get_url(self, obj):
         return obj.actor.url
 

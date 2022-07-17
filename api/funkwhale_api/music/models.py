@@ -35,6 +35,9 @@ from funkwhale_api.federation import utils as federation_utils
 from funkwhale_api.tags import models as tags_models
 from . import importers, metadata, utils
 
+from drf_spectacular.utils import extend_schema_field
+from drf_spectacular.types import OpenApiTypes
+
 logger = logging.getLogger(__name__)
 
 MAX_LENGTHS = {
@@ -137,6 +140,7 @@ class APIModelMixin(models.Model):
         return super().save(**kwargs)
 
     @property
+    @extend_schema_field(OpenApiTypes.BOOL)
     def is_local(self):
         return federation_utils.is_local(self.fid)
 
@@ -148,6 +152,7 @@ class APIModelMixin(models.Model):
         parsed = urllib.parse.urlparse(self.fid)
         return parsed.hostname
 
+    @extend_schema_field({'type': 'array', 'items': {'type': 'string'}})
     def get_tags(self):
         return list(sorted(self.tagged_items.values_list("tag__name", flat=True)))
 
@@ -652,7 +657,7 @@ class Track(APIModelMixin):
         )
 
     @property
-    def listen_url(self):
+    def listen_url(self) -> str:
         # Not using reverse because this is slow
         return "/api/v1/listen/{}/".format(self.uuid)
 
@@ -782,6 +787,7 @@ class Upload(models.Model):
     objects = UploadQuerySet.as_manager()
 
     @property
+    @extend_schema_field(OpenApiTypes.BOOL)
     def is_local(self):
         return federation_utils.is_local(self.fid)
 
@@ -834,7 +840,7 @@ class Upload(models.Model):
         )
 
     @property
-    def filename(self):
+    def filename(self) -> str:
         return "{}.{}".format(self.track.full_name, self.extension)
 
     @property
@@ -910,10 +916,10 @@ class Upload(models.Model):
         return metadata.Metadata(audio_file)
 
     @property
-    def listen_url(self):
+    def listen_url(self) -> str:
         return self.track.listen_url + "?upload={}".format(self.uuid)
 
-    def get_listen_url(self, to=None, download=True):
+    def get_listen_url(self, to=None, download=True) -> str:
         url = self.listen_url
         if to:
             url += "&to={}".format(to)
@@ -1019,7 +1025,7 @@ class UploadVersion(models.Model):
         unique_together = ("upload", "mimetype", "bitrate")
 
     @property
-    def filename(self):
+    def filename(self) -> str:
         try:
             return (
                 self.upload.track.full_name
@@ -1211,15 +1217,15 @@ class Library(federation_models.FederationMixin):
     def __str__(self):
         return self.name
 
-    def get_moderation_url(self):
+    def get_moderation_url(self) -> str:
         return "/manage/library/libraries/{}".format(self.uuid)
 
-    def get_federation_id(self):
+    def get_federation_id(self) -> str:
         return federation_utils.full_url(
             reverse("federation:music:libraries-detail", kwargs={"uuid": self.uuid})
         )
 
-    def get_absolute_url(self):
+    def get_absolute_url(self) -> str:
         return "/library/{}".format(self.uuid)
 
     def save(self, **kwargs):
@@ -1229,7 +1235,7 @@ class Library(federation_models.FederationMixin):
 
         return super().save(**kwargs)
 
-    def should_autoapprove_follow(self, actor):
+    def should_autoapprove_follow(self, actor) -> bool:
         if self.privacy_level == "everyone":
             return True
         if self.privacy_level == "instance" and actor.get_user():
