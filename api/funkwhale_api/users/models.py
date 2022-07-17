@@ -29,9 +29,6 @@ from funkwhale_api.federation import keys
 from funkwhale_api.federation import models as federation_models
 from funkwhale_api.federation import utils as federation_utils
 
-from drf_spectacular.utils import extend_schema_field
-from drf_spectacular.types import OpenApiTypes
-
 def get_token(length=5):
     wordlist_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "wordlist.txt"
@@ -309,8 +306,7 @@ class User(AbstractUser):
 
         return groups
 
-    @extend_schema_field(OpenApiTypes.STR)
-    def full_username(self):
+    def full_username(self) -> str:
         return "{}@{}".format(self.username, settings.FEDERATION_HOSTNAME)
 
     def get_avatar(self):

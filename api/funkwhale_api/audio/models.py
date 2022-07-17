@@ -15,9 +15,6 @@ from funkwhale_api.federation import models as federation_models
 from funkwhale_api.federation import utils as federation_utils
 from funkwhale_api.users import models as user_models
 
-from drf_spectacular.utils import extend_schema_field
-from drf_spectacular.types import OpenApiTypes
-
 def empty_dict():
     return {}
 
@@ -83,8 +80,7 @@ class Channel(models.Model):
             return self.actor.fid
 
     @property
-    @extend_schema_field(OpenApiTypes.BOOL)
-    def is_local(self):
+    def is_local(self) -> bool:
         return self.actor.is_local
 
     @property

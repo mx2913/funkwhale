@@ -19,9 +19,6 @@ from funkwhale_api.common import utils as common_utils
 from funkwhale_api.common import validators as common_validators
 from funkwhale_api.music import utils as music_utils
 
-from drf_spectacular.utils import extend_schema_field
-from drf_spectacular.types import OpenApiTypes
-
 from . import utils as federation_utils
 
 TYPE_CHOICES = [
@@ -51,8 +48,7 @@ class FederationMixin(models.Model):
         abstract = True
 
     @property
-    @extend_schema_field(OpenApiTypes.BOOL)
-    def is_local(self):
+    def is_local(self) -> bool:
         return federation_utils.is_local(self.fid)
 
     @property
@@ -176,8 +172,7 @@ class Domain(models.Model):
         return data
 
     @property
-    @extend_schema_field(OpenApiTypes.BOOL)
-    def is_local(self):
+    def is_local(self) -> bool:
         return self.name == settings.FEDERATION_HOSTNAME
 
 
@@ -237,24 +232,20 @@ class Actor(models.Model):
         return "{}#main-key".format(self.fid)
 
     @property
-    @extend_schema_field(OpenApiTypes.STR)
-    def full_username(self):
+    def full_username(self) -> str:
         return "{}@{}".format(self.preferred_username, self.domain_id)
 
     def __str__(self):
         return "{}@{}".format(self.preferred_username, self.domain_id)
 
     @property
-    @extend_schema_field(OpenApiTypes.BOOL)
     def is_local(self) -> bool:
         return self.domain_id == settings.FEDERATION_HOSTNAME
 
-    @extend_schema_field({'type': 'array', 'items': {'type': 'object'}})
     def get_approved_followers(self):
         follows = self.received_follows.filter(approved=True)
         return self.followers.filter(pk__in=follows.values_list("actor", flat=True))
 
-    @extend_schema_field(OpenApiTypes.BOOL)
     def should_autoapprove_follow(self, actor):
         if self.get_channel():
             return True

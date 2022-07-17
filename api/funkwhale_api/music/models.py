@@ -35,9 +35,6 @@ from funkwhale_api.federation import utils as federation_utils
 from funkwhale_api.tags import models as tags_models
 from . import importers, metadata, utils
 
-from drf_spectacular.utils import extend_schema_field
-from drf_spectacular.types import OpenApiTypes
-
 logger = logging.getLogger(__name__)
 
 MAX_LENGTHS = {
@@ -140,8 +137,7 @@ class APIModelMixin(models.Model):
         return super().save(**kwargs)
 
     @property
-    @extend_schema_field(OpenApiTypes.BOOL)
-    def is_local(self):
+    def is_local(self) -> bool:
         return federation_utils.is_local(self.fid)
 
     @property
@@ -152,7 +148,6 @@ class APIModelMixin(models.Model):
         parsed = urllib.parse.urlparse(self.fid)
         return parsed.hostname
 
-    @extend_schema_field({'type': 'array', 'items': {'type': 'string'}})
     def get_tags(self):
         return list(sorted(self.tagged_items.values_list("tag__name", flat=True)))
 
@@ -787,8 +782,7 @@ class Upload(models.Model):
     objects = UploadQuerySet.as_manager()
 
     @property
-    @extend_schema_field(OpenApiTypes.BOOL)
-    def is_local(self):
+    def is_local(self) -> bool:
         return federation_utils.is_local(self.fid)
 
     @property
