@@ -45,6 +45,8 @@ def custom_preprocessing_hook(endpoints):
     # your modifications to the list of operations that are exposed in the schema
     api_type = os.environ["API_TYPE"]
     for (path, path_regex, method, callback) in endpoints:
+        if path.startswith("/api/v1/providers"):
+            continue
         if path.startswith(f"/api/{api_type}"):
             filtered.append((path, path_regex, method, callback))
     return filtered
