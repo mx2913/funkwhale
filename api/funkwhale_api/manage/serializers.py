@@ -429,7 +429,7 @@ class ManageArtistSerializer(
     def get_albums_count(self, obj):
         return getattr(obj, "_albums_count", None)
 
-    @extend_schema_field({'type': 'array', 'items': {'type': 'string'}})
+    @extend_schema_field({"type": "array", "items": {"type": "string"}})
     def get_tags(self, obj):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]
@@ -464,7 +464,7 @@ class ManageAlbumSerializer(
     def get_tracks_count(self, o):
         return len(o.tracks.all())
 
-    @extend_schema_field({'type': 'array', 'items': {'type': 'string'}})
+    @extend_schema_field({"type": "array", "items": {"type": "string"}})
     def get_tags(self, obj):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]
@@ -503,7 +503,7 @@ class ManageTrackSerializer(
     def get_uploads_count(self, obj):
         return getattr(obj, "uploads_count", None)
 
-    @extend_schema_field({'type': 'array', 'items': {'type': 'string'}})
+    @extend_schema_field({"type": "array", "items": {"type": "string"}})
     def get_tags(self, obj):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]

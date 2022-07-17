@@ -41,6 +41,7 @@ class CoverField(common_serializers.AttachmentSerializer):
 
 cover_field = CoverField()
 
+
 @extend_schema_field(OpenApiTypes.OBJECT)
 def serialize_attributed_to(self, obj):
     # Import at runtime to avoid a circular import issue
@@ -132,7 +133,7 @@ class ArtistWithAlbumsSerializer(OptionalDescriptionMixin, serializers.Serialize
     is_local = serializers.BooleanField()
     cover = cover_field
 
-    @extend_schema_field({'type': 'array', 'items': {'type': 'string'}}) 
+    @extend_schema_field({"type": "array", "items": {"type": "string"}})
     def get_tags(self, obj):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]
@@ -231,7 +232,7 @@ class AlbumSerializer(OptionalDescriptionMixin, serializers.Serializer):
         except AttributeError:
             return None
 
-    @extend_schema_field({'type': 'array', 'items': {'type': 'string'}})
+    @extend_schema_field({"type": "array", "items": {"type": "string"}})
     def get_tags(self, obj):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]
@@ -268,6 +269,7 @@ class TrackAlbumSerializer(serializers.ModelSerializer):
             "is_local",
             "tracks_count",
         )
+
 
 @extend_schema_field(OpenApiTypes.OBJECT)
 def serialize_upload(upload):
@@ -327,7 +329,7 @@ class TrackSerializer(OptionalDescriptionMixin, serializers.Serializer):
     def get_listen_url(self, obj):
         return obj.listen_url
 
-    @extend_schema_field({'type': 'array', 'items': {'type': 'object'}})
+    @extend_schema_field({"type": "array", "items": {"type": "object"}})
     def get_uploads(self, obj):
         uploads = getattr(obj, "playable_uploads", [])
         # we put local uploads first
@@ -335,7 +337,7 @@ class TrackSerializer(OptionalDescriptionMixin, serializers.Serializer):
         uploads = sorted(uploads, key=lambda u: u["is_local"], reverse=True)
         return list(uploads)
 
-    @extend_schema_field({'type': 'array', 'items': {'type': 'str'}})
+    @extend_schema_field({"type": "array", "items": {"type": "str"}})
     def get_tags(self, obj):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]

@@ -29,6 +29,7 @@ from funkwhale_api.federation import keys
 from funkwhale_api.federation import models as federation_models
 from funkwhale_api.federation import utils as federation_utils
 
+
 def get_token(length=5):
     wordlist_path = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "wordlist.txt"

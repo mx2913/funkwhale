@@ -15,6 +15,7 @@ from funkwhale_api.federation import models as federation_models
 from funkwhale_api.federation import utils as federation_utils
 from funkwhale_api.users import models as user_models
 
+
 def empty_dict():
     return {}
 

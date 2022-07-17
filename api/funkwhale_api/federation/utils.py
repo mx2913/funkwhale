@@ -141,6 +141,7 @@ def local_qs(queryset, url_field="fid", include=True):
         query = ~query
     return queryset.filter(query)
 
+
 @extend_schema_field(OpenApiTypes.BOOL)
 def is_local(url):
     if not url:
