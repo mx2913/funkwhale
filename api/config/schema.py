@@ -43,7 +43,7 @@ class CustomApplicationTokenExt(OpenApiAuthenticationExtension):
 def custom_preprocessing_hook(endpoints):
     filtered = []
     # your modifications to the list of operations that are exposed in the schema
-    api_type = os.environ["API_TYPE"]
+    api_type = os.environ.get("API_TYPE", "v1")
     for (path, path_regex, method, callback) in endpoints:
         if path.startswith("/api/v1/providers"):
             continue
