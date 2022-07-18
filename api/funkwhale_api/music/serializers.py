@@ -309,7 +309,7 @@ class TrackSerializer(OptionalDescriptionMixin, serializers.Serializer):
 class LibraryForOwnerSerializer(serializers.ModelSerializer):
     uploads_count = serializers.SerializerMethodField()
     size = serializers.SerializerMethodField()
-    actor = APIActorSerializer()
+    actor = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Library
@@ -336,6 +336,10 @@ class LibraryForOwnerSerializer(serializers.ModelSerializer):
         routes.outbox.dispatch(
             {"type": "Update", "object": {"type": "Library"}}, context={"library": obj}
         )
+
+    @extend_schema_field(APIActorSerializer)
+    def get_actor(self, o):
+        return APIActorSerializer(o.actor).data
 
 
 class UploadSerializer(serializers.ModelSerializer):
