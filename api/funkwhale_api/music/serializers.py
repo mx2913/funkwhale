@@ -216,6 +216,11 @@ class AlbumSerializer(OptionalDescriptionMixin, serializers.Serializer):
 
     get_attributed_to = serialize_attributed_to
 
+    @extend_schema_field(OpenApiTypes.OBJECT)
+    def get_artist(self, obj):
+        return serialize_artist_simple(obj.artist)
+
+
     @extend_schema_field(OpenApiTypes.INT)
     def get_tracks_count(self, o):
         return len(o.tracks.all())
