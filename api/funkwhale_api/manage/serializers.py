@@ -93,7 +93,8 @@ class ManageUserSerializer(serializers.ModelSerializer):
             )
         return instance
 
-    def get_actor(self, obj) -> object:
+    @extend_schema_field(OpenApiTypes.OBJECT)
+    def get_actor(self, obj):
         if obj.actor:
             return ManageBaseActorSerializer(obj.actor).data
 

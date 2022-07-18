@@ -258,7 +258,8 @@ class ChannelSerializer(serializers.ModelSerializer):
             "downloads_count",
         ]
 
-    def get_artist(self, obj) -> object:
+    @extend_schema_field(OpenApiTypes.OBJECT)
+    def get_artist(self, obj):
         return music_serializers.serialize_artist_simple(obj.artist)
 
     def to_representation(self, obj):
