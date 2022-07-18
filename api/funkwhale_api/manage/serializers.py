@@ -250,7 +250,7 @@ class ManageActorActionSerializer(common_serializers.ActionSerializer):
         common_utils.on_commit(federation_tasks.purge_actors.delay, ids=list(ids))
 
 
-class TargetSerializer(serializers.Serializer):
+class ManageTargetSerializer(serializers.Serializer):
     type = serializers.ChoiceField(choices=["domain", "actor"])
     id = serializers.CharField()
 
@@ -272,7 +272,7 @@ class TargetSerializer(serializers.Serializer):
 
 
 class ManageInstancePolicySerializer(serializers.ModelSerializer):
-    target = TargetSerializer()
+    target = ManageTargetSerializer()
     actor = federation_fields.ActorRelatedField(read_only=True)
 
     class Meta:
