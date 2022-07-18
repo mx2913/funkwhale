@@ -10,9 +10,6 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _
 
-from drf_spectacular.utils import extend_schema_field
-from drf_spectacular.types import OpenApiTypes
-
 from . import models
 from . import utils
 
@@ -273,8 +270,7 @@ class APIMutationSerializer(serializers.ModelSerializer):
             "previous_state",
         ]
 
-    @extend_schema_field(OpenApiTypes.OBJECT)
-    def get_target(self, obj):
+    def get_target(self, obj) -> object:
         target = obj.target
         if not target:
             return
@@ -296,8 +292,7 @@ class AttachmentSerializer(serializers.Serializer):
     file = StripExifImageField(write_only=True)
     urls = serializers.SerializerMethodField()
 
-    @extend_schema_field(OpenApiTypes.OBJECT)
-    def get_urls(self, o):
+    def get_urls(self, o) -> object:
         urls = {}
         urls["source"] = o.url
         urls["original"] = o.download_url_original
@@ -320,8 +315,7 @@ class ContentSerializer(serializers.Serializer):
     )
     html = serializers.SerializerMethodField()
 
-    @extend_schema_field(OpenApiTypes.STR)
-    def get_html(self, o):
+    def get_html(self, o) -> str:
         return utils.render_html(o.text, o.content_type)
 
 

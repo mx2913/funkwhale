@@ -11,9 +11,6 @@ from django.db.models import CharField, Q, Value
 from funkwhale_api.common import session
 from funkwhale_api.moderation import mrf
 
-from drf_spectacular.utils import extend_schema_field
-from drf_spectacular.types import OpenApiTypes
-
 from . import exceptions
 from . import signing
 
@@ -142,8 +139,7 @@ def local_qs(queryset, url_field="fid", include=True):
     return queryset.filter(query)
 
 
-@extend_schema_field(OpenApiTypes.BOOL)
-def is_local(url):
+def is_local(url) -> bool:
     if not url:
         return True
 

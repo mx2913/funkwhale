@@ -93,8 +93,7 @@ class ManageUserSerializer(serializers.ModelSerializer):
             )
         return instance
 
-    @extend_schema_field(OpenApiTypes.OBJECT)
-    def get_actor(self, obj):
+    def get_actor(self, obj) -> object:
         if obj.actor:
             return ManageBaseActorSerializer(obj.actor).data
 
@@ -155,12 +154,10 @@ class ManageDomainSerializer(serializers.ModelSerializer):
             "nodeinfo_fetch_date",
         ]
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_actors_count(self, o):
+    def get_actors_count(self, o) -> int:
         return getattr(o, "actors_count", 0)
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_outbox_activities_count(self, o):
+    def get_outbox_activities_count(self, o) -> int:
         return getattr(o, "outbox_activities_count", 0)
 
 
@@ -217,8 +214,7 @@ class ManageBaseActorSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["creation_date", "instance_policy"]
 
-    @extend_schema_field(OpenApiTypes.BOOL)
-    def get_is_local(self, o):
+    def get_is_local(self, o) -> bool:
         return o.domain_id == settings.FEDERATION_HOSTNAME
 
 
@@ -235,8 +231,7 @@ class ManageActorSerializer(ManageBaseActorSerializer):
         ]
         read_only_fields = ["creation_date", "instance_policy"]
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_uploads_count(self, o):
+    def get_uploads_count(self, o) -> int:
         return getattr(o, "uploads_count", 0)
 
 
@@ -460,8 +455,7 @@ class ManageAlbumSerializer(
             "tracks_count",
         ]
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_tracks_count(self, o):
+    def get_tracks_count(self, o) -> int:
         return len(o.tracks.all())
 
     @extend_schema_field({"type": "array", "items": {"type": "string"}})
@@ -588,9 +582,8 @@ class ManageLibrarySerializer(serializers.ModelSerializer):
             "creation_date",
         ]
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_uploads_count(self, obj):
-        return getattr(obj, "_uploads_count", obj.uploads_count)
+    def get_uploads_count(self, obj) -> int:
+        return getattr(obj, "_uploads_count", int(obj.uploads_count))
 
     @extend_schema_field(OpenApiTypes.INT)
     def get_followers_count(self, obj):

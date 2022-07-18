@@ -42,8 +42,7 @@ class CoverField(common_serializers.AttachmentSerializer):
 cover_field = CoverField()
 
 
-@extend_schema_field(OpenApiTypes.OBJECT)
-def serialize_attributed_to(self, obj):
+def serialize_attributed_to(self, obj) -> object:
     # Import at runtime to avoid a circular import issue
     from funkwhale_api.federation import serializers as federation_serializers
 
@@ -78,8 +77,7 @@ class LicenseSerializer(serializers.Serializer):
     attribution = serializers.BooleanField()
     copyleft = serializers.BooleanField()
 
-    @extend_schema_field(OpenApiTypes.STR)
-    def get_id(self, obj):
+    def get_id(self, obj) -> str:
         return obj["identifiers"][0]
 
     class Meta:
@@ -99,16 +97,13 @@ class ArtistAlbumSerializer(serializers.Serializer):
     release_date = serializers.DateField()
     creation_date = serializers.DateTimeField()
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_artist(self, o):
+    def get_artist(self, o) -> int:
         return o.artist_id
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_tracks_count(self, o):
+    def get_tracks_count(self, o) -> int:
         return len(o.tracks.all())
 
-    @extend_schema_field(OpenApiTypes.BOOL)
-    def get_is_playable(self, obj):
+    def get_is_playable(self, obj) -> bool:
         try:
             return bool(obj.is_playable_by_actor)
         except AttributeError:
@@ -140,13 +135,11 @@ class ArtistWithAlbumsSerializer(OptionalDescriptionMixin, serializers.Serialize
 
     get_attributed_to = serialize_attributed_to
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_tracks_count(self, o):
+    def get_tracks_count(self, o) -> int:
         tracks = getattr(o, "_prefetched_tracks", None)
-        return len(tracks) if tracks else None
+        return len(tracks) if tracks else 0
 
-    @extend_schema_field(OpenApiTypes.OBJECT)
-    def get_channel(self, o):
+    def get_channel(self, o) -> object:
         channel = o.get_channel()
         if not channel:
             return
@@ -216,17 +209,14 @@ class AlbumSerializer(OptionalDescriptionMixin, serializers.Serializer):
 
     get_attributed_to = serialize_attributed_to
 
-    @extend_schema_field(OpenApiTypes.OBJECT)
-    def get_artist(self, obj):
+    def get_artist(self, obj) -> object:
         return serialize_artist_simple(obj.artist)
 
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_tracks_count(self, o):
+    def get_tracks_count(self, o) -> int:
         return len(o.tracks.all())
 
-    @extend_schema_field(OpenApiTypes.BOOL)
-    def get_is_playable(self, obj):
+    def get_is_playable(self, obj) -> bool:
         try:
             return any(
                 [
@@ -242,8 +232,7 @@ class AlbumSerializer(OptionalDescriptionMixin, serializers.Serializer):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_duration(self, obj):
+    def get_duration(self, obj) -> int:
         try:
             return obj.duration
         except AttributeError:
@@ -256,8 +245,7 @@ class TrackAlbumSerializer(serializers.ModelSerializer):
     cover = cover_field
     tracks_count = serializers.SerializerMethodField()
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_tracks_count(self, o):
+    def get_tracks_count(self, o) -> int:
         return getattr(o, "_prefetched_tracks_count", len(o.tracks.all()))
 
     class Meta:
@@ -276,8 +264,7 @@ class TrackAlbumSerializer(serializers.ModelSerializer):
         )
 
 
-@extend_schema_field(OpenApiTypes.OBJECT)
-def serialize_upload(upload):
+def serialize_upload(upload) -> object:
     return {
         "uuid": str(upload.uuid),
         "listen_url": upload.listen_url,
@@ -347,12 +334,10 @@ class TrackSerializer(OptionalDescriptionMixin, serializers.Serializer):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]
 
-    @extend_schema_field(OpenApiTypes.STR)
-    def get_license(self, o):
+    def get_license(self, o) -> str:
         return o.license_id
 
-    @extend_schema_field(OpenApiTypes.BOOL)
-    def get_is_playable(self, obj):
+    def get_is_playable(self, obj) -> bool:
         return bool(getattr(obj, "playable_uploads", []))
 
 
@@ -377,12 +362,10 @@ class LibraryForOwnerSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["fid", "uuid", "creation_date", "actor"]
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_uploads_count(self, o):
-        return getattr(o, "_uploads_count", o.uploads_count)
+    def get_uploads_count(self, o) -> int:
+        return getattr(o, "_uploads_count", int(o.uploads_count))
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_size(self, o):
+    def get_size(self, o) -> int:
         return getattr(o, "_size", 0)
 
     def on_updated_fields(self, obj, before, after):
@@ -390,8 +373,7 @@ class LibraryForOwnerSerializer(serializers.ModelSerializer):
             {"type": "Update", "object": {"type": "Library"}}, context={"library": obj}
         )
 
-    @extend_schema_field(OpenApiTypes.OBJECT)
-    def get_actor(self, o):
+    def get_actor(self, o) -> object:
         # Import at runtime to avoid a circular import issue
         from funkwhale_api.federation import serializers as federation_serializers
 

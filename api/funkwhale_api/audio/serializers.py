@@ -258,8 +258,7 @@ class ChannelSerializer(serializers.ModelSerializer):
             "downloads_count",
         ]
 
-    @extend_schema_field(OpenApiTypes.OBJECT)
-    def get_artist(self, obj):
+    def get_artist(self, obj) -> object:
         return music_serializers.serialize_artist_simple(obj.artist)
 
     def to_representation(self, obj):
@@ -268,12 +267,10 @@ class ChannelSerializer(serializers.ModelSerializer):
             data["subscriptions_count"] = self.get_subscriptions_count(obj)
         return data
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_subscriptions_count(self, obj):
+    def get_subscriptions_count(self, obj) -> int:
         return obj.actor.received_follows.exclude(approved=False).count()
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_downloads_count(self, obj):
+    def get_downloads_count(self, obj) -> int:
         return getattr(obj, "_downloads_count", None) or 0
 
     @extend_schema_field(federation_serializers.APIActorSerializer)

@@ -62,16 +62,14 @@ class PlaylistSerializer(serializers.ModelSerializer):
         except AttributeError:
             return None
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_tracks_count(self, obj):
+    def get_tracks_count(self, obj) -> int:
         try:
             return obj.tracks_count
         except AttributeError:
             # no annotation?
             return obj.playlist_tracks.count()
 
-    @extend_schema_field(OpenApiTypes.INT)
-    def get_duration(self, obj):
+    def get_duration(self, obj) -> int:
         try:
             return obj.duration
         except AttributeError:
