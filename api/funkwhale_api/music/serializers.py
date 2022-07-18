@@ -43,7 +43,6 @@ class CoverField(common_serializers.AttachmentSerializer):
 cover_field = CoverField()
 
 
-
 class OptionalDescriptionMixin(object):
     def to_representation(self, obj):
         repr = super().to_representation(obj)
@@ -255,6 +254,7 @@ class TrackAlbumSerializer(serializers.ModelSerializer):
     @extend_schema_field(OpenApiTypes.OBJECT)
     def get_artist(self, o):
         return serialize_artist_simple(o.artist)
+
 
 def serialize_upload(upload) -> object:
     return {

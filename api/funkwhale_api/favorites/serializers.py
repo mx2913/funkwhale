@@ -2,7 +2,11 @@ from rest_framework import serializers
 
 from funkwhale_api.activity import serializers as activity_serializers
 from funkwhale_api.federation import serializers as federation_serializers
-from funkwhale_api.music.serializers import TrackActivitySerializer, TrackSerializer, serialize_artist_simple
+from funkwhale_api.music.serializers import (
+    TrackActivitySerializer,
+    TrackSerializer,
+    serialize_artist_simple,
+)
 from funkwhale_api.users.serializers import UserActivitySerializer, UserBasicSerializer
 
 from drf_spectacular.utils import extend_schema_field
