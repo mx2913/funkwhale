@@ -33,9 +33,6 @@ COVER_WRITE_FIELD = common_serializers.RelatedField(
     write_only=True,
 )
 
-from funkwhale_api.audio import serializers as audio_serializers  # NOQA
-
-
 class CoverField(common_serializers.AttachmentSerializer):
     pass
 
@@ -144,44 +141,29 @@ class ArtistWithAlbumsSerializer(OptionalDescriptionMixin, serializers.Serialize
         }
 
 
-def serialize_artist_simple(artist):
-    data = {
-        "id": artist.id,
-        "fid": artist.fid,
-        "mbid": str(artist.mbid),
-        "name": artist.name,
-        "creation_date": DATETIME_FIELD.to_representation(artist.creation_date),
-        "modification_date": DATETIME_FIELD.to_representation(artist.modification_date),
-        "is_local": artist.is_local,
-        "content_category": artist.content_category,
-    }
-    if "description" in artist._state.fields_cache:
-        data["description"] = (
-            common_serializers.ContentSerializer(artist.description).data
-            if artist.description
-            else None
+class SimpleArtistSerializer(serializers.ModelSerializer):
+    attachment_cover = cover_field
+    description = common_serializers.ContentSerializer()
+
+    class Meta:
+        model = models.Artist
+        fields = (
+            "id",
+            "fid",
+            "mbid",
+            "name",
+            "creation_date",
+            "modification_date",
+            "is_local",
+            "content_category",
+            "description",
+            "attachment_cover",
+            "channel",
         )
-
-    if "attachment_cover" in artist._state.fields_cache:
-        data["cover"] = (
-            cover_field.to_representation(artist.attachment_cover)
-            if artist.attachment_cover
-            else None
-        )
-    if "channel" in artist._state.fields_cache and artist.get_channel():
-        data["channel"] = str(artist.channel.uuid)
-
-    if getattr(artist, "_tracks_count", None) is not None:
-        data["tracks_count"] = artist._tracks_count
-
-    if getattr(artist, "_prefetched_tagged_items", None) is not None:
-        data["tags"] = [ti.tag.name for ti in artist._prefetched_tagged_items]
-
-    return data
 
 
 class AlbumSerializer(OptionalDescriptionMixin, serializers.Serializer):
-    artist = serializers.SerializerMethodField()
+    artist = SimpleArtistSerializer()
     cover = cover_field
     is_playable = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
@@ -191,15 +173,10 @@ class AlbumSerializer(OptionalDescriptionMixin, serializers.Serializer):
     fid = serializers.URLField()
     mbid = serializers.UUIDField()
     title = serializers.CharField()
-    artist = serializers.SerializerMethodField()
     release_date = serializers.DateField()
     creation_date = serializers.DateTimeField()
     is_local = serializers.BooleanField()
     duration = serializers.SerializerMethodField(read_only=True)
-
-    @extend_schema_field(OpenApiTypes.OBJECT)
-    def get_artist(self, obj):
-        return serialize_artist_simple(obj.artist)
 
     def get_tracks_count(self, o) -> int:
         return len(o.tracks.all())
@@ -229,7 +206,7 @@ class AlbumSerializer(OptionalDescriptionMixin, serializers.Serializer):
 
 
 class TrackAlbumSerializer(serializers.ModelSerializer):
-    artist = serializers.SerializerMethodField()
+    artist = SimpleArtistSerializer()
     cover = cover_field
     tracks_count = serializers.SerializerMethodField()
 
@@ -250,10 +227,6 @@ class TrackAlbumSerializer(serializers.ModelSerializer):
             "is_local",
             "tracks_count",
         )
-
-    @extend_schema_field(OpenApiTypes.OBJECT)
-    def get_artist(self, o):
-        return serialize_artist_simple(o.artist)
 
 
 def serialize_upload(upload) -> object:
@@ -286,7 +259,7 @@ def sort_uploads_for_listen(uploads):
 
 
 class TrackSerializer(OptionalDescriptionMixin, serializers.Serializer):
-    artist = serializers.SerializerMethodField()
+    artist = SimpleArtistSerializer()
     album = TrackAlbumSerializer(read_only=True)
     uploads = serializers.SerializerMethodField()
     listen_url = serializers.SerializerMethodField()
@@ -297,7 +270,6 @@ class TrackSerializer(OptionalDescriptionMixin, serializers.Serializer):
     fid = serializers.URLField()
     mbid = serializers.UUIDField()
     title = serializers.CharField()
-    artist = serializers.SerializerMethodField()
     creation_date = serializers.DateTimeField()
     is_local = serializers.BooleanField()
     position = serializers.IntegerField()
@@ -307,10 +279,6 @@ class TrackSerializer(OptionalDescriptionMixin, serializers.Serializer):
     license = serializers.SerializerMethodField()
     cover = cover_field
     is_playable = serializers.SerializerMethodField()
-
-    @extend_schema_field(OpenApiTypes.OBJECT)
-    def get_artist(self, obj):
-        return serialize_artist_simple(obj.artist)
 
     @extend_schema_field(OpenApiTypes.URI)
     def get_listen_url(self, obj):
@@ -370,6 +338,7 @@ class LibraryForOwnerSerializer(serializers.ModelSerializer):
 
 
 class UploadSerializer(serializers.ModelSerializer):
+    from funkwhale_api.audio.serializers import ChannelSerializer
     track = TrackSerializer(required=False, allow_null=True)
     library = common_serializers.RelatedField(
         "uuid",
@@ -379,7 +348,7 @@ class UploadSerializer(serializers.ModelSerializer):
     )
     channel = common_serializers.RelatedField(
         "uuid",
-        audio_serializers.ChannelSerializer(),
+        ChannelSerializer(),
         required=False,
         filters=lambda context: {"attributed_to": context["user"].actor},
     )
