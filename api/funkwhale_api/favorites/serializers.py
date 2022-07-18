@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from funkwhale_api.activity import serializers as activity_serializers
 from funkwhale_api.federation import serializers as federation_serializers
-from funkwhale_api.music.serializers import TrackActivitySerializer, TrackSerializer
+from funkwhale_api.music.serializers import TrackActivitySerializer, TrackSerializer, serialize_artist_simple
 from funkwhale_api.users.serializers import UserActivitySerializer, UserBasicSerializer
 
 from drf_spectacular.utils import extend_schema_field
@@ -31,6 +31,9 @@ class UserTrackFavoriteSerializer(serializers.ModelSerializer):
     track = TrackSerializer(read_only=True)
     user = UserBasicSerializer(read_only=True)
     actor = serializers.SerializerMethodField()
+
+    def get_artist(self, obj) -> object:
+        return serialize_artist_simple(obj.artist)
 
     class Meta:
         model = models.TrackFavorite
