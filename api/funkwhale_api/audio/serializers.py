@@ -28,7 +28,7 @@ from funkwhale_api.federation import serializers as federation_serializers
 from funkwhale_api.federation import utils as federation_utils
 from funkwhale_api.moderation import mrf
 from funkwhale_api.music import models as music_models
-from funkwhale_api.music.serializers import (SimpleArtistSerializer, COVER_WRITE_FIELD)
+from funkwhale_api.music.serializers import SimpleArtistSerializer, COVER_WRITE_FIELD
 from funkwhale_api.tags import models as tags_models
 from funkwhale_api.tags import serializers as tags_serializers
 from funkwhale_api.users import serializers as users_serializers

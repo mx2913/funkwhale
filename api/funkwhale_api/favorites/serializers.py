@@ -34,7 +34,7 @@ class UserTrackFavoriteSerializer(serializers.ModelSerializer):
     track = TrackSerializer(read_only=True)
     user = UserBasicSerializer(read_only=True)
     actor = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = models.TrackFavorite
         fields = ("id", "user", "track", "creation_date", "actor")

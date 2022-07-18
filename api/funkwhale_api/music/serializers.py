@@ -33,6 +33,7 @@ COVER_WRITE_FIELD = common_serializers.RelatedField(
     write_only=True,
 )
 
+
 class CoverField(common_serializers.AttachmentSerializer):
     pass
 
@@ -339,6 +340,7 @@ class LibraryForOwnerSerializer(serializers.ModelSerializer):
 
 class UploadSerializer(serializers.ModelSerializer):
     from funkwhale_api.audio.serializers import ChannelSerializer
+
     track = TrackSerializer(required=False, allow_null=True)
     library = common_serializers.RelatedField(
         "uuid",
