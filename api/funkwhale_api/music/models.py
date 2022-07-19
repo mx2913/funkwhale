@@ -251,7 +251,7 @@ class Artist(APIModelMixin):
         db_index=True,
         default="music",
         choices=ARTIST_CONTENT_CATEGORY_CHOICES,
-        null=True,
+        null=False,
     )
     modification_date = models.DateTimeField(default=timezone.now, db_index=True)
     api = musicbrainz.api.artists
