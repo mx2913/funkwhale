@@ -132,6 +132,7 @@ SPECTACULAR_SETTINGS = {
     "OAUTH2_AUTHORIZATION_URL": "/authorize",
     "OAUTH2_TOKEN_URL": "/api/v1/oauth/token/",
     "PREPROCESSING_HOOKS": ["config.schema.custom_preprocessing_hook"],
+    'ENUM_ADD_EXPLICIT_BLANK_NULL_CHOICE': False,
     "ENUM_NAME_OVERRIDES": {
         "FederationChoiceEnum": "funkwhale_api.federation.models.TYPE_CHOICES",
         "ReportTypeEnum": "funkwhale_api.moderation.models.REPORT_TYPES",
