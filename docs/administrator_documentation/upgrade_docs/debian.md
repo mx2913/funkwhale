@@ -2,11 +2,11 @@
 
 If you installed Funkwhale following the [Debian guide](../installation_docs/debian), follow these steps to upgrade.
 
-:::{dropdown} Upgrading to a new version of Debian
+:::{dropdown} Upgrading to a new version of Python
 :icon: alert
 :color: warning
 
-If you are upgrading to a new version of Debian, you need to upgrade your virtualenv. This is due to Debian updating the Python installation between versions.
+If you upgrade your Python version, you need to update your virtualenv. Python is updated with each new version of Debian.
 
 To upgrade your virtualenv:
 
