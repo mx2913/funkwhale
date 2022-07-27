@@ -105,7 +105,7 @@ To restore your database, do the following:
 :::{tab-item} Debian
 :sync: debian
 
-1. Restore your database backup with `pg_restore`:
+1. Restore your database backup:
 
    ```{code} bash
    sudo -u postgres psql -f /path/to/your/backup/dump.sql funkwhale
