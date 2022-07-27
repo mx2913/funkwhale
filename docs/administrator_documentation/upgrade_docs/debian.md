@@ -2,6 +2,28 @@
 
 If you installed Funkwhale following the [Debian guide](../installation_docs/debian), follow these steps to upgrade.
 
+:::{dropdown} Upgrading to a new version of Debian
+:icon: alert
+:color: warning
+
+If you are upgrading to a new version of Debian, you need to upgrade your virtualenv. This is due to Debian updating the Python installation between versions.
+
+To upgrade your virtualenv:
+
+1. Update your virtualenv using `pip`.
+
+   ```{code-block} bash
+   sudo -u funkwhale -H -E python3 -m pip update /srv/funkwhale/virtualenv
+   ```
+
+2. Install the requirements using the upgraded virtualenv.
+
+   ```{code-block} bash
+   sudo -u funkwhale -H -E /srv/funkwhale/virtualenv/bin/pip install -r /srv/funkwhale/api/requirements.txt
+   ```
+
+:::
+
 ## Download the updated files
 
 1. SSH into your server.
