@@ -22,12 +22,11 @@ workflow:
     - if: $CI_COMMIT_BRANCH
 
 stages:
-  - build
   - review
   - lint
   - test
+  - build
   - deploy
-  - deps
 
 review_front:
   interruptible: true
