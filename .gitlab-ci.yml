@@ -22,15 +22,15 @@ workflow:
     - if: $CI_COMMIT_BRANCH
 
 stages:
-  - review
+  - deploy
   - lint
   - test
   - build
-  - deploy
+  - publish
 
 review_front:
   interruptible: true
-  stage: review
+  stage: deploy
   image: node:16-alpine
   when: manual
   allow_failure: true
@@ -67,7 +67,7 @@ review_front:
 
 review_docs:
   interruptible: true
-  stage: review
+  stage: deploy
   when: manual
   allow_failure: true
   image: python:3.10
@@ -312,7 +312,7 @@ build_documentation:
     - docker
 
 deploy_documentation:
-  stage: deploy
+  stage: publish
   image: alpine
   dependencies:
     - build_documentation
@@ -330,7 +330,7 @@ deploy_documentation:
 
 
 .docker_publish:
-  stage: deploy
+  stage: publish
   image: egon0/docker-with-buildx-and-git:bash
   tags:
     - multiarch
@@ -397,7 +397,7 @@ docker_publish_non-release:
       - COMPONENT: ["api", "front"]
 
 docker_all_in_one_release:
-  stage: deploy
+  stage: publish
   image: egon0/docker-with-buildx-and-git:bash
   allow_failure: true
   services:
@@ -429,7 +429,7 @@ docker_all_in_one_release:
 
 build_api:
   # Simply publish a zip containing api/ directory
-  stage: deploy
+  stage: publish
   image: bash
   artifacts:
     name: "api_${CI_COMMIT_REF_NAME}"
