@@ -16,6 +16,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
             "--force",
+            action="store_true",
             default=False,
             help="Disable dry run mode and apply pruning for real on the database",
         )
