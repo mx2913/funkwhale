@@ -901,7 +901,7 @@
     "@babel/types" "^7.4.4"
     esutils "^2.0.2"
 
-"@babel/runtime@^7.11.2", "@babel/runtime@^7.8.4":
+"@babel/runtime@^7.11.2", "@babel/runtime@^7.19.0", "@babel/runtime@^7.8.4":
   version "7.19.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.19.0.tgz#22b11c037b094d27a8a2504ea4dcff00f50e2259"
   integrity sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA==
@@ -2090,6 +2090,14 @@ at-least-node@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
+
+automation-events@^4.0.21:
+  version "4.0.21"
+  resolved "https://registry.yarnpkg.com/automation-events/-/automation-events-4.0.21.tgz#7dbf168a83210f1863824cd4a60644dc852f7eca"
+  integrity sha512-VJdSzclxoBVAqE4UAwmqPLHAM3EI2iYhZ2MADdQnjFlW/GE17B47aQ6y9JE9up2bf8f7I5RfqGhJM464jPMzww==
+  dependencies:
+    "@babel/runtime" "^7.19.0"
+    tslib "^2.4.0"
 
 axios-auth-refresh@3.3.3:
   version "3.3.3"
@@ -4934,6 +4942,15 @@ sourcemap-codec@^1.4.8:
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
   integrity sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
+
+standardized-audio-context@^25.3.32:
+  version "25.3.32"
+  resolved "https://registry.yarnpkg.com/standardized-audio-context/-/standardized-audio-context-25.3.32.tgz#01f09f64b53f81e07dae9c5534a08a7d832e83c0"
+  integrity sha512-TtnRZGzHaTowIrEPo7w7WK74TrrY885NpplFpD79h85YuUAUBrUGifHlh8GK11oyZHfwDtCV29yFPfIHWotrXg==
+  dependencies:
+    "@babel/runtime" "^7.19.0"
+    automation-events "^4.0.21"
+    tslib "^2.4.0"
 
 string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
