@@ -1,15 +1,5 @@
 # API authentication
 
-The Funkwhale API can be accessed using the following mechanisms:
-
-- Cookie auth - applies to authenticated users logged in through the Funkwhale web app
-- OAuth2 - applies to third party apps
-- Anonymous access - applies to non-sensitive endpoints and needs to be explicitly enabled by the pod administrator
-
-To support these access mechanisms, we use OAuth scopes to delegate required permissions to apps.
-
-## OAuth workflow
-
 Funkwhale uses the OAuth [authorization grant flow](https://tools.ietf.org/html/rfc6749#section-4.1) for external apps. This flow is a secure way to authenticate apps that requires a user's explicit consent to perform actions.
 
 ```{mermaid}
@@ -39,7 +29,7 @@ Funkwhale uses the OAuth [authorization grant flow](https://tools.ietf.org/html/
 :local:
 ```
 
-### 1. Create an application
+## 1. Create an application
 
 To connect to the Funkwhale API using OAuth, you need to create an **application**. This represents the entity credentials are related to.
 
@@ -95,7 +85,7 @@ Once you've decided on your scopes and your redirect URI, you can create your ap
 
 Both methods return a [**client ID**](https://www.rfc-editor.org/rfc/rfc6749#section-2.2) and a [**secret**](https://www.rfc-editor.org/rfc/rfc6749#section-2.3.1).
 
-### 2. Get an authorization code
+## 2. Get an authorization code
 
 ```{important}
 Authorization codes are only valid for 5 minutes after the user approves the request.
@@ -117,7 +107,7 @@ Here is an example URL: `https://demo.funkwhale.audio/authorize?response_type=co
 
 When the user authorizes your app, the server responds with an authorization code. See [the OAuth spec](https://www.rfc-editor.org/rfc/rfc6749#section-4.1.2) for more information about this response.
 
-### 3. Get an access token
+## 3. Get an access token
 
 Once you receive your authorization code, you need to [request an access token](https://www.rfc-editor.org/rfc/rfc6749#section-4.1.3). To request an access token, call the `/api/v1/oauth/token` endpoint with the following information:
 
@@ -130,13 +120,15 @@ The server responds with an [`access_token`](https://www.rfc-editor.org/rfc/rfc6
 
 You can use this token to authenticate calls from your application to the Funkwhale API by passing it as a request header with the following format: `Authorization: Bearer <token>`.
 
-### 4. Refresh your access token
+## 4. Refresh your access token
 
 ```{important}
 When you refresh your token the endpoint returns a new `refresh_token`. You must update your refresh token each time you request a new access token.
 ```
 
-Funkwhale access tokens are valid for **10 hours**. After this time, you must request a new access token by calling the `/api/v1/oauth/token` endpoint with the following information:
+By default, Funkwhale access tokens are valid for **10 hours**. Pod admins can configure this by setting the `ACCESS_TOKEN_EXPIRE_SECONDS` variable in their `.env` file.
+
+After the access token expires, you must request a new access token by calling the `/api/v1/oauth/token` endpoint with the following information:
 
 - `grant_type`* - Must be set to `refresh_token`
 - `refresh_token`* - Your current refresh token
