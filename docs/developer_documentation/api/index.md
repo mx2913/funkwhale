@@ -12,6 +12,7 @@ maxdepth: 1
 
 API explorer<https://docs.funkwhale.audio/swagger/>
 authentication
+rate_limit
 subsonic
 
 ```
