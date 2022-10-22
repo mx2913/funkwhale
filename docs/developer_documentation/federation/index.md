@@ -116,7 +116,7 @@ In this example, **Alice** sends a follow activity for a [library object](#libra
 
 ### Accept
 
-The `Accept` activity sends a positive response, such as confirming a [follow activity](#follow).
+The `Accept` activity sends a positive response, such as confirming a [`Follow` activity](#follow).
 
 ::::{dropdown} Supported on
 
@@ -258,7 +258,7 @@ When Funkwhale receives an update associated with a [`Library`](#library) or [`T
 Funkwhale performs different checks depending on the target of the update:
 
 - For [`Library`](#library) objects, Funkwhale ensures the actor sending the message is the library owner
-- For [`Track`] objects, Funkwhale ensures the actor sending the message **either**:
+- For [`Track`](#track) objects, Funkwhale ensures the actor sending the message **either**:
   - Matches the [`attributedTo`](#attributedto) property on the local copy of the object
   - Is the [service actor](#service-actor)
 
