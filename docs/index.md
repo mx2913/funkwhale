@@ -87,7 +87,8 @@ caption: Contributor documentation
 hidden: true
 ---
 
-documentation/index
+contributor_documentation/index
+contributor_documentation/documentation
 translators
 
 ```
@@ -214,7 +215,7 @@ Want to help make Funkwhale even better? Check out these guides for some ideas.
 
 +++
 
-```{button-link} contributing.html
+```{button-link} contributor_documentation/index.html
 :ref-type: ref
 :color: primary
 :outline:
