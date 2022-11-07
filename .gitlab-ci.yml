@@ -69,7 +69,7 @@ review_docs:
   interruptible: true
   stage: deploy
   allow_failure: true
-  image: python:3.10
+  image: python:3.11
   variables:
     BUILD_PATH: "../docs-review"
   before_script:
@@ -124,7 +124,7 @@ changelog_snippet:
 
 black:
   interruptible: true
-  image: python:3.10
+  image: python:3.11
   stage: lint
   variables:
     GIT_STRATEGY: fetch
@@ -139,7 +139,7 @@ black:
 
 flake8:
   interruptible: true
-  image: python:3.7
+  image: python:3.11
   stage: lint
   variables:
     GIT_STRATEGY: fetch
@@ -309,7 +309,7 @@ build_front:
 
 build_documentation:
   stage: build
-  image: python:3.10
+  image: python:3.11
   variables:
     BUILD_PATH: "../public"
   before_script:
