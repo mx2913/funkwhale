@@ -35,7 +35,7 @@ build_dep_wheels:
       - DOCKER_PLATFORM: [amd64, arm64v8] # arm32v7, riscv64]
   image: ${DOCKER_PLATFORM}/alpine:3.17
   before_script:
-    ->
+    - >
       apk add
       musl-dev
       gcc
