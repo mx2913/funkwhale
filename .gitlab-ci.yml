@@ -29,10 +29,10 @@ stages:
   - publish
 
 build_dep_wheels:
-  tags: [docker, multiarch]
+  tags: [docker, $DOCKER_PLATFORM]
   parallel:
     matrix:
-      - DOCKER_PLATFORM: [amd64, arm64v8] # arm32v7, riscv64]
+      - DOCKER_PLATFORM: [amd64, arm64v8] #, arm32v7, riscv64]
   image: ${DOCKER_PLATFORM}/alpine:3.17
   before_script:
     - >
@@ -58,7 +58,9 @@ build_dep_wheels:
       curl
       poetry
       py3-pip
-    - poetry export --without-hashes > requirements.txt
+    - cd api
+    - poetry export --without-hashes > ../requirements.txt
+    - cd ..
     - python -m venv venv
     - source venv/bin/activate
     - pip install --upgrade pip
