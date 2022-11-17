@@ -31,9 +31,9 @@ stages:
 build_dep_wheels:
   parallel:
     matrix:
-      - DOCKER_PLATFORM: [amd64, arm64v8, arm32v7, riscv64]
+      - DOCKER_PLATFORM: [amd64, arm64v8, arm32v7] #, riscv64]
   tags: [docker, $DOCKER_PLATFORM]
-  image: ${DOCKER_PLATFORM}/alpine:3.17
+  image: ${DOCKER_PLATFORM}/alpine:edge #3.17
   before_script:
     - >
       apk add
@@ -41,10 +41,6 @@ build_dep_wheels:
       gcc
       postgresql-dev
       python3-dev
-      py3-psycopg2
-      py3-cryptography
-      py3-lxml
-      py3-pillow
       libldap
       libffi-dev
       make
