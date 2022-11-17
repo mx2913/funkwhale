@@ -31,7 +31,7 @@ stages:
 build_dep_wheels:
   parallel:
     matrix:
-      - DOCKER_PLATFORM: [amd64, arm64v8, arm32v7, riscv64]
+      - DOCKER_PLATFORM: [amd64, i386, arm64v8, arm32v7, riscv64]
   tags: [docker, $DOCKER_PLATFORM]
   image: ${DOCKER_PLATFORM}/alpine:edge #3.17
   before_script:
