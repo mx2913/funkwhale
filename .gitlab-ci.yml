@@ -29,10 +29,10 @@ stages:
   - publish
 
 build_dep_wheels:
-  tags: [docker, $DOCKER_PLATFORM]
   parallel:
     matrix:
       - DOCKER_PLATFORM: [amd64, arm64v8] #, arm32v7, riscv64]
+  tags: [docker, $DOCKER_PLATFORM]
   image: ${DOCKER_PLATFORM}/alpine:3.17
   before_script:
     - >
