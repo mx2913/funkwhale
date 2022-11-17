@@ -57,7 +57,7 @@ build_dep_wheels:
       libxslt-dev
       curl
       poetry
-      pip
+      py3-pip
     - poetry export --without-hashes > requirements.txt
     - python -m venv venv
     - source venv/bin/activate
