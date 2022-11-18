@@ -28,7 +28,18 @@ stages:
   - build
   - publish
 
+test:
+  stages: deploy
+  image: alpine
+  variables:
+    TEST: $IMAGE_NAME
+    IMAGE_NAME: topkek
+  script:
+    - echo $TEST
+    - echo $IMAGE_NAME
+    
 build_dep_wheels:
+  stage: build
   parallel:
     matrix:
       - DOCKER_PLATFORM: [amd64, i386, arm64v8, arm32v7, riscv64]
