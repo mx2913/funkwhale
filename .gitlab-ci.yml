@@ -29,7 +29,7 @@ stages:
   - publish
 
 test:
-  stages: deploy
+  stage: deploy
   image: alpine
   variables:
     TEST: $IMAGE_NAME
