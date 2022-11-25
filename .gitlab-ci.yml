@@ -29,12 +29,24 @@ stages:
   - publish
     
 build_dep_wheels:
+  variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip"
+    CARGO_HOME: "$CI_PROJECT_DIR/.cargo"
+  cache:
+    - key: dep-cargo
+      paths:
+        - .cargo/registry/index
+        - .cargo/registry/cache
+        - .cargo/git/db
+    - key: dep-pip
+      paths:
+        - .pip
   stage: build
   parallel:
     matrix:
-      - DOCKER_PLATFORM: [amd64, i386, arm64v8, arm32v7] #, riscv64]
+      - DOCKER_PLATFORM: [amd64, i386, arm64v8, arm32v7, riscv64]
   tags: [docker, $DOCKER_PLATFORM]
-  image: ${DOCKER_PLATFORM}/alpine:3.17 #edge #3.17
+  image: ${DOCKER_PLATFORM}/alpine:edge
   before_script:
     - >
       apk add
