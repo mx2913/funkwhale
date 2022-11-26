@@ -79,7 +79,7 @@ build_dep_wheels:
     - |
       for wheel in wheelhouse/* ; do
         echo "Correcting tags for $wheel"
-        corrected_tag="$(python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)")"
+        corrected_tag="$(python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)" || true)"
         echo "New tag: $corrected_tag"
         [[ "$wheel" = "*$corrected_tag*" ]] && { echo 'Tag already correct or good tag is unknown - skipping.' ; continue ; }
 
@@ -92,7 +92,7 @@ build_dep_wheels:
     # prepare musllinux universal wheels
     - |
       for wheel in wheelhouse/* ; do
-        auditwheel repair --strip "$wheel"
+        auditwheel repair --strip "$wheel" || true
       done
     # remove basic wheels as we have universal wheels now
     - rm -f wheelhouse/*-linux*.whl wheelhouse/*.linux*.whl
