@@ -50,13 +50,11 @@ build_dep_wheels:
   before_script:
     - >
       apk add
-      musl-dev
-      gcc
-      postgresql-dev
+      alpine-sdk
       python3-dev
-      libldap
+      postgresql-dev
+      libldap-dev
       libffi-dev
-      make
       zlib-dev
       jpeg-dev
       openldap-dev
@@ -64,19 +62,16 @@ build_dep_wheels:
       cargo
       libxml2-dev
       libxslt-dev
-      curl
       poetry
       py3-pip
     - cd api
     - poetry export --without-hashes > ../requirements.txt
     - cd ..
     - python -m venv venv
-    - source venv/bin/activate
-    - pip install --upgrade pip wheel
+    - venv/bin/pip install --upgrade pip wheel
   script:
-    - source venv/bin/activate
-    - pip wheel --check-build-dependencies -w wheelhome -r requirements.txt
-    - rm wheelhome/*-none-any.whl wheelhome/*-musllinux_*.whl
+    - venv/bin/pip wheel --check-build-dependencies -w wheelhome -r requirements.txt
+    - rm -f wheelhome/*-none-any.whl wheelhome/*-musllinux_*.whl
     - ls -l wheelhome
   artifacts:
     paths:
