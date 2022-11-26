@@ -106,25 +106,25 @@ build_dep_wheels_amd64:
     DOCKER_ARCH: amd64
 
 build_dep_wheels_arm64v8:
-  dependencies: [build_dep_wheels_amd64]
+  needs: [build_dep_wheels_amd64]
   extends: .build_dep_wheels
   variables:
     DOCKER_ARCH: arm32v7
 
 build_dep_wheels_i386:
-  dependencies: [build_dep_wheels_arm64v8]
+  needs: [build_dep_wheels_arm64v8]
   extends: .build_dep_wheels
   variables:
     DOCKER_ARCH: i386
 
 build_dep_wheels_arm32v7:
-  dependencies: [build_dep_wheels_i386]
+  needs: [build_dep_wheels_i386]
   extends: .build_dep_wheels
   variables:
     DOCKER_ARCH: arm32v7
 
 build_dep_wheels_riscv64:
-  dependencies: [build_dep_wheels_arm32v7]
+  needs: [build_dep_wheels_arm32v7]
   extends: .build_dep_wheels
   variables:
     DOCKER_ARCH: riscv64
