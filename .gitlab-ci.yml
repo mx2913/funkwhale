@@ -5,7 +5,8 @@ variables:
   ALL_IN_ONE_IMAGE_NAME: funkwhale/all-in-one
   ALL_IN_ONE_IMAGE: $ALL_IN_ONE_IMAGE_NAME:$CI_COMMIT_REF_NAME
   ALL_IN_ONE_IMAGE_LATEST: $ALL_IN_ONE_IMAGE_NAME:latest
-  PIP_CACHE_DIR: "$CI_PROJECT_DIR/pip-cache"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip"
+  CARGO_HOME: "$CI_PROJECT_DIR/.cargo"
   PYTHONDONTWRITEBYTECODE: "true"
   REVIEW_DOMAIN: preview.funkwhale.audio
   REVIEW_INSTANCE_URL: https://funkwhale.juniorjpdj.pl
@@ -25,13 +26,11 @@ stages:
   - deploy
   - lint
   - test
+  - deps_build
   - build
   - publish
     
-build_dep_wheels:
-  variables:
-    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip"
-    CARGO_HOME: "$CI_PROJECT_DIR/.cargo"
+.build_dep_wheels:
   cache:
     - key: dep-cargo
       paths:
@@ -41,12 +40,9 @@ build_dep_wheels:
     - key: dep-pip
       paths:
         - .pip
-  stage: build
-  parallel:
-    matrix:
-      - DOCKER_PLATFORM: [amd64, i386, arm64v8, arm32v7]#, riscv64]
-  tags: [docker, $DOCKER_PLATFORM]
-  image: ${DOCKER_PLATFORM}/alpine:3.17
+  stage: deps_build
+  tags: [docker, $DOCKER_ARCH]
+  image: ${DOCKER_ARCH}/alpine:3.17
   before_script:
     - >
       apk add
@@ -68,6 +64,7 @@ build_dep_wheels:
     - cd api ; poetry export --without-hashes > ../requirements.txt ; cd ..
     - python -m venv venv
     - venv/bin/pip install --upgrade pip wheel
+    - venv/bin/pip debug --verbose
   script:
     # build basic wheels
     - venv/bin/pip wheel --check-build-dependencies -w wheelhouse -r requirements.txt
@@ -81,7 +78,7 @@ build_dep_wheels:
         echo "Correcting tags for $wheel"
         corrected_tag="$(python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)" || true)"
         echo "New tag: $corrected_tag"
-        [[ "$wheel" = "*$corrected_tag*" ]] && { echo 'Tag already correct or good tag is unknown - skipping.' ; continue ; }
+        [[ "$wheel" = "*$corrected_tag*" ]] && { echo 'Tag already correct or correct tag is unknown - skipping.' ; continue ; }
 
         venv/bin/wheel unpack -d wheeltmp "$wheel"
         sed -ri 's/^(Tag: .*)-.*?$/\1-'"$corrected_tag"'/g' wheeltmp/*/*.dist-info/WHEEL
@@ -102,3 +99,33 @@ build_dep_wheels:
   artifacts:
     paths:
       - wheelhouse
+
+build_dep_wheels_amd64:
+  extends: .build_dep_wheels
+  variables:
+    DOCKER_ARCH: amd64
+
+build_dep_wheels_arm64v8:
+  dependencies: [build_dep_wheels_amd64]
+  extends: .build_dep_wheels
+  variables:
+    DOCKER_ARCH: arm32v7
+
+build_dep_wheels_i386:
+  dependencies: [build_dep_wheels_arm64v8]
+  extends: .build_dep_wheels
+  variables:
+    DOCKER_ARCH: i386
+
+build_dep_wheels_arm32v7:
+  dependencies: [build_dep_wheels_i386]
+  extends: .build_dep_wheels
+  variables:
+    DOCKER_ARCH: arm32v7
+
+build_dep_wheels_riscv64:
+  dependencies: [build_dep_wheels_arm32v7]
+  extends: .build_dep_wheels
+  variables:
+    DOCKER_ARCH: riscv64
+  image: ${DOCKER_PLATFORM}/alpine:edge
