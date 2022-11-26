@@ -63,15 +63,42 @@ build_dep_wheels:
       libxslt-dev
       poetry
       py3-pip
-    - cd api
-    - poetry export --without-hashes > ../requirements.txt
-    - cd ..
+      patchelf
+    - pip install auditwheel
+    - cd api ; poetry export --without-hashes > ../requirements.txt ; cd ..
     - python -m venv venv
     - venv/bin/pip install --upgrade pip wheel
   script:
-    - venv/bin/pip wheel --check-build-dependencies -w wheelhome -r requirements.txt
-    - rm -f wheelhome/*-none-any.whl wheelhome/*-musllinux_*.whl
-    - ls -l wheelhome
+    # build basic wheels
+    - venv/bin/pip wheel --check-build-dependencies -w wheelhouse -r requirements.txt
+    # remove universal wheels (those are probably downloaded from pypi or already uploaded)
+    - rm -f wheelhouse/*-none-any.whl wheelhouse/*-musllinux_*.whl
+    - ls -l wheelhouse
+    # correction of wheel tagging needed to workaround maturin and other 3-rd party packagers problems on multi-arch envs..
+    # https://github.com/PyO3/maturin/issues/1289 but appears on other arches and packagers too
+    - |
+      for wheel in wheelhouse/* ; do
+        echo "Correcting tags for $wheel"
+        corrected_tag="$(python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)")"
+        echo "New tag: $corrected_tag"
+        [[ "$wheel" = "*$corrected_tag*" ]] && { echo 'Tag already correct or good tag is unknown - skipping.' ; continue ; }
+
+        venv/bin/wheel unpack -d wheeltmp "$wheel"
+        sed -ri 's/^(Tag: .*)-.*?$/\1-'"$corrected_tag"'/g' wheeltmp/*/*.dist-info/WHEEL
+        rm -f "$wheel"
+        venv/bin/wheel pack -d wheelhouse wheeltmp/*
+        rm -rf wheeltmp
+      done
+    # prepare musllinux universal wheels
+    - |
+      for wheel in wheelhouse/* ; do
+        auditwheel repair --strip "$wheel"
+      done
+    # remove basic wheels as we have universal wheels now
+    - rm -f wheelhouse/*-linux*.whl wheelhouse/*.linux*.whl
+    - ls -l wheelhouse
+    ## populate cache with universal wheels for next runs
+    #- pip install wheelhouse/*.whl
   artifacts:
     paths:
-      - wheelhome
+      - wheelhouse
