@@ -53,7 +53,7 @@ build_dep_wheels:
       alpine-sdk
       python3-dev
       postgresql-dev
-      libldap-dev
+      libldap
       libffi-dev
       zlib-dev
       jpeg-dev
