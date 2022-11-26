@@ -128,4 +128,4 @@ build_dep_wheels_riscv64:
   extends: .build_dep_wheels
   variables:
     DOCKER_ARCH: riscv64
-  image: ${DOCKER_PLATFORM}/alpine:edge
+  image: ${DOCKER_ARCH}/alpine:edge
