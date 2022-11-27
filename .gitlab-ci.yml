@@ -100,13 +100,14 @@ build_dep_wheels:
     - rm -f wheelhouse/*-none-any.whl wheelhouse/*-musllinux_*.whl
     - ls -l wheelhouse
     - |
-      # correction of wheel tagging needed to workaround maturin and other 3-rd party packagers problems on multi-arch envs..
+      # correct the wheel tagging needed to workaround maturin and other 3-rd party packagers problems on multi-arch envs..
       # https://github.com/PyO3/maturin/issues/1289 but appears on other arches and packagers too
       for wheel in wheelhouse/* ; do
+        [ "$wheel" = 'wheelhouse/*' ] || continue
         echo "Correcting tags for $wheel"
         corrected_tag="$(python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)" || true)"
-        echo "New tag: $corrected_tag"
         [[ "$wheel" = "*$corrected_tag*" ]] && { echo 'Tag already correct or correct tag is unknown - skipping.' ; continue ; }
+        echo "New tag: $corrected_tag"
 
         venv/bin/wheel unpack -d wheeltmp "$wheel"
         sed -ri 's/^(Tag: .*)-.*?$/\1-'"$corrected_tag"'/g' wheeltmp/*/*.dist-info/WHEEL
@@ -117,6 +118,8 @@ build_dep_wheels:
     - |
       # prepare musllinux universal wheels
       for wheel in wheelhouse/* ; do
+        [ "$wheel" = 'wheelhouse/*' ] || continue
+        echo "Fixing $wheel"
         auditwheel repair --strip "$wheel" || true
       done
     # remove basic wheels as we have universal wheels now
@@ -124,9 +127,10 @@ build_dep_wheels:
     - ls -l wheelhouse
     - |
       # upload wheels to gitlab package repository
-      export TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token
       for wheel in wheelhouse/* ; do
-        twine upload --disable-progress-bar --repository-url "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi" "$wheel" || true
+        [ "$wheel" = 'wheelhouse/*' ] || continue
+        echo "Uploading $wheel"
+        TWINE_USERNAME=gitlab-ci-token TWINE_PASSWORD=${CI_JOB_TOKEN} twine upload --disable-progress-bar --repository-url "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi" "$wheel" || true
       done
   artifacts:
     expire_in: 2 weeks
