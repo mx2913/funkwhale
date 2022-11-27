@@ -26,7 +26,32 @@ stages:
   - deps_build
   - build
   - publish
-    
+
+.time_script: &time_script
+  |
+  echo Timer start!
+  procstarttime=$(date -u '+%s')
+  
+  s_timestamp() {
+    while read -r line; do
+      curtime=$(date -u '+%s')
+      deltatime=$(( curtime - procstarttime ))
+      timestamp="$(printf "%03d:%02d" $(( deltatime / 60 )) $(( deltatime % 60 )))"
+
+      # by nature BASH might run process subst twice when using >&2 pipes. This is a lazy
+      # way to avoid dumping two timestamps on the same line:
+      if [[ "$line" != \[${timestamp%% *}* ]]; then
+          echo "[$timestamp] $line"
+      else
+          echo "$line"
+      fi
+    done
+  }
+
+  exec 1> >(s_timestamp)
+  exec 2> >(s_timestamp)
+
+
 build_dep_wheels:
   cache:
     - key: dep-cargo
@@ -66,6 +91,8 @@ build_dep_wheels:
     - venv/bin/pip install --upgrade pip wheel
     - venv/bin/pip debug --verbose
   script:
+    # show time stats
+    - *time_script
     # build basic wheels
     - venv/bin/pip wheel --check-build-dependencies -w wheelhouse -r requirements.txt
     # remove universal wheels (those are probably downloaded from pypi or already uploaded)
