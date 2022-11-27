@@ -60,10 +60,9 @@ stages:
       poetry
       py3-pip
       patchelf
-    - pip install auditwheel
     - cd api ; poetry export --without-hashes > ../requirements.txt ; cd ..
     - python -m venv venv
-    - venv/bin/pip install --upgrade pip wheel
+    - venv/bin/pip install --upgrade pip wheel auditwheel
     - venv/bin/pip debug --verbose
   script:
     # build basic wheels
@@ -89,7 +88,7 @@ stages:
     # prepare musllinux universal wheels
     - |
       for wheel in wheelhouse/* ; do
-        auditwheel repair --strip "$wheel" || true
+        venv/bin/auditwheel repair --strip "$wheel" || true
       done
     # remove basic wheels as we have universal wheels now
     - rm -f wheelhouse/*-linux*.whl wheelhouse/*.linux*.whl
