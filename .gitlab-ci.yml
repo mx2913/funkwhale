@@ -11,6 +11,7 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
   DOCKER_BUILD_PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7
+  PIP_EXTRA_INDEX_URL: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi/simple
 
 workflow:
   rules:
@@ -69,7 +70,6 @@ build_dep_wheels:
     matrix:
       - DOCKER_ARCH: [amd64, i386, arm64v8, arm32v7]
   before_script:
-    - *time_script
     - >
       apk add
       alpine-sdk
@@ -86,7 +86,7 @@ build_dep_wheels:
       poetry
       py3-pip
       patchelf
-    - pip install auditwheel
+    - pip install auditwheel twine
     - cd api ; poetry export --without-hashes > ../requirements.txt ; cd ..
     - python -m venv venv
     - venv/bin/pip install --upgrade pip wheel
@@ -96,7 +96,7 @@ build_dep_wheels:
     - *time_script
     # build basic wheels
     - venv/bin/pip wheel --check-build-dependencies -w wheelhouse -r requirements.txt
-    # remove universal wheels (those are probably downloaded from pypi or already uploaded)
+    # remove universal wheels (those are probably downloaded from pypi or our repo)
     - rm -f wheelhouse/*-none-any.whl wheelhouse/*-musllinux_*.whl
     - ls -l wheelhouse
     - |
@@ -122,9 +122,12 @@ build_dep_wheels:
     # remove basic wheels as we have universal wheels now
     - rm -f wheelhouse/*-linux*.whl wheelhouse/*.linux*.whl
     - ls -l wheelhouse
-    ## populate cache with universal wheels for next runs
-    #- pip install wheelhouse/*.whl
-    # doesn't work, need to find other way
+    - |
+      # upload wheels to gitlab package repository
+      export TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token
+      for wheel in wheelhouse/* ; do
+        twine upload --disable-progress-bar --repository-url "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi" "$wheel" || true
+      done
   artifacts:
     expire_in: 2 weeks
     paths:
