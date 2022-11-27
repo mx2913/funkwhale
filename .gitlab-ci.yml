@@ -98,6 +98,7 @@ build_dep_wheels:
     #- pip install wheelhouse/*.whl
     # doesn't work, need to find other way
   artifacts:
+    expire_in: 2 weeks
     paths:
       - wheelhouse
 
