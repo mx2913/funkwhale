@@ -37,7 +37,7 @@ stages:
         - .cargo/registry/index
         - .cargo/registry/cache
         - .cargo/git/db
-    - key: dep-pip
+    - key: dep-pip-$DOCKER_ARCH
       paths:
         - .pip
   stage: deps_build
@@ -75,7 +75,7 @@ stages:
     - |
       for wheel in wheelhouse/* ; do
         echo "Correcting tags for $wheel"
-        corrected_tag="$(python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)" || true)"
+        corrected_tag="$(venv/bin/python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)" || true)"
         echo "New tag: $corrected_tag"
         [[ "$wheel" = "*$corrected_tag*" ]] && { echo 'Tag already correct or correct tag is unknown - skipping.' ; continue ; }
 
@@ -99,31 +99,13 @@ stages:
     paths:
       - wheelhouse
 
-build_dep_wheels_amd64:
+build_dep_wheels:
   extends: .build_dep_wheels
-  variables:
-    DOCKER_ARCH: amd64
-
-build_dep_wheels_arm64v8:
-  needs: [build_dep_wheels_amd64]
-  extends: .build_dep_wheels
-  variables:
-    DOCKER_ARCH: arm64v8
-
-build_dep_wheels_i386:
-  needs: [build_dep_wheels_arm64v8]
-  extends: .build_dep_wheels
-  variables:
-    DOCKER_ARCH: i386
-
-build_dep_wheels_arm32v7:
-  needs: [build_dep_wheels_i386]
-  extends: .build_dep_wheels
-  variables:
-    DOCKER_ARCH: arm32v7
+  parallel:
+    matrix:
+      - DOCKER_ARCH: [amd64, i386, arm64v8, arm32v7]
 
 build_dep_wheels_riscv64:
-  needs: [build_dep_wheels_arm32v7]
   extends: .build_dep_wheels
   variables:
     DOCKER_ARCH: riscv64
