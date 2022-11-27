@@ -54,6 +54,21 @@ stages:
   echo Timer start!
 
 build_dep_wheels:
+  rules:
+    - if: $MANDATORY == "false"
+      allow_failure: true
+    - allow_failure: false
+  stage: deps_build
+  tags: [docker, $DOCKER_ARCH]
+  
+  image: ${DOCKER_ARCH}/alpine:${ALPINE_VERSION}
+  parallel:
+    matrix:
+      - DOCKER_ARCH: [amd64, i386, arm64v8, arm32v7]
+        ALPINE_VERSION: "3.17"
+      - DOCKER_ARCH: [riscv64]
+        ALPINE_VERSION: "edge"
+        MANDATORY: "false"
   cache:
     - key: dep-cargo
       paths:
@@ -63,12 +78,6 @@ build_dep_wheels:
     - key: dep-pip-$DOCKER_ARCH
       paths:
         - .pip
-  stage: deps_build
-  tags: [docker, $DOCKER_ARCH]
-  image: ${DOCKER_ARCH}/alpine:3.17
-  parallel:
-    matrix:
-      - DOCKER_ARCH: [amd64, i386, arm64v8, arm32v7]
   before_script:
     - >
       apk add
@@ -87,7 +96,7 @@ build_dep_wheels:
       py3-pip
       patchelf
     - pip install auditwheel twine
-    - cd api ; poetry export --without-hashes > ../requirements.txt ; cd ..
+    - cd api ; poetry export --with dev --without-hashes > ../requirements.txt ; cd ..
     - python -m venv venv
     - venv/bin/pip install --upgrade pip wheel
     - venv/bin/pip debug --verbose
@@ -136,11 +145,3 @@ build_dep_wheels:
     expire_in: 2 weeks
     paths:
       - wheelhouse
-
-build_dep_wheels_riscv64:
-  extends: build_dep_wheels
-  parallel:
-  variables:
-    DOCKER_ARCH: riscv64
-  image: ${DOCKER_ARCH}/alpine:edge
-  allow_failure: true
