@@ -27,7 +27,7 @@ stages:
   - build
   - publish
     
-.build_dep_wheels:
+build_dep_wheels:
   cache:
     - key: dep-cargo
       paths:
@@ -40,6 +40,9 @@ stages:
   stage: deps_build
   tags: [docker, $DOCKER_ARCH]
   image: ${DOCKER_ARCH}/alpine:3.17
+  parallel:
+    matrix:
+      - DOCKER_ARCH: [amd64, i386, arm64v8, arm32v7]
   before_script:
     - >
       apk add
@@ -98,14 +101,9 @@ stages:
     paths:
       - wheelhouse
 
-build_dep_wheels:
-  extends: .build_dep_wheels
-  parallel:
-    matrix:
-      - DOCKER_ARCH: [amd64, i386, arm64v8, arm32v7]
-
 build_dep_wheels_riscv64:
-  extends: .build_dep_wheels
+  extends: build_dep_wheels
+  parallel:
   variables:
     DOCKER_ARCH: riscv64
   image: ${DOCKER_ARCH}/alpine:edge
