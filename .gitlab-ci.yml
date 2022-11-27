@@ -69,6 +69,7 @@ build_dep_wheels:
     matrix:
       - DOCKER_ARCH: [amd64, i386, arm64v8, arm32v7]
   before_script:
+    - *time_script
     - >
       apk add
       alpine-sdk
