@@ -104,7 +104,7 @@ build_dep_wheels:
     # show time stats
     - *time_script
     # build basic wheels
-    - venv/bin/pip wheel --check-build-dependencies -w wheelhouse -r requirements.txt
+    - venv/bin/pip wheel --check-build-dependencies -w wheelhouse -r requirements.txt auditwheel twine poetry
     # remove universal wheels (those are probably downloaded from pypi or our repo)
     - rm -f wheelhouse/*-none-any.whl wheelhouse/*-musllinux_*.whl
     - ls -l wheelhouse
