@@ -92,11 +92,11 @@ build_dep_wheels:
       cargo
       libxml2-dev
       libxslt-dev
-      poetry
       py3-pip
       patchelf
-    - pip install auditwheel twine
-    - cd api ; poetry export --with dev --without-hashes > ../requirements.txt ; cd ..
+    - python -m venv tools
+    - tools/bin/pip install --upgrade auditwheel twine poetry
+    - cd api ; ../tools/bin/poetry export --with dev --without-hashes > ../requirements.txt ; cd ..
     - python -m venv venv
     - venv/bin/pip install --upgrade pip wheel
     - venv/bin/pip debug --verbose
@@ -114,7 +114,7 @@ build_dep_wheels:
       for wheel in wheelhouse/* ; do
         [ "$wheel" = 'wheelhouse/*' ] && continue
         echo "Correcting tags for $wheel"
-        corrected_tag="$(python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)" || true)"
+        corrected_tag="$(tools/bin/python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)" || true)"
         [[ "$wheel" = "*$corrected_tag*" ]] && { echo 'Tag already correct or correct tag is unknown - skipping.' ; continue ; }
         echo "New tag: $corrected_tag"
 
@@ -129,7 +129,7 @@ build_dep_wheels:
       for wheel in wheelhouse/* ; do
         [ "$wheel" = 'wheelhouse/*' ] && continue
         echo "Fixing $wheel"
-        auditwheel repair --strip "$wheel" || true
+        tools/bin/auditwheel repair --strip "$wheel" || true
       done
     # remove basic wheels as we have universal wheels now
     - rm -f wheelhouse/*-linux*.whl wheelhouse/*.linux*.whl
@@ -139,7 +139,7 @@ build_dep_wheels:
       for wheel in wheelhouse/* ; do
         [ "$wheel" = 'wheelhouse/*' ] && continue
         echo "Uploading $wheel"
-        TWINE_USERNAME=gitlab-ci-token TWINE_PASSWORD=${CI_JOB_TOKEN} twine upload --disable-progress-bar --repository-url "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi" "$wheel" || true
+        TWINE_USERNAME=gitlab-ci-token TWINE_PASSWORD=${CI_JOB_TOKEN} tools/bin/twine upload --disable-progress-bar --repository-url "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi" "$wheel" || true
       done
   artifacts:
     expire_in: 2 weeks
