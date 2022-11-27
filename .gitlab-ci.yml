@@ -2,9 +2,6 @@ variables:
   IMAGE_NAME: funkwhale/funkwhale
   IMAGE: $IMAGE_NAME:$CI_COMMIT_REF_NAME
   IMAGE_LATEST: $IMAGE_NAME:latest
-  ALL_IN_ONE_IMAGE_NAME: funkwhale/all-in-one
-  ALL_IN_ONE_IMAGE: $ALL_IN_ONE_IMAGE_NAME:$CI_COMMIT_REF_NAME
-  ALL_IN_ONE_IMAGE_LATEST: $ALL_IN_ONE_IMAGE_NAME:latest
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip"
   CARGO_HOME: "$CI_PROJECT_DIR/.cargo"
   PYTHONDONTWRITEBYTECODE: "true"
@@ -60,9 +57,10 @@ stages:
       poetry
       py3-pip
       patchelf
+    - pip install auditwheel
     - cd api ; poetry export --without-hashes > ../requirements.txt ; cd ..
     - python -m venv venv
-    - venv/bin/pip install --upgrade pip wheel auditwheel
+    - venv/bin/pip install --upgrade pip wheel
     - venv/bin/pip debug --verbose
   script:
     # build basic wheels
@@ -75,7 +73,7 @@ stages:
     - |
       for wheel in wheelhouse/* ; do
         echo "Correcting tags for $wheel"
-        corrected_tag="$(venv/bin/python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)" || true)"
+        corrected_tag="$(python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)" || true)"
         echo "New tag: $corrected_tag"
         [[ "$wheel" = "*$corrected_tag*" ]] && { echo 'Tag already correct or correct tag is unknown - skipping.' ; continue ; }
 
@@ -88,13 +86,14 @@ stages:
     # prepare musllinux universal wheels
     - |
       for wheel in wheelhouse/* ; do
-        venv/bin/auditwheel repair --strip "$wheel" || true
+        auditwheel repair --strip "$wheel" || true
       done
     # remove basic wheels as we have universal wheels now
     - rm -f wheelhouse/*-linux*.whl wheelhouse/*.linux*.whl
     - ls -l wheelhouse
     ## populate cache with universal wheels for next runs
     #- pip install wheelhouse/*.whl
+    # doesn't work, need to find other way
   artifacts:
     paths:
       - wheelhouse
@@ -110,3 +109,4 @@ build_dep_wheels_riscv64:
   variables:
     DOCKER_ARCH: riscv64
   image: ${DOCKER_ARCH}/alpine:edge
+  allow_failure: true
