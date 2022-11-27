@@ -4,7 +4,6 @@ variables:
   IMAGE_LATEST: $IMAGE_NAME:latest
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip"
   CARGO_HOME: "$CI_PROJECT_DIR/.cargo"
-  PYTHONDONTWRITEBYTECODE: "true"
   REVIEW_DOMAIN: preview.funkwhale.audio
   REVIEW_INSTANCE_URL: https://funkwhale.juniorjpdj.pl
   DOCKER_HOST: tcp://docker:2375/
@@ -79,6 +78,8 @@ build_dep_wheels:
       paths:
         - .pip
   before_script:
+    # show time stats
+    - *time_script
     - >
       apk add
       alpine-sdk
@@ -95,17 +96,15 @@ build_dep_wheels:
       py3-pip
       patchelf
     - python -m venv tools
-    - tools/bin/pip install --upgrade auditwheel twine poetry
+    - tools/bin/pip install --upgrade auditwheel twine poetry pip wheel
     - cd api ; ../tools/bin/poetry export --with dev --without-hashes > ../requirements.txt ; cd ..
     - python -m venv venv
     - venv/bin/pip install --upgrade pip wheel
     - venv/bin/pip debug --verbose
   script:
-    # show time stats
-    - *time_script
     # build basic wheels
-    - venv/bin/pip wheel --check-build-dependencies -w wheelhouse auditwheel twine poetry
     - venv/bin/pip wheel --check-build-dependencies -w wheelhouse -r requirements.txt
+    - venv/bin/pip wheel --check-build-dependencies -w wheelhouse auditwheel twine poetry pip wheel
     # remove universal wheels (those are probably downloaded from pypi or our repo)
     - rm -f wheelhouse/*-none-any.whl wheelhouse/*-musllinux_*.whl
     - ls -l wheelhouse
