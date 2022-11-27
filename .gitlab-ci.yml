@@ -29,7 +29,7 @@ stages:
 
 .time_script: &time_script
   |
-  echo Timer start!
+  # Timer setup
   procstarttime=$(date -u '+%s')
   
   s_timestamp() {
@@ -50,7 +50,7 @@ stages:
 
   exec 1> >(s_timestamp)
   exec 2> >(s_timestamp)
-
+  echo Timer start!
 
 build_dep_wheels:
   cache:
@@ -98,9 +98,9 @@ build_dep_wheels:
     # remove universal wheels (those are probably downloaded from pypi or already uploaded)
     - rm -f wheelhouse/*-none-any.whl wheelhouse/*-musllinux_*.whl
     - ls -l wheelhouse
-    # correction of wheel tagging needed to workaround maturin and other 3-rd party packagers problems on multi-arch envs..
-    # https://github.com/PyO3/maturin/issues/1289 but appears on other arches and packagers too
     - |
+      # correction of wheel tagging needed to workaround maturin and other 3-rd party packagers problems on multi-arch envs..
+      # https://github.com/PyO3/maturin/issues/1289 but appears on other arches and packagers too
       for wheel in wheelhouse/* ; do
         echo "Correcting tags for $wheel"
         corrected_tag="$(python3 -c "import auditwheel.wheel_abi; print(auditwheel.wheel_abi.analyze_wheel_abi('$wheel').overall_tag)" || true)"
@@ -113,8 +113,8 @@ build_dep_wheels:
         venv/bin/wheel pack -d wheelhouse wheeltmp/*
         rm -rf wheeltmp
       done
-    # prepare musllinux universal wheels
     - |
+      # prepare musllinux universal wheels
       for wheel in wheelhouse/* ; do
         auditwheel repair --strip "$wheel" || true
       done
