@@ -60,7 +60,7 @@ build_dep_wheels:
     - allow_failure: false
   stage: deps_build
   tags: [docker, $DOCKER_ARCH]
-  
+
   image: ${DOCKER_ARCH}/alpine:${ALPINE_VERSION}
   parallel:
     matrix:
@@ -75,7 +75,7 @@ build_dep_wheels:
         - .cargo/registry/index
         - .cargo/registry/cache
         - .cargo/git/db
-    - key: dep-pip-$DOCKER_ARCH
+    - key: dep-pip-$DOCKER_ARCH-$ALPINE_VERSION
       paths:
         - .pip
   before_script:
