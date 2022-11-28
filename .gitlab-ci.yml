@@ -131,13 +131,11 @@ build_dep_wheels:
         echo "Fixing $wheel"
         tools/bin/auditwheel repair --strip "$wheel" || true
       done
-    # remove basic wheels as we have universal wheels now
-    - rm -f wheelhouse/*-linux*.whl wheelhouse/*.linux*.whl
     - ls -l wheelhouse
     - |
-      # upload wheels to gitlab package repository
-      for wheel in wheelhouse/* ; do
-        [ "$wheel" = 'wheelhouse/*' ] && continue
+      # upload universal wheels to gitlab package repository
+      for wheel in wheelhouse/*musllinux*.whl ; do
+        [ "$wheel" = 'wheelhouse/*musllinux*.whl' ] && continue
         echo "Uploading $wheel"
         TWINE_USERNAME=gitlab-ci-token TWINE_PASSWORD=${CI_JOB_TOKEN} tools/bin/twine upload --disable-progress-bar --repository-url "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi" "$wheel" || true
       done
