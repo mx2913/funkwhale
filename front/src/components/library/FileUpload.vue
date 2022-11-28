@@ -1,43 +1,26 @@
 <script setup lang="ts">
-import type { BackendError, Library, FileSystem } from '~/types'
-import type { VueUploadItem } from 'vue-upload-component'
+import type { Library } from '~/types'
 
-import { computed, ref, reactive, watch, nextTick } from 'vue'
-import { useEventListener, useIntervalFn } from '@vueuse/core'
+import { computed, ref } from 'vue'
 import { humanSize, truncate } from '~/utils/filters'
 import { useI18n } from 'vue-i18n'
-import { sortBy } from 'lodash-es'
 import { useStore } from '~/store'
 
-import axios from 'axios'
-
 import LibraryFilesTable from '~/views/content/libraries/FilesTable.vue'
-import FileUploadWidget from './FileUploadWidget.vue'
 import FsBrowser from './FsBrowser.vue'
 import FsLogs from './FsLogs.vue'
-
-import useWebSocketHandler from '~/composables/useWebSocketHandler'
-import updateQueryString from '~/composables/updateQueryString'
-import useErrorHandler from '~/composables/useErrorHandler'
-
-interface Events {
-  (e: 'uploads-finished', delta: number):void
-}
+import { useTrackUpload } from '~/composables/files/upload'
+import { useImportStatus } from '~/composables/files/imports'
 
 interface Props {
   library: Library
-  defaultImportReference?: string
 }
 
-const emit = defineEmits<Events>()
-const props = withDefaults(defineProps<Props>(), {
-  defaultImportReference: ''
-})
+const props = defineProps<Props>()
 
 const { t } = useI18n()
 const store = useStore()
 
-const upload = ref()
 const currentTab = ref('uploads')
 const supportedExtensions = computed(() => store.state.ui.supportedExtensions)
 
@@ -55,235 +38,30 @@ const labels = computed(() => ({
   } as Record<string, string>
 }))
 
-const uploads = reactive({
-  pending: 0,
-  finished: 0,
-  skipped: 0,
-  errored: 0,
-  objects: {} as Record<string, any>
-})
+const { importReference, uploadFiles, files } = useTrackUpload(() => props.library.uuid)
+const importStatus = useImportStatus(importReference.value)
 
-//
-// File counts
-//
-const files = ref([] as VueUploadItem[])
-const processedFilesCount = computed(() => uploads.skipped + uploads.errored + uploads.finished)
-const uploadedFilesCount = computed(() => files.value.filter(file => file.success).length)
-const retryableFiles = computed(() => files.value.filter(file => file.error))
-const erroredFilesCount = computed(() => retryableFiles.value.length)
-const processableFiles = computed(() => uploads.pending
-  + uploads.skipped
-  + uploads.errored
-  + uploads.finished
-  + uploadedFilesCount.value
-)
-
-//
-// Uploading
-//
-const importReference = ref(props.defaultImportReference || new Date().toISOString())
-history.replaceState(history.state, '', updateQueryString(location.href, 'import', importReference.value))
-const uploadData = computed(() => ({
-  library: props.library.uuid,
-  import_reference: importReference
-}))
-
-watch(() => uploads.finished, (newValue, oldValue) => {
-  if (newValue > oldValue) {
-    emit('uploads-finished', newValue - oldValue)
-  }
-})
-
-//
-// Upload status
-//
-const fetchStatus = async () => {
-  for (const status of Object.keys(uploads)) {
-    if (status === 'objects') continue
-
-    try {
-      const response = await axios.get('uploads/', {
-        params: {
-          import_reference: importReference.value,
-          import_status: status,
-          page_size: 1
-        }
-      })
-
-      uploads[status as keyof typeof uploads] = response.data.count
-    } catch (error) {
-      useErrorHandler(error as Error)
-    }
-  }
+// NOTE: TEMPORARY STUFF
+interface TEMPFILE {
+  id: any
+  name: string
+  size: number
+  error: string
+  success: boolean
+  active: boolean
+  progress: number
 }
-
-fetchStatus()
-
-const needsRefresh = ref(false)
-useWebSocketHandler('import.status_updated', async (event) => {
-  if (event.upload.import_reference !== importReference.value) {
-    return
-  }
-
-  // TODO (wvffle): Why?
-  await nextTick()
-
-  uploads[event.old_status] -= 1
-  uploads[event.new_status] += 1
-  uploads.objects[event.upload.uuid] = event.upload
-  needsRefresh.value = true
-})
-
-//
-// Files
-//
-const sortedFiles = computed(() => {
-  const filesToSort = files.value
-
-  return [
-    ...sortBy(filesToSort.filter(file => file.errored), ['name']),
-    ...sortBy(filesToSort.filter(file => !file.errored && !file.success), ['name']),
-    ...sortBy(filesToSort.filter(file => file.success), ['name'])
-  ]
-})
-
-const hasActiveUploads = computed(() => files.value.some(file => file.active))
-
-//
-// Quota status
-//
-const quotaStatus = ref()
-
-const uploadedSize = computed(() => {
-  let uploaded = 0
-
-  for (const file of files.value) {
-    if (!file.error) {
-      uploaded += (file.size ?? 0) * +(file.progress ?? 0) / 100
-    }
-  }
-
-  return uploaded
-})
-
-const remainingSpace = computed(() => Math.max(
-  (quotaStatus.value?.remaining ?? 0) - uploadedSize.value / 1e6,
-  0
-))
-
-watch(remainingSpace, space => {
-  if (space <= 0) {
-    upload.value.active = false
-  }
-})
-
-const isLoadingQuota = ref(false)
-const fetchQuota = async () => {
-  isLoadingQuota.value = true
-
-  try {
-    const response = await axios.get('users/me/')
-    quotaStatus.value = response.data.quota_status
-  } catch (error) {
-    useErrorHandler(error as Error)
-  }
-
-  isLoadingQuota.value = false
-}
-
-fetchQuota()
-
-//
-// Filesystem
-//
-const fsPath = reactive([])
-const fsStatus = ref({
-  import: {
-    status: 'pending'
-  }
-} as FileSystem)
-watch(fsPath, () => fetchFilesystem(true))
-
-const { pause, resume } = useIntervalFn(() => {
-  fetchFilesystem(false)
-}, 5000, { immediate: false })
-
-const isLoadingFs = ref(false)
-const fetchFilesystem = async (updateLoading: boolean) => {
-  if (updateLoading) isLoadingFs.value = true
-  pause()
-
-  try {
-    const response = await axios.get('libraries/fs-import', { params: { path: fsPath.join('/') } })
-    fsStatus.value = response.data
-  } catch (error) {
-    useErrorHandler(error as Error)
-  }
-
-  if (updateLoading) isLoadingFs.value = false
-  if (store.state.auth.availablePermissions.library) resume()
-}
-
-if (store.state.auth.availablePermissions.library) {
-  fetchFilesystem(true)
-}
-
-const fsErrors = ref([] as string[])
-const importFs = async () => {
-  isLoadingFs.value = true
-
-  try {
-    const response = await axios.post('libraries/fs-import', {
-      path: fsPath.join('/'),
-      library: props.library.uuid,
-      import_reference: importReference.value
-    })
-
-    fsStatus.value = response.data
-  } catch (error) {
-    fsErrors.value = (error as BackendError).backendErrors
-  }
-
-  isLoadingFs.value = false
-}
-
-// TODO (wvffle): Maybe use AbortController?
-const cancelFsScan = async () => {
-  try {
-    await axios.delete('libraries/fs-import')
-    fetchFilesystem(false)
-  } catch (error) {
-    useErrorHandler(error as Error)
-  }
-}
-
-const inputFile = (newFile: VueUploadItem) => {
-  if (!newFile) return
-
-  if (remainingSpace.value < (newFile.size ?? Infinity) / 1e6) {
-    newFile.error = 'denied'
-  } else {
-    upload.value.active = true
-  }
-}
-
-// NOTE: For some weird reason typescript thinks that xhr field is not compatible with the same type
-const retry = (files: Omit<VueUploadItem, 'xhr'>[]) => {
-  for (const file of files) {
-    upload.value.update(file, { error: '', progress: '0.00' })
-  }
-
-  upload.value.active = true
-}
-
-//
-// Before unload
-//
-useEventListener(window, 'beforeunload', (event) => {
-  if (!hasActiveUploads.value) return null
-  event.preventDefault()
-  return (event.returnValue = t('components.library.FileUpload.message.listener'))
-})
+const retryableFiles = [] as TEMPFILE[]
+const fsErrors = [] as string[]
+const isLoadingQuota = false
+const remainingSpace = 0
+const retry = (files: TEMPFILE[]) => undefined
+const fsPath = ['']
+const isLoadingFs = false
+const needsRefresh = false
+const fsStatus = {} as any
+const importFs = () => undefined
+const cancelFsScan = () => undefined
 </script>
 
 <template>
@@ -302,18 +80,10 @@ useEventListener(window, 'beforeunload', (event) => {
           {{ $t('components.library.FileUpload.empty.noFiles') }}
         </div>
         <div
-          v-else-if="files.length > uploadedFilesCount + erroredFilesCount"
-          class="ui warning label"
-        >
-          {{ uploadedFilesCount + erroredFilesCount }}
-          <span class="slash symbol" />
-          {{ files.length }}
-        </div>
-        <div
           v-else
-          :class="['ui', {'success': erroredFilesCount === 0}, {'danger': erroredFilesCount > 0}, 'label']"
+          class="ui label"
         >
-          {{ uploadedFilesCount + erroredFilesCount }}
+          {{ files.filter(file => file.status !== 'queued' && file.status !== 'uploading' ).length }}
           <span class="slash symbol" />
           {{ files.length }}
         </div>
@@ -324,27 +94,8 @@ useEventListener(window, 'beforeunload', (event) => {
         @click.prevent="currentTab = 'processing'"
       >
         {{ $t('components.library.FileUpload.link.processing') }}
-        <div
-          v-if="processableFiles === 0"
-          class="ui label"
-        >
-          {{ $t('components.library.FileUpload.empty.noFiles') }}
-        </div>
-        <div
-          v-else-if="processableFiles > processedFilesCount"
-          class="ui warning label"
-        >
-          {{ processedFilesCount }}
-          <span class="slash symbol" />
-          {{ processableFiles }}
-        </div>
-        <div
-          v-else
-          :class="['ui', {'success': uploads.errored === 0}, {'danger': uploads.errored > 0}, 'label']"
-        >
-          {{ processedFilesCount }}
-          <span class="slash symbol" />
-          {{ processableFiles }}
+        <div class="ui label">
+          {{ importStatus.pending }}
         </div>
       </a>
     </div>
@@ -382,18 +133,9 @@ useEventListener(window, 'beforeunload', (event) => {
             </li>
           </ul>
         </div>
-        <file-upload-widget
-          ref="upload"
-          v-model="files"
+        <div
           :class="['ui', 'icon', 'basic', 'button']"
-          :post-action="$store.getters['instance/absoluteUrl']('/api/v1/uploads/')"
-          :multiple="true"
-          :data="uploadData"
-          :drop="true"
-          :extensions="supportedExtensions"
-          name="audio_file"
-          :thread="1"
-          @input-file="inputFile"
+          @click="uploadFiles"
         >
           <i class="upload icon" />&nbsp;
           {{ $t('components.library.FileUpload.label.uploadWidget') }}
@@ -402,7 +144,7 @@ useEventListener(window, 'beforeunload', (event) => {
           <i>
             {{ $t('components.library.FileUpload.label.extensions', {extensions: supportedExtensions.join(', ')}) }}
           </i>
-        </file-upload-widget>
+        </div>
       </div>
       <div
         v-if="files.length > 0"
@@ -441,40 +183,42 @@ useEventListener(window, 'beforeunload', (event) => {
           </thead>
           <tbody>
             <tr
-              v-for="file in sortedFiles"
-              :key="file.id"
+              v-for="upload in files"
+              :key="upload.id"
             >
-              <td :title="file.name">
-                {{ truncate(file.name ?? '', 60) }}
+              <td :title="upload.file.name">
+                {{ truncate(upload.file.name, 60) }}
               </td>
-              <td>{{ humanSize(file.size ?? 0) }}</td>
+              <td>{{ humanSize(upload.file.size) }}</td>
               <td>
                 <span
-                  v-if="typeof file.error === 'string' && file.error"
+                  v-if="upload.error"
                   class="ui tooltip"
-                  :data-tooltip="labels.tooltips[file.error]"
                 >
                   <span class="ui danger icon label">
-                    <i class="question circle outline icon" /> {{ file.error }}
+                    <i class="question circle outline icon" /> {{ upload.error }}
                   </span>
                 </span>
                 <span
-                  v-else-if="file.success"
+                  v-else-if="upload.status === 'uploaded' || upload.status === 'imported'"
                   class="ui success label"
                 >
-                  <span key="1">
+                  <span v-if="upload.status === 'uploaded'">
                     {{ $t('components.library.FileUpload.table.upload.status.uploaded') }}
+                  </span>
+                  <span v-if="upload.status === 'imported'">
+                    {{ $t('components.library.FileUpload.table.upload.status.imported') }}
                   </span>
                 </span>
                 <span
-                  v-else-if="file.active"
+                  v-else-if="upload.status === 'uploading'"
                   class="ui warning label"
                 >
                   <span key="2">
                     {{ $t('components.library.FileUpload.table.upload.status.uploading') }}
                   </span>
 
-                  {{ $t('components.library.FileUpload.table.upload.progress', {percent: parseFloat(file.progress ?? '0.00')}) }}
+                  {{ $t('components.library.FileUpload.table.upload.progress', { percent: upload.progress?.toFixed(2) }) }}
                 </span>
                 <span
                   v-else
@@ -486,24 +230,24 @@ useEventListener(window, 'beforeunload', (event) => {
                 </span>
               </td>
               <td>
-                <template v-if="file.error">
+                <!-- <template v-if="upload.error">
                   <button
-                    v-if="retryableFiles.includes(file)"
+                    v-if="retryableFiles.includes(upload)"
                     class="ui tiny basic icon right floated button"
                     :title="labels.tooltips.retry"
-                    @click.prevent="retry([file])"
+                    @click.prevent="retry([upload])"
                   >
                     <i class="redo icon" />
                   </button>
                 </template>
-                <template v-else-if="!file.success">
+                <template v-else-if="!upload.success">
                   <button
                     class="ui tiny basic danger icon right floated button"
-                    @click.prevent="upload.remove(file)"
+                    @click.prevent="upload.remove(upload)"
                   >
                     <i class="delete icon" />
                   </button>
-                </template>
+                </template> -->
               </td>
             </tr>
           </tbody>
@@ -562,7 +306,7 @@ useEventListener(window, 'beforeunload', (event) => {
         :needs-refresh="needsRefresh"
         ordering-config-name="library.detail.upload"
         :filters="{import_reference: importReference}"
-        :custom-objects="Object.values(uploads.objects)"
+        :custom-objects="Object.values({})"
         @fetch-start="needsRefresh = false"
       />
     </div>

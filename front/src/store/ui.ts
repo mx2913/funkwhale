@@ -60,7 +60,7 @@ const store: Module<State, RootState> = {
     lastDate: new Date(),
     maxMessages: 100,
     messageDisplayDuration: 5 * 1000,
-    supportedExtensions: ['flac', 'ogg', 'mp3', 'opus', 'aac', 'm4a', 'aiff', 'aif'],
+    supportedExtensions: ['flac', 'mp3', 'aac', 'm4a', 'aiff', 'aif'],
     messages: [],
     window: {
       height: 0,

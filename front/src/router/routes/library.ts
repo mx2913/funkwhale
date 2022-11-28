@@ -229,10 +229,7 @@ export default [
           {
             path: 'upload',
             name: 'library.detail.upload',
-            component: () => import('~/views/library/Upload.vue'),
-            props: route => ({
-              defaultImportReference: route.query.import
-            })
+            component: () => import('~/views/library/Upload.vue')
           }
         ]
       }

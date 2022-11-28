@@ -12,13 +12,10 @@ interface Events {
 
 interface Props {
   object: Library
-  defaultImportReference?: string
 }
 
 const emit = defineEmits<Events>()
-withDefaults(defineProps<Props>(), {
-  defaultImportReference: ''
-})
+defineProps<Props>()
 
 const fileupload = ref()
 onBeforeRouteLeave((to, from, next) => {
@@ -39,7 +36,6 @@ onBeforeRouteLeave((to, from, next) => {
   <section>
     <file-upload
       ref="fileupload"
-      :default-import-reference="defaultImportReference"
       :library="object"
       @uploads-finished="emit('uploads-finished', $event)"
     />

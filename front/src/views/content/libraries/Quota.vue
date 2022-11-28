@@ -72,7 +72,7 @@ const purgeErroredFiles = () => purge('errored')
         :style="{width: `${progress}%`}"
       >
         <div class="progress">
-          {{ $t('views.content.libraries.Quota.label.percentUsed', {progress: progress}) }}
+          {{ $t('views.content.libraries.Quota.label.percentUsed', { progress: progress.toFixed(2) }) }}
         </div>
       </div>
       <div

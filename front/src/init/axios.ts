@@ -61,6 +61,10 @@ export const install: InitModule = ({ store, router }) => {
         error.backendErrors.push('Permission denied')
         break
 
+      case 413:
+        error.backendErrors.push('Entity Too Large')
+        break
+
       case 429: {
         let message
         const rateLimitStatus: RateLimitStatus = {
