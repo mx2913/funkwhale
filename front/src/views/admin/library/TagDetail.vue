@@ -103,7 +103,7 @@ const getQuery = (field: string, value: string) => `${field}:"${value}"`
                     :class="['ui', {loading: isLoading}, 'basic danger button']"
                     :action="remove"
                   >
-                    {{ $t('views.admin.library.TagDetail.button.delete') }}
+                    {{ $t('global.button.delete') }}
                     <template #modal-header>
                       <p>
                         {{ $t('views.admin.library.TagDetail.modal.delete.header') }}
@@ -118,7 +118,7 @@ const getQuery = (field: string, value: string) => `${field}:"${value}"`
                     </template>
                     <template #modal-confirm>
                       <p>
-                        {{ $t('views.admin.library.TagDetail.button.delete') }}
+                        {{ $t('global.button.delete') }}
                       </p>
                     </template>
                   </dangerous-button>

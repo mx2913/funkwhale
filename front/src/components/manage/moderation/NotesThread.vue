@@ -64,7 +64,7 @@ const remove = async (note: Note) => {
             @confirm="remove(note)"
           >
             <i class="trash icon" />
-            {{ $t('components.manage.moderation.NotesThread.button.delete') }}
+            {{ $t('global.button.delete') }}
             <template #modal-header>
               <p>
                 {{ $t('components.manage.moderation.NotesThread.modal.delete.header') }}
@@ -79,7 +79,7 @@ const remove = async (note: Note) => {
             </template>
             <template #modal-confirm>
               <p>
-                {{ $t('components.manage.moderation.NotesThread.button.delete') }}
+                {{ $t('global.button.delete') }}
               </p>
             </template>
           </dangerous-button>

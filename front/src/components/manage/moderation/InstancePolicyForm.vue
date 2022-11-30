@@ -223,7 +223,7 @@ const remove = async () => {
       class="ui basic left floated button"
       @click.prevent="emit('cancel')"
     >
-      {{ $t('components.manage.moderation.InstancePolicyForm.button.cancel') }}
+      {{ $t('global.button.cancel') }}
     </button>
     <button
       :class="['ui', 'right', 'floated', 'success', {'disabled loading': isLoading}, 'button']"
@@ -241,7 +241,7 @@ const remove = async () => {
       class="ui right floated basic danger button"
       @confirm="remove"
     >
-      {{ $t('components.manage.moderation.InstancePolicyForm.button.delete') }}
+      {{ $t('global.button.delete') }}
       <template #modal-header>
         <p>
           {{ $t('components.manage.moderation.InstancePolicyForm.modal.delete.header') }}
@@ -254,7 +254,7 @@ const remove = async () => {
       </template>
       <template #modal-confirm>
         <div>
-          {{ $t('components.manage.moderation.InstancePolicyForm.button.confirm') }}
+          {{ $t('global.button.delete') }}
         </div>
       </template>
     </dangerous-button>

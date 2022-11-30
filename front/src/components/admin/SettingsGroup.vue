@@ -240,7 +240,7 @@ const save = async () => {
       type="submit"
       :class="['ui', {'loading': isLoading}, 'right', 'floated', 'success', 'button']"
     >
-      {{ $t('components.admin.SettingsGroup.button.save') }}
+      {{ $t('global.button.save') }}
     </button>
   </form>
 </template>

@@ -108,7 +108,7 @@ watch(
         :class="['ui', 'basic', 'button']"
         @click="fetchData(nextPage)"
       >
-        {{ $t('components.audio.artist.Widget.button.more') }}
+        {{ $t('global.button.showMore') }}
       </button>
     </template>
   </div>

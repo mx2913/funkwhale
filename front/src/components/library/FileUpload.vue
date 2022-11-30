@@ -546,7 +546,7 @@ useEventListener(window, 'beforeunload', (event) => {
           class="ui button"
           @click="cancelFsScan"
         >
-          {{ $t('components.library.FileUpload.button.cancel') }}
+          {{ $t('global.button.cancel') }}
         </button>
         <fs-logs :data="fsStatus.import" />
       </template>

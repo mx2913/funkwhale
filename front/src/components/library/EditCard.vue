@@ -315,7 +315,7 @@ const approve = async (approved: boolean) => {
         :class="['ui', {loading: isLoading}, 'basic danger button']"
         :action="remove"
       >
-        {{ $t('components.library.EditCard.button.delete') }}
+        {{ $t('global.button.delete') }}
         <template #modal-header>
           <p>
             {{ $t('components.library.EditCard.modal.delete.header') }}
@@ -330,7 +330,7 @@ const approve = async (approved: boolean) => {
         </template>
         <template #modal-confirm>
           <p>
-            {{ $t('components.library.EditCard.button.delete') }}
+            {{ $t('global.button.delete') }}
           </p>
         </template>
       </dangerous-button>

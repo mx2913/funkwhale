@@ -215,7 +215,7 @@ watch(() => props.websocketHandlers.includes('Listen'), (to) => {
         :class="['ui', 'basic', 'button']"
         @click="fetchData(nextPage as string)"
       >
-        {{ $t('components.audio.track.Widget.button.more') }}
+        {{ $t('global.button.showMore') }}
       </button>
     </template>
   </div>

@@ -266,7 +266,7 @@ const resetField = (fieldId: string) => {
               @click.prevent="values[fieldConfig.id] = null"
             >
               <i class="x icon" />
-              {{ $t('components.library.EditForm.button.clear') }}
+              {{ $t('global.button.clear') }}
             </button>
           </template>
           <template v-else-if="fieldConfig.type === 'content'">
@@ -303,7 +303,7 @@ const resetField = (fieldId: string) => {
               @click.prevent="values[fieldConfig.id] = []"
             >
               <i class="x icon" />
-              {{ $t('components.library.EditForm.button.clear') }}
+              {{ $t('global.button.clear') }}
             </button>
           </template>
           <div v-if="fieldValuesChanged(fieldConfig.id)">
@@ -333,7 +333,7 @@ const resetField = (fieldId: string) => {
         class="ui left floated button"
         :to="{name: 'library.tracks.detail', params: {id: object.id }}"
       >
-        {{ $t('components.library.EditForm.button.cancel') }}
+        {{ $t('global.button.cancel') }}
       </router-link>
       <button
         :class="['ui', {'loading': isLoading}, 'right', 'floated', 'success', 'button']"

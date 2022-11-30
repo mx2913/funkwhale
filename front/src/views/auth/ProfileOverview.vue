@@ -115,7 +115,7 @@ const createForm = ref()
           v-if="step === 1"
           class="ui basic deny button"
         >
-          {{ $t('views.auth.ProfileOverview.button.cancel') }}
+          {{ $t('global.button.cancel') }}
         </button>
         <button
           v-if="step > 1"

@@ -97,13 +97,13 @@ const deleteRadio = async () => {
             :to="{name: 'library.radios.edit', params: {id: radio.id}}"
           >
             <i class="pencil icon" />
-            {{ $t('views.radios.Detail.button.edit') }}
+            {{ $t('global.button.edit') }}
           </router-link>
           <dangerous-button
             class="ui labeled danger icon button"
             :action="deleteRadio"
           >
-            <i class="trash icon" /> {{ $t('views.radios.Detail.button.delete') }}
+            <i class="trash icon" /> {{ $t('global.button.delete') }}
             <template #modal-header>
               <p>
                 {{ $t('views.radios.Detail.modal.delete.header', {radio: radio.name}) }}
@@ -116,7 +116,7 @@ const deleteRadio = async () => {
             </template>
             <template #modal-confirm>
               <p>
-                {{ $t('views.radios.Detail.button.confirm') }}
+                {{ $t('global.button.delete') }}
               </p>
             </template>
           </dangerous-button>
@@ -154,7 +154,7 @@ const deleteRadio = async () => {
         :to="{name: 'library.radios.edit', params: { id: radio?.id }}"
       >
         <i class="pencil icon" />
-        {{ $t('views.radios.Detail.button.edit') }}
+        {{ $t('global.button.edit') }}
       </router-link>
     </div>
   </main>

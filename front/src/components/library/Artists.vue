@@ -144,7 +144,7 @@ const paginateOptions = computed(() => sortedUniq([12, 30, 50, paginateBy.value]
               <button
                 class="ui icon button"
                 type="submit"
-                :aria-label="t('components.library.Artists.button.search')"
+                :aria-label="t('global.button.search')"
               >
                 <i class="search icon" />
               </button>

@@ -161,7 +161,7 @@ watch(() => props.id, fetchData, { immediate: true })
               </div>
               <div class="actions">
                 <button class="ui deny button">
-                  {{ $t('components.library.ArtistBase.button.cancel') }}
+                  {{ $t('global.button.cancel') }}
                 </button>
               </div>
             </semantic-modal>
@@ -232,7 +232,7 @@ watch(() => props.id, fetchData, { immediate: true })
                     class="basic item"
                   >
                     <i class="edit icon" />
-                    {{ $t('components.library.ArtistBase.button.edit') }}
+                    {{ $t('global.button.edit') }}
                   </router-link>
                   <div class="divider" />
                   <div

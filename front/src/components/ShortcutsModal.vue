@@ -154,7 +154,7 @@ const player = computed(() => [
     </section>
     <footer class="actions">
       <button class="ui basic cancel button">
-        {{ $t('components.ShortcutsModal.button.close') }}
+        {{ $t('global.button.close') }}
       </button>
     </footer>
   </semantic-modal>

@@ -69,7 +69,7 @@ const actions = computed(() => {
         label: t('components.manage.moderation.ReportCard.button.delete'),
         modalHeader: t('components.manage.moderation.ReportCard.modal.delete.header'),
         modalContent: t('components.manage.moderation.ReportCard.modal.delete.content.warning'),
-        modalConfirmLabel: t('components.manage.moderation.ReportCard.button.confirmDelete'),
+        modalConfirmLabel: t('global.button.delete'),
         icon: 'x',
         iconColor: 'danger',
         show: (obj: Report) => { return !!obj.target },

@@ -168,7 +168,7 @@ const paginateOptions = computed(() => sortedUniq([12, 25, 50, paginateBy.value]
               <button
                 class="ui icon button"
                 type="submit"
-                :aria-label="t('components.library.Radios.button.search')"
+                :aria-label="t('global.button.search')"
               >
                 <i class="search icon" />
               </button>

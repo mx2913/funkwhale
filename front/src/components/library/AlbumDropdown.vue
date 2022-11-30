@@ -66,7 +66,7 @@ const remove = () => emit('remove')
       </div>
       <div class="actions">
         <button class="ui basic deny button">
-          {{ $t('components.library.AlbumDropdown.button.cancel') }}
+          {{ $t('global.button.cancel') }}
         </button>
       </div>
     </semantic-modal>
@@ -122,7 +122,7 @@ const remove = () => emit('remove')
           class="basic item"
         >
           <i class="edit icon" />
-          {{ $t('components.library.AlbumDropdown.button.edit') }}
+          {{ $t('global.button.edit') }}
         </router-link>
         <dangerous-button
           v-if="artist && $store.state.auth.authenticated && artist.channel && artist.attributed_to.full_username === $store.state.auth.fullUsername"
@@ -130,7 +130,7 @@ const remove = () => emit('remove')
           @confirm="remove()"
         >
           <i class="ui trash icon" />
-          {{ $t('components.library.AlbumDropdown.button.delete') }}
+          {{ $t('global.button.delete') }}
           <template #modal-header>
             <p>
               {{ $t('components.library.AlbumDropdown.modal.delete.header') }}
@@ -145,7 +145,7 @@ const remove = () => emit('remove')
           </template>
           <template #modal-confirm>
             <p>
-              {{ $t('components.library.AlbumDropdown.button.delete') }}
+              {{ $t('global.button.delete') }}
             </p>
           </template>
         </dangerous-button>

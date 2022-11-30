@@ -82,7 +82,7 @@ const summary = useMarkdown(() => props.object.summary)
       @click="emit('update')"
     >
       <i class="edit icon" />
-      {{ $t('components.manage.moderation.InstancePolicyCard.button.edit') }}
+      {{ $t('global.button.edit') }}
     </button>
   </div>
 </template>

@@ -110,7 +110,7 @@ const hide = async () => {
     </div>
     <div class="actions">
       <button class="ui basic cancel button">
-        {{ $t('components.moderation.FilterModal.button.cancel') }}
+        {{ $t('global.button.cancel') }}
       </button>
       <button
         :class="['ui', 'success', {loading: isLoading}, 'button']"

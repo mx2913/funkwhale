@@ -257,7 +257,7 @@ onMounted(() => {
               :class="['ui', 'success', {loading: isLoading}, 'button']"
               @click="save"
             >
-              {{ $t('components.library.radios.Builder.button.save') }}
+              {{ $t('global.button.save') }}
             </button>
             <radio-button
               v-if="id"

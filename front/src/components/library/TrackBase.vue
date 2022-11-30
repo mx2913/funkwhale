@@ -197,7 +197,7 @@ const remove = async () => {
                 </div>
                 <div class="actions">
                   <button class="ui basic deny button">
-                    {{ $t('components.library.TrackBase.button.cancel') }}
+                    {{ $t('global.button.cancel') }}
                   </button>
                 </div>
               </semantic-modal>
@@ -254,7 +254,7 @@ const remove = async () => {
                     class="basic item"
                   >
                     <i class="edit icon" />
-                    {{ $t('components.library.TrackBase.button.edit') }}
+                    {{ $t('global.button.edit') }}
                   </router-link>
                   <dangerous-button
                     v-if="artist && $store.state.auth.authenticated && artist.channel && artist.attributed_to.full_username === $store.state.auth.fullUsername"
@@ -262,7 +262,7 @@ const remove = async () => {
                     @confirm="remove()"
                   >
                     <i class="ui trash icon" />
-                    {{ $t('components.library.TrackBase.button.delete') }}
+                    {{ $t('global.button.delete') }}
                     <template #modal-header>
                       <p>
                         {{ $t('components.library.TrackBase.modal.delete.header') }}
@@ -277,7 +277,7 @@ const remove = async () => {
                     </template>
                     <template #modal-confirm>
                       <p>
-                        {{ $t('components.library.TrackBase.button.delete') }}
+                        {{ $t('global.button.delete') }}
                       </p>
                     </template>
                   </dangerous-button>

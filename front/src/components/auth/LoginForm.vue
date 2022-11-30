@@ -141,7 +141,7 @@ const submit = async () => {
       :class="['ui', {'loading': isLoading}, 'right', 'floated', buttonClasses, 'button']"
       type="submit"
     >
-      {{ $t('components.auth.LoginForm.button.login') }}
+      {{ $t('global.button.login') }}
     </button>
   </form>
 </template>

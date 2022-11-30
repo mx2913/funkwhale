@@ -231,7 +231,7 @@ watch(() => props.initialId, () => {
         :class="['ui', 'primary', {loading: isLoading}, 'button']"
         :disabled="isLoading || !id || id.length === 0"
       >
-        {{ $t('components.RemoteSearchForm.button.search') }}
+        {{ $t('global.button.search') }}
       </button>
     </form>
     <div

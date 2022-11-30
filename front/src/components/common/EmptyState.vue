@@ -30,7 +30,7 @@ withDefaults(defineProps<Props>(), {
         class="ui button"
         @click="emit('refresh')"
       >
-        {{ $t('components.common.EmptyState.button.refresh') }}
+        {{ $t('global.button.refresh') }}
       </button>
     </div>
   </div>

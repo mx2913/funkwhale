@@ -121,7 +121,7 @@ const deletePlaylist = async () => {
                 {{ $t('views.playlists.Detail.button.stopEdit') }}
               </template>
               <template v-else>
-                {{ $t('views.playlists.Detail.button.edit') }}
+                {{ $t('global.button.edit') }}
               </template>
             </button>
           </div>
@@ -140,7 +140,7 @@ const deletePlaylist = async () => {
               :action="deletePlaylist"
             >
               <i class="trash icon" />
-              {{ $t('views.playlists.Detail.button.delete') }}
+              {{ $t('global.button.delete') }}
               <template #modal-header>
                 <p>
                   {{ $t('views.playlists.Detail.modal.delete.header', {playlist: playlist.name}) }}
@@ -176,7 +176,7 @@ const deletePlaylist = async () => {
           </div>
           <div class="actions">
             <button class="ui basic deny button">
-              {{ $t('views.playlists.Detail.button.cancel') }}
+              {{ $t('global.button.cancel') }}
             </button>
           </div>
         </semantic-modal>
@@ -212,7 +212,7 @@ const deletePlaylist = async () => {
           @click="edit = !edit"
         >
           <i class="pencil icon" />
-          {{ $t('views.playlists.Detail.button.edit') }}
+          {{ $t('global.button.edit') }}
         </button>
       </div>
     </section>

@@ -145,7 +145,7 @@ const paginateOptions = computed(() => sortedUniq([12, 30, 50, paginateBy.value]
               <button
                 class="ui icon button"
                 type="submit"
-                :aria-label="t('components.library.Podcasts.button.search')"
+                :aria-label="t('global.button.search')"
               >
                 <i class="search icon" />
               </button>
@@ -281,7 +281,7 @@ const paginateOptions = computed(() => sortedUniq([12, 30, 50, paginateBy.value]
       </div>
       <div class="actions">
         <button class="ui basic deny button">
-          {{ $t('components.library.Podcasts.button.cancel') }}
+          {{ $t('global.button.cancel') }}
         </button>
         <button
           form="remote-search"

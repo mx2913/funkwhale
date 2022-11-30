@@ -185,7 +185,7 @@ const getQuery = (field: string, value: string) => `${field}:"${value}"`
                     class="ui labeled icon button"
                   >
                     <i class="edit icon" />
-                    {{ $t('views.admin.library.ArtistDetail.button.edit') }}
+                    {{ $t('global.button.edit') }}
                   </router-link>
                 </div>
                 <div class="ui buttons">
@@ -193,7 +193,7 @@ const getQuery = (field: string, value: string) => `${field}:"${value}"`
                     :class="['ui', {loading: isLoading}, 'basic danger button']"
                     :action="remove"
                   >
-                    {{ $t('views.admin.library.ArtistDetail.button.delete') }}
+                    {{ $t('global.button.delete') }}
                     <template #modal-header>
                       <p>
                         {{ $t('views.admin.library.ArtistDetail.modal.delete.header') }}
@@ -208,7 +208,7 @@ const getQuery = (field: string, value: string) => `${field}:"${value}"`
                     </template>
                     <template #modal-confirm>
                       <p>
-                        {{ $t('views.admin.library.ArtistDetail.button.delete') }}
+                        {{ $t('global.button.delete') }}
                       </p>
                     </template>
                   </dangerous-button>

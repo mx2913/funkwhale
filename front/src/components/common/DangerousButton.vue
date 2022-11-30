@@ -52,14 +52,14 @@ const confirm = () => {
       </div>
       <div class="actions">
         <button class="ui basic cancel button">
-          {{ $t('components.common.DangerousButton.button.cancel') }}
+          {{ $t('global.button.cancel') }}
         </button>
         <button
           :class="['ui', 'confirm', confirmColor, 'button']"
           @click="confirm"
         >
           <slot name="modal-confirm">
-            {{ $t('components.common.DangerousButton.button.confirm') }}
+            {{ $t('global.button.confirm') }}
           </slot>
         </button>
       </div>

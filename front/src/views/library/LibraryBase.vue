@@ -266,7 +266,7 @@ const updateUploads = (count: number) => {
                   :to="{name: 'library.detail.edit'}"
                 >
                   <i class="pencil icon" />
-                  {{ $t('views.library.LibraryBase.button.edit') }}
+                  {{ $t('global.button.edit') }}
                 </router-link>
               </div>
               <div class="ui hidden divider" />

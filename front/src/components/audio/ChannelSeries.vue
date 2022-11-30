@@ -84,7 +84,7 @@ fetchData()
         :class="['ui', 'basic', 'button']"
         @click="fetchData(nextPage)"
       >
-        {{ $t('components.audio.ChannelSeries.button.showMore') }}
+        {{ $t('global.button.showMore') }}
       </button>
     </template>
     <template v-if="!isLoading && albums.length === 0">

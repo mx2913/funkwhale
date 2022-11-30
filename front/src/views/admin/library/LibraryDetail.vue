@@ -169,7 +169,7 @@ const updateObj = async (attr: string) => {
                     :class="['ui', {loading: isLoading}, 'basic danger button']"
                     :action="remove"
                   >
-                    {{ $t('views.admin.library.LibraryDetail.button.delete') }}
+                    {{ $t('global.button.delete') }}
                     <template #modal-header>
                       <p>
                         {{ $t('views.admin.library.LibraryDetail.modal.delete.header') }}
@@ -184,7 +184,7 @@ const updateObj = async (attr: string) => {
                     </template>
                     <template #modal-confirm>
                       <p>
-                        {{ $t('views.admin.library.LibraryDetail.button.delete') }}
+                        {{ $t('global.button.delete') }}
                       </p>
                     </template>
                   </dangerous-button>

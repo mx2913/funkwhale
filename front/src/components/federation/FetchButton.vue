@@ -209,7 +209,7 @@ const { start: startPolling } = useTimeoutFn(poll, 1000, { immediate: false })
       </div>
       <div class="actions">
         <button class="ui basic cancel button">
-          {{ $t('components.federation.FetchButton.button.close') }}
+          {{ $t('global.button.close') }}
         </button>
         <button
           v-if="data && data.status === 'finished'"

@@ -240,7 +240,7 @@ watchEffect(async () => {
     </div>
     <div class="actions">
       <button class="ui basic cancel button">
-        {{ $t('components.moderation.ReportModal.button.cancel') }}
+        {{ $t('global.button.cancel') }}
       </button>
       <button
         v-if="canSubmit"

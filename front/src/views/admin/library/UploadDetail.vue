@@ -153,7 +153,7 @@ const showUploadDetailModal = ref(false)
                     :class="['ui', {loading: isLoading}, 'basic danger button']"
                     :action="remove"
                   >
-                    {{ $t('views.admin.library.UploadDetail.button.delete') }}
+                    {{ $t('global.button.delete') }}
                     <template #modal-header>
                       <p>
                         {{ $t('views.admin.library.UploadDetail.modal.delete.header') }}
@@ -168,7 +168,7 @@ const showUploadDetailModal = ref(false)
                     </template>
                     <template #modal-confirm>
                       <p>
-                        {{ $t('views.admin.library.UploadDetail.button.delete') }}
+                        {{ $t('global.button.delete') }}
                       </p>
                     </template>
                   </dangerous-button>

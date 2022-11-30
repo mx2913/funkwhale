@@ -92,7 +92,7 @@ const showSubscribeModal = ref(false)
         </div>
         <div class="actions">
           <button class="ui basic deny button">
-            {{ $t('views.channels.SubscriptionsList.button.cancel') }}
+            {{ $t('global.button.cancel') }}
           </button>
           <button
             form="remote-search"

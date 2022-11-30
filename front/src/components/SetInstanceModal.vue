@@ -153,7 +153,7 @@ const checkAndSwitch = async (url: string) => {
     </div>
     <div class="actions">
       <button class="ui basic cancel button">
-        {{ $t('components.SetInstanceModal.button.cancel') }}
+        {{ $t('global.button.cancel') }}
       </button>
     </div>
   </semantic-modal>

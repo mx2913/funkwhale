@@ -117,7 +117,7 @@ store.dispatch('playlists/fetchOwn')
             class="ui small basic cancel button"
             @click="showDuplicateTrackAddConfirmation = false"
           >
-            {{ $t('components.playlists.PlaylistModal.button.cancel') }}
+            {{ $t('global.button.cancel') }}
           </button>
           <button
             class="ui small success button"
@@ -189,7 +189,7 @@ store.dispatch('playlists/fetchOwn')
                   :to="{name: 'library.playlists.detail', params: {id: playlist.id }, query: {mode: 'edit'}}"
                 >
                   <i class="ui pencil icon" />
-                  <span class="visually-hidden">{{ $t('components.playlists.PlaylistModal.button.edit') }}</span>
+                  <span class="visually-hidden">{{ $t('global.button.edit') }}</span>
                 </router-link>
               </td>
               <td>
@@ -236,7 +236,7 @@ store.dispatch('playlists/fetchOwn')
     </div>
     <div class="actions">
       <button class="ui basic cancel button">
-        {{ $t('components.playlists.PlaylistModal.button.cancel') }}
+        {{ $t('global.button.cancel') }}
       </button>
     </div>
   </semantic-modal>

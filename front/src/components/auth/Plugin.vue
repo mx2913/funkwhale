@@ -194,7 +194,7 @@ const submitAndScan = async () => {
       type="submit"
       :class="['ui', {'loading': isLoading}, 'right', 'floated', 'button']"
     >
-      {{ $t('components.auth.Plugin.button.save') }}
+      {{ $t('global.button.save') }}
     </button>
     <button
       v-if="plugin.source"

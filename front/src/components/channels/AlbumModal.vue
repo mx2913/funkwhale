@@ -51,14 +51,14 @@ const albumForm = ref()
     </div>
     <div class="actions">
       <button class="ui basic cancel button">
-        {{ $t('components.channels.AlbumModal.button.cancel') }}
+        {{ $t('global.button.cancel') }}
       </button>
       <button
         :class="['ui', 'primary', {loading: isLoading}, 'button']"
         :disabled="!submittable"
         @click.stop.prevent="albumForm.submit()"
       >
-        {{ $t('components.channels.AlbumModal.button.create') }}
+        {{ $t('global.button.create') }}
       </button>
     </div>
   </semantic-modal>

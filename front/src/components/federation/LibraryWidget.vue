@@ -90,7 +90,7 @@ fetchData()
         :class="['ui', 'basic', 'button']"
         @click="fetchData(nextPage)"
       >
-        {{ $t('components.federation.LibraryWidget.button.showMore') }}
+        {{ $t('global.button.showMore') }}
       </button>
     </template>
   </div>

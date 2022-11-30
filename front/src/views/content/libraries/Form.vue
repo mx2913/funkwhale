@@ -173,7 +173,7 @@ const remove = async () => {
       class="ui right floated basic danger button"
       @confirm="remove"
     >
-      {{ $t('views.content.libraries.Form.button.delete') }}
+      {{ $t('global.button.delete') }}
       <template #modal-header>
         <p>
           {{ $t('views.content.libraries.Form.modal.delete.header') }}
@@ -186,7 +186,7 @@ const remove = async () => {
       </template>
       <template #modal-confirm>
         <div>
-          {{ $t('views.content.libraries.Form.button.confirm') }}
+          {{ $t('global.button.delete') }}
         </div>
       </template>
     </dangerous-button>

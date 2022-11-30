@@ -37,7 +37,7 @@ const { copy, isSupported: canCopy, copied } = useClipboard({ source: value, cop
       @click="copy()"
     >
       <i class="copy icon" />
-      {{ $t('components.common.CopyInput.button.copy') }}
+      {{ $t('global.button.copy') }}
     </button>
   </div>
 </template>

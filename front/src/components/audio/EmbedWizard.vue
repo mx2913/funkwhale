@@ -96,7 +96,7 @@ const { copy, copied } = useClipboard({ source: textarea })
             @click="copy()"
           >
             <i class="copy icon" />
-            {{ $t('components.audio.EmbedWizard.button.copy') }}
+            {{ $t('global.button.copy') }}
           </button>
           <label for="embed-width">{{ $t('components.audio.EmbedWizard.label.embed') }}</label>
           <p>

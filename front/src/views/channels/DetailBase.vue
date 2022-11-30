@@ -238,7 +238,7 @@ const updateSubscriptionCount = (delta: number) => {
                   </div>
                   <div class="actions">
                     <button class="ui basic deny button">
-                      {{ $t('views.channels.DetailBase.button.cancel') }}
+                      {{ $t('global.button.cancel') }}
                     </button>
                   </div>
                 </semantic-modal>
@@ -286,7 +286,7 @@ const updateSubscriptionCount = (delta: number) => {
                         @click.stop.prevent="showEditModal = true"
                       >
                         <i class="edit icon" />
-                        {{ $t('views.channels.DetailBase.button.edit') }}
+                        {{ $t('global.button.edit') }}
                       </a>
                       <dangerous-button
                         v-if="object"
@@ -294,7 +294,7 @@ const updateSubscriptionCount = (delta: number) => {
                         @confirm="remove()"
                       >
                         <i class="ui trash icon" />
-                        {{ $t('views.channels.DetailBase.button.delete') }}
+                        {{ $t('global.button.delete') }}
                         <template #modal-header>
                           <p>
                             {{ $t('views.channels.DetailBase.modal.delete.header') }}
@@ -309,7 +309,7 @@ const updateSubscriptionCount = (delta: number) => {
                         </template>
                         <template #modal-confirm>
                           <p>
-                            {{ $t('views.channels.DetailBase.button.confirm') }}
+                            {{ $t('global.button.confirm') }}
                           </p>
                         </template>
                       </dangerous-button>
@@ -404,7 +404,7 @@ const updateSubscriptionCount = (delta: number) => {
                 </div>
                 <div class="actions">
                   <button class="ui basic deny button">
-                    {{ $t('views.channels.DetailBase.button.cancel') }}
+                    {{ $t('global.button.cancel') }}
                   </button>
                 </div>
               </semantic-modal>
@@ -436,7 +436,7 @@ const updateSubscriptionCount = (delta: number) => {
                 </div>
                 <div class="actions">
                   <button class="ui left floated basic deny button">
-                    {{ $t('views.channels.DetailBase.button.cancel') }}
+                    {{ $t('global.button.cancel') }}
                   </button>
                   <button
                     :class="['ui', 'primary', 'confirm', {loading: edit.loading}, 'button']"

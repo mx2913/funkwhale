@@ -82,7 +82,7 @@ const scanResult = ref()
           @click.prevent="fetchData"
         >
           <i :class="['ui', 'circular', 'refresh', 'icon']" />
-          {{ $t('views.content.remote.Home.button.refresh') }}
+          {{ $t('global.button.refresh') }}
         </a>
         <div class="ui hidden divider" />
         <div class="ui two cards">

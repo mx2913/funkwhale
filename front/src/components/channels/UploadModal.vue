@@ -90,7 +90,7 @@ const isLoading = ref(false)
         v-if="step === 1"
         class="ui basic cancel button"
       >
-        {{ $t('components.channels.UploadModal.button.cancel') }}
+        {{ $t('global.button.cancel') }}
       </button>
       <button
         v-else-if="step < 3"
@@ -148,7 +148,7 @@ const isLoading = ref(false)
         class="ui basic cancel button"
         @click="update(false)"
       >
-        {{ $t('components.channels.UploadModal.button.close') }}
+        {{ $t('global.button.close') }}
       </button>
     </div>
   </semantic-modal>

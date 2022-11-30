@@ -537,7 +537,7 @@ fetchOwnedApps()
           @click="fetchApps()"
         >
           <i class="refresh icon" />&nbsp;
-          {{ $t('components.auth.Settings.button.refresh') }}
+          {{ $t('global.button.refresh') }}
         </button>
         <table
           v-if="apps.length > 0"

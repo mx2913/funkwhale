@@ -28,7 +28,7 @@ const showPassword = ref(props.defaultShow)
 const { t } = useI18n()
 const labels = computed(() => ({
   title: t('components.forms.PasswordInput.title'),
-  copy: t('components.forms.PasswordInput.button.copy')
+  copy: t('global.button.copy')
 }))
 
 const passwordInputType = computed(() => showPassword.value ? 'text' : 'password')

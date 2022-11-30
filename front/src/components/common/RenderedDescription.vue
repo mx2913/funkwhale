@@ -112,7 +112,7 @@ const submit = async () => {
         @click="isUpdating = true"
       >
         <i class="pencil icon" />
-        {{ $t('components.common.RenderedDescription.button.edit') }}
+        {{ $t('global.button.edit') }}
       </span>
     </template>
     <form
@@ -145,7 +145,7 @@ const submit = async () => {
         class="left floated"
         @click.prevent="isUpdating = false"
       >
-        {{ $t('components.common.RenderedDescription.button.cancel') }}
+        {{ $t('global.button.cancel') }}
       </a>
       <button
         :class="['ui', {'loading': isLoading}, 'right', 'floated', 'button']"
