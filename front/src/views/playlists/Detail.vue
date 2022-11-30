@@ -132,7 +132,7 @@ const deletePlaylist = async () => {
               @click="showEmbedModal = !showEmbedModal"
             >
               <i class="code icon" />
-              {{ $t('views.playlists.Detail.button.embed') }}
+              {{ $t('global.button.embed') }}
             </button>
             <dangerous-button
               v-if="$store.state.auth.profile && playlist.user.id === $store.state.auth.profile.id"

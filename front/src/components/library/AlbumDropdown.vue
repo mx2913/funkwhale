@@ -94,7 +94,7 @@ const remove = () => emit('remove')
           @click="showEmbedModal = !showEmbedModal"
         >
           <i class="code icon" />
-          {{ $t('components.library.AlbumDropdown.button.embed') }}
+          {{ $t('global.button.embed') }}
         </div>
         <a
           v-if="isAlbum && musicbrainzUrl"

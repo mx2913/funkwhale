@@ -126,7 +126,7 @@ const checkAndSwitch = async (url: string) => {
               type="submit"
               :class="['ui', 'icon', {loading: isLoading}, 'button']"
             >
-              {{ $t('components.SetInstanceModal.button.submit') }}
+              {{ $t('global.button.submit') }}
             </button>
           </div>
         </div>

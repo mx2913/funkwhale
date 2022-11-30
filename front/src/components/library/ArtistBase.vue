@@ -196,7 +196,7 @@ watch(() => props.id, fetchData, { immediate: true })
                     @click.prevent="showEmbedModal = !showEmbedModal"
                   >
                     <i class="code icon" />
-                    {{ $t('components.library.ArtistBase.button.embed') }}
+                    {{ $t('global.button.embed') }}
                   </button>
                   <a
                     :href="wikipediaUrl"

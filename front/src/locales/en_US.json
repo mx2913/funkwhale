@@ -4510,7 +4510,9 @@
       "edit": "Edit",
       "delete": "Delete",
       "search": "Search",
-      "clear": "Clear"
+      "clear": "Clear",
+      "embed": "Embed",
+      "submit": "Submit"
     }
   }
 }

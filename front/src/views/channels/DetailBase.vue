@@ -256,7 +256,7 @@ const updateSubscriptionCount = (delta: number) => {
                       @click.prevent="showEmbedModal = !showEmbedModal"
                     >
                       <i class="code icon" />
-                      {{ $t('views.channels.DetailBase.button.embed') }}
+                      {{ $t('global.button.embed') }}
                     </a>
                     <a
                       v-if="object.actor && object.actor.domain != $store.getters['instance/domain']"

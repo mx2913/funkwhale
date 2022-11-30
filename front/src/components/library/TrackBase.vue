@@ -227,7 +227,7 @@ const remove = async () => {
                     @click="showEmbedModal = !showEmbedModal"
                   >
                     <i class="code icon" />
-                    {{ $t('components.library.TrackBase.button.embed') }}
+                    {{ $t('global.button.embed') }}
                   </div>
                   <a
                     :href="wikipediaUrl"
