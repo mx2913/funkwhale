@@ -188,9 +188,7 @@
         "placeholder": {
           "username": "Skriv inn brukernavnet eller e-postadressen din"
         },
-        "button": {
-          "login": "Logg inn"
-        },
+        "button": {},
         "label": {
           "password": "Passord",
           "username": "Brukernavn eller e-post"
@@ -247,7 +245,6 @@
           "failure": "Kunne ikke lagre innstillinger"
         },
         "button": {
-          "save": "Lagre",
           "scan": "Skanning igangsatt"
         }
       }
@@ -303,9 +300,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Vis ett album til"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -327,9 +322,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Vis ett album til"
-          }
+          "button": {}
         }
       },
       "Player": {
@@ -419,9 +412,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Vis ett album til"
-          }
+          "button": {}
         },
         "MobileRow": {
           "button": {
@@ -484,9 +475,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "Kopier"
-        },
+        "button": {},
         "help": {
           "width": "La stå tom for tilfeldig kode"
         },
@@ -501,17 +490,13 @@
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "Vis ett album til"
-        },
+        "button": {},
         "help": {
           "subscribe": "Ved å slutte å følge dette biblioteket, mister du tilgang til dets innhold."
         }
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "Vis ett album til"
-        }
+        "button": {}
       },
       "ChannelEntries": {
         "help": {
@@ -536,8 +521,6 @@
         },
         "title": "Artist",
         "button": {
-          "cancel": "Avbryt",
-          "edit": "Rediger",
           "play": "Spill av alle album"
         },
         "link": {
@@ -567,8 +550,7 @@
             }
           },
           "button": {
-            "filter": "Legg til filter",
-            "save": "Lagre"
+            "filter": "Legg til filter"
           },
           "label": {
             "filter": "Legg til filter for å tilpasse din radiostasjon",
@@ -618,7 +600,6 @@
           }
         },
         "button": {
-          "cancel": "Avbryt",
           "retry": "Bibliotek oppdatert"
         },
         "label": {
@@ -650,8 +631,6 @@
           "summary": "Kunne ikke lagre endringer"
         },
         "button": {
-          "cancel": "Avbryt",
-          "clear": "Tøm",
           "new": "Send inn en annen forespørsel"
         },
         "header": {
@@ -688,14 +667,11 @@
         "label": {
           "search": "Søk"
         },
-        "button": {
-          "search": "Søk"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "Søk etter noe musikk",
-          "search": "Søk"
+          "upload": "Søk etter noe musikk"
         },
         "label": {
           "search": "Artistnavn"
@@ -792,9 +768,7 @@
           "browse": "Utforsker artister"
         },
         "button": {
-          "cancel": "Avbryt",
           "channel": "Opprett et nytt bibliotek",
-          "search": "Søk",
           "feed": "Om Funkwhale"
         },
         "empty": {
@@ -845,11 +819,7 @@
         }
       },
       "AlbumDropdown": {
-        "button": {
-          "cancel": "Avbryt",
-          "delete": "Slett",
-          "edit": "Rediger"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Slett dette biblioteket?",
@@ -866,10 +836,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "Avbryt",
-          "delete": "Slett",
           "download": "Last ned",
-          "edit": "Rediger",
           "play": "Spill av"
         },
         "modal": {
@@ -905,7 +872,6 @@
       },
       "EditCard": {
         "button": {
-          "delete": "Slett",
           "reject": "Avslå"
         },
         "modal": {
@@ -1011,7 +977,6 @@
           "files": "Én favoritt | { n } favoritter"
         },
         "button": {
-          "cancel": "Avbryt",
           "finishLater": "Fullført",
           "next": "Neste spor",
           "previous": "Forrige spor",
@@ -1054,10 +1019,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "Avbryt",
-          "create": "Opprett import"
-        },
+        "button": {},
         "header": {
           "newAlbum": "Ett album",
           "newSeries": "Ett album"
@@ -1194,18 +1156,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "Avbryt",
-          "confirm": "Bekreft"
-        },
+        "button": {},
         "header": {
           "confirm": "Ønsker du å bekrefte denne handlingen?"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "Avbryt",
-          "edit": "Rediger",
           "more": "Vis ett album til",
           "update": "Min flotte beskrivelse"
         },
@@ -1214,9 +1171,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "Tøm"
-        },
+        "button": {},
         "label": {
           "search": "Søk"
         },
@@ -1230,9 +1185,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "Kopier"
-        },
+        "button": {},
         "message": {
           "success": "Tekst kopiert til utklippstavle."
         }
@@ -1252,9 +1205,7 @@
         }
       },
       "EmptyState": {
-        "button": {
-          "refresh": "Gjenoppfrisk"
-        }
+        "button": {}
       },
       "AttachmentInput": {
         "button": {
@@ -1292,9 +1243,7 @@
         },
         "button": {
           "addToPlaylist": "Legg til i denne spillelisten",
-          "addTrack": "Legg til spor",
-          "cancel": "Avbryt",
-          "edit": "Rediger"
+          "addTrack": "Legg til spor"
         },
         "table": {
           "edit": {
@@ -1372,8 +1321,7 @@
       },
       "Widget": {
         "button": {
-          "create": "Opprett spilleliste",
-          "more": "Vis ett album til"
+          "create": "Opprett spilleliste"
         },
         "placeholder": {
           "noPlaylists": "Spilleliste opprettet"
@@ -1683,9 +1631,7 @@
           "header": {
             "actions": "Handlinger"
           },
-          "button": {
-            "confirmDelete": "Slett"
-          },
+          "button": {},
           "notApplicable": "I/T"
         },
         "UserRequestCard": {
@@ -1797,10 +1743,7 @@
         },
         "InstancePolicyForm": {
           "button": {
-            "cancel": "Avbryt",
             "create": "Opprett import",
-            "delete": "Slett",
-            "confirm": "Slett radiostasjon",
             "update": "Opplastingsdato"
           },
           "modal": {
@@ -1821,9 +1764,7 @@
           }
         },
         "NotesThread": {
-          "button": {
-            "delete": "Slett"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Slett dette biblioteket?",
@@ -1834,9 +1775,7 @@
           }
         },
         "InstancePolicyCard": {
-          "button": {
-            "edit": "Rediger"
-          },
+          "button": {},
           "status": {
             "enabled": "Skru av tilgang"
           },
@@ -1966,7 +1905,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "Tøm",
             "new": "Få en invitasjon"
           },
           "table": {
@@ -2014,9 +1952,7 @@
           "image": "Nåværende bruk",
           "error": "Kunne ikke lagre innstillinger"
         },
-        "button": {
-          "save": "Lagre"
-        },
+        "button": {},
         "message": {
           "success": "Innstillinger oppdatert"
         }
@@ -2030,7 +1966,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "Avbryt",
           "hide": "Legg til innhold"
         },
         "message": {
@@ -2048,7 +1983,6 @@
       },
       "ReportModal": {
         "button": {
-          "cancel": "Avbryt",
           "submit": "Send inn"
         },
         "header": {
@@ -2087,16 +2021,11 @@
         "empty": {
           "noMatch": "Inget samsvarende bibliotek."
         },
-        "button": {
-          "showMore": "Vis ett album til"
-        }
+        "button": {}
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "Avbryt",
-        "submit": "Send inn"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "Velg din instans",
         "suggestions": "Anbefalte valg"
@@ -2107,7 +2036,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "Tøm",
         "stopRadio": "Stopp radiostasjon"
       },
       "label": {
@@ -2143,9 +2071,7 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "Kopier"
-        },
+        "button": {},
         "title": "Vis/skjul passord",
         "message": {
           "copy": "Tekst kopiert til utklippstavle."
@@ -2154,9 +2080,7 @@
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "Rediger"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "Spill spor",
@@ -2175,9 +2099,7 @@
           "title": "Søk på Wikipedia"
         }
       },
-      "button": {
-        "search": "Søk"
-      }
+      "button": {}
     },
     "PageNotFound": {
       "link": {
@@ -2227,10 +2149,6 @@
           "artistChannel": "Artistnavn"
         },
         "button": {
-          "cancel": "Avbryt",
-          "confirm": "Slett",
-          "delete": "Slett",
-          "edit": "Rediger",
           "play": "Spill av",
           "updateChannel": "Oppdater spilleliste",
           "upload": "Last opp"
@@ -2271,9 +2189,7 @@
         "link": {
           "addNew": "Legg til innhold"
         },
-        "button": {
-          "cancel": "Avbryt"
-        },
+        "button": {},
         "placeholder": {
           "search": "Filternavn"
         },
@@ -2403,8 +2319,6 @@
         "Form": {
           "button": {
             "create": "Opprett bibliotek",
-            "delete": "Slett",
-            "confirm": "Slett bibliotek",
             "update": "Oppdater bibliotek"
           },
           "modal": {
@@ -2498,9 +2412,7 @@
           "loading": {
             "remoteLibraries": "Laster fjernbibliotek…"
           },
-          "button": {
-            "refresh": "Gjenoppfrisk"
-          },
+          "button": {},
           "description": {
             "remoteLibraries": "Bibliotek annensteds hen eies av andre brukere på nettverket. Du kan få tilgang til dem så lenge de er offentlige eller du innvilges tilgang."
           }
@@ -2542,7 +2454,6 @@
           "domain": "Registrert siden { date }"
         },
         "button": {
-          "edit": "Rediger",
           "upload": "Last opp"
         },
         "title": "Bibliotek",
@@ -2644,7 +2555,6 @@
           }
         },
         "button": {
-          "cancel": "Avbryt",
           "createChannel": "Opprett et nytt bibliotek",
           "next": "Neste spor",
           "previous": "Forrige spor"
@@ -2906,7 +2816,6 @@
             "uploadData": "Opplastingsdato"
           },
           "button": {
-            "delete": "Slett",
             "download": "Last ned"
           },
           "modal": {
@@ -2933,9 +2842,7 @@
             "audioContent": "Legg til innhold",
             "libraryData": "Bibliotek oppdatert"
           },
-          "button": {
-            "delete": "Slett"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Slett dette biblioteket?",
@@ -2968,10 +2875,7 @@
             "tracks": "Spor",
             "uploads": "Last opp"
           },
-          "button": {
-            "delete": "Slett",
-            "edit": "Rediger"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Slett dette biblioteket?",
@@ -3005,10 +2909,7 @@
             "tracks": "Spor",
             "uploads": "Last opp"
           },
-          "button": {
-            "delete": "Slett",
-            "edit": "Rediger"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Slett dette biblioteket?"
@@ -3036,9 +2937,7 @@
             "artists": "Artister",
             "tracks": "Spor"
           },
-          "button": {
-            "delete": "Slett"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Slett dette biblioteket?",
@@ -3079,10 +2978,7 @@
               "playlists": "Spillelister"
             }
           },
-          "button": {
-            "delete": "Slett",
-            "edit": "Rediger"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Slett dette biblioteket?"
@@ -3130,9 +3026,7 @@
           "audioContent": "Legg til innhold",
           "channelData": "Instansradiostasjoner"
         },
-        "button": {
-          "delete": "Slett"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Slett dette biblioteket?",
@@ -3211,8 +3105,7 @@
         },
         "button": {
           "create": "Opprett spilleliste",
-          "manage": "Behandle dine spillelister",
-          "search": "Søk"
+          "manage": "Behandle dine spillelister"
         },
         "placeholder": {
           "search": "Skriv inn spillelistenavn…"
@@ -3229,10 +3122,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "Avbryt",
-          "delete": "Slett",
           "confirm": "Slett spilleliste",
-          "edit": "Rediger",
           "playAll": "Spill av alle",
           "stopEdit": "Stopp radiostasjon"
         },
@@ -3258,10 +3148,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "Slett radiostasjon",
-          "edit": "Rediger"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Ønsker du å slette radiostasjonen \"{ radio }\"?",

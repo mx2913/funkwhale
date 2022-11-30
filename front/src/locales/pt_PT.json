@@ -188,9 +188,7 @@
         "placeholder": {
           "username": "Indicar seu nome de usuário ou email"
         },
-        "button": {
-          "login": "Entrar"
-        },
+        "button": {},
         "label": {
           "password": "Palavra-passe",
           "username": "Nome de usuário ou email"
@@ -248,7 +246,6 @@
           "failure": "Erro ao salvar configurações"
         },
         "button": {
-          "save": "Salvar",
           "scan": "Analisado"
         }
       }
@@ -311,9 +308,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Mostrar mais 1 álbum"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -335,9 +330,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Mostrar mais 1 álbum"
-          }
+          "button": {}
         }
       },
       "Player": {
@@ -434,9 +427,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Mostrar mais 1 álbum"
-          }
+          "button": {}
         },
         "MobileRow": {
           "button": {
@@ -499,9 +490,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "Cópia"
-        },
+        "button": {},
         "help": {
           "embed": "Copie/colar este código no seu website HTML",
           "width": "Deixe vazio para um widget responsivo"
@@ -525,17 +514,13 @@
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "Mostrar mais 1 álbum"
-        },
+        "button": {},
         "help": {
           "subscribe": "Ao deixar de seguir esta biblioteca, você perderá o acesso ao seu conteúdo."
         }
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "Mostrar mais 1 álbum"
-        }
+        "button": {}
       },
       "ChannelEntries": {
         "help": {
@@ -560,9 +545,6 @@
         },
         "title": "Artista",
         "button": {
-          "cancel": "Cancelar",
-          "edit": "Editar",
-          "embed": "Incorporar",
           "play": "Jogar todos os álbuns"
         },
         "modal": {
@@ -598,8 +580,7 @@
             }
           },
           "button": {
-            "filter": "Adicionar um filtro",
-            "save": "Salvar"
+            "filter": "Adicionar um filtro"
           },
           "label": {
             "filter": "Adicione filtros para personalizar seu rádio",
@@ -650,7 +631,6 @@
           }
         },
         "button": {
-          "cancel": "Cancelar",
           "retry": "Biblioteca atualizada"
         },
         "label": {
@@ -682,10 +662,7 @@
         "placeholder": {
           "summary": "Ocorreu um erro ao salvar suas mudanças"
         },
-        "button": {
-          "cancel": "Cancelar",
-          "clear": "Claro"
-        },
+        "button": {},
         "header": {
           "failure": "Erro ao salvar configurações",
           "recentEdits": "Adicionado recentemente"
@@ -716,14 +693,11 @@
         "label": {
           "search": "Buscar"
         },
-        "button": {
-          "search": "Buscar"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "Procure alguma música",
-          "search": "Buscar"
+          "upload": "Procure alguma música"
         },
         "label": {
           "search": "Nome do artista"
@@ -812,7 +786,6 @@
       "EditCard": {
         "button": {
           "approve": "Aprovar",
-          "delete": "Suprimir",
           "reject": "Rejeitar"
         },
         "status": {
@@ -842,9 +815,7 @@
           "browse": "Procurando artistas"
         },
         "button": {
-          "cancel": "Cancelar",
           "channel": "Criar uma nova biblioteca",
-          "search": "Buscar",
           "feed": "Usando Funkwhale"
         },
         "empty": {
@@ -895,12 +866,7 @@
         }
       },
       "AlbumDropdown": {
-        "button": {
-          "cancel": "Cancelar",
-          "delete": "Suprimir",
-          "edit": "Editar",
-          "embed": "Incorporar"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Excluir esta biblioteca?",
@@ -921,11 +887,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "Cancelar",
-          "delete": "Suprimir",
           "download": "Descarregar",
-          "edit": "Editar",
-          "embed": "Incorporar",
           "play": "Jogar"
         },
         "modal": {
@@ -948,9 +910,7 @@
         "title": "Música"
       },
       "ImportStatusModal": {
-        "button": {
-          "close": "Fechar"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informação da música",
@@ -1056,8 +1016,6 @@
           "files": "{ n } preferida | { n } preferidas"
         },
         "button": {
-          "cancel": "Cancelar",
-          "close": "Fechar",
           "finishLater": "Acabado",
           "next": "Música seguinte",
           "previous": "Música anterior",
@@ -1106,10 +1064,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "Cancelar",
-          "create": "Criar"
-        },
+        "button": {},
         "header": {
           "newAlbum": "1 álbum",
           "newSeries": "1 álbum"
@@ -1254,18 +1209,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "Cancelar",
-          "confirm": "Confirme"
-        },
+        "button": {},
         "header": {
           "confirm": "Você quer confirmar esta ação?"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "Cancelar",
-          "edit": "Editar",
           "more": "Mostrar mais 1 álbum",
           "update": "Minha descrição incrível"
         },
@@ -1274,9 +1224,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "Claro"
-        },
+        "button": {},
         "label": {
           "search": "Buscar"
         },
@@ -1290,9 +1238,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "Cópia"
-        },
+        "button": {},
         "message": {
           "success": "Texto copiado para a área de transferência!"
         }
@@ -1312,9 +1258,7 @@
         }
       },
       "EmptyState": {
-        "button": {
-          "refresh": "Atualizar"
-        }
+        "button": {}
       },
       "AttachmentInput": {
         "button": {
@@ -1352,9 +1296,7 @@
         },
         "button": {
           "addToPlaylist": "Adicionar a esta playlist",
-          "addTrack": "Adicionar música",
-          "cancel": "Cancelar",
-          "edit": "Editar"
+          "addTrack": "Adicionar música"
         },
         "table": {
           "edit": {
@@ -1432,8 +1374,7 @@
       },
       "Widget": {
         "button": {
-          "create": "Crie uma playlist",
-          "more": "Mostrar mais 1 álbum"
+          "create": "Crie uma playlist"
         },
         "placeholder": {
           "noPlaylists": "Playlist criada"
@@ -1776,9 +1717,7 @@
           "header": {
             "actions": "Ações"
           },
-          "button": {
-            "confirmDelete": "Suprimir"
-          },
+          "button": {},
           "link": {
             "moderation": "Atualizar a regra de moderação"
           }
@@ -1831,10 +1770,7 @@
             "isActive": "Use esta configuração para ativar/desativar temporariamente a política sem removê-la completamente."
           },
           "button": {
-            "cancel": "Cancelar",
             "create": "Criar",
-            "delete": "Suprimir",
-            "confirm": "Eliminar regra de moderação",
             "update": "Atualizar"
           },
           "modal": {
@@ -1952,9 +1888,7 @@
             "reason": "Motivo",
             "rejectMedia": "Rejeitar mídia"
           },
-          "button": {
-            "edit": "Editar"
-          },
+          "button": {},
           "status": {
             "enabled": "Ativado",
             "paused": "Pausa"
@@ -1965,7 +1899,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Fechar",
             "show": "Atualizar a regra de moderação"
           },
           "modal": {
@@ -1978,9 +1911,7 @@
           }
         },
         "NotesThread": {
-          "button": {
-            "delete": "Suprimir"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Excluir esta biblioteca?",
@@ -2111,7 +2042,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "Claro",
             "new": "Receba um novo convite"
           },
           "table": {
@@ -2160,9 +2090,7 @@
           "image": "Uso atual",
           "error": "Erro ao salvar configurações"
         },
-        "button": {
-          "save": "Salvar"
-        },
+        "button": {},
         "message": {
           "success": "Configurações atualizadas com sucesso."
         }
@@ -2176,7 +2104,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "Cancelar",
           "hide": "Adicionar conteúdo"
         },
         "header": {
@@ -2191,7 +2118,6 @@
       },
       "ReportModal": {
         "button": {
-          "cancel": "Cancelar",
           "submit": "Enviar"
         },
         "header": {
@@ -2219,9 +2145,7 @@
             }
           }
         },
-        "button": {
-          "close": "Fechar"
-        },
+        "button": {},
         "header": {
           "saveFailure": "Erro ao salvar configurações",
           "failure": "Atualizar",
@@ -2235,9 +2159,7 @@
         "empty": {
           "noMatch": "Nenhuma biblioteca correspondente."
         },
-        "button": {
-          "showMore": "Mostrar mais 1 álbum"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
@@ -2259,18 +2181,13 @@
           "show": "Mostrar atalhos de teclado disponíveis"
         }
       },
-      "button": {
-        "close": "Fechar"
-      },
+      "button": {},
       "header": {
         "modal": "Atalhos do teclado"
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "Cancelar",
-        "submit": "Enviar"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "Escolha sua instância",
         "suggestions": "Escolhas sugeridas"
@@ -2281,8 +2198,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "Claro",
-        "close": "Fechar",
         "stopRadio": "Pare o rádio"
       },
       "label": {
@@ -2311,9 +2226,7 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "Cópia"
-        },
+        "button": {},
         "title": "Mostrar/ocultar senha",
         "message": {
           "copy": "Texto copiado para a área de transferência!"
@@ -2322,9 +2235,7 @@
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "Editar"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "Jogar mũsica",
@@ -2343,9 +2254,7 @@
           "title": "Procurar em Wikipedia"
         }
       },
-      "button": {
-        "search": "Buscar"
-      },
+      "button": {},
       "error": {
         "fetchFailed": "Playlist criada"
       }
@@ -2390,11 +2299,6 @@
           "artistChannel": "Nome do artista"
         },
         "button": {
-          "cancel": "Cancelar",
-          "confirm": "Suprimir",
-          "delete": "Suprimir",
-          "edit": "Editar",
-          "embed": "Incorporar",
           "play": "Jogar",
           "updateChannel": "Atualizar playlist",
           "upload": "Carregar"
@@ -2440,9 +2344,7 @@
         "link": {
           "addNew": "Adicionar conteúdo"
         },
-        "button": {
-          "cancel": "Cancelar"
-        },
+        "button": {},
         "placeholder": {
           "search": "Nome do filtro"
         },
@@ -2575,8 +2477,6 @@
         "Form": {
           "button": {
             "create": "Criar biblioteca",
-            "delete": "Suprimir",
-            "confirm": "Excluir biblioteca",
             "update": "Atualizar biblioteca"
           },
           "modal": {
@@ -2673,9 +2573,7 @@
           "loading": {
             "remoteLibraries": "Carregando bibliotecas remotas…"
           },
-          "button": {
-            "refresh": "Atualizar"
-          },
+          "button": {},
           "description": {
             "remoteLibraries": "Bibliotecas remotas são de propriedade de outros usuários na rede. Você pode acessá-los desde que sejam públicos ou tenha acesso."
           }
@@ -2721,7 +2619,6 @@
           "domain": "Registrado desde { date }"
         },
         "button": {
-          "edit": "Editar",
           "upload": "Carregar"
         },
         "title": "Biblioteca",
@@ -2832,7 +2729,6 @@
           }
         },
         "button": {
-          "cancel": "Cancelar",
           "createChannel": "Criar uma nova biblioteca",
           "next": "Música seguinte",
           "previous": "Música anterior"
@@ -3149,7 +3045,6 @@
             "uploadData": "Data de upload"
           },
           "button": {
-            "delete": "Suprimir",
             "download": "Descarregar"
           },
           "modal": {
@@ -3191,9 +3086,7 @@
               "followers": "Seguidores"
             }
           },
-          "button": {
-            "delete": "Suprimir"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Excluir esta biblioteca?"
@@ -3235,10 +3128,7 @@
               "playlists": "Playlists"
             }
           },
-          "button": {
-            "delete": "Suprimir",
-            "edit": "Editar"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Excluir esta biblioteca?"
@@ -3280,10 +3170,7 @@
               "playlists": "Playlists"
             }
           },
-          "button": {
-            "delete": "Suprimir",
-            "edit": "Editar"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Excluir esta biblioteca?"
@@ -3305,9 +3192,7 @@
             "localProfile": "Abrir o perfil",
             "tracks": "Músicas"
           },
-          "button": {
-            "delete": "Suprimir"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Excluir esta biblioteca?",
@@ -3360,10 +3245,7 @@
               "playlists": "Playlists"
             }
           },
-          "button": {
-            "delete": "Suprimir",
-            "edit": "Editar"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Excluir esta biblioteca?"
@@ -3422,7 +3304,6 @@
           "channelData": "Dados da instância"
         },
         "button": {
-          "delete": "Suprimir",
           "openRemote": "Abrir o perfil"
         },
         "modal": {
@@ -3512,8 +3393,7 @@
         },
         "button": {
           "create": "Crie uma playlist",
-          "manage": "Gerenciar suas playlists",
-          "search": "Buscar"
+          "manage": "Gerenciar suas playlists"
         },
         "placeholder": {
           "search": "Indicar um nome de playlist…"
@@ -3530,11 +3410,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "Cancelar",
-          "delete": "Suprimir",
           "confirm": "Suprimir Playlist",
-          "edit": "Editar",
-          "embed": "Incorporar",
           "playAll": "Jogar tudo",
           "stopEdit": "Pare o rádio"
         },
@@ -3563,10 +3439,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "Suprimir radio",
-          "edit": "Editar"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Você deseja excluir a radio \"{ radio }\"?",

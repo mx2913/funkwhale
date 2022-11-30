@@ -262,9 +262,7 @@
         "placeholder": {
           "username": "Zadejte vaše uživatelské jméno nebo email"
         },
-        "button": {
-          "login": "Přihlášení"
-        },
+        "button": {},
         "label": {
           "password": "Heslo",
           "username": "Uživatelské jméno nebo email"
@@ -310,7 +308,6 @@
           "failure": "Chyba při ukládání nastavení"
         },
         "button": {
-          "save": "Uložit",
           "scan": "Skenováno"
         }
       }
@@ -399,9 +396,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Zobrazit více"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -423,9 +418,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Zobrazit více"
-          }
+          "button": {}
         }
       },
       "Player": {
@@ -527,9 +520,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Zobrazit více"
-          }
+          "button": {}
         },
         "MobileRow": {
           "button": {
@@ -596,9 +587,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "Kopírovat"
-        },
+        "button": {},
         "help": {
           "embed": "Zkopírujte a vložte tento kód do HTML kódu webové stránky",
           "width": "Ponechte prázdné pro responzivní widget"
@@ -622,17 +611,13 @@
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "Zobrazit více"
-        },
+        "button": {},
         "help": {
           "subscribe": "Ukončením sledování této knihovny ztratíte přístup k jejímu obsahu."
         }
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "Zobrazit více"
-        }
+        "button": {}
       },
       "ChannelEntries": {
         "help": {
@@ -657,9 +642,6 @@
         },
         "title": "Interpret",
         "button": {
-          "cancel": "Zrušit",
-          "edit": "Upravit",
-          "embed": "Vložit",
           "more": "Další…",
           "play": "Přehrát všechna alba"
         },
@@ -697,8 +679,7 @@
             }
           },
           "button": {
-            "filter": "Přidat filtr",
-            "save": "Uložit"
+            "filter": "Přidat filtr"
           },
           "label": {
             "filter": "Přidat filtry pro úpravu rádia",
@@ -749,7 +730,6 @@
           }
         },
         "button": {
-          "cancel": "Zrušit",
           "retry": "Knihovny a nahrané soubory"
         },
         "label": {
@@ -784,8 +764,6 @@
           "summary": "Krátké shrnutí popisující provedené změny."
         },
         "button": {
-          "cancel": "Zrušit",
-          "clear": "Vyčistit",
           "reset": "Resetovat na výchozí hodnotu",
           "showUnreviewed": "Omezit na úpravy bez revize",
           "showAll": "Zobrazit všechny úpravy",
@@ -839,14 +817,11 @@
           "search": "Hledat",
           "tags": "Tagy"
         },
-        "button": {
-          "search": "Hledat"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "Hledat trochu muziky",
-          "search": "Hledat"
+          "upload": "Hledat trochu muziky"
         },
         "label": {
           "search": "Jméno interpreta",
@@ -949,9 +924,7 @@
             "message": "Metadata v souboru jsou neplatná, nebo některé povinné položky chybí."
           }
         },
-        "button": {
-          "close": "Zavřít"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informace pro vývojáře",
@@ -978,7 +951,6 @@
       "EditCard": {
         "button": {
           "approve": "Schválit",
-          "delete": "Odstranit",
           "reject": "Odmítnout"
         },
         "status": {
@@ -1025,9 +997,7 @@
           "browse": "Procházení interpretů"
         },
         "button": {
-          "cancel": "Zrušit",
           "channel": "Vytvořit novou knihovnu",
-          "search": "Hledat",
           "feed": "Použití Funkwhale"
         },
         "empty": {
@@ -1082,10 +1052,6 @@
       },
       "AlbumDropdown": {
         "button": {
-          "cancel": "Zrušit",
-          "delete": "Odstranit",
-          "edit": "Upravit",
-          "embed": "Vložit",
           "more": "Další…"
         },
         "modal": {
@@ -1109,11 +1075,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "Zrušit",
-          "delete": "Odstranit",
           "download": "Stáhnout",
-          "edit": "Upravit",
-          "embed": "Vložit",
           "more": "Další…",
           "play": "Přehrát"
         },
@@ -1240,8 +1202,6 @@
           "quota": "Zbývající prostor úložiště"
         },
         "button": {
-          "cancel": "Zrušit",
-          "close": "Zavřít",
           "finishLater": "Dokončeno",
           "next": "Další stopa",
           "previous": "Předchozí stopa",
@@ -1290,10 +1250,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "Zrušit",
-          "create": "Vytvořit"
-        },
+        "button": {},
         "header": {
           "newAlbum": "Nová hodnota",
           "newSeries": "Nová hodnota"
@@ -1450,18 +1407,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "Zrušit",
-          "confirm": "Potvrdit"
-        },
+        "button": {},
         "header": {
           "confirm": "Přejete si potvrdit tuto akci?"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "Zrušit",
-          "edit": "Upravit",
           "less": "Zobrazit méně",
           "more": "Zobrazit více",
           "update": "Můj úžasný popis"
@@ -1474,9 +1426,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "Vyčistit"
-        },
+        "button": {},
         "label": {
           "search": "Hledat"
         },
@@ -1491,9 +1441,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "Kopírovat"
-        },
+        "button": {},
         "message": {
           "success": "Text vložen do schránky!"
         }
@@ -1508,9 +1456,7 @@
         "header": {
           "noResults": "Žádné výsledky nebyly nalezeny."
         },
-        "button": {
-          "refresh": "Obnovit"
-        }
+        "button": {}
       },
       "ContentForm": {
         "empty": {
@@ -1555,9 +1501,7 @@
         "button": {
           "addDuplicate": "Přesto přidat",
           "addToPlaylist": "Přidat do tohoto playlistu",
-          "addTrack": "Přidat stopu",
-          "cancel": "Zrušit",
-          "edit": "Upravit"
+          "addTrack": "Přidat stopu"
         },
         "header": {
           "addToPlaylist": "Přidat do playlistu…",
@@ -1646,8 +1590,7 @@
       },
       "Widget": {
         "button": {
-          "create": "Vytvořit playlist",
-          "more": "Zobrazit více"
+          "create": "Vytvořit playlist"
         },
         "placeholder": {
           "noPlaylists": "Playlist nemůže být vytvořen"
@@ -2022,7 +1965,6 @@
             "reportedObject": "Ohlášený objekt"
           },
           "button": {
-            "confirmDelete": "Odstranit",
             "delete": "Smazat nahlášený objekt",
             "resolve": "Vyřešit",
             "unresolve": "Není vyřešeno"
@@ -2098,10 +2040,7 @@
             "isActive": "Použijte tuto volbu pro dočasnou (de)aktivaci zásady, bez jejího odstranění."
           },
           "button": {
-            "cancel": "Zrušit",
             "create": "Vytvořit",
-            "delete": "Odstranit",
-            "confirm": "Odstranit pravidlo moderování",
             "update": "Aktualizovat"
           },
           "modal": {
@@ -2223,9 +2162,7 @@
             "reason": "Důvod",
             "rejectMedia": "Odmítnout mediální soubory"
           },
-          "button": {
-            "edit": "Upravit"
-          },
+          "button": {},
           "status": {
             "enabled": "Zapnuto",
             "paused": "Pozastaveno"
@@ -2236,7 +2173,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Zavřít",
             "show": "Pravidla moderace…"
           },
           "modal": {
@@ -2249,9 +2185,7 @@
           }
         },
         "NotesThread": {
-          "button": {
-            "delete": "Odstranit"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Odstranit tuto poznámku?",
@@ -2385,7 +2319,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "Vyčistit",
             "new": "Získat novou pozvánku"
           },
           "table": {
@@ -2436,9 +2369,7 @@
           "image": "Aktuální obrázek",
           "error": "Chyba při ukládání nastavení"
         },
-        "button": {
-          "save": "Uložit"
-        },
+        "button": {},
         "message": {
           "success": "Nastavení úspěšně aktualizováno."
         }
@@ -2460,7 +2391,6 @@
           "submissionFailure": "Chyba při odesílání hlášení"
         },
         "button": {
-          "cancel": "Zrušit",
           "submit": "Odeslat hlášení"
         },
         "label": {
@@ -2478,7 +2408,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "Zrušit",
           "hide": "Skrýt obsah"
         },
         "message": {
@@ -2528,7 +2457,6 @@
           }
         },
         "button": {
-          "close": "Zavřít",
           "reload": "Zavřít a obnovit stránku"
         },
         "header": {
@@ -2548,9 +2476,7 @@
         "empty": {
           "noMatch": "Žádná odpovídající knihovna."
         },
-        "button": {
-          "showMore": "Zobrazit více"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
@@ -2579,18 +2505,13 @@
           "unfocus": "Opustit vyhledávací pole"
         }
       },
-      "button": {
-        "close": "Zavřít"
-      },
+      "button": {},
       "header": {
         "modal": "Klávesové zkratky"
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "Zrušit",
-        "submit": "Odeslat"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "Zvolte svou instanci",
         "failure": "Na zadanou adresu URL se nelze připojit",
@@ -2610,8 +2531,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "Vyčistit",
-        "close": "Zavřít",
         "stopRadio": "Zastavit rádio"
       },
       "label": {
@@ -2642,9 +2561,7 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "Kopírovat"
-        },
+        "button": {},
         "title": "Zobrazit/skrýt heslo",
         "message": {
           "copy": "Text vložen do schránky!"
@@ -2653,9 +2570,7 @@
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "Upravit"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "Přehrát stopu",
@@ -2675,9 +2590,7 @@
           "fieldLabel": "Vytvořit aplikaci"
         }
       },
-      "button": {
-        "search": "Hledat"
-      },
+      "button": {},
       "error": {
         "fetchFailed": "Váš účet nemůže být vytvořen."
       }
@@ -2722,11 +2635,6 @@
           "artistChannel": "Jméno interpreta"
         },
         "button": {
-          "cancel": "Zrušit",
-          "confirm": "Odstranit",
-          "delete": "Odstranit",
-          "edit": "Upravit",
-          "embed": "Vložit",
           "play": "Přehrát",
           "updateChannel": "Aktualizovat aplikaci",
           "upload": "Nahrát"
@@ -2777,9 +2685,7 @@
         "link": {
           "addNew": "Přidat obsah"
         },
-        "button": {
-          "cancel": "Zrušit"
-        },
+        "button": {},
         "placeholder": {
           "search": "Název filtru"
         },
@@ -2916,8 +2822,6 @@
         "Form": {
           "button": {
             "create": "Vytvořit knihovnu",
-            "delete": "Odstranit",
-            "confirm": "Odstranit knihovnu",
             "update": "Aktualizovat knihovnu"
           },
           "modal": {
@@ -3015,9 +2919,7 @@
           "loading": {
             "remoteLibraries": "Načítání vzdálených knihoven…"
           },
-          "button": {
-            "refresh": "Obnovit"
-          },
+          "button": {},
           "description": {
             "remoteLibraries": "Vzdálené knihovny jsou vlastněny ostatními uživateli na síti. Můžete k nim přistupovat pokud jsou veřejné, nebo pokud je vám udělen přístup."
           }
@@ -3063,7 +2965,6 @@
           "domain": "Členem od { date }"
         },
         "button": {
-          "edit": "Upravit",
           "upload": "Nahrát"
         },
         "title": "Knihovna",
@@ -3175,7 +3076,6 @@
           }
         },
         "button": {
-          "cancel": "Zrušit",
           "createChannel": "Vytvořit novou knihovnu",
           "next": "Další stopa",
           "previous": "Předchozí stopa"
@@ -3545,7 +3445,6 @@
             "uploadData": "Datum nahrání"
           },
           "button": {
-            "delete": "Odstranit",
             "download": "Stáhnout"
           },
           "modal": {
@@ -3591,9 +3490,7 @@
               "followers": "Sledující"
             }
           },
-          "button": {
-            "delete": "Odstranit"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Odstranit tuto knihovnu?",
@@ -3643,8 +3540,6 @@
             }
           },
           "button": {
-            "delete": "Odstranit",
-            "edit": "Upravit",
             "remoteRefresh": "Obnovit ze vzdáleného serveru"
           },
           "modal": {
@@ -3697,8 +3592,6 @@
             }
           },
           "button": {
-            "delete": "Odstranit",
-            "edit": "Upravit",
             "remoteRefresh": "Obnovit ze vzdáleného serveru"
           },
           "modal": {
@@ -3726,9 +3619,7 @@
             "tracks": "Stopy",
             "django": "Zobrazit v administraci Django"
           },
-          "button": {
-            "delete": "Odstranit"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Odstranit tento tag?",
@@ -3787,8 +3678,6 @@
             }
           },
           "button": {
-            "delete": "Odstranit",
-            "edit": "Upravit",
             "remoteRefresh": "Obnovit ze vzdáleného serveru"
           },
           "modal": {
@@ -3856,7 +3745,6 @@
           "channelData": "Data instance"
         },
         "button": {
-          "delete": "Odstranit",
           "openRemote": "Otevřít vzdálený profil",
           "refresh": "Obnovit ze vzdáleného serveru"
         },
@@ -3953,8 +3841,7 @@
         },
         "button": {
           "create": "Vytvořit playlist",
-          "manage": "Spravovat vaše playlisty",
-          "search": "Hledat"
+          "manage": "Spravovat vaše playlisty"
         },
         "placeholder": {
           "search": "Zadejte název playlistu…"
@@ -3971,11 +3858,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "Zrušit",
-          "delete": "Odstranit",
           "confirm": "Odstranit playlist",
-          "edit": "Upravit",
-          "embed": "Vložit",
           "playAll": "Přehrát vše",
           "stopEdit": "Zastavit rádio"
         },
@@ -4004,10 +3887,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "Odstranit rádio",
-          "edit": "Upravit"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Přejete si odstranit rádio \"{ radio }\"?",

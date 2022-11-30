@@ -272,9 +272,7 @@
           "approvalRequired": "Duela gutxi erregistratu bazara, baliteke moderazio taldeak zure kontua berrikusi edo zure eposta helbidea egiaztatu arte itxaron behar izatea.",
           "invalidCredentials": "Egiaztatu erabiltzaile izena eta pasahitza zuzenak direla eta ziurtatu zure eposta helbidea egiaztatu duzula."
         },
-        "button": {
-          "login": "Sartu"
-        },
+        "button": {},
         "label": {
           "password": "Pasahitza",
           "username": "Erabiltzaile-izena edo eposta helbidea"
@@ -323,7 +321,6 @@
           "library": "Fitxategiak ze liburutegitara inportatu behar diren."
         },
         "button": {
-          "save": "Gorde",
           "scan": "Eskaneatu"
         }
       }
@@ -417,9 +414,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Erakutsi gehiago"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -441,9 +436,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Erakutsi gehiago"
-          }
+          "button": {}
         }
       },
       "Player": {
@@ -548,9 +541,7 @@
           "empty": {
             "noResults": "Ez da ezer aurkitu"
           },
-          "button": {
-            "more": "Erakutsi gehiago"
-          }
+          "button": {}
         },
         "MobileRow": {
           "button": {
@@ -651,9 +642,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "Kopiatu"
-        },
+        "button": {},
         "help": {
           "embed": "Kopiatu eta itsatsi kode hau zure webguneko HTMLan",
           "width": "Utzi hutsik widget moldagarrirako",
@@ -675,17 +664,13 @@
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "Erakutsi gehiago"
-        },
+        "button": {},
         "help": {
           "subscribe": "Bere edukia ikusteko kanal honetara harpidetu beharko duzu behar bada."
         }
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "Erakutsi gehiago"
-        }
+        "button": {}
       },
       "ChannelEntries": {
         "help": {
@@ -706,9 +691,6 @@
       "ArtistBase": {
         "title": "Artista",
         "button": {
-          "cancel": "Ezeztatu",
-          "edit": "Editatu",
-          "embed": "Txertatu",
           "more": "Gehiago…",
           "play": "Erreproduzitu album denak"
         },
@@ -746,8 +728,7 @@
             }
           },
           "button": {
-            "filter": "Iragazkia sortu",
-            "save": "Gorde"
+            "filter": "Iragazkia sortu"
           },
           "label": {
             "filter": "Iragazkiak sortu zure irratia pertsonalizatzeko",
@@ -799,7 +780,6 @@
           }
         },
         "button": {
-          "cancel": "Ezeztatu",
           "retry": "Saiatu berriro huts egindako igoerekin"
         },
         "label": {
@@ -836,8 +816,6 @@
           "summary": "Zure aldaketak deskribatzen dituen laburpentxoa."
         },
         "button": {
-          "cancel": "Ezeztatu",
-          "clear": "Garbitu",
           "reset": "Berrezarri hasierako baliora",
           "showUnreviewed": "Mugatu berrikusi gabeko edizioetara",
           "showAll": "Erakutsi edizio guztiak",
@@ -891,14 +869,11 @@
           "search": "Bilatu",
           "tags": "Etiketak"
         },
-        "button": {
-          "search": "Bilatu"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "Gehitu musikaren bat",
-          "search": "Bilatu"
+          "upload": "Gehitu musikaren bat"
         },
         "label": {
           "search": "Artistaren izena",
@@ -1006,9 +981,7 @@
             "message": "Fitxategiaren metadatuak baliogabeak dira edo beharrezko eremuak falta dituzte."
           }
         },
-        "button": {
-          "close": "Itxi"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Arazketa informazioa",
@@ -1035,7 +1008,6 @@
       "EditCard": {
         "button": {
           "approve": "Onartu",
-          "delete": "Ezabatu",
           "reject": "Baztertu"
         },
         "status": {
@@ -1082,9 +1054,7 @@
           "browse": "Podcastak arakatzen"
         },
         "button": {
-          "cancel": "Ezeztatu",
           "channel": "Sortu kanala",
-          "search": "Bilatu",
           "subscribe": "Harpidetu",
           "feed": "Harpidetu RSS jariora"
         },
@@ -1142,10 +1112,6 @@
       },
       "AlbumDropdown": {
         "button": {
-          "cancel": "Ezeztatu",
-          "delete": "Ezabatu…",
-          "edit": "Editatu",
-          "embed": "Txertatu",
           "more": "Gehiago…"
         },
         "modal": {
@@ -1169,11 +1135,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "Ezeztatu",
-          "delete": "Ezabatu…",
           "download": "Deskargatu",
-          "edit": "Editatu",
-          "embed": "Txertatu",
           "more": "Gehiago…",
           "play": "Erreproduzitu"
         },
@@ -1307,8 +1269,6 @@
           "quota": "Gelditzen den biltegiratze-lekua:"
         },
         "button": {
-          "cancel": "Ezeztatu",
-          "close": "Itxi",
           "finishLater": "Amaitu beranduago",
           "next": "Hurrengo pausoa",
           "previous": "Aurreko pausoa",
@@ -1380,10 +1340,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "Ezeztatu",
-          "create": "Sortu"
-        },
+        "button": {},
         "header": {
           "newAlbum": "Album berria",
           "newSeries": "Serie berria"
@@ -1553,18 +1510,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "Ezeztatu",
-          "confirm": "Baieztatu"
-        },
+        "button": {},
         "header": {
           "confirm": "Nahi duzu akzio hau baieztatzea?"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "Ezeztatu",
-          "edit": "Editatu",
           "less": "Erakutsi gutxiago",
           "more": "Erakutsi gehiago",
           "update": "Eguneratu deskribapena"
@@ -1577,9 +1529,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "Garbitu"
-        },
+        "button": {},
         "label": {
           "search": "Bilatu"
         },
@@ -1594,9 +1544,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "Kopiatu"
-        },
+        "button": {},
         "message": {
           "success": "Testua arbelera kopiatu da!"
         }
@@ -1632,9 +1580,7 @@
         "header": {
           "noResults": "Ez da emaitzarik aurkitu."
         },
-        "button": {
-          "refresh": "Freskatu"
-        }
+        "button": {}
       },
       "AttachmentInput": {
         "help": {
@@ -1673,9 +1619,7 @@
         "button": {
           "addDuplicate": "Gehitu halere",
           "addToPlaylist": "Gehitu erreprodukzio-zerrenda honetan",
-          "addTrack": "Abestia sartu",
-          "cancel": "Ezeztatu",
-          "edit": "Editatu"
+          "addTrack": "Abestia sartu"
         },
         "header": {
           "addToPlaylist": "Gehitu erreprodukzio-zerrendan",
@@ -1764,8 +1708,7 @@
       },
       "Widget": {
         "button": {
-          "create": "Sortu erreprodukzio-zerrenda",
-          "more": "Erakutsi gehiago"
+          "create": "Sortu erreprodukzio-zerrenda"
         },
         "placeholder": {
           "noPlaylists": "Ez da zerrendarik sortu oraindik"
@@ -2144,7 +2087,6 @@
             "reportedObject": "Salatutako objektua"
           },
           "button": {
-            "confirmDelete": "Ezabatu",
             "delete": "Ezabatu salatutako objektua",
             "resolve": "Ebatzi",
             "unresolve": "Konpondu gabe"
@@ -2224,10 +2166,7 @@
             "isActive": "Erabili ezarpen hau gidalerroa aldi baterako gaitu/desgaitzeko, guztiz kendu gabe."
           },
           "button": {
-            "cancel": "Ezeztatu",
             "create": "Sortu",
-            "delete": "Ezabatu",
-            "confirm": "Ezabatu moderazio-araua",
             "update": "Eguneratu"
           },
           "modal": {
@@ -2352,9 +2291,7 @@
             "reason": "Arrazoia",
             "rejectMedia": "Baztertu multimedia"
           },
-          "button": {
-            "edit": "Editatu"
-          },
+          "button": {},
           "status": {
             "enabled": "Gaituta",
             "paused": "Pausatuta"
@@ -2365,7 +2302,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Itxi",
             "show": "Moderazio arauak…"
           },
           "modal": {
@@ -2378,9 +2314,7 @@
           }
         },
         "NotesThread": {
-          "button": {
-            "delete": "Ezabatu"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Ohar hau ezabatu nahi duzu?",
@@ -2514,7 +2448,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "Garbitu",
             "new": "Lortu gonbidapen berria"
           },
           "table": {
@@ -2580,9 +2513,7 @@
           "image": "Uneko irudia",
           "error": "Errorea ezarpenak gordetzerakoan"
         },
-        "button": {
-          "save": "Gorde"
-        },
+        "button": {},
         "message": {
           "success": "Ezarpenak arrakastaz eguneratuta."
         }
@@ -2604,7 +2535,6 @@
           "submissionFailure": "Errorea salaketa bidaltzerakoan"
         },
         "button": {
-          "cancel": "Ezeztatu",
           "submit": "Bidali txostena"
         },
         "label": {
@@ -2624,7 +2554,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "Ezeztatu",
           "hide": "Ezkutatu edukia"
         },
         "message": {
@@ -2674,7 +2603,6 @@
           }
         },
         "button": {
-          "close": "Itxi",
           "reload": "Itxi eta freskatu orria"
         },
         "header": {
@@ -2694,9 +2622,7 @@
         "empty": {
           "noMatch": "Ez da bat datorren liburutegirik aurkitu."
         },
-        "button": {
-          "showMore": "Erakutsi gehiago"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
@@ -2726,18 +2652,13 @@
           "unfocus": "Kendu fokua bilaketa-barrari"
         }
       },
-      "button": {
-        "close": "Itxi"
-      },
+      "button": {},
       "header": {
         "modal": "Laster-teklak"
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "Ezeztatu",
-        "submit": "Bidali"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "Zure instantzia hautatu",
         "failure": "Ezin da konektatu emandako URLarekin",
@@ -2757,8 +2678,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "Garbitu",
-        "close": "Itxi",
         "stopRadio": "Gelditu irratia"
       },
       "label": {
@@ -2789,9 +2708,7 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "Kopiatu"
-        },
+        "button": {},
         "title": "Erakutsi/ezkutatu pasahitza",
         "message": {
           "copy": "Testua arbelera kopiatu da!"
@@ -2800,9 +2717,7 @@
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "Editatu"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "Erreproduzitu irratia",
@@ -2815,8 +2730,7 @@
       },
       "button": {
         "fediverse": "Fedibertsoa",
-        "rss": "RSS",
-        "search": "Bilatu"
+        "rss": "RSS"
       },
       "label": {
         "fediverse": {
@@ -2889,11 +2803,6 @@
           "podcastChannel": "Podcast kanala"
         },
         "button": {
-          "cancel": "Ezeztatu",
-          "confirm": "Ezabatu",
-          "delete": "Ezabatu…",
-          "edit": "Editatu…",
-          "embed": "Txertatu",
           "play": "Erreproduzitu",
           "updateChannel": "Eguneratu kanala",
           "upload": "Igo"
@@ -2956,7 +2865,6 @@
           "addNew": "Gehitu berria"
         },
         "button": {
-          "cancel": "Ezeztatu",
           "subscribe": "Harpidetu"
         },
         "placeholder": {
@@ -3097,8 +3005,6 @@
         "Form": {
           "button": {
             "create": "Liburutegia sortu",
-            "delete": "Ezabatu",
-            "confirm": "Liburutegia ezabatu",
             "update": "Eguneratu liburutegia"
           },
           "modal": {
@@ -3196,9 +3102,7 @@
           "loading": {
             "remoteLibraries": "Urruneko liburutegiak kargatzen…"
           },
-          "button": {
-            "refresh": "Freskatu"
-          },
+          "button": {},
           "description": {
             "remoteLibraries": "Urruneko liburutegiak interneteko beste erabiltzaile batzuenak dira. Hauetara sarbidea lor dezakezu hauetara baimena lortzen baduzu edo publikoak diren bitartean."
           }
@@ -3251,7 +3155,6 @@
           "domain": "Ikusi { domain }(e)n"
         },
         "button": {
-          "edit": "Editatu",
           "upload": "Igo"
         },
         "title": "Liburutegia",
@@ -3371,7 +3274,6 @@
           }
         },
         "button": {
-          "cancel": "Ezeztatu",
           "createChannel": "Sortu kanala",
           "next": "Hurrengo pausoa",
           "previous": "Aurreko pausoa"
@@ -3744,7 +3646,6 @@
             "uploadData": "Igoera data"
           },
           "button": {
-            "delete": "Ezabatu",
             "download": "Deskargatu"
           },
           "modal": {
@@ -3790,9 +3691,7 @@
               "followers": "Jarraitzaileak"
             }
           },
-          "button": {
-            "delete": "Ezabatu"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Liburutegi hau ezabatu?",
@@ -3842,8 +3741,6 @@
             }
           },
           "button": {
-            "delete": "Ezabatu",
-            "edit": "Editatu",
             "remoteRefresh": "Freskatu urruneko zerbitzaritik"
           },
           "modal": {
@@ -3896,8 +3793,6 @@
             }
           },
           "button": {
-            "delete": "Ezabatu",
-            "edit": "Editatu",
             "remoteRefresh": "Freskatu urruneko zerbitzaritik"
           },
           "modal": {
@@ -3925,9 +3820,7 @@
             "tracks": "Pistak",
             "django": "Ikusi Django-ren administrazioan"
           },
-          "button": {
-            "delete": "Ezabatu"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Etiketa hau ezabatu nahi duzu?",
@@ -3986,8 +3879,6 @@
             }
           },
           "button": {
-            "delete": "Ezabatu",
-            "edit": "Editatu",
             "remoteRefresh": "Freskatu urruneko zerbitzaritik"
           },
           "modal": {
@@ -4058,7 +3949,6 @@
           "channelData": "Kanalaren datuak"
         },
         "button": {
-          "delete": "Ezabatu",
           "openRemote": "Ireki urruneko profila",
           "refresh": "Freskatu urruneko zerbitzaritik"
         },
@@ -4161,8 +4051,7 @@
         },
         "button": {
           "create": "Sortu erreprodukzio-zerrenda",
-          "manage": "Kudeatu zure zerrendak",
-          "search": "Bilatu"
+          "manage": "Kudeatu zure zerrendak"
         },
         "placeholder": {
           "search": "Idatzi erreprodukzio-zerrendaren izena…"
@@ -4179,11 +4068,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "Ezeztatu",
-          "delete": "Ezabatu",
           "confirm": "Zerrenda ezabatu",
-          "edit": "Editatu",
-          "embed": "Txertatu",
           "playAll": "Erreproduzitu dena",
           "stopEdit": "Utzi editatzeari"
         },
@@ -4212,10 +4097,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "Irratia ezabatu",
-          "edit": "Editatu…"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Nahi duzu \"{ radio }\" irratia ezabatzea?",

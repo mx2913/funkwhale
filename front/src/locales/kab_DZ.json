@@ -8,9 +8,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Ssken-d ugar"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -64,9 +62,7 @@
           "empty": {
             "noResults": "Ulac ayen yettwafen"
           },
-          "button": {
-            "more": "Ssken-d ugar"
-          }
+          "button": {}
         },
         "MobileRow": {
           "button": {
@@ -114,9 +110,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "Copier"
-        },
+        "button": {},
         "header": {
           "preview": "Timeẓriwt"
         }
@@ -151,20 +145,14 @@
       },
       "album": {
         "Widget": {
-          "button": {
-            "more": "Ssken-d ugar"
-          }
+          "button": {}
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "Ssken-d ugar"
-        }
+        "button": {}
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "Ssken-d ugar"
-        }
+        "button": {}
       }
     },
     "library": {
@@ -188,9 +176,7 @@
             }
           }
         },
-        "button": {
-          "cancel": "Sefex"
-        },
+        "button": {},
         "header": {
           "status": "Addad n umiḍan"
         },
@@ -213,8 +199,7 @@
             }
           },
           "button": {
-            "filter": "Rni imzizdig",
-            "save": "Sekles"
+            "filter": "Rni imzizdig"
           },
           "label": {
             "description": "Aglam"
@@ -258,14 +243,11 @@
             "label": "Yir iɣf-isefka"
           }
         },
-        "button": {
-          "close": "Mdel"
-        }
+        "button": {}
       },
       "EditCard": {
         "button": {
           "approve": "Qbel",
-          "delete": "Kkes",
           "reject": "Agi"
         },
         "status": {
@@ -285,9 +267,6 @@
       "ArtistBase": {
         "title": "Artiste",
         "button": {
-          "cancel": "Sefex",
-          "edit": "Beddel",
-          "embed": "Seddu",
           "more": "Ugar…"
         }
       },
@@ -303,9 +282,7 @@
           },
           "label": "Tri"
         },
-        "button": {
-          "search": "Anadi"
-        }
+        "button": {}
       },
       "Albums": {
         "ordering": {
@@ -319,9 +296,7 @@
           "search": "Anadi",
           "tags": "Tibzimin"
         },
-        "button": {
-          "search": "Anadi"
-        }
+        "button": {}
       },
       "Podcasts": {
         "ordering": {
@@ -335,9 +310,7 @@
           "browse": "Podcasts"
         },
         "button": {
-          "cancel": "Sefex",
           "channel": "Rnu amiḍan",
-          "search": "Anadi",
           "subscribe": "Jerred",
           "feed": "Jerred"
         },
@@ -367,25 +340,16 @@
       },
       "AlbumDropdown": {
         "button": {
-          "cancel": "Sefex",
-          "edit": "Beddel",
-          "embed": "Seddu",
           "more": "Ugar…"
         }
       },
       "EditForm": {
-        "button": {
-          "cancel": "Sefex",
-          "clear": "Effacer"
-        },
+        "button": {},
         "notApplicable": "Wlac"
       },
       "TrackBase": {
         "button": {
-          "cancel": "Sefex",
           "download": "Sider",
-          "edit": "Beddel",
-          "embed": "Seddu",
           "more": "Ugar…",
           "play": "Seddu"
         },
@@ -497,9 +461,7 @@
         "placeholder": {
           "username": "Sekcem isem-ik(im) n useqdac"
         },
-        "button": {
-          "login": "Qqen"
-        },
+        "button": {},
         "label": {
           "password": "Awal n uɛeddi",
           "username": "Isem n useqdac neɣ tansa imayl"
@@ -514,7 +476,6 @@
           "library": "Tanedlist"
         },
         "button": {
-          "save": "Sekles",
           "scan": "Snirem tura"
         }
       },
@@ -810,7 +771,6 @@
             "message": "Izen"
           },
           "button": {
-            "confirmDelete": "Kkes",
             "resolve": "Fru"
           },
           "notApplicable": "Wlac"
@@ -903,9 +863,7 @@
         },
         "InstancePolicyForm": {
           "button": {
-            "cancel": "Sefex",
             "create": "Snulfu-d",
-            "delete": "Kkes",
             "update": "Leqqem"
           },
           "label": {
@@ -915,19 +873,13 @@
           }
         },
         "InstancePolicyModal": {
-          "button": {
-            "close": "Mdel"
-          }
+          "button": {}
         },
         "NotesThread": {
-          "button": {
-            "delete": "Kkes"
-          }
+          "button": {}
         },
         "InstancePolicyCard": {
-          "button": {
-            "edit": "Beddel"
-          },
+          "button": {},
           "status": {
             "enabled": "Yermed",
             "paused": "En Pause"
@@ -1032,9 +984,7 @@
           }
         },
         "InvitationForm": {
-          "button": {
-            "clear": "Effacer"
-          },
+          "button": {},
           "table": {
             "invitation": {
               "header": {
@@ -1058,23 +1008,16 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "Sefex",
-          "confirm": "Sentem"
-        }
+        "button": {}
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "Sefex",
-          "edit": "Beddel",
           "less": "Ssken-d drus",
           "more": "Ssken-d ugar"
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "Effacer"
-        },
+        "button": {},
         "label": {
           "search": "Anadi"
         }
@@ -1086,9 +1029,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "Copier"
-        }
+        "button": {}
       },
       "UserMenu": {
         "link": {
@@ -1136,9 +1077,7 @@
         }
       },
       "EmptyState": {
-        "button": {
-          "refresh": "Smiren"
-        }
+        "button": {}
       },
       "AttachmentInput": {
         "button": {
@@ -1173,9 +1112,7 @@
         }
       },
       "SettingsGroup": {
-        "button": {
-          "save": "Sekles"
-        }
+        "button": {}
       }
     },
     "AboutPod": {
@@ -1230,10 +1167,7 @@
         "header": {
           "addToPlaylist": "Rnu ar tebdart n tɣuri"
         },
-        "button": {
-          "cancel": "Sefex",
-          "edit": "Beddel"
-        },
+        "button": {},
         "table": {
           "edit": {
             "header": {
@@ -1253,9 +1187,7 @@
         }
       },
       "Widget": {
-        "button": {
-          "more": "Ssken-d ugar"
-        }
+        "button": {}
       }
     },
     "Sidebar": {
@@ -1312,18 +1244,13 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "Sefex",
-          "create": "Snulfu-d"
-        },
+        "button": {},
         "header": {
           "newSeries": "SÃ©ries"
         }
       },
       "UploadModal": {
         "button": {
-          "cancel": "Sefex",
-          "close": "Mdel",
           "publish": "Suffeɣ-d",
           "update": "Leqqem"
         }
@@ -1366,14 +1293,10 @@
         }
       },
       "FilterModal": {
-        "button": {
-          "cancel": "Sefex"
-        }
+        "button": {}
       },
       "ReportModal": {
-        "button": {
-          "cancel": "Sefex"
-        },
+        "button": {},
         "label": {
           "email": "Imayl",
           "message": "Izen"
@@ -1391,16 +1314,10 @@
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "Sefex",
-        "submit": "Envoyer"
-      }
+      "button": {}
     },
     "Queue": {
-      "button": {
-        "clear": "Effacer",
-        "close": "Mdel"
-      },
+      "button": {},
       "label": {
         "duration": "Durée",
         "next": "Tafuɣalt tuḍfirt",
@@ -1413,9 +1330,7 @@
     },
     "federation": {
       "FetchButton": {
-        "button": {
-          "close": "Mdel"
-        },
+        "button": {},
         "table": {
           "error": {
             "value": {
@@ -1425,15 +1340,11 @@
         }
       },
       "LibraryWidget": {
-        "button": {
-          "showMore": "Ssken-d ugar"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
-      "button": {
-        "close": "Mdel"
-      },
+      "button": {},
       "header": {
         "modal": "Inegzumen n unasiw"
       }
@@ -1455,16 +1366,12 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "Copier"
-        }
+        "button": {}
       }
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "Beddel"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "Liste de lecture"
@@ -1489,9 +1396,7 @@
       "title": "Ulac asebter"
     },
     "RemoteSearchForm": {
-      "button": {
-        "search": "Anadi"
-      }
+      "button": {}
     }
   },
   "views": {
@@ -1501,10 +1406,6 @@
           "listenings": "Iɣewwaṛen n umiḍan | Iɣewwaṛen n umiḍan"
         },
         "button": {
-          "cancel": "Sefex",
-          "confirm": "Kkes",
-          "edit": "Ẓreg…",
-          "embed": "Seddu",
           "play": "Seddu",
           "upload": "Sali"
         },
@@ -1526,7 +1427,6 @@
           "addNew": "Rnu amaynut"
         },
         "button": {
-          "cancel": "Sefex",
           "subscribe": "Jerred"
         },
         "modal": {
@@ -1574,7 +1474,6 @@
       },
       "LibraryBase": {
         "button": {
-          "edit": "Beddel",
           "upload": "Sali"
         },
         "title": "Tanedlist",
@@ -1618,7 +1517,6 @@
             "local": "Local"
           },
           "button": {
-            "delete": "Kkes",
             "download": "Sider"
           },
           "notApplicable": "Wlac"
@@ -1635,9 +1533,7 @@
             "activity": "Aqeddic",
             "local": "Local"
           },
-          "button": {
-            "delete": "Kkes"
-          },
+          "button": {},
           "table": {
             "library": {
               "description": "Aglam",
@@ -1661,10 +1557,7 @@
             "tracks": "Pistes",
             "uploads": "Ifuyla yettwaznen"
           },
-          "button": {
-            "delete": "Kkes",
-            "edit": "Beddel"
-          },
+          "button": {},
           "table": {
             "album": {
               "description": "Aglam",
@@ -1688,10 +1581,7 @@
             "tracks": "Pistes",
             "uploads": "Ifuyla yettwaznen"
           },
-          "button": {
-            "delete": "Kkes",
-            "edit": "Beddel"
-          },
+          "button": {},
           "table": {
             "artist": {
               "description": "Aglam",
@@ -1706,9 +1596,7 @@
           "header": {
             "activity": "Aqeddic"
           },
-          "button": {
-            "delete": "Kkes"
-          },
+          "button": {},
           "table": {
             "tag": {
               "name": "Isem"
@@ -1743,10 +1631,7 @@
               "playlists": "Tibdarin n tɣuri"
             }
           },
-          "button": {
-            "delete": "Kkes",
-            "edit": "Beddel"
-          }
+          "button": {}
         },
         "Base": {
           "link": {
@@ -1788,9 +1673,7 @@
         "header": {
           "activity": "Aqeddic"
         },
-        "button": {
-          "delete": "Kkes"
-        },
+        "button": {},
         "label": {
           "local": "Local"
         }
@@ -1985,9 +1868,7 @@
         "link": {
           "addNew": "Rnu amaynut"
         },
-        "button": {
-          "cancel": "Sefex"
-        },
+        "button": {},
         "header": {
           "channels": "Canaux "
         }
@@ -2058,9 +1939,7 @@
           }
         },
         "Form": {
-          "button": {
-            "delete": "Kkes"
-          },
+          "button": {},
           "label": {
             "description": "Aglam",
             "name": "Isem",
@@ -2097,9 +1976,7 @@
           }
         },
         "Home": {
-          "button": {
-            "refresh": "Smiren"
-          }
+          "button": {}
         },
         "ScanForm": {
           "button": {
@@ -2138,17 +2015,10 @@
         "label": {
           "search": "Anadi"
         },
-        "button": {
-          "search": "Anadi"
-        }
+        "button": {}
       },
       "Detail": {
-        "button": {
-          "cancel": "Sefex",
-          "delete": "Kkes",
-          "edit": "Beddel",
-          "embed": "Seddu"
-        },
+        "button": {},
         "title": "Liste de lecture",
         "header": {
           "tracks": "Pistes"
@@ -2157,9 +2027,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "edit": "Ẓreg…"
-        },
+        "button": {},
         "header": {
           "tracks": "Pistes"
         }

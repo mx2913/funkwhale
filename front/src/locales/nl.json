@@ -272,9 +272,7 @@
           "approvalRequired": "Als je je recentelijk hebt aangemeld, moet je misschien even wachten voordat ons moderatieteam je account heeft bekeken. Of je moet je e-mailadres verifiëren.",
           "invalidCredentials": "Controleer of de combinatie van gebruikersnaam en wachtwoord klopt en controleer of je je e-mailadres hebt geverifieerd."
         },
-        "button": {
-          "login": "Inloggen"
-        },
+        "button": {},
         "label": {
           "password": "Wachtwoord",
           "username": "Gebruikersnaam of e-mailadres"
@@ -323,7 +321,6 @@
           "library": "Bibliotheek waar bestanden geïmporteerd zouden moeten worden."
         },
         "button": {
-          "save": "Opslaan",
           "scan": "Scan"
         }
       }
@@ -417,9 +414,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Toon meer"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -441,9 +436,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Toon meer"
-          }
+          "button": {}
         }
       },
       "Player": {
@@ -548,9 +541,7 @@
           "empty": {
             "noResults": "Niets gevonden"
           },
-          "button": {
-            "more": "Toon meer"
-          }
+          "button": {}
         },
         "MobileRow": {
           "button": {
@@ -651,9 +642,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "Kopiëren"
-        },
+        "button": {},
         "help": {
           "embed": "Kopieer/plak deze HTML-code in je website",
           "width": "Laat leeg voor een responsieve widget",
@@ -675,17 +664,13 @@
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "Toon meer"
-        },
+        "button": {},
         "help": {
           "subscribe": "Je moet je wellicht abonneren op dit kanaal om de inhoud ervan te zien."
         }
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "Toon meer"
-        }
+        "button": {}
       },
       "ChannelEntries": {
         "help": {
@@ -710,9 +695,6 @@
         },
         "title": "Artiest",
         "button": {
-          "cancel": "Annuleren",
-          "edit": "Bewerken",
-          "embed": "Embedden",
           "more": "Meer…",
           "play": "Alle albums afspelen"
         },
@@ -750,8 +732,7 @@
             }
           },
           "button": {
-            "filter": "Filter toevoegen",
-            "save": "Opslaan"
+            "filter": "Filter toevoegen"
           },
           "label": {
             "filter": "Voeg filters toe om je radio te personaliseren",
@@ -803,7 +784,6 @@
           }
         },
         "button": {
-          "cancel": "Annuleren",
           "retry": "Gefaalde uploads opnieuw proberen"
         },
         "label": {
@@ -840,8 +820,6 @@
           "summary": "Een korte samenvatting van je aanpassingen."
         },
         "button": {
-          "cancel": "Annuleren",
-          "clear": "Wissen",
           "reset": "Zet terug naar initiële waarde",
           "showUnreviewed": "Beperken tot niet-bekeken bewerkingen",
           "showAll": "Toon alle wijzigingen",
@@ -895,14 +873,11 @@
           "search": "Zoeken",
           "tags": "Tags"
         },
-        "button": {
-          "search": "Zoeken"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "Voeg muziek toe",
-          "search": "Zoeken"
+          "upload": "Voeg muziek toe"
         },
         "label": {
           "search": "Artiestnaam",
@@ -1010,9 +985,7 @@
             "message": "De metadata bij het bestand zijn ongeldig, of sommige verplichte velden ontbreken."
           }
         },
-        "button": {
-          "close": "Sluiten"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Foutgegevens",
@@ -1039,7 +1012,6 @@
       "EditCard": {
         "button": {
           "approve": "Goedkeuren",
-          "delete": "Verwijderen",
           "reject": "Afkeuren"
         },
         "status": {
@@ -1086,9 +1058,7 @@
           "browse": "Podcasts doorbladeren"
         },
         "button": {
-          "cancel": "Annuleren",
           "channel": "Maak een nieuw kanaal",
-          "search": "Zoeken",
           "subscribe": "Abonneren",
           "feed": "Abonneren op feed"
         },
@@ -1146,10 +1116,6 @@
       },
       "AlbumDropdown": {
         "button": {
-          "cancel": "Annuleren",
-          "delete": "Verwijderen…",
-          "edit": "Bewerken",
-          "embed": "Embedden",
           "more": "Meer…"
         },
         "modal": {
@@ -1173,11 +1139,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "Annuleren",
-          "delete": "Verwijderen…",
           "download": "Downloaden",
-          "edit": "Bewerken",
-          "embed": "Embedden",
           "more": "Meer…",
           "play": "Afspelen"
         },
@@ -1311,8 +1273,6 @@
           "quota": "Resterende opslagruimte:"
         },
         "button": {
-          "cancel": "Annuleren",
-          "close": "Sluiten",
           "finishLater": "Rond later af",
           "next": "Volgende stap",
           "previous": "Vorige stap",
@@ -1384,10 +1344,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "Annuleren",
-          "create": "Aanmaken"
-        },
+        "button": {},
         "header": {
           "newAlbum": "Nieuw album",
           "newSeries": "Nieuwe series"
@@ -1557,18 +1514,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "Annuleren",
-          "confirm": "Bevestigen"
-        },
+        "button": {},
         "header": {
           "confirm": "Wil je de actie bevestigen?"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "Annuleren",
-          "edit": "Bewerken",
           "less": "Toon minder",
           "more": "Toon meer",
           "update": "Omschrijving bijwerken"
@@ -1581,9 +1533,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "Wissen"
-        },
+        "button": {},
         "label": {
           "search": "Zoeken"
         },
@@ -1598,9 +1548,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "Kopiëren"
-        },
+        "button": {},
         "message": {
           "success": "Tekst gekopieerd naar het klembord!"
         }
@@ -1636,9 +1584,7 @@
         "header": {
           "noResults": "Geen resultaten gevonden."
         },
-        "button": {
-          "refresh": "Verversen"
-        }
+        "button": {}
       },
       "AttachmentInput": {
         "help": {
@@ -1677,9 +1623,7 @@
         "button": {
           "addDuplicate": "Toch toevoegen",
           "addToPlaylist": "Toevoegen aan deze afspeellijst",
-          "addTrack": "Nummer toevoegen",
-          "cancel": "Annuleren",
-          "edit": "Bewerken"
+          "addTrack": "Nummer toevoegen"
         },
         "header": {
           "addToPlaylist": "Toevoegen aan afspeellijst",
@@ -1768,8 +1712,7 @@
       },
       "Widget": {
         "button": {
-          "create": "Maak afspeellijst",
-          "more": "Toon meer"
+          "create": "Maak afspeellijst"
         },
         "placeholder": {
           "noPlaylists": "Er zijn nog geen afspeellijsten gemaakt"
@@ -2148,7 +2091,6 @@
             "reportedObject": "Gemeldde object"
           },
           "button": {
-            "confirmDelete": "Verwijderen",
             "delete": "Verwijder gemeld object",
             "resolve": "Oplossen",
             "unresolve": "Niet opgelost"
@@ -2228,10 +2170,7 @@
             "isActive": "Gebruik deze instelling om tijdelijk het beleid in en uit te schakelen zonder het helemaal te verwijderen."
           },
           "button": {
-            "cancel": "Annuleren",
             "create": "Aanmaken",
-            "delete": "Verwijderen",
-            "confirm": "Moderatie-regel verwijderen",
             "update": "Update"
           },
           "modal": {
@@ -2356,9 +2295,7 @@
             "reason": "Reden",
             "rejectMedia": "Media afkeuren"
           },
-          "button": {
-            "edit": "Bewerken"
-          },
+          "button": {},
           "status": {
             "enabled": "Ingeschakeld",
             "paused": "Gepauzeerd"
@@ -2369,7 +2306,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Sluiten",
             "show": "Moderatieregels…"
           },
           "modal": {
@@ -2382,9 +2318,7 @@
           }
         },
         "NotesThread": {
-          "button": {
-            "delete": "Verwijderen"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Deze notitie verwijderen?",
@@ -2518,7 +2452,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "Wissen",
             "new": "Nieuwe uitnodiging aanvragen"
           },
           "table": {
@@ -2584,9 +2517,7 @@
           "image": "Huidige afbeelding",
           "error": "Fout tijdens opslaan van instellingen"
         },
-        "button": {
-          "save": "Opslaan"
-        },
+        "button": {},
         "message": {
           "success": "De instellingen zijn bijgewerkt."
         }
@@ -2608,7 +2539,6 @@
           "submissionFailure": "Fout bij indienen van melding"
         },
         "button": {
-          "cancel": "Annuleren",
           "submit": "Rapport indienen"
         },
         "label": {
@@ -2628,7 +2558,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "Annuleren",
           "hide": "Inhoud verbergen"
         },
         "message": {
@@ -2678,7 +2607,6 @@
           }
         },
         "button": {
-          "close": "Sluiten",
           "reload": "Sluiten en pagina vernieuwen"
         },
         "header": {
@@ -2698,9 +2626,7 @@
         "empty": {
           "noMatch": "Geen overeenkomende bibliotheek."
         },
-        "button": {
-          "showMore": "Toon meer"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
@@ -2730,18 +2656,13 @@
           "unfocus": "Deselecteer zoekbalk"
         }
       },
-      "button": {
-        "close": "Sluiten"
-      },
+      "button": {},
       "header": {
         "modal": "Sneltoetsen"
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "Annuleren",
-        "submit": "Indienen"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "Kies je server",
         "failure": "Het is niet mogelijk om verbinding te maken met de opgegeven URL",
@@ -2761,8 +2682,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "Wissen",
-        "close": "Sluiten",
         "stopRadio": "Radio stoppen"
       },
       "label": {
@@ -2793,9 +2712,7 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "Kopiëren"
-        },
+        "button": {},
         "title": "Wachtwoord tonen/verbergen",
         "message": {
           "copy": "Tekst gekopieerd naar het klembord!"
@@ -2804,9 +2721,7 @@
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "Bewerken"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "Radio afspelen",
@@ -2819,8 +2734,7 @@
       },
       "button": {
         "fediverse": "Fediverse",
-        "rss": "RSS",
-        "search": "Zoeken"
+        "rss": "RSS"
       },
       "label": {
         "fediverse": {
@@ -2893,11 +2807,6 @@
           "podcastChannel": "Podcastkanaal"
         },
         "button": {
-          "cancel": "Annuleren",
-          "confirm": "Verwijderen",
-          "delete": "Verwijderen…",
-          "edit": "Bewerken…",
-          "embed": "Embedden",
           "play": "Afspelen",
           "updateChannel": "Kanaal bijwerken",
           "upload": "Uploaden"
@@ -2960,7 +2869,6 @@
           "addNew": "Nieuwe toevoegen"
         },
         "button": {
-          "cancel": "Annuleren",
           "subscribe": "Abonneren"
         },
         "placeholder": {
@@ -3101,8 +3009,6 @@
         "Form": {
           "button": {
             "create": "Bibliotheek maken",
-            "delete": "Verwijderen",
-            "confirm": "Bibliotheek verwijderen",
             "update": "Verzameling bijwerken"
           },
           "modal": {
@@ -3200,9 +3106,7 @@
           "loading": {
             "remoteLibraries": "Externe bibliotheken aan het laden…"
           },
-          "button": {
-            "refresh": "Verversen"
-          },
+          "button": {},
           "description": {
             "remoteLibraries": "Externe bibliotheken worden beheerd door andere gebruikers op het netwerk. Je kunt ze gebruiken als ze publiek toegankelijk zijn of je toegang hebt gekregen."
           }
@@ -3255,7 +3159,6 @@
           "domain": "Op { domain } bekijken"
         },
         "button": {
-          "edit": "Bewerken",
           "upload": "Uploaden"
         },
         "title": "Bibliotheek",
@@ -3375,7 +3278,6 @@
           }
         },
         "button": {
-          "cancel": "Annuleren",
           "createChannel": "Maak kanaal",
           "next": "Volgende stap",
           "previous": "Vorige stap"
@@ -3748,7 +3650,6 @@
             "uploadData": "Uploaddatum"
           },
           "button": {
-            "delete": "Verwijderen",
             "download": "Downloaden"
           },
           "modal": {
@@ -3794,9 +3695,7 @@
               "followers": "Volgers"
             }
           },
-          "button": {
-            "delete": "Verwijderen"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Deze bibliotheek verwijderen?",
@@ -3846,8 +3745,6 @@
             }
           },
           "button": {
-            "delete": "Verwijderen",
-            "edit": "Bewerken",
             "remoteRefresh": "Vernieuwd door externe server"
           },
           "modal": {
@@ -3900,8 +3797,6 @@
             }
           },
           "button": {
-            "delete": "Verwijderen",
-            "edit": "Bewerken",
             "remoteRefresh": "Vernieuwd door externe server"
           },
           "modal": {
@@ -3929,9 +3824,7 @@
             "tracks": "Nummers",
             "django": "Kijk in Django's admin"
           },
-          "button": {
-            "delete": "Verwijderen"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Deze tag verwijderen?",
@@ -3990,8 +3883,6 @@
             }
           },
           "button": {
-            "delete": "Verwijderen",
-            "edit": "Bewerken",
             "remoteRefresh": "Vernieuwd door externe server"
           },
           "modal": {
@@ -4062,7 +3953,6 @@
           "channelData": "Kanaalgegevens"
         },
         "button": {
-          "delete": "Verwijderen",
           "openRemote": "Open extern profiel",
           "refresh": "Vernieuwd door externe server"
         },
@@ -4165,8 +4055,7 @@
         },
         "button": {
           "create": "Maak een afspeellijst",
-          "manage": "Beheer je afspeellijsten",
-          "search": "Zoeken"
+          "manage": "Beheer je afspeellijsten"
         },
         "placeholder": {
           "search": "Voer een afspeellijsttitel in…"
@@ -4183,11 +4072,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "Annuleren",
-          "delete": "Verwijderen",
           "confirm": "Afspeellijst verwijderen",
-          "edit": "Bewerken",
-          "embed": "Embedden",
           "playAll": "Alles afspelen",
           "stopEdit": "Bewerken stoppen"
         },
@@ -4216,10 +4101,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "Radiostation verwijderen",
-          "edit": "Bewerken…"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Weet je zeker dat je het radiostation \"{ radio }\" wilt verwijderen?",

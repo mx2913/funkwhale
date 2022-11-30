@@ -111,9 +111,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "പകർത്തുക"
-        }
+        "button": {}
       },
       "LibraryFollowButton": {
         "button": {
@@ -158,9 +156,7 @@
         "label": {
           "search": "തിരയുക"
         },
-        "button": {
-          "search": "തിരയുക"
-        }
+        "button": {}
       },
       "TagDetail": {
         "link": {
@@ -174,7 +170,6 @@
       "EditCard": {
         "button": {
           "approve": "അംഗീകരിക്കുക",
-          "delete": "ഇല്ലാതാക്കുക",
           "reject": "നിരസിക്കുക"
         },
         "status": {
@@ -185,8 +180,6 @@
       "ArtistBase": {
         "title": "കലാകാരൻ",
         "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "edit": "തിരുത്തുക",
           "more": "കൂടുതൽ…"
         }
       },
@@ -200,9 +193,7 @@
             "ascending": "ആരോഹണം"
           }
         },
-        "button": {
-          "search": "തിരയുക"
-        },
+        "button": {},
         "placeholder": {
           "search": "തിരയുക…"
         }
@@ -214,9 +205,7 @@
           }
         },
         "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "channel": "ഒരു ചാനൽ സൃഷ്ടിക്കുക",
-          "search": "തിരയുക"
+          "channel": "ഒരു ചാനൽ സൃഷ്ടിക്കുക"
         },
         "label": {
           "search": "പോഡ്‌കാസ്റ്റ്"
@@ -253,16 +242,11 @@
           "label": {
             "description": "വിവരണം"
           },
-          "button": {
-            "save": "സംരക്ഷിക്കുക"
-          }
+          "button": {}
         }
       },
       "AlbumDropdown": {
         "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "delete": "ഇല്ലാതാക്കുക…",
-          "edit": "തിരുത്തുക",
           "more": "കൂടുതൽ…"
         },
         "modal": {
@@ -272,15 +256,10 @@
         }
       },
       "EditForm": {
-        "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "clear": "മായ്ക്കുക"
-        }
+        "button": {}
       },
       "FileUpload": {
-        "button": {
-          "cancel": "റദ്ദാക്കുക"
-        },
+        "button": {},
         "table": {
           "upload": {
             "header": {
@@ -295,16 +274,11 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "delete": "ഇല്ലാതാക്കുക…",
-          "edit": "തിരുത്തുക",
           "more": "കൂടുതൽ…"
         }
       },
       "ImportStatusModal": {
-        "button": {
-          "close": "അടയ്ക്കുക"
-        }
+        "button": {}
       },
       "AlbumEdit": {
         "header": {
@@ -333,10 +307,7 @@
         "meta": {
           "files": "{ n } ഫയൽ | { n } ഫയലുകൾ"
         },
-        "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "close": "അടയ്ക്കുക"
-        }
+        "button": {}
       },
       "LicenseSelect": {
         "link": {
@@ -349,10 +320,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "create": "സൃഷ്ടിക്കുക"
-        }
+        "button": {}
       },
       "UploadForm": {
         "label": {
@@ -403,21 +371,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "confirm": "ഉറപ്പാക്കുക"
-        }
+        "button": {}
       },
       "RenderedDescription": {
-        "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "edit": "തിരുത്തുക"
-        }
+        "button": {}
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "മായ്ക്കുക"
-        },
+        "button": {},
         "label": {
           "search": "തിരയുക"
         },
@@ -431,14 +391,10 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "പകർത്തുക"
-        }
+        "button": {}
       },
       "EmptyState": {
-        "button": {
-          "refresh": "പുതുക്കുക"
-        }
+        "button": {}
       }
     },
     "AboutPod": {
@@ -680,9 +636,7 @@
               "status": "അവസ്ഥ"
             }
           },
-          "button": {
-            "confirmDelete": "ഇല്ലാതാക്കുക"
-          }
+          "button": {}
         },
         "NoteForm": {
           "button": {
@@ -741,28 +695,20 @@
         },
         "InstancePolicyForm": {
           "button": {
-            "cancel": "റദ്ദാക്കുക",
-            "create": "സൃഷ്ടിക്കുക",
-            "delete": "ഇല്ലാതാക്കുക"
+            "create": "സൃഷ്ടിക്കുക"
           },
           "label": {
             "policyReason": "കാരണം"
           }
         },
         "InstancePolicyModal": {
-          "button": {
-            "close": "അടയ്ക്കുക"
-          }
+          "button": {}
         },
         "NotesThread": {
-          "button": {
-            "delete": "ഇല്ലാതാക്കുക"
-          }
+          "button": {}
         },
         "InstancePolicyCard": {
-          "button": {
-            "edit": "തിരുത്തുക"
-          },
+          "button": {},
           "label": {
             "reason": "കാരണം"
           }
@@ -840,9 +786,7 @@
           }
         },
         "InvitationForm": {
-          "button": {
-            "clear": "മായ്ക്കുക"
-          },
+          "button": {},
           "table": {
             "invitation": {
               "header": {
@@ -910,9 +854,7 @@
         "placeholder": {
           "username": "നിങ്ങളുടെ ഇ-മെയിൽ വിലാസം ഉറപ്പാക്കുക"
         },
-        "button": {
-          "login": "പ്രവേശിക്കുക"
-        },
+        "button": {},
         "label": {
           "username": "നിങ്ങളുടെ ഇ-മെയിൽ വിലാസം ഉറപ്പാക്കുക"
         }
@@ -921,9 +863,7 @@
         "label": {
           "library": "ലൈബ്രറി"
         },
-        "button": {
-          "save": "സംരക്ഷിക്കുക"
-        }
+        "button": {}
       },
       "ApplicationForm": {
         "label": {
@@ -948,9 +888,7 @@
         }
       },
       "SettingsGroup": {
-        "button": {
-          "save": "സംരക്ഷിക്കുക"
-        }
+        "button": {}
       }
     },
     "playlists": {
@@ -963,9 +901,7 @@
         "button": {
           "addDuplicate": "എന്തായാലും ചേർക്കുക",
           "addToPlaylist": "ഈ പ്ലേലിസ്റ്റിലേക്ക് ചേർക്കുക",
-          "addTrack": "ട്രാക്ക് ചേർക്കുക",
-          "cancel": "റദ്ദാക്കുക",
-          "edit": "തിരുത്തുക"
+          "addTrack": "ട്രാക്ക് ചേർക്കുക"
         },
         "header": {
           "addToPlaylist": "പ്ലേലിസ്റ്റിലേക്ക് ചേർക്കുക"
@@ -995,14 +931,10 @@
         }
       },
       "FilterModal": {
-        "button": {
-          "cancel": "റദ്ദാക്കുക"
-        }
+        "button": {}
       },
       "ReportModal": {
-        "button": {
-          "cancel": "റദ്ദാക്കുക"
-        },
+        "button": {},
         "label": {
           "email": "ഇമെയിൽ"
         }
@@ -1027,53 +959,37 @@
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "റദ്ദാക്കുക",
-        "submit": "സമർപ്പിക്കുക"
-      }
+      "button": {}
     },
     "Queue": {
-      "button": {
-        "clear": "മായ്ക്കുക",
-        "close": "അടയ്ക്കുക"
-      },
+      "button": {},
       "label": {
         "duration": "വിവരണം"
       }
     },
     "federation": {
       "FetchButton": {
-        "button": {
-          "close": "അടയ്ക്കുക"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
-      "button": {
-        "close": "അടയ്ക്കുക"
-      }
+      "button": {}
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "പകർത്തുക"
-        }
+        "button": {}
       }
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "തിരുത്തുക"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "റേഡിയോ ഇല്ലാതാക്കുക"
       }
     },
     "RemoteSearchForm": {
-      "button": {
-        "search": "തിരയുക"
-      }
+      "button": {}
     }
   },
   "views": {
@@ -1102,7 +1018,6 @@
           }
         },
         "button": {
-          "cancel": "റദ്ദാക്കുക",
           "createChannel": "ചാനൽ സൃഷ്ടിക്കുക"
         },
         "header": {
@@ -1161,9 +1076,7 @@
           "albums": "ആൽബങ്ങളും",
           "artists": "കലാകാരന്മാര്‍"
         },
-        "button": {
-          "edit": "തിരുത്തുക"
-        },
+        "button": {},
         "title": "ലൈബ്രറി"
       }
     },
@@ -1176,9 +1089,7 @@
             "artists": "കലാകാരന്മാർ",
             "domain": "മേഖല"
           },
-          "button": {
-            "delete": "ഇല്ലാതാക്കുക"
-          },
+          "button": {},
           "table": {
             "library": {
               "description": "വിവരണം",
@@ -1203,9 +1114,7 @@
               "name": "പേര്"
             }
           },
-          "button": {
-            "delete": "ഇല്ലാതാക്കുക"
-          }
+          "button": {}
         },
         "TrackDetail": {
           "link": {
@@ -1216,10 +1125,7 @@
             "edits": "തിരുത്തുക…",
             "libraries": "ലൈബ്രറികൾ"
           },
-          "button": {
-            "delete": "ഇല്ലാതാക്കുക",
-            "edit": "തിരുത്തുക"
-          },
+          "button": {},
           "table": {
             "track": {
               "description": "വിവരണം"
@@ -1239,10 +1145,7 @@
             "edits": "തിരുത്തുക…",
             "libraries": "ലൈബ്രറികൾ"
           },
-          "button": {
-            "delete": "ഇല്ലാതാക്കുക",
-            "edit": "തിരുത്തുക"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "ഈ ആൽബം ഇല്ലാതാക്കണോ?"
@@ -1265,10 +1168,7 @@
             "edits": "തിരുത്തുക…",
             "libraries": "ലൈബ്രറികൾ"
           },
-          "button": {
-            "delete": "ഇല്ലാതാക്കുക",
-            "edit": "തിരുത്തുക"
-          },
+          "button": {},
           "table": {
             "artist": {
               "description": "വിവരണം",
@@ -1293,9 +1193,7 @@
             "albums": "ആൽബങ്ങളും",
             "artists": "കലാകാരന്മാർ"
           },
-          "button": {
-            "delete": "ഇല്ലാതാക്കുക"
-          },
+          "button": {},
           "table": {
             "tag": {
               "name": "പേര്"
@@ -1323,9 +1221,7 @@
             "playlists": "പ്ലേലിസ്റ്റുകൾ"
           }
         },
-        "button": {
-          "delete": "ഇല്ലാതാക്കുക"
-        }
+        "button": {}
       },
       "moderation": {
         "AccountsDetail": {
@@ -1474,9 +1370,7 @@
         "link": {
           "addNew": "പുതിയത് ചേർക്കുക"
         },
-        "button": {
-          "cancel": "റദ്ദാക്കുക"
-        }
+        "button": {}
       },
       "DetailBase": {
         "link": {
@@ -1486,12 +1380,7 @@
         "header": {
           "artistChannel": "കലാകരന്റെ ചാനൽ"
         },
-        "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "confirm": "ഇല്ലാതാക്കുക",
-          "delete": "ഇല്ലാതാക്കുക…",
-          "edit": "തിരുത്തുക"
-        },
+        "button": {},
         "title": "ചാനൽ",
         "modal": {
           "delete": {
@@ -1534,10 +1423,7 @@
           }
         },
         "Form": {
-          "button": {
-            "delete": "ഇല്ലാതാക്കുക",
-            "confirm": "ലൈബ്രറി ഇല്ലാതാക്കുക"
-          },
+          "button": {},
           "label": {
             "description": "വിവരണം",
             "name": "പേര്"
@@ -1559,9 +1445,7 @@
           }
         },
         "Home": {
-          "button": {
-            "refresh": "പുതുക്കുക"
-          }
+          "button": {}
         }
       },
       "Base": {
@@ -1596,25 +1480,18 @@
         "label": {
           "search": "തിരയുക"
         },
-        "button": {
-          "search": "തിരയുക"
-        }
+        "button": {}
       },
       "Detail": {
         "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "delete": "ഇല്ലാതാക്കുക",
-          "confirm": "പ്ലേലിസ്റ്റ് ഇല്ലാതാക്കുക",
-          "edit": "തിരുത്തുക"
+          "confirm": "പ്ലേലിസ്റ്റ് ഇല്ലാതാക്കുക"
         },
         "title": "പ്ലേലിസ്റ്റ്"
       }
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "റേഡിയോ ഇല്ലാതാക്കുക"
-        },
+        "button": {},
         "title": "റേഡിയോ"
       }
     }

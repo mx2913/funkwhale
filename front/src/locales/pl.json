@@ -272,9 +272,7 @@
           "approvalRequired": "Jeżeli niedawno się rejestrowałeś, może być koniecznie odczekanie, aż zespół moderujący rozpatrzy twoją aplikację.",
           "invalidCredentials": "Upewnij się, że Twoja kombinacja nazwy użytkownika i hasła są poprawne oraz zweryfikuj poprawność adresu e-mail."
         },
-        "button": {
-          "login": "Zaloguj się"
-        },
+        "button": {},
         "label": {
           "password": "Hasło",
           "username": "Nazwa użytkownika lub adres e-mail"
@@ -323,7 +321,6 @@
           "library": "Biblioteka, do której pliki powinny zostać zaimportowane."
         },
         "button": {
-          "save": "Zapisz",
           "scan": "Skanuj"
         }
       }
@@ -417,9 +414,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Pokaż więcej"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -441,9 +436,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Pokaż więcej"
-          }
+          "button": {}
         }
       },
       "Player": {
@@ -548,9 +541,7 @@
           "empty": {
             "noResults": "Niczego tu nie ma"
           },
-          "button": {
-            "more": "Pokaż więcej"
-          }
+          "button": {}
         },
         "MobileRow": {
           "button": {
@@ -651,9 +642,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "Kopiuj"
-        },
+        "button": {},
         "help": {
           "embed": "Wklej ten kod do źródła HTML swojej strony internetowej",
           "width": "Pozostaw puste, aby uzyskać elastyczny widget",
@@ -675,17 +664,13 @@
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "Pokaż więcej"
-        },
+        "button": {},
         "help": {
           "subscribe": "Powinieneś śledzić ten kanał, aby zobaczyć jego zawartość."
         }
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "Pokaż więcej"
-        }
+        "button": {}
       },
       "ChannelEntries": {
         "help": {
@@ -710,9 +695,6 @@
         },
         "title": "Wykonawca",
         "button": {
-          "cancel": "Anuluj",
-          "edit": "Edytuj",
-          "embed": "Osadź",
           "more": "Więcej…",
           "play": "Odtwarzaj wszystkie albumy"
         },
@@ -750,8 +732,7 @@
             }
           },
           "button": {
-            "filter": "Dodaj filtr",
-            "save": "Zapisz"
+            "filter": "Dodaj filtr"
           },
           "label": {
             "filter": "Dodaj filtry, aby dostosować swoją stację radiową",
@@ -803,7 +784,6 @@
           }
         },
         "button": {
-          "cancel": "Anuluj",
           "retry": "Spróbuj przesłać ponownie nieudane"
         },
         "label": {
@@ -840,8 +820,6 @@
           "summary": "Kilka słów opisujących twoje zmiany."
         },
         "button": {
-          "cancel": "Anuluj",
-          "clear": "Wyczyść",
           "reset": "Przywróć wartość domyślną",
           "showUnreviewed": "Ogranicz do nierozpatrzonych edycji",
           "showAll": "Pokaż wszystkie edycje",
@@ -895,14 +873,11 @@
           "search": "Szukaj",
           "tags": "Tagi"
         },
-        "button": {
-          "search": "Szukaj"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "Dodaj trochę muzyki",
-          "search": "Szukaj"
+          "upload": "Dodaj trochę muzyki"
         },
         "label": {
           "search": "Nazwa wykonawcy",
@@ -1010,9 +985,7 @@
             "message": "Metadane zawarte w tym pliku są nieprawidłowe lub brakuje części wymaganych informacji."
           }
         },
-        "button": {
-          "close": "Zamknij"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informacje dla programistów",
@@ -1039,7 +1012,6 @@
       "EditCard": {
         "button": {
           "approve": "Zatwierdź",
-          "delete": "Usuń",
           "reject": "Odrzuć"
         },
         "status": {
@@ -1086,9 +1058,7 @@
           "browse": "Przeglądaj podcasty"
         },
         "button": {
-          "cancel": "Anuluj",
           "channel": "Utwórz nowy kanał",
-          "search": "Szukaj",
           "subscribe": "Obserwuj",
           "feed": "Zasubskrybuj kanał RSS"
         },
@@ -1146,10 +1116,6 @@
       },
       "AlbumDropdown": {
         "button": {
-          "cancel": "Anuluj",
-          "delete": "Usuń…",
-          "edit": "Edytuj",
-          "embed": "Osadź",
           "more": "Więcej…"
         },
         "modal": {
@@ -1173,11 +1139,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "Anuluj",
-          "delete": "Usuń…",
           "download": "Pobierz",
-          "edit": "Edytuj",
-          "embed": "Osadź",
           "more": "Więcej…",
           "play": "Odtwarzaj"
         },
@@ -1311,8 +1273,6 @@
           "quota": "Pozostałe wolne miejsce:"
         },
         "button": {
-          "cancel": "Anuluj",
-          "close": "Zamknij",
           "finishLater": "Ukończ później",
           "next": "Następny krok",
           "previous": "Poprzedni krok",
@@ -1384,10 +1344,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "Anuluj",
-          "create": "Utwórz"
-        },
+        "button": {},
         "header": {
           "newAlbum": "Nowy album",
           "newSeries": "Nowy serial"
@@ -1557,18 +1514,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "Anuluj",
-          "confirm": "Potwierdź"
-        },
+        "button": {},
         "header": {
           "confirm": "Czy chcesz potwierdzić to działanie?"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "Anuluj",
-          "edit": "Edytuj",
           "less": "Pokaż mniej",
           "more": "Pokaż więcej",
           "update": "Zapisz opis"
@@ -1581,9 +1533,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "Wyczyść"
-        },
+        "button": {},
         "label": {
           "search": "Szukaj"
         },
@@ -1598,9 +1548,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "Kopiuj"
-        },
+        "button": {},
         "message": {
           "success": "Skopiowano tekst do schowka!"
         }
@@ -1636,9 +1584,7 @@
         "header": {
           "noResults": "Nic nie znaleziono."
         },
-        "button": {
-          "refresh": "Odśwież"
-        }
+        "button": {}
       },
       "AttachmentInput": {
         "help": {
@@ -1677,9 +1623,7 @@
         "button": {
           "addDuplicate": "Dodaj mimo to",
           "addToPlaylist": "Dodaj do tej listy odtwarzania",
-          "addTrack": "Dodaj utwór",
-          "cancel": "Anuluj",
-          "edit": "Edytuj"
+          "addTrack": "Dodaj utwór"
         },
         "header": {
           "addToPlaylist": "Dodaj do listy odtwarzania",
@@ -1768,8 +1712,7 @@
       },
       "Widget": {
         "button": {
-          "create": "Utwórz listę odtwarzania",
-          "more": "Pokaż więcej"
+          "create": "Utwórz listę odtwarzania"
         },
         "placeholder": {
           "noPlaylists": "Nie utworzono jeszcze żadnej listy odtwarzania"
@@ -2148,7 +2091,6 @@
             "reportedObject": "Zgłoszony obiekt"
           },
           "button": {
-            "confirmDelete": "Usuń",
             "delete": "Usuń zgłoszony obiekt",
             "resolve": "Rozwiąż",
             "unresolve": "Cofnij rozwiązanie"
@@ -2228,10 +2170,7 @@
             "isActive": "Użyj tego ustawienia, aby tymczasowo włączyć/wyłączyć politykę zarazem nie usuwając jej całkowicie."
           },
           "button": {
-            "cancel": "Anuluj",
             "create": "Utwórz",
-            "delete": "Usuń",
-            "confirm": "Usuń regułę moderacyjną",
             "update": "Zapisz"
           },
           "modal": {
@@ -2356,9 +2295,7 @@
             "reason": "Powód",
             "rejectMedia": "Odrzuć media"
           },
-          "button": {
-            "edit": "Edytuj"
-          },
+          "button": {},
           "status": {
             "enabled": "Włączone",
             "paused": "Wstrzymane"
@@ -2369,7 +2306,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Zamknij",
             "show": "Reguły moderacyjne…"
           },
           "modal": {
@@ -2382,9 +2318,7 @@
           }
         },
         "NotesThread": {
-          "button": {
-            "delete": "Usuń"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Usunąć tę notatkę?",
@@ -2518,7 +2452,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "Wyczyść",
             "new": "Uzyskaj nowe zaproszenie"
           },
           "table": {
@@ -2584,9 +2517,7 @@
           "image": "Aktualny obraz",
           "error": "Wystąpił błąd podczas zapisywania ustawień"
         },
-        "button": {
-          "save": "Zapisz"
-        },
+        "button": {},
         "message": {
           "success": "Pomyślnie zapisano ustawienia."
         }
@@ -2608,7 +2539,6 @@
           "submissionFailure": "Wystąpił błąd podczas przesyłania zgłoszenia"
         },
         "button": {
-          "cancel": "Anuluj",
           "submit": "Prześlij zgłoszenie"
         },
         "label": {
@@ -2628,7 +2558,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "Anuluj",
           "hide": "Ukryj zawartość"
         },
         "message": {
@@ -2678,7 +2607,6 @@
           }
         },
         "button": {
-          "close": "Zamknij",
           "reload": "Zamknij i odśwież stronę"
         },
         "header": {
@@ -2698,9 +2626,7 @@
         "empty": {
           "noMatch": "Nie znaleziono pasującej biblioteki."
         },
-        "button": {
-          "showMore": "Pokaż więcej"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
@@ -2730,18 +2656,13 @@
           "unfocus": "Dezaktywuj pasek wyszukiwania"
         }
       },
-      "button": {
-        "close": "Zamknij"
-      },
+      "button": {},
       "header": {
         "modal": "Skróty klawiszowe"
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "Anuluj",
-        "submit": "Prześlij"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "Wybierz instancję",
         "failure": "Nie można połączyć się z podanym adresem URL",
@@ -2761,8 +2682,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "Wyczyść",
-        "close": "Zamknij",
         "stopRadio": "Zatrzymaj radio"
       },
       "label": {
@@ -2793,9 +2712,7 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "Kopiuj"
-        },
+        "button": {},
         "title": "Pokaż/ukryj hasło",
         "message": {
           "copy": "Skopiowano tekst do schowka!"
@@ -2804,9 +2721,7 @@
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "Edytuj"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "Odtwarzaj stację radiową",
@@ -2819,8 +2734,7 @@
       },
       "button": {
         "fediverse": "Fediverse",
-        "rss": "Kanał RSS",
-        "search": "Szukaj"
+        "rss": "Kanał RSS"
       },
       "label": {
         "fediverse": {
@@ -2893,11 +2807,6 @@
           "podcastChannel": "Kanał podcastowy"
         },
         "button": {
-          "cancel": "Anuluj",
-          "confirm": "Usuń",
-          "delete": "Usuń…",
-          "edit": "Edytuj…",
-          "embed": "Osadź",
           "play": "Odtwarzaj",
           "updateChannel": "Zapisz kanał",
           "upload": "Prześlij pliki"
@@ -2960,7 +2869,6 @@
           "addNew": "Dodaj"
         },
         "button": {
-          "cancel": "Anuluj",
           "subscribe": "Obserwuj"
         },
         "placeholder": {
@@ -3101,8 +3009,6 @@
         "Form": {
           "button": {
             "create": "Utwórz bibliotekę",
-            "delete": "Usuń",
-            "confirm": "Usuń bibliotekę",
             "update": "Zapisz bibliotekę"
           },
           "modal": {
@@ -3200,9 +3106,7 @@
           "loading": {
             "remoteLibraries": "Ładowanie zdalnych bibliotek…"
           },
-          "button": {
-            "refresh": "Odśwież"
-          },
+          "button": {},
           "description": {
             "remoteLibraries": "Zdalne biblioteki należą do użytkowników innych instancji. Możesz uzyskać do nich dostęp jeżeli został Ci on przyznany lub jeżeli są publiczne."
           }
@@ -3255,7 +3159,6 @@
           "domain": "Zobacz na { domain }"
         },
         "button": {
-          "edit": "Edytuj",
           "upload": "Prześlij pliki"
         },
         "title": "Biblioteka",
@@ -3375,7 +3278,6 @@
           }
         },
         "button": {
-          "cancel": "Anuluj",
           "createChannel": "Utwórz kanał",
           "next": "Następny krok",
           "previous": "Poprzedni krok"
@@ -3748,7 +3650,6 @@
             "uploadData": "Data przesłania"
           },
           "button": {
-            "delete": "Usuń",
             "download": "Pobierz"
           },
           "modal": {
@@ -3794,9 +3695,7 @@
               "followers": "Obserwatorzy"
             }
           },
-          "button": {
-            "delete": "Usuń"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Usunąć tę bibliotekę?",
@@ -3846,8 +3745,6 @@
             }
           },
           "button": {
-            "delete": "Usuń",
-            "edit": "Edytuj",
             "remoteRefresh": "Odśwież z serwera zdalnego"
           },
           "modal": {
@@ -3900,8 +3797,6 @@
             }
           },
           "button": {
-            "delete": "Usuń",
-            "edit": "Edytuj",
             "remoteRefresh": "Odśwież z serwera zdalnego"
           },
           "modal": {
@@ -3929,9 +3824,7 @@
             "tracks": "Utwory",
             "django": "Zobacz w panelu administracyjnym Django"
           },
-          "button": {
-            "delete": "Usuń"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Usunąć ten tag?",
@@ -3990,8 +3883,6 @@
             }
           },
           "button": {
-            "delete": "Usuń",
-            "edit": "Edytuj",
             "remoteRefresh": "Odśwież z serwera zdalnego"
           },
           "modal": {
@@ -4062,7 +3953,6 @@
           "channelData": "Dane kanału"
         },
         "button": {
-          "delete": "Usuń",
           "openRemote": "Otwórz profil zdalny",
           "refresh": "Odśwież z serwera zdalnego"
         },
@@ -4165,8 +4055,7 @@
         },
         "button": {
           "create": "Utwórz listę odtwarzania",
-          "manage": "Zarządzaj swoimi listami odtwarzania",
-          "search": "Szukaj"
+          "manage": "Zarządzaj swoimi listami odtwarzania"
         },
         "placeholder": {
           "search": "Wprowadź nazwę listy odtwarzania…"
@@ -4183,11 +4072,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "Anuluj",
-          "delete": "Usuń",
           "confirm": "Usuń listę odtwarzania",
-          "edit": "Edytuj",
-          "embed": "Osadź",
           "playAll": "Odtwarzaj wszystkie",
           "stopEdit": "Przestań edytować"
         },
@@ -4216,10 +4101,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "Usuń stację radiową",
-          "edit": "Edytuj…"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Czy chcesz usunąć stację radiową „{ radio }”?",

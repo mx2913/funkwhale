@@ -239,9 +239,7 @@
         "notFunkwhaleServer": "The given address is not a Funkwhale server",
         "selectPod": "To continue, please select the Funkwhale instance you want to connect to. Enter the address directly, or select one of the suggested choices."
       },
-      "button": {
-        "submit": "Submit"
-      },
+      "button": {},
       "label": {
         "url": "Instance URL"
       }
@@ -1404,8 +1402,7 @@
       },
       "AlbumDropdown": {
         "button": {
-          "more": "More…",
-          "embed": "Embed"
+          "more": "More…"
         },
         "modal": {
           "embed": {
@@ -1474,7 +1471,6 @@
         },
         "button": {
           "play": "Play all albums",
-          "embed": "Embed",
           "more": "More…"
         },
         "link": {
@@ -1824,8 +1820,7 @@
         "button": {
           "download": "Download",
           "more": "More…",
-          "play": "Play",
-          "embed": "Embed"
+          "play": "Play"
         },
         "link": {
           "domain": "View on {domain}",
@@ -4009,7 +4004,6 @@
           }
         },
         "button": {
-          "embed": "Embed",
           "upload": "Upload",
           "play": "Play",
           "updateChannel": "Update channel"
@@ -4425,7 +4419,6 @@
         "button": {
           "playAll": "Play all",
           "stopEdit": "Stop Editing",
-          "embed": "Embed",
           "confirm": "Delete playlist"
         },
         "modal": {

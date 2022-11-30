@@ -181,9 +181,7 @@
         "placeholder": {
           "username": "Ange ditt användarnamn eller e-post"
         },
-        "button": {
-          "login": "Inlogg"
-        },
+        "button": {},
         "label": {
           "password": "Lösenord",
           "username": "Användarnamn eller e-post"
@@ -238,9 +236,7 @@
         "label": {
           "library": "Bibliotek"
         },
-        "button": {
-          "save": "Spara"
-        }
+        "button": {}
       }
     },
     "About": {
@@ -290,9 +286,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Visa 1 mer album"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -314,9 +308,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Visa 1 mer album"
-          }
+          "button": {}
         }
       },
       "Player": {
@@ -395,9 +387,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Visa 1 mer album"
-          }
+          "button": {}
         }
       },
       "SearchBar": {
@@ -468,14 +458,10 @@
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "Visa 1 mer album"
-        }
+        "button": {}
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "Visa 1 mer album"
-        }
+        "button": {}
       }
     },
     "library": {
@@ -492,8 +478,6 @@
         },
         "title": "Artist",
         "button": {
-          "cancel": "Ångra",
-          "edit": "Redigera…",
           "play": "Spela alla album"
         },
         "link": {
@@ -522,8 +506,7 @@
             }
           },
           "button": {
-            "filter": "Lägg till filter",
-            "save": "Spara"
+            "filter": "Lägg till filter"
           },
           "label": {
             "filter": "Lägg till filter för att skräddarsy din radio",
@@ -570,7 +553,6 @@
           }
         },
         "button": {
-          "cancel": "Ångra",
           "retry": "Filuppladdning"
         },
         "header": {
@@ -591,8 +573,6 @@
           "summary": "En kort beskrivning som beskriver dina ändringar."
         },
         "button": {
-          "cancel": "Ångra",
-          "clear": "Rensa",
           "new": "Skicka in en ny begäran"
         },
         "header": {
@@ -629,14 +609,11 @@
         "label": {
           "search": "Sök"
         },
-        "button": {
-          "search": "Sök"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "Sök efter lite musik",
-          "search": "Sök"
+          "upload": "Sök efter lite musik"
         },
         "label": {
           "search": "Artistnamn"
@@ -714,8 +691,7 @@
       },
       "EditCard": {
         "button": {
-          "approve": "Godkänn",
-          "delete": "Radera"
+          "approve": "Godkänn"
         },
         "status": {
           "approved": "Godkännt",
@@ -740,9 +716,7 @@
           "browse": "Bläddrar genom spellistor"
         },
         "button": {
-          "cancel": "Ångra",
-          "channel": "Skapa ett konto",
-          "search": "Sök"
+          "channel": "Skapa ett konto"
         },
         "empty": {
           "noResults": "Vi hittade tyvärr ingen artist som matchade din sökfråga"
@@ -792,11 +766,7 @@
         }
       },
       "AlbumDropdown": {
-        "button": {
-          "cancel": "Ångra",
-          "delete": "Radera",
-          "edit": "Redigera…"
-        },
+        "button": {},
         "link": {
           "discogs": "Sök på lyrics.wikia.com",
           "musicbrainz": "Visa på MusicBrainz"
@@ -804,10 +774,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "Ångra",
-          "delete": "Radera",
           "download": "Ladda ner",
-          "edit": "Redigera…",
           "play": "Spela"
         },
         "modal": {
@@ -822,9 +789,7 @@
         "title": "Låt"
       },
       "ImportStatusModal": {
-        "button": {
-          "close": "Stängd"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Låtinformation",
@@ -921,8 +886,6 @@
           "files": "{ n } fil | { n } filer"
         },
         "button": {
-          "cancel": "Ångra",
-          "close": "Stängd",
           "finishLater": "Avslutad",
           "next": "Nästa steg",
           "previous": "Föregående steg",
@@ -967,10 +930,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "Ångra",
-          "create": "Skapa import"
-        },
+        "button": {},
         "header": {
           "newAlbum": "1 album"
         }
@@ -1093,18 +1053,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "Ångra",
-          "confirm": "Bekräfta"
-        },
+        "button": {},
         "header": {
           "confirm": "Vill du bekräfta denna handling?"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "Ångra",
-          "edit": "Redigera…",
           "more": "Visa 1 mer album",
           "update": "Uppdatera inställningar"
         },
@@ -1113,9 +1068,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "Rensa"
-        },
+        "button": {},
         "label": {
           "search": "Sök"
         },
@@ -1144,9 +1097,7 @@
         }
       },
       "EmptyState": {
-        "button": {
-          "refresh": "Uppdatera"
-        }
+        "button": {}
       },
       "AttachmentInput": {
         "button": {
@@ -1178,9 +1129,7 @@
         "button": {
           "addDuplicate": "Lägg till ett nytt bibliotek",
           "addToPlaylist": "Lägg till i denna spellista",
-          "addTrack": "Lägg till spår",
-          "cancel": "Ångra",
-          "edit": "Redigera…"
+          "addTrack": "Lägg till spår"
         },
         "header": {
           "addToPlaylist": "Lägg till i spellista…",
@@ -1266,8 +1215,7 @@
       },
       "Widget": {
         "button": {
-          "create": "Skapa spellista",
-          "more": "Visa 1 mer album"
+          "create": "Skapa spellista"
         },
         "placeholder": {
           "noPlaylists": "Spellista skapad"
@@ -1595,9 +1543,7 @@
           "header": {
             "actions": "Åtgärder"
           },
-          "button": {
-            "confirmDelete": "Radera"
-          },
+          "button": {},
           "notApplicable": "N/A",
           "link": {
             "report": "Import batch #{ id }"
@@ -1634,10 +1580,7 @@
             "failure": "Fel vid skapande av inbjudan"
           },
           "button": {
-            "cancel": "Ångra",
             "create": "Skapa import",
-            "delete": "Radera",
-            "confirm": "Radera radiostation",
             "update": "Uppdatera avatar"
           },
           "label": {
@@ -1729,14 +1672,10 @@
           }
         },
         "InstancePolicyModal": {
-          "button": {
-            "close": "Stängd"
-          }
+          "button": {}
         },
         "NotesThread": {
-          "button": {
-            "delete": "Radera"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Radera spellista"
@@ -1744,9 +1683,7 @@
           }
         },
         "InstancePolicyCard": {
-          "button": {
-            "edit": "Redigera…"
-          },
+          "button": {},
           "label": {
             "muteActivity": "Senaste aktivitet",
             "muteNotifications": "Senaste ändring"
@@ -1866,7 +1803,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "Rensa",
             "new": "Få en ny inbjudan"
           },
           "table": {
@@ -1915,9 +1851,7 @@
           "image": "Nuvarande spår",
           "error": "Fel vid sparning av inställningar"
         },
-        "button": {
-          "save": "Spara"
-        },
+        "button": {},
         "message": {
           "success": "Inställningarna har uppdaterats."
         }
@@ -1930,9 +1864,7 @@
         }
       },
       "FilterModal": {
-        "button": {
-          "cancel": "Ångra"
-        },
+        "button": {},
         "header": {
           "modal": "Vill du radera spellistan \"{ playlist }\"?",
           "failure": "Fel vid skapande av inbjudan"
@@ -1945,7 +1877,6 @@
       },
       "ReportModal": {
         "button": {
-          "cancel": "Ångra",
           "submit": "Skicka in"
         },
         "header": {
@@ -1977,9 +1908,7 @@
             }
           }
         },
-        "button": {
-          "close": "Stängd"
-        },
+        "button": {},
         "header": {
           "saveFailure": "Fel vid sparning av inställningar",
           "failure": "Uppdatera",
@@ -1993,16 +1922,11 @@
         "empty": {
           "noMatch": "Hantera mediabiblioteket"
         },
-        "button": {
-          "showMore": "Visa 1 mer album"
-        }
+        "button": {}
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "Ångra",
-        "submit": "Skicka in"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "Välj din instans",
         "suggestions": "Föreslagna val"
@@ -2013,8 +1937,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "Rensa",
-        "close": "Stängd",
         "stopRadio": "Stoppa radio"
       },
       "label": {
@@ -2048,15 +1970,11 @@
           "toggleFavorite": "I favoriter"
         }
       },
-      "button": {
-        "close": "Stängd"
-      }
+      "button": {}
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "Redigera…"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "Spela upp spår",
@@ -2067,9 +1985,7 @@
       "header": {
         "fetchFailed": "Fel vid handling"
       },
-      "button": {
-        "search": "Sök"
-      }
+      "button": {}
     },
     "PageNotFound": {
       "link": {
@@ -2112,10 +2028,6 @@
           "artistChannel": "Artistnamn"
         },
         "button": {
-          "cancel": "Ångra",
-          "confirm": "Radera",
-          "delete": "Radera",
-          "edit": "Redigera…",
           "play": "Spela",
           "updateChannel": "Uppdatera spellista",
           "upload": "Ladda upp"
@@ -2139,9 +2051,7 @@
         }
       },
       "SubscriptionsList": {
-        "button": {
-          "cancel": "Ångra"
-        },
+        "button": {},
         "placeholder": {
           "search": "Filternamn"
         },
@@ -2246,8 +2156,6 @@
         "Form": {
           "button": {
             "create": "Rensa bibliotek",
-            "delete": "Radera",
-            "confirm": "Rensa bibliotek",
             "update": "Hantera mediabiblioteket"
           },
           "modal": {
@@ -2323,9 +2231,7 @@
           "loading": {
             "remoteLibraries": "Laddar tidslinje…"
           },
-          "button": {
-            "refresh": "Uppdatera"
-          }
+          "button": {}
         }
       },
       "Home": {
@@ -2352,7 +2258,6 @@
           "tracks": "Låtar"
         },
         "button": {
-          "edit": "Redigera…",
           "upload": "Ladda upp"
         },
         "title": "Bibliotek",
@@ -2428,7 +2333,6 @@
           }
         },
         "button": {
-          "cancel": "Ångra",
           "createChannel": "Skapa ett konto",
           "next": "Nästa steg",
           "previous": "Föregående steg"
@@ -2707,7 +2611,6 @@
             "uploadData": "Ladda upp"
           },
           "button": {
-            "delete": "Radera",
             "download": "Ladda ner"
           },
           "modal": {
@@ -2730,9 +2633,7 @@
             "activity": "Aktivitet",
             "libraryData": "Biblioteksnamn"
           },
-          "button": {
-            "delete": "Radera"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Ta mig till biblioteket"
@@ -2761,10 +2662,7 @@
             "tracks": "Låtar",
             "uploads": "Ladda upp"
           },
-          "button": {
-            "delete": "Radera",
-            "edit": "Redigera…"
-          },
+          "button": {},
           "table": {
             "album": {
               "description": "Tid",
@@ -2789,10 +2687,7 @@
             "tracks": "Låtar",
             "uploads": "Ladda upp"
           },
-          "button": {
-            "delete": "Radera",
-            "edit": "Redigera…"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Album av denna artist"
@@ -2819,9 +2714,7 @@
             "artists": "Artister",
             "tracks": "Låtar"
           },
-          "button": {
-            "delete": "Radera"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Radera spellista"
@@ -2847,10 +2740,7 @@
             "musicbrainz": "Visa på MusicBrainz",
             "uploads": "Ladda upp"
           },
-          "button": {
-            "delete": "Radera",
-            "edit": "Redigera…"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Importera det här spåret"
@@ -2906,9 +2796,7 @@
         "header": {
           "activity": "Aktivitet"
         },
-        "button": {
-          "delete": "Radera"
-        }
+        "button": {}
       },
       "CommonList": {
         "title": {
@@ -2978,8 +2866,7 @@
         },
         "button": {
           "create": "Skapa spellista",
-          "manage": "Hantera din spellista",
-          "search": "Sök"
+          "manage": "Hantera din spellista"
         },
         "placeholder": {
           "search": "Ange ett spellistenamn…"
@@ -2996,10 +2883,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "Ångra",
-          "delete": "Radera",
           "confirm": "Radera spellista",
-          "edit": "Redigera…",
           "playAll": "Spela alla",
           "stopEdit": "Stoppa radio"
         },
@@ -3025,10 +2909,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "Radera radiostation",
-          "edit": "Redigera…"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Vill du radera radiokanalen \"{'{{'} radio {'}}'}\"?",

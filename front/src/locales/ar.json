@@ -192,9 +192,7 @@
         "placeholder": {
           "username": "أدخل اسم المستخدِم أو البريد الإلكتروني"
         },
-        "button": {
-          "login": "تسجيل الدخول"
-        },
+        "button": {},
         "label": {
           "password": "كلمة السر",
           "username": "اسم المستخدِم أو عنوان البريد الإلكتروني"
@@ -258,7 +256,6 @@
           "failure": "حدث خطأ أثناء حفظ الإعدادات"
         },
         "button": {
-          "save": "احفظ",
           "scan": "تم مسحها"
         }
       }
@@ -505,9 +502,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "نسخ"
-        },
+        "button": {},
         "help": {
           "embed": "انسخ والصق هذا الرمز في نص HTML على موقعك",
           "width": "أتركه فارغًا للحصول على ودجات تناسبي"
@@ -558,9 +553,6 @@
         },
         "title": "الفنان",
         "button": {
-          "cancel": "إلغاء",
-          "edit": "تعديل",
-          "embed": "ادمج",
           "play": "إعزف كافة الألبومات"
         },
         "modal": {
@@ -596,8 +588,7 @@
             }
           },
           "button": {
-            "filter": "إضافة عامل تصفية",
-            "save": "احفظ"
+            "filter": "إضافة عامل تصفية"
           },
           "label": {
             "filter": "قم بإضافة عوامل تصفية لتخصيص إذاعتك",
@@ -647,7 +638,6 @@
           }
         },
         "button": {
-          "cancel": "إلغاء",
           "retry": "تم تحديث المكتبة"
         },
         "label": {
@@ -681,10 +671,7 @@
         "placeholder": {
           "summary": "ملخص قصير لوصف تغييراتك."
         },
-        "button": {
-          "cancel": "إلغاء",
-          "clear": "امسح"
-        },
+        "button": {},
         "header": {
           "failure": "حدث خطأ أثناء إرسال التعديلات",
           "recentEdits": "تمت إضافتها مؤخرا"
@@ -719,14 +706,11 @@
         "label": {
           "search": "البحث"
         },
-        "button": {
-          "search": "البحث"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "البحث عن بعض مِن الموسيقى",
-          "search": "البحث"
+          "upload": "البحث عن بعض مِن الموسيقى"
         },
         "label": {
           "search": "إسم الفنان"
@@ -819,9 +803,7 @@
             "message": "حدث خطأ مجهول"
           }
         },
-        "button": {
-          "close": "إغلاق"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "معلومات عن المَقطَع",
@@ -840,7 +822,6 @@
       "EditCard": {
         "button": {
           "approve": "قبول",
-          "delete": "حذف",
           "reject": "رفض"
         },
         "status": {
@@ -880,9 +861,7 @@
           "browse": "استعراض الفنانين"
         },
         "button": {
-          "cancel": "إلغاء",
           "channel": "أنشئ مكتبة جديدة",
-          "search": "البحث",
           "feed": "لاستخدام Funkwhale"
         },
         "empty": {
@@ -933,12 +912,7 @@
         }
       },
       "AlbumDropdown": {
-        "button": {
-          "cancel": "إلغاء",
-          "delete": "حذف",
-          "edit": "تعديل",
-          "embed": "ادمج"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "أتريد حذف هذه المكتبة؟",
@@ -959,11 +933,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "إلغاء",
-          "delete": "حذف",
           "download": "تنزيل",
-          "edit": "تعديل",
-          "embed": "ادمج",
           "play": "غنّي"
         },
         "modal": {
@@ -1080,8 +1050,6 @@
           "quota": "مساحة التخزين المتبقية"
         },
         "button": {
-          "cancel": "إلغاء",
-          "close": "إغلاق",
           "finishLater": "إكتمل",
           "next": "المَقطَع التالي",
           "previous": "المَقطَع السابق",
@@ -1131,10 +1099,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "إلغاء",
-          "create": "إنشاء"
-        },
+        "button": {},
         "header": {
           "newAlbum": "ألبوم واحد",
           "newSeries": "ألبوم واحد"
@@ -1247,9 +1212,7 @@
         "button": {
           "addDuplicate": "أضفه على أي حال",
           "addToPlaylist": "أضفه إلى قائمة التشغيل هذه",
-          "addTrack": "إضافة مقطع صوتي",
-          "cancel": "إلغاء",
-          "edit": "تعديل"
+          "addTrack": "إضافة مقطع صوتي"
         },
         "header": {
           "addToPlaylist": "إضافة إلى قائمة المقاطع الموسيقية…",
@@ -1377,18 +1340,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "إلغاء",
-          "confirm": "تأكيد"
-        },
+        "button": {},
         "header": {
           "confirm": "هل تؤكّد هذا الإجراء ؟"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "إلغاء",
-          "edit": "تعديل",
           "update": "وصفي الرائع"
         },
         "header": {
@@ -1399,9 +1357,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "امسح"
-        },
+        "button": {},
         "label": {
           "search": "البحث"
         },
@@ -1415,9 +1371,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "نسخ"
-        },
+        "button": {},
         "message": {
           "success": "تم نسخ النص إلى الحافظة!"
         }
@@ -1432,9 +1386,7 @@
         "header": {
           "noResults": "لم يتم العثور على أية نتيجة."
         },
-        "button": {
-          "refresh": "إنعاش"
-        }
+        "button": {}
       },
       "ContentForm": {
         "empty": {
@@ -1801,9 +1753,7 @@
           "header": {
             "actions": "الإجراءات"
           },
-          "button": {
-            "confirmDelete": "حذف"
-          },
+          "button": {},
           "notApplicable": "غير متوفر",
           "link": {
             "moderation": "تحديث قاعدة الإشراف"
@@ -1851,10 +1801,7 @@
             "rejectMedia": "ارفض الوسائط"
           },
           "button": {
-            "cancel": "إلغاء",
             "create": "إنشاء",
-            "delete": "حذف",
-            "confirm": "حذف قاعدة الإشراف",
             "update": "تحديث"
           },
           "modal": {
@@ -1979,9 +1926,7 @@
             "reason": "السبب",
             "rejectMedia": "ارفض الوسائط"
           },
-          "button": {
-            "edit": "تعديل"
-          },
+          "button": {},
           "status": {
             "enabled": "تم تنشيطه",
             "paused": "تم توقيفه مؤقتا"
@@ -1992,7 +1937,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "إغلاق",
             "show": "تحديث قاعدة الإشراف"
           },
           "modal": {
@@ -2002,9 +1946,7 @@
           }
         },
         "NotesThread": {
-          "button": {
-            "delete": "حذف"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "أتريد حذف هذه المكتبة؟",
@@ -2137,7 +2079,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "امسح",
             "new": "تحصّل على دعوة جديدة"
           },
           "table": {
@@ -2188,9 +2129,7 @@
           "image": "الاستعمال الحالي",
           "error": "حدث خطأ أثناء حفظ الإعدادات"
         },
-        "button": {
-          "save": "احفظ"
-        },
+        "button": {},
         "message": {
           "success": "تم تحديث الإعدادات بنجاح."
         }
@@ -2207,7 +2146,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "إلغاء",
           "hide": "إخفاء المحتوى"
         },
         "header": {
@@ -2223,7 +2161,6 @@
       },
       "ReportModal": {
         "button": {
-          "cancel": "إلغاء",
           "submit": "إرسال"
         },
         "header": {
@@ -2254,7 +2191,6 @@
           }
         },
         "button": {
-          "close": "إغلاق",
           "reload": "إغلاق وإعادة إنعاش الصفحة"
         },
         "header": {
@@ -2290,18 +2226,13 @@
           "show": "عرض اختصارات لوحة المفاتيح المتوفّرة"
         }
       },
-      "button": {
-        "close": "إغلاق"
-      },
+      "button": {},
       "header": {
         "modal": "اختصارات لوحة المفاتيح"
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "إلغاء",
-        "submit": "إرسال"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "اختر خادومك",
         "suggestions": "الخيارات المتاحة"
@@ -2315,8 +2246,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "امسح",
-        "close": "إغلاق",
         "stopRadio": "إيقاف الإذاعة"
       },
       "label": {
@@ -2346,9 +2275,7 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "نسخ"
-        },
+        "button": {},
         "title": "إظهار/إخفاء الكلمة السرية",
         "message": {
           "copy": "تم نسخ النص إلى الحافظة!"
@@ -2357,9 +2284,7 @@
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "تعديل"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "إعزف المَقطَع",
@@ -2378,9 +2303,7 @@
           "title": "البحث في ويكيبيديا"
         }
       },
-      "button": {
-        "search": "البحث"
-      },
+      "button": {},
       "error": {
         "fetchFailed": "لا يمكن استرداد هذا المكوّن"
       }
@@ -2425,11 +2348,6 @@
           "artistChannel": "إسم الفنان"
         },
         "button": {
-          "cancel": "إلغاء",
-          "confirm": "حذف",
-          "delete": "حذف",
-          "edit": "تعديل",
-          "embed": "ادمج",
           "play": "غنّي",
           "updateChannel": "تحديث قائمة المَقاطِع الموسيقية",
           "upload": "أرسل"
@@ -2475,9 +2393,7 @@
         "link": {
           "addNew": "إضافة محتوى"
         },
-        "button": {
-          "cancel": "إلغاء"
-        },
+        "button": {},
         "placeholder": {
           "search": "إسم عامل التصفية"
         },
@@ -2605,8 +2521,6 @@
         "Form": {
           "button": {
             "create": "أنشئ مكتبة",
-            "delete": "حذف",
-            "confirm": "حذف المكتبة",
             "update": "تحديث المكتبة"
           },
           "modal": {
@@ -2695,9 +2609,7 @@
           "loading": {
             "remoteLibraries": "جارٍ تحميل المكتبات البُعدية…"
           },
-          "button": {
-            "refresh": "إنعاش"
-          }
+          "button": {}
         }
       },
       "Home": {
@@ -2738,7 +2650,6 @@
           "domain": "عضو منذ { date }"
         },
         "button": {
-          "edit": "تعديل",
           "upload": "أرسل"
         },
         "title": "المكتبة",
@@ -2847,7 +2758,6 @@
           }
         },
         "button": {
-          "cancel": "إلغاء",
           "createChannel": "أنشئ مكتبة جديدة",
           "next": "المَقطَع التالي",
           "previous": "المَقطَع السابق"
@@ -3178,7 +3088,6 @@
             "uploadData": "تاريخ التحميل"
           },
           "button": {
-            "delete": "حذف",
             "download": "تنزيل"
           },
           "modal": {
@@ -3207,9 +3116,7 @@
             "audioContent": "المحتوى الصوتي",
             "libraryData": "تم تحديث المكتبة"
           },
-          "button": {
-            "delete": "حذف"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "أتريد حذف هذه المكتبة؟"
@@ -3246,10 +3153,7 @@
             "tracks": "المَقاطِع",
             "uploads": "المُرسَلة"
           },
-          "button": {
-            "delete": "حذف",
-            "edit": "تعديل"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "أتريد حذف هذه المكتبة؟"
@@ -3288,10 +3192,7 @@
             "tracks": "المَقاطِع",
             "uploads": "المُرسَلة"
           },
-          "button": {
-            "delete": "حذف",
-            "edit": "تعديل"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "أتريد حذف هذا الفنان؟"
@@ -3324,9 +3225,7 @@
             "localProfile": "افتح الصفحة الشخصية",
             "tracks": "المَقاطِع"
           },
-          "button": {
-            "delete": "حذف"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "أتريد حذف هذا الوسم؟",
@@ -3379,10 +3278,7 @@
               "totalSize": "الحجم الإجمالي"
             }
           },
-          "button": {
-            "delete": "حذف",
-            "edit": "تعديل"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "أتريد حذف هذا الوسم؟"
@@ -3438,7 +3334,6 @@
           "channelData": "بيانات مثيل الخادم"
         },
         "button": {
-          "delete": "حذف",
           "openRemote": "افتح الصفحة الشخصية"
         },
         "modal": {
@@ -3525,8 +3420,7 @@
         },
         "button": {
           "create": "أنشئ قائمة مَقاطع موسيقية",
-          "manage": "إدارة القوائم الخاصة الموسيقى",
-          "search": "البحث"
+          "manage": "إدارة القوائم الخاصة الموسيقى"
         },
         "placeholder": {
           "search": "أدخِل إسم قائمة مَقاطِعٍ موسيقية…"
@@ -3543,11 +3437,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "إلغاء",
-          "delete": "حذف",
           "confirm": "حذف قائمة الأغاني",
-          "edit": "تعديل",
-          "embed": "ادمج",
           "playAll": "تشغيل الكل",
           "stopEdit": "إيقاف الإذاعة"
         },
@@ -3573,10 +3463,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "حذف الإذاعة",
-          "edit": "تعديل"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "أتريد حقا حذف إذاعة \"{ radio }\" ؟",

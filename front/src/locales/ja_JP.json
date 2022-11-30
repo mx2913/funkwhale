@@ -250,9 +250,7 @@
           "approvalRequired": "アカウントを最近作成した場合、モデレーションチームによるあなたのアカウントの審査、またはEメールの認証を待つ必要があるかもしれません。",
           "invalidCredentials": "ユーザーネームとパスワードの組み合わせが正しいかどうか、ダブルチェックして下さい。そして、あなたのメールアドレスが認証済みであることを確認して下さい。"
         },
-        "button": {
-          "login": "ログイン"
-        },
+        "button": {},
         "label": {
           "password": "パスワード",
           "username": "ユーザーネームまたはメールアドレス"
@@ -301,7 +299,6 @@
           "library": "ライブラリにはファイルがインポートされるべきでしょう。"
         },
         "button": {
-          "save": "保存",
           "scan": "スキャン"
         }
       }
@@ -395,9 +392,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "さらに表示"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -419,9 +414,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "さらに表示"
-          }
+          "button": {}
         }
       },
       "Player": {
@@ -525,9 +518,7 @@
           "empty": {
             "noResults": "見つかりませんでした"
           },
-          "button": {
-            "more": "さらに表示"
-          }
+          "button": {}
         },
         "MobileRow": {
           "button": {
@@ -622,9 +613,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "コピー"
-        },
+        "button": {},
         "help": {
           "embed": "以下のコードをコピーして、Webサイトに貼りましょう",
           "width": "空欄にするとレスポンシブなウィジェットになります",
@@ -643,17 +632,13 @@
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "さらに表示"
-        },
+        "button": {},
         "help": {
           "subscribe": "コンテンツを見るには、このチャンネルを登録する必要があるかもしれません。"
         }
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "さらに表示"
-        }
+        "button": {}
       },
       "ChannelEntries": {
         "help": {
@@ -677,9 +662,6 @@
         },
         "title": "アーティスト",
         "button": {
-          "cancel": "キャンセル",
-          "edit": "編集する",
-          "embed": "埋め込む",
           "more": "もっと…",
           "play": "全てのアルバムを再生する"
         },
@@ -716,8 +698,7 @@
             }
           },
           "button": {
-            "filter": "フィルターの追加",
-            "save": "保存"
+            "filter": "フィルターの追加"
           },
           "label": {
             "filter": "ラジオをカスタマイズするためにフィルターを追加する",
@@ -766,7 +747,6 @@
           }
         },
         "button": {
-          "cancel": "キャンセル",
           "retry": "失敗したアップロードを再度試す"
         },
         "label": {
@@ -794,8 +774,6 @@
           "summary": "変更点の端的な概要。"
         },
         "button": {
-          "cancel": "キャンセル",
-          "clear": "クリア",
           "reset": "初期値にリセットする"
         },
         "notApplicable": "N/A",
@@ -836,14 +814,11 @@
           "search": "検索",
           "tags": "タグ"
         },
-        "button": {
-          "search": "検索"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "曲を追加",
-          "search": "検索"
+          "upload": "曲を追加"
         },
         "label": {
           "search": "アーティスト名",
@@ -947,9 +922,7 @@
             "message": "ファイルに含まれるメタデータが無効か、必須の項目が入力されていません。"
           }
         },
-        "button": {
-          "close": "閉じる"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "デバッグ",
@@ -972,7 +945,6 @@
       "EditCard": {
         "button": {
           "approve": "承認",
-          "delete": "削除",
           "reject": "拒否"
         },
         "status": {
@@ -1011,9 +983,7 @@
           "browse": "ポッドキャストを探す"
         },
         "button": {
-          "cancel": "キャンセル",
           "channel": "チャンネルを作成",
-          "search": "検索",
           "subscribe": "登録",
           "feed": "RSSフィードを購読する"
         },
@@ -1071,10 +1041,6 @@
       },
       "AlbumDropdown": {
         "button": {
-          "cancel": "キャンセル",
-          "delete": "削除…",
-          "edit": "編集する",
-          "embed": "埋め込む",
           "more": "もっと…"
         },
         "modal": {
@@ -1097,11 +1063,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "キャンセル",
-          "delete": "削除…",
           "download": "ダウンロード",
-          "edit": "編集する",
-          "embed": "埋め込む",
           "more": "もっと…",
           "play": "再生"
         },
@@ -1219,8 +1181,6 @@
           "quota": "残りのストレージ容量:"
         },
         "button": {
-          "cancel": "キャンセル",
-          "close": "閉じる",
           "next": "次へ",
           "previous": "前のステップ",
           "publish": "公開",
@@ -1284,10 +1244,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "キャンセル",
-          "create": "作成"
-        },
+        "button": {},
         "header": {
           "newAlbum": "新しいアルバム",
           "newSeries": "新しいシリーズ"
@@ -1445,18 +1402,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "キャンセル",
-          "confirm": "確認"
-        },
+        "button": {},
         "header": {
           "confirm": "このアクションを確認しますか？"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "キャンセル",
-          "edit": "編集する",
           "less": "少なく表示",
           "more": "さらに表示",
           "update": "自己紹介の更新"
@@ -1469,9 +1421,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "クリア"
-        },
+        "button": {},
         "label": {
           "search": "検索"
         },
@@ -1486,9 +1436,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "コピー"
-        },
+        "button": {},
         "message": {
           "success": "クリップボードにコピーされました！"
         }
@@ -1524,9 +1472,7 @@
         "header": {
           "noResults": "コンテンツが見つかりませんでした。"
         },
-        "button": {
-          "refresh": "更新"
-        }
+        "button": {}
       },
       "AttachmentInput": {
         "help": {
@@ -1565,9 +1511,7 @@
         "button": {
           "addDuplicate": "とにかく追加する",
           "addToPlaylist": "このプレイリストに追加",
-          "addTrack": "曲の追加",
-          "cancel": "キャンセル",
-          "edit": "編集"
+          "addTrack": "曲の追加"
         },
         "header": {
           "addToPlaylist": "プレイリストに追加",
@@ -1647,8 +1591,7 @@
       },
       "Widget": {
         "button": {
-          "create": "プレイリストを作成",
-          "more": "さらに表示"
+          "create": "プレイリストを作成"
         },
         "placeholder": {
           "noPlaylists": "まだプレイリストは作成されてません"
@@ -1998,7 +1941,6 @@
             "reportedObject": "通報した対象"
           },
           "button": {
-            "confirmDelete": "削除",
             "delete": "通報対象を削除",
             "resolve": "解決",
             "unresolve": "未解決"
@@ -2069,10 +2011,7 @@
             "silenceActivity": "フォロワーを除いた、アカウントまたはドメインに属するコンテンツを隠す。"
           },
           "button": {
-            "cancel": "キャンセル",
             "create": "作成",
-            "delete": "削除",
-            "confirm": "モデレーションルールを削除",
             "update": "更新"
           },
           "modal": {
@@ -2182,9 +2121,7 @@
             "reason": "理由",
             "rejectMedia": "拒否したメディア"
           },
-          "button": {
-            "edit": "編集する"
-          },
+          "button": {},
           "status": {
             "enabled": "有効",
             "paused": "停止"
@@ -2195,14 +2132,11 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "閉じる",
             "show": "モデレーションルール…"
           }
         },
         "NotesThread": {
-          "button": {
-            "delete": "削除"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "このノートを削除しますか？",
@@ -2323,9 +2257,7 @@
           }
         },
         "InvitationForm": {
-          "button": {
-            "clear": "クリア"
-          },
+          "button": {},
           "table": {
             "invitation": {
               "header": {
@@ -2384,9 +2316,7 @@
           "image": "現在の画像",
           "error": "設定の保存中にエラーが発生しました"
         },
-        "button": {
-          "save": "保存"
-        },
+        "button": {},
         "message": {
           "success": "設定が更新されました。"
         }
@@ -2408,7 +2338,6 @@
           "submissionFailure": "通報内容の投稿中にエラーが発生しました"
         },
         "button": {
-          "cancel": "キャンセル",
           "submit": "通報する"
         },
         "label": {
@@ -2428,7 +2357,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "キャンセル",
           "hide": "コンテンツを隠す"
         },
         "message": {
@@ -2462,7 +2390,6 @@
           }
         },
         "button": {
-          "close": "閉じる",
           "reload": "閉じて再読込"
         },
         "header": {
@@ -2481,9 +2408,7 @@
         "empty": {
           "noMatch": "マッチするライブラリがありません。"
         },
-        "button": {
-          "showMore": "さらに表示"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
@@ -2513,17 +2438,13 @@
           "unfocus": "検索窓から離れる"
         }
       },
-      "button": {
-        "close": "閉じる"
-      },
+      "button": {},
       "header": {
         "modal": "キーボードショートカット集"
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "キャンセル"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "インスタンスを選んでください",
         "failure": "入力されたURLにアクセスできません",
@@ -2542,8 +2463,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "クリア",
-        "close": "閉じる",
         "stopRadio": "ラジオを止める"
       },
       "label": {
@@ -2573,9 +2492,7 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "コピー"
-        },
+        "button": {},
         "title": "パスワードを表示・隠す",
         "message": {
           "copy": "クリップボードにコピーされました！"
@@ -2584,9 +2501,7 @@
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "編集する"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "ラジオを再生",
@@ -2599,8 +2514,7 @@
       },
       "button": {
         "fediverse": "Fediverse",
-        "rss": "RSS",
-        "search": "検索"
+        "rss": "RSS"
       },
       "label": {
         "fediverse": {
@@ -2669,11 +2583,6 @@
           "podcastChannel": "ポッドキャストのチャンネル"
         },
         "button": {
-          "cancel": "キャンセル",
-          "confirm": "削除",
-          "delete": "削除…",
-          "edit": "編集…",
-          "embed": "埋め込む",
           "play": "再生する",
           "updateChannel": "チャンネルの更新",
           "upload": "アップロード"
@@ -2732,7 +2641,6 @@
           "addNew": "新規作成"
         },
         "button": {
-          "cancel": "キャンセル",
           "subscribe": "登録"
         },
         "placeholder": {
@@ -2856,8 +2764,6 @@
         "Form": {
           "button": {
             "create": "ライブラリを作成",
-            "delete": "削除",
-            "confirm": "ライブラリを削除",
             "update": "ライブラリの更新"
           },
           "modal": {
@@ -2943,9 +2849,7 @@
           "loading": {
             "remoteLibraries": "リモートライブラリを読み込んでいます…"
           },
-          "button": {
-            "refresh": "更新"
-          },
+          "button": {},
           "header": {
             "remoteLibraries": "リモートのライブラリ"
           },
@@ -2995,7 +2899,6 @@
           "domain": "{ domain }で聞く"
         },
         "button": {
-          "edit": "編集する",
           "upload": "アップロード"
         },
         "title": "ライブラリ",
@@ -3113,7 +3016,6 @@
           }
         },
         "button": {
-          "cancel": "キャンセル",
           "createChannel": "チャンネルを作成",
           "next": "次へ",
           "previous": "前のステップ"
@@ -3450,7 +3352,6 @@
             "uploadData": "アップロード日付"
           },
           "button": {
-            "delete": "削除",
             "download": "ダウンロード"
           },
           "modal": {
@@ -3493,9 +3394,7 @@
               "followers": "フォロワー"
             }
           },
-          "button": {
-            "delete": "削除"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "このライブラリを削除しますか？",
@@ -3540,8 +3439,6 @@
             }
           },
           "button": {
-            "delete": "削除",
-            "edit": "編集する",
             "remoteRefresh": "リモートサーバーから更新する"
           },
           "modal": {
@@ -3589,8 +3486,6 @@
             }
           },
           "button": {
-            "delete": "削除",
-            "edit": "編集する",
             "remoteRefresh": "リモートサーバーから更新する"
           },
           "modal": {
@@ -3614,9 +3509,7 @@
             "localProfile": "ローカルのプロフィールを開く",
             "tracks": "曲一覧"
           },
-          "button": {
-            "delete": "削除"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "このタグを削除しますか？"
@@ -3669,8 +3562,6 @@
             }
           },
           "button": {
-            "delete": "削除",
-            "edit": "編集する",
             "remoteRefresh": "リモートサーバーから更新する"
           },
           "modal": {
@@ -3734,7 +3625,6 @@
           "channelData": "チャンネルデータ"
         },
         "button": {
-          "delete": "削除",
           "openRemote": "リモートのプロフィールを開く",
           "refresh": "リモートサーバーから更新する"
         },
@@ -3827,8 +3717,7 @@
         },
         "button": {
           "create": "プレイリストを作成",
-          "manage": "プレイリストの管理",
-          "search": "検索"
+          "manage": "プレイリストの管理"
         },
         "placeholder": {
           "search": "プレイリスト名を入力…"
@@ -3845,11 +3734,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "キャンセル",
-          "delete": "削除",
           "confirm": "プレイリストを削除",
-          "edit": "編集する",
-          "embed": "埋め込む",
           "playAll": "全曲再生",
           "stopEdit": "編集を止める"
         },
@@ -3875,10 +3760,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "ラジオを削除",
-          "edit": "編集…"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "ラジオ「{ radio }」を削除しますか？"

@@ -272,9 +272,7 @@
           "approvalRequired": "如果您刚刚完成注册，您可能需要等待我们的审核团队审核您的帐户，或验证您的邮箱。",
           "invalidCredentials": "请仔细检查您的用户名和密码是正确的，并确保您验证了您的邮箱地址。"
         },
-        "button": {
-          "login": "登录"
-        },
+        "button": {},
         "label": {
           "password": "密码",
           "username": "用户名或邮箱地址"
@@ -323,7 +321,6 @@
           "library": "文件将被导入到的曲库。"
         },
         "button": {
-          "save": "保存",
           "scan": "扫描"
         }
       }
@@ -417,9 +414,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "展开"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -441,9 +436,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "展开"
-          }
+          "button": {}
         }
       },
       "Player": {
@@ -548,9 +541,7 @@
           "empty": {
             "noResults": "什么也没找到"
           },
-          "button": {
-            "more": "展开"
-          }
+          "button": {}
         },
         "MobileRow": {
           "button": {
@@ -651,9 +642,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "复制"
-        },
+        "button": {},
         "help": {
           "embed": "复制粘贴以下 HTML 代码到您的网站源代码中",
           "width": "留空以生成响应式小部件",
@@ -675,17 +664,13 @@
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "展开"
-        },
+        "button": {},
         "help": {
           "subscribe": "您可能需要订阅这个频道以查看其内容。"
         }
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "展开"
-        }
+        "button": {}
       },
       "ChannelEntries": {
         "help": {
@@ -709,9 +694,6 @@
         },
         "title": "歌手",
         "button": {
-          "cancel": "取消",
-          "edit": "编辑",
-          "embed": "嵌入",
           "more": "更多…",
           "play": "播放所有专辑"
         },
@@ -749,8 +731,7 @@
             }
           },
           "button": {
-            "filter": "添加过滤规则",
-            "save": "保存"
+            "filter": "添加过滤规则"
           },
           "label": {
             "filter": "添加过滤规则来定制您的电台",
@@ -802,7 +783,6 @@
           }
         },
         "button": {
-          "cancel": "取消",
           "retry": "重试失败的上传"
         },
         "label": {
@@ -839,8 +819,6 @@
           "summary": "简要概括您做出的变化。"
         },
         "button": {
-          "cancel": "取消",
-          "clear": "清除",
           "reset": "重置为初始值",
           "showUnreviewed": "仅显示未审核的编辑记录",
           "showAll": "显示所有编辑记录",
@@ -894,14 +872,11 @@
           "search": "搜索",
           "tags": "标签"
         },
-        "button": {
-          "search": "搜索"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "添加音乐",
-          "search": "搜索"
+          "upload": "添加音乐"
         },
         "label": {
           "search": "歌手姓名",
@@ -1009,9 +984,7 @@
             "message": "文件中包含的元数据无效或缺少某些必填字段。"
           }
         },
-        "button": {
-          "close": "关闭"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "调试信息",
@@ -1038,7 +1011,6 @@
       "EditCard": {
         "button": {
           "approve": "批准",
-          "delete": "删除",
           "reject": "拒绝"
         },
         "status": {
@@ -1085,9 +1057,7 @@
           "browse": "浏览播客"
         },
         "button": {
-          "cancel": "取消",
           "channel": "创建频道",
-          "search": "搜索",
           "subscribe": "订阅",
           "feed": "订阅"
         },
@@ -1145,10 +1115,6 @@
       },
       "AlbumDropdown": {
         "button": {
-          "cancel": "取消",
-          "delete": "删除…",
-          "edit": "编辑",
-          "embed": "嵌入",
           "more": "更多…"
         },
         "modal": {
@@ -1172,11 +1138,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "取消",
-          "delete": "删除…",
           "download": "下载",
-          "edit": "编辑",
-          "embed": "嵌入",
           "more": "更多…",
           "play": "播放"
         },
@@ -1310,8 +1272,6 @@
           "quota": "剩余存储空间："
         },
         "button": {
-          "cancel": "取消",
-          "close": "关闭",
           "finishLater": "以后再完成",
           "next": "下一步",
           "previous": "上一步",
@@ -1383,10 +1343,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "取消",
-          "create": "创建"
-        },
+        "button": {},
         "header": {
           "newAlbum": "添加专辑",
           "newSeries": "添加序列"
@@ -1556,18 +1513,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "取消",
-          "confirm": "确认"
-        },
+        "button": {},
         "header": {
           "confirm": "您确认进行此操作吗？"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "取消",
-          "edit": "编辑",
           "less": "收起",
           "more": "展开",
           "update": "更新描述"
@@ -1580,9 +1532,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "清除"
-        },
+        "button": {},
         "label": {
           "search": "搜索"
         },
@@ -1597,9 +1547,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "复制"
-        },
+        "button": {},
         "message": {
           "success": "文本已复制到剪贴板！"
         }
@@ -1635,9 +1583,7 @@
         "header": {
           "noResults": "空空如也。"
         },
-        "button": {
-          "refresh": "刷新"
-        }
+        "button": {}
       },
       "AttachmentInput": {
         "help": {
@@ -1676,9 +1622,7 @@
         "button": {
           "addDuplicate": "继续添加",
           "addToPlaylist": "添加到这个歌单",
-          "addTrack": "添加歌曲",
-          "cancel": "取消",
-          "edit": "编辑"
+          "addTrack": "添加歌曲"
         },
         "header": {
           "addToPlaylist": "添加到歌单",
@@ -1767,8 +1711,7 @@
       },
       "Widget": {
         "button": {
-          "create": "创建歌单",
-          "more": "展开"
+          "create": "创建歌单"
         },
         "placeholder": {
           "noPlaylists": "目前还没有创建过歌单"
@@ -2147,7 +2090,6 @@
             "reportedObject": "被报告对象"
           },
           "button": {
-            "confirmDelete": "删除",
             "delete": "删除报告所指对象",
             "resolve": "解决",
             "unresolve": "未解决"
@@ -2227,10 +2169,7 @@
             "isActive": "使用此设置临时启用/禁用策略，无须完全删除策略。"
           },
           "button": {
-            "cancel": "取消",
             "create": "创建",
-            "delete": "删除",
-            "confirm": "删除审核规则",
             "update": "更新"
           },
           "modal": {
@@ -2355,9 +2294,7 @@
             "reason": "原因",
             "rejectMedia": "拒绝媒体"
           },
-          "button": {
-            "edit": "编辑"
-          },
+          "button": {},
           "status": {
             "enabled": "启用",
             "paused": "已暂停"
@@ -2368,7 +2305,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "关闭",
             "show": "审核规则…"
           },
           "modal": {
@@ -2381,9 +2317,7 @@
           }
         },
         "NotesThread": {
-          "button": {
-            "delete": "删除"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "确认删除这条注释？",
@@ -2517,7 +2451,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "清除",
             "new": "生成一个新的邀请"
           },
           "table": {
@@ -2583,9 +2516,7 @@
           "image": "当前图片",
           "error": "保存设置时出错"
         },
-        "button": {
-          "save": "保存"
-        },
+        "button": {},
         "message": {
           "success": "设置更新成功。"
         }
@@ -2607,7 +2538,6 @@
           "submissionFailure": "提交报告时出错"
         },
         "button": {
-          "cancel": "取消",
           "submit": "提交报告"
         },
         "label": {
@@ -2627,7 +2557,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "取消",
           "hide": "隐藏内容"
         },
         "message": {
@@ -2677,7 +2606,6 @@
           }
         },
         "button": {
-          "close": "关闭",
           "reload": "关闭并重新加载页面"
         },
         "header": {
@@ -2697,9 +2625,7 @@
         "empty": {
           "noMatch": "无匹配的曲库。"
         },
-        "button": {
-          "showMore": "展开"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
@@ -2729,18 +2655,13 @@
           "unfocus": "跳出搜索栏"
         }
       },
-      "button": {
-        "close": "关闭"
-      },
+      "button": {},
       "header": {
         "modal": "键盘快捷键"
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "取消",
-        "submit": "提交"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "选择实例",
         "failure": "无法连接至指定 URL",
@@ -2760,8 +2681,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "清除",
-        "close": "关闭",
         "stopRadio": "停止播放电台"
       },
       "label": {
@@ -2792,9 +2711,7 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "复制"
-        },
+        "button": {},
         "title": "显示/隐藏密码",
         "message": {
           "copy": "文本已复制到剪贴板！"
@@ -2803,9 +2720,7 @@
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "编辑"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "播放这个电台",
@@ -2818,8 +2733,7 @@
       },
       "button": {
         "fediverse": "联邦宇宙",
-        "rss": "RSS",
-        "search": "搜索"
+        "rss": "RSS"
       },
       "label": {
         "fediverse": {
@@ -2892,11 +2806,6 @@
           "podcastChannel": "播客频道"
         },
         "button": {
-          "cancel": "取消",
-          "confirm": "删除",
-          "delete": "删除…",
-          "edit": "编辑…",
-          "embed": "嵌入",
           "play": "播放",
           "updateChannel": "更新频道",
           "upload": "上传"
@@ -2959,7 +2868,6 @@
           "addNew": "添加新的"
         },
         "button": {
-          "cancel": "取消",
           "subscribe": "订阅"
         },
         "placeholder": {
@@ -3100,8 +3008,6 @@
         "Form": {
           "button": {
             "create": "创建曲库",
-            "delete": "删除",
-            "confirm": "删除曲库",
             "update": "更新曲库"
           },
           "modal": {
@@ -3199,9 +3105,7 @@
           "loading": {
             "remoteLibraries": "正在加载远程曲库…"
           },
-          "button": {
-            "refresh": "刷新"
-          },
+          "button": {},
           "description": {
             "remoteLibraries": "远程曲库归网络上的其他用户所有。只要它们是公共的或您被授予访问权限，您就可以访问它们。"
           }
@@ -3254,7 +3158,6 @@
           "domain": "在 { domain } 上查看"
         },
         "button": {
-          "edit": "编辑",
           "upload": "上传"
         },
         "title": "曲库",
@@ -3374,7 +3277,6 @@
           }
         },
         "button": {
-          "cancel": "取消",
           "createChannel": "创建频道",
           "next": "下一步",
           "previous": "上一步"
@@ -3747,7 +3649,6 @@
             "uploadData": "上传日期"
           },
           "button": {
-            "delete": "删除",
             "download": "下载"
           },
           "modal": {
@@ -3793,9 +3694,7 @@
               "followers": "关注者"
             }
           },
-          "button": {
-            "delete": "删除"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "确认删除这个曲库？",
@@ -3845,8 +3744,6 @@
             }
           },
           "button": {
-            "delete": "删除",
-            "edit": "编辑",
             "remoteRefresh": "从远程服务器刷新"
           },
           "modal": {
@@ -3899,8 +3796,6 @@
             }
           },
           "button": {
-            "delete": "删除",
-            "edit": "编辑",
             "remoteRefresh": "从远程服务器刷新"
           },
           "modal": {
@@ -3928,9 +3823,7 @@
             "tracks": "歌曲",
             "django": "在 Django 管理面板中查看"
           },
-          "button": {
-            "delete": "删除"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "确认删除这个标签？",
@@ -3989,8 +3882,6 @@
             }
           },
           "button": {
-            "delete": "删除",
-            "edit": "编辑",
             "remoteRefresh": "从远程服务器刷新"
           },
           "modal": {
@@ -4061,7 +3952,6 @@
           "channelData": "频道数据"
         },
         "button": {
-          "delete": "删除",
           "openRemote": "查看远程档案",
           "refresh": "从远程服务器刷新"
         },
@@ -4164,8 +4054,7 @@
         },
         "button": {
           "create": "创建一个歌单",
-          "manage": "管理您的歌单",
-          "search": "搜索"
+          "manage": "管理您的歌单"
         },
         "placeholder": {
           "search": "输入歌单名称…"
@@ -4182,11 +4071,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "取消",
-          "delete": "删除",
           "confirm": "删除歌单",
-          "edit": "编辑",
-          "embed": "嵌入",
           "playAll": "播放所有",
           "stopEdit": "停止编辑"
         },
@@ -4215,10 +4100,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "删除电台",
-          "edit": "编辑…"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "确认删除电台“{ radio }”吗？",

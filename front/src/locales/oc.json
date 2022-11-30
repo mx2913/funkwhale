@@ -272,9 +272,7 @@
           "approvalRequired": "Se vos sètz marcat fa pas gaire, benlèu que vos cal esperar que nòstra còla de moderacion repasse vòstre compte, o verifique vòstra adreça electronica.",
           "invalidCredentials": "Mercés de verificar que lo nom d’utilizaire e lo senhal son corrèctes e asseguratz-vos d’aver verificat vòstre corrièl."
         },
-        "button": {
-          "login": "Connexion"
-        },
+        "button": {},
         "label": {
           "password": "Senhal",
           "username": "Nom d’utilizaire o corrièl"
@@ -323,7 +321,6 @@
           "library": "Bibliotèca ont los fichièrs devon èsser importats."
         },
         "button": {
-          "save": "Enregistrar",
           "scan": "Explorar"
         }
       }
@@ -417,9 +414,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Ne veire mai"
-          }
+          "button": {}
         }
       },
       "ChannelCard": {
@@ -441,9 +436,7 @@
           }
         },
         "Widget": {
-          "button": {
-            "more": "Ne veire mai"
-          }
+          "button": {}
         }
       },
       "Player": {
@@ -548,9 +541,7 @@
           "empty": {
             "noResults": "Cap de resultat pas trobat"
           },
-          "button": {
-            "more": "Ne veire mai"
-          }
+          "button": {}
         },
         "MobileRow": {
           "button": {
@@ -651,9 +642,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "Copiar"
-        },
+        "button": {},
         "help": {
           "embed": "Copiatz / Pegatz aqueste còdi al vòstre site HTML",
           "width": "Daissar void per un widget adaptatiu",
@@ -675,17 +664,13 @@
         }
       },
       "ChannelSeries": {
-        "button": {
-          "showMore": "Ne veire mai"
-        },
+        "button": {},
         "help": {
           "subscribe": "Vos cal benlèu vos abonar a aquesta cadena per ne veire lo contengut."
         }
       },
       "ChannelsWidget": {
-        "button": {
-          "showMore": "Ne veire mai"
-        }
+        "button": {}
       },
       "ChannelEntries": {
         "help": {
@@ -710,9 +695,6 @@
         },
         "title": "Artista",
         "button": {
-          "cancel": "Anullar",
-          "edit": "Modificar",
-          "embed": "Integrar",
           "more": "Mai…",
           "play": "Legir totes los albums"
         },
@@ -750,8 +732,7 @@
             }
           },
           "button": {
-            "filter": "Ajustar lo filtre",
-            "save": "Enregistrar"
+            "filter": "Ajustar lo filtre"
           },
           "label": {
             "filter": "Ajustar de filtres per dire de personalizar vòstra ràdio",
@@ -803,7 +784,6 @@
           }
         },
         "button": {
-          "cancel": "Anullar",
           "retry": "Tornar ensajar los mandadisses fracassats"
         },
         "label": {
@@ -840,8 +820,6 @@
           "summary": "Una descripcion pichona per explicar vòstres cambiaments."
         },
         "button": {
-          "cancel": "Anullar",
-          "clear": "Escafar",
           "reset": "Tornar a la valor iniciala",
           "showUnreviewed": "Restrénher a las modificacions pas repassadas",
           "showAll": "Mostrar totas las modificacions",
@@ -895,14 +873,11 @@
           "search": "Recercar",
           "tags": "Etiquetas"
         },
-        "button": {
-          "search": "Recercar"
-        }
+        "button": {}
       },
       "Artists": {
         "button": {
-          "upload": "Ajustar musica",
-          "search": "Recercar"
+          "upload": "Ajustar musica"
         },
         "label": {
           "search": "Nom de l’artista",
@@ -1010,9 +985,7 @@
             "message": "La metadonada inclusa al fichièr es invalida o de camps obligatòris son absents."
           }
         },
-        "button": {
-          "close": "Tampar"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informacions de debug",
@@ -1039,7 +1012,6 @@
       "EditCard": {
         "button": {
           "approve": "Validar",
-          "delete": "Suprimir",
           "reject": "Regetar"
         },
         "status": {
@@ -1086,9 +1058,7 @@
           "browse": "Percórrer los Podcasts"
         },
         "button": {
-          "cancel": "Anullar",
           "channel": "Crear una cadena",
-          "search": "Recercar",
           "subscribe": "S’abonar",
           "feed": "S’abonar al flux RSS"
         },
@@ -1146,10 +1116,6 @@
       },
       "AlbumDropdown": {
         "button": {
-          "cancel": "Anullar",
-          "delete": "Suprimir…",
-          "edit": "Modificar",
-          "embed": "Integrar",
           "more": "Mai…"
         },
         "modal": {
@@ -1173,11 +1139,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "Anullar",
-          "delete": "Suprimir…",
           "download": "Telecargar",
-          "edit": "Modificar",
-          "embed": "Integrar",
           "more": "Mai…",
           "play": "Legir"
         },
@@ -1311,8 +1273,6 @@
           "quota": "Espaci liure restant :"
         },
         "button": {
-          "cancel": "Anullar",
-          "close": "Tampar",
           "finishLater": "Acabar mai tard",
           "next": "Etapa seguenta",
           "previous": "Etapa precedenta",
@@ -1384,10 +1344,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "Anullar",
-          "create": "Crear"
-        },
+        "button": {},
         "header": {
           "newAlbum": "Album novèl",
           "newSeries": "Nòvas serias"
@@ -1557,18 +1514,13 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "Anullar",
-          "confirm": "Confirmar"
-        },
+        "button": {},
         "header": {
           "confirm": "Volètz confirmar aquesta accion ?"
         }
       },
       "RenderedDescription": {
         "button": {
-          "cancel": "Anullar",
-          "edit": "Modificar",
           "less": "Ne veire mens",
           "more": "Ne veire mai",
           "update": "Actualizar la descripcion"
@@ -1581,9 +1533,7 @@
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "Escafar"
-        },
+        "button": {},
         "label": {
           "search": "Recercar"
         },
@@ -1598,9 +1548,7 @@
         }
       },
       "CopyInput": {
-        "button": {
-          "copy": "Copiar"
-        },
+        "button": {},
         "message": {
           "success": "Tèxte copiat al quichapapièr !"
         }
@@ -1636,9 +1584,7 @@
         "header": {
           "noResults": "Cap de resultat pas trobat."
         },
-        "button": {
-          "refresh": "Actualizar"
-        }
+        "button": {}
       },
       "AttachmentInput": {
         "help": {
@@ -1677,9 +1623,7 @@
         "button": {
           "addDuplicate": "Ajustar pr’aquò",
           "addToPlaylist": "Ajustar a aquesta lista de lectura",
-          "addTrack": "Ajustar una pista",
-          "cancel": "Anullar",
-          "edit": "Modificar"
+          "addTrack": "Ajustar una pista"
         },
         "header": {
           "addToPlaylist": "Ajustar a la lista de lectura",
@@ -1768,8 +1712,7 @@
       },
       "Widget": {
         "button": {
-          "create": "Crear una lista de lectura",
-          "more": "Ne veire mai"
+          "create": "Crear una lista de lectura"
         },
         "placeholder": {
           "noPlaylists": "Cap de lista de lectura creada pel moment"
@@ -2148,7 +2091,6 @@
             "reportedObject": "Objècte senhalat"
           },
           "button": {
-            "confirmDelete": "Suprimir",
             "delete": "Escafar l’objècte senhalat",
             "resolve": "Resòlver",
             "unresolve": "Pas resolgut"
@@ -2228,10 +2170,7 @@
             "isActive": "Utilizatz aqueste paramètre per activar/desactivar temporàriament la règla sens la suprimir complètament."
           },
           "button": {
-            "cancel": "Anullar",
             "create": "Crear",
-            "delete": "Suprimir",
-            "confirm": "Suprimir la règla de moderacion",
             "update": "Actualizar"
           },
           "modal": {
@@ -2356,9 +2295,7 @@
             "reason": "Rason",
             "rejectMedia": "Regetar lo mèdia"
           },
-          "button": {
-            "edit": "Modificar"
-          },
+          "button": {},
           "status": {
             "enabled": "Activada",
             "paused": "En pausa"
@@ -2369,7 +2306,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Tampar",
             "show": "Règlas de moderacion…"
           },
           "modal": {
@@ -2382,9 +2318,7 @@
           }
         },
         "NotesThread": {
-          "button": {
-            "delete": "Suprimir"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Suprimir aqueste nòta ?",
@@ -2518,7 +2452,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "Escafar",
             "new": "Obténer una novèla invitacion"
           },
           "table": {
@@ -2584,9 +2517,7 @@
           "image": "Imatge actual",
           "error": "Error en enregistrar los paramètres"
         },
-        "button": {
-          "save": "Enregistrar"
-        },
+        "button": {},
         "message": {
           "success": "Paramètres corrèctament modificats."
         }
@@ -2608,7 +2539,6 @@
           "submissionFailure": "Error en enviar lo senhalament"
         },
         "button": {
-          "cancel": "Anullar",
           "submit": "Enviar"
         },
         "label": {
@@ -2628,7 +2558,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "Anullar",
           "hide": "Amagar lo contengut"
         },
         "message": {
@@ -2678,7 +2607,6 @@
           }
         },
         "button": {
-          "close": "Tampar",
           "reload": "Tampar e tornar cargar la pagina"
         },
         "header": {
@@ -2698,9 +2626,7 @@
         "empty": {
           "noMatch": "Cap de bibliotèca correspondenta."
         },
-        "button": {
-          "showMore": "Ne veire mai"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
@@ -2730,18 +2656,13 @@
           "unfocus": "Sortir de la recèrca"
         }
       },
-      "button": {
-        "close": "Tampar"
-      },
+      "button": {},
       "header": {
         "modal": "Acorchis clavièr"
       }
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "Anullar",
-        "submit": "Validar"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "Causissètz vòstra instància",
         "failure": "Connexion impossibla a l’URL donada",
@@ -2761,8 +2682,6 @@
     },
     "Queue": {
       "button": {
-        "clear": "Escafar",
-        "close": "Tampar",
         "stopRadio": "Arrestar la ràdio"
       },
       "label": {
@@ -2793,9 +2712,7 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "Copiar"
-        },
+        "button": {},
         "title": "Mostrar/amagar lo senhal",
         "message": {
           "copy": "Tèxte copiat al quichapapièr !"
@@ -2804,9 +2721,7 @@
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "Modificar"
-        }
+        "button": {}
       },
       "Button": {
         "startRadio": "Legir la pista",
@@ -2819,8 +2734,7 @@
       },
       "button": {
         "fediverse": "Fedivers",
-        "rss": "RSS",
-        "search": "Recercar"
+        "rss": "RSS"
       },
       "label": {
         "fediverse": {
@@ -2893,11 +2807,6 @@
           "podcastChannel": "Cadena del podcast"
         },
         "button": {
-          "cancel": "Anullar",
-          "confirm": "Suprimir",
-          "delete": "Suprimir…",
-          "edit": "Modificar…",
-          "embed": "Integrar",
           "play": "Legir",
           "updateChannel": "Actualizar la cadena",
           "upload": "Enviar"
@@ -2960,7 +2869,6 @@
           "addNew": "Ajustar nòu"
         },
         "button": {
-          "cancel": "Anullar",
           "subscribe": "S’abonar"
         },
         "placeholder": {
@@ -3101,8 +3009,6 @@
         "Form": {
           "button": {
             "create": "Crear una bibliotèca",
-            "delete": "Suprimir",
-            "confirm": "Suprimir la bibliotèca",
             "update": "Actualizar la bibliotèca"
           },
           "modal": {
@@ -3200,9 +3106,7 @@
           "loading": {
             "remoteLibraries": "Cargament de las bibliotècas alonhadas…"
           },
-          "button": {
-            "refresh": "Actualizar"
-          },
+          "button": {},
           "description": {
             "remoteLibraries": "Las bibliotècas alonhadas apertenon a d’autres utilizaires del malhum. I podètz accedir tant que sián publicas o qu’ajatz l’autorizacion."
           }
@@ -3255,7 +3159,6 @@
           "domain": "Veire sus { domain }"
         },
         "button": {
-          "edit": "Modificar",
           "upload": "Mandadís"
         },
         "title": "Bibliotèca",
@@ -3375,7 +3278,6 @@
           }
         },
         "button": {
-          "cancel": "Anullar",
           "createChannel": "Crear una cadena",
           "next": "Etapa seguenta",
           "previous": "Etapa precedenta"
@@ -3748,7 +3650,6 @@
             "uploadData": "Data de mandadís"
           },
           "button": {
-            "delete": "Suprimir",
             "download": "Telecargar"
           },
           "modal": {
@@ -3794,9 +3695,7 @@
               "followers": "Seguidors"
             }
           },
-          "button": {
-            "delete": "Suprimir"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Suprimir aquesta bibliotèca ?",
@@ -3846,8 +3745,6 @@
             }
           },
           "button": {
-            "delete": "Suprimir",
-            "edit": "Modificar",
             "remoteRefresh": "Actualizar del servidor alonhat estant"
           },
           "modal": {
@@ -3900,8 +3797,6 @@
             }
           },
           "button": {
-            "delete": "Suprimir",
-            "edit": "Modificar",
             "remoteRefresh": "Actualizar del servidor alonhat estant"
           },
           "modal": {
@@ -3929,9 +3824,7 @@
             "tracks": "Pistas",
             "django": "Veire sul panèl d’admin de Django"
           },
-          "button": {
-            "delete": "Suprimir"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Suprimir aquesta etiqueta ?",
@@ -3990,8 +3883,6 @@
             }
           },
           "button": {
-            "delete": "Suprimir",
-            "edit": "Modificar",
             "remoteRefresh": "Actualizar del servidor alonhat estant"
           },
           "modal": {
@@ -4062,7 +3953,6 @@
           "channelData": "Donadas de la cadena"
         },
         "button": {
-          "delete": "Suprimir",
           "openRemote": "Dobrir lo perfil alonhat",
           "refresh": "Actualizar del servidor alonhat estant"
         },
@@ -4165,8 +4055,7 @@
         },
         "button": {
           "create": "Crear una lista de lectura",
-          "manage": "Gerir vòstras listas de lectura",
-          "search": "Recercar"
+          "manage": "Gerir vòstras listas de lectura"
         },
         "placeholder": {
           "search": "Escrivètz un nom de lista de lectura…"
@@ -4183,11 +4072,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "Anullar",
-          "delete": "Suprimir",
           "confirm": "Suprimir la lista de lectura",
-          "edit": "Modificar",
-          "embed": "Integrar",
           "playAll": "O legir tot",
           "stopEdit": "Arrestar la modificacion"
         },
@@ -4216,10 +4101,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "Suprimir la ràdio",
-          "edit": "Modificar…"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Volètz suprimir la ràdio « { playlist } »  ?",

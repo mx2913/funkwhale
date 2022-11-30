@@ -341,9 +341,7 @@
         }
       },
       "EmbedWizard": {
-        "button": {
-          "copy": "Αντιγραφή"
-        },
+        "button": {},
         "help": {
           "embed": "Αντιγράψτε και επικολλήστε τον ακόλουθο κώδικα στην HTML της ιστοσελίδας σας"
         },
@@ -368,11 +366,7 @@
           "albums": "{ n } άλμπουμ | { n } άλμπουμ"
         },
         "title": "Καλλιτέχνης",
-        "button": {
-          "cancel": "Ακύρωση",
-          "edit": "Επεξεργασία",
-          "embed": "Ενσωμάτωση"
-        },
+        "button": {},
         "modal": {
           "embed": {
             "header": "Ενσωμάτωση του καλλιτέχνη στην ιστοσελίδα σας"
@@ -421,9 +415,7 @@
             }
           }
         },
-        "button": {
-          "cancel": "Ακύρωση"
-        },
+        "button": {},
         "label": {
           "uploadWidget": "Κάντε κλικ για να επιλέξετε αρχεία για μεταφόρτωση ή κάντε drag and drop αρχεία ή φακέλους"
         }
@@ -432,10 +424,7 @@
         "placeholder": {
           "summary": "Μια περίληψη των αλλαγών σας."
         },
-        "button": {
-          "cancel": "Ακύρωση",
-          "clear": "Καθάρισμα"
-        },
+        "button": {},
         "header": {
           "failure": "Σφάλμα κατά την υποβολή αλλαγών"
         }
@@ -515,9 +504,7 @@
             "message": "Συνέβη κάποιο άγνωστο σφάλμα"
           }
         },
-        "button": {
-          "close": "Κλείσιμο"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Πληροφορίες εντοπισμού σφαλμάτων",
@@ -527,8 +514,7 @@
       },
       "EditCard": {
         "button": {
-          "approve": "Αποδοχή",
-          "delete": "Διαγραφή"
+          "approve": "Αποδοχή"
         },
         "status": {
           "approved": "Eγκρίθηκε",
@@ -558,7 +544,6 @@
           "browse": "Περιήγηση στα podcast"
         },
         "button": {
-          "cancel": "Ακύρωση",
           "channel": "Δημιουργία Καναλιού"
         }
       },
@@ -581,12 +566,7 @@
         }
       },
       "AlbumDropdown": {
-        "button": {
-          "cancel": "Ακύρωση",
-          "delete": "Διαγραφή…",
-          "edit": "Επεξεργασία",
-          "embed": "Ενσωμάτωση"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Διαγραφή του άλμπουμ;"
@@ -598,11 +578,7 @@
       },
       "TrackBase": {
         "button": {
-          "cancel": "Ακύρωση",
-          "delete": "Διαγραφή…",
-          "download": "Λήψη",
-          "edit": "Επεξεργασία",
-          "embed": "Ενσωμάτωση"
+          "download": "Λήψη"
         },
         "modal": {
           "delete": {
@@ -660,10 +636,7 @@
         "meta": {
           "files": "{ n } αρχείο | { n } αρχεία"
         },
-        "button": {
-          "cancel": "Ακύρωση",
-          "close": "Κλείσιμο"
-        },
+        "button": {},
         "header": {
           "uploadFiles": "Αρχεία προς ανέβασμα"
         }
@@ -700,10 +673,7 @@
         }
       },
       "AlbumModal": {
-        "button": {
-          "cancel": "Ακύρωση",
-          "create": "Δημιουργία"
-        }
+        "button": {}
       },
       "UploadMetadataForm": {
         "label": {
@@ -796,32 +766,22 @@
         }
       },
       "DangerousButton": {
-        "button": {
-          "cancel": "Ακύρωση",
-          "confirm": "Επιβεβαίωση"
-        },
+        "button": {},
         "header": {
           "confirm": "Επιβεβαίωση δράσης;"
         }
       },
       "RenderedDescription": {
-        "button": {
-          "cancel": "Ακύρωση",
-          "edit": "Επεξεργασία"
-        },
+        "button": {},
         "header": {
           "failure": "Σφάλμα κατά την ενημέρωση της περιγραφής"
         }
       },
       "InlineSearchBar": {
-        "button": {
-          "clear": "Καθάρισμα"
-        }
+        "button": {}
       },
       "CopyInput": {
-        "button": {
-          "copy": "Αντιγραφή"
-        }
+        "button": {}
       }
     },
     "playlists": {
@@ -837,9 +797,7 @@
         "button": {
           "addDuplicate": "Προσθήκη ούτως ή άλλως",
           "addToPlaylist": "Προσθήκη σε αυτήν την λίστα αναπαραγωγής",
-          "addTrack": "Προσθήκη κομματιού",
-          "cancel": "Ακύρωση",
-          "edit": "Επεξεργασία"
+          "addTrack": "Προσθήκη κομματιού"
         },
         "header": {
           "addToPlaylist": "Προσθήκη στην λίστα αναπαραγωγής",
@@ -1113,7 +1071,6 @@
             "actions": "Ενέργειες"
           },
           "button": {
-            "confirmDelete": "Διαγραφή",
             "delete": "Διαγραφή στοιχείου αναφοράς"
           },
           "modal": {
@@ -1155,10 +1112,7 @@
             "rejectMedia": "Αποτροπή κατεβάσματος αρχείων πολυμέσων (αρχεία ήχου, εξώφυλλο άλμπουμ, avatar λογαριασμού...) από αυτόν τον λογαριασμό ή διεύθυνση. Θα διαγραφεί και το ήδη υπάρχον περιεχόμενο."
           },
           "button": {
-            "cancel": "Ακύρωση",
-            "create": "Δημιουργία",
-            "delete": "Διαγραφή",
-            "confirm": "Διαγραφή κανόνα συντονισμού"
+            "create": "Δημιουργία"
           },
           "modal": {
             "delete": {
@@ -1212,22 +1166,16 @@
           "label": {
             "blockAll": "Μπλοκάρισμα όλων"
           },
-          "button": {
-            "edit": "Επεξεργασία"
-          },
+          "button": {},
           "status": {
             "enabled": "Ενεργό"
           }
         },
         "InstancePolicyModal": {
-          "button": {
-            "close": "Κλείσιμο"
-          }
+          "button": {}
         },
         "NotesThread": {
-          "button": {
-            "delete": "Διαγραφή"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Διαγραφή της σημείωσης;"
@@ -1302,7 +1250,6 @@
         },
         "InvitationForm": {
           "button": {
-            "clear": "Καθάρισμα",
             "new": "Αποκτήστε μια νέα πρόσκληση"
           },
           "table": {
@@ -1364,9 +1311,7 @@
           "modal": "Θέλετε να αναφέρεται αυτό το στοιχείο;",
           "submissionFailure": "Σφάλμα κατά την υποβολή αναφοράς"
         },
-        "button": {
-          "cancel": "Ακύρωση"
-        },
+        "button": {},
         "label": {
           "email": "Email",
           "forwardToDomain": "Προώθηση στο { domain}"
@@ -1377,7 +1322,6 @@
       },
       "FilterModal": {
         "button": {
-          "cancel": "Ακύρωση",
           "hide": "Απόκρυψη περιεχομένου"
         },
         "message": {
@@ -1407,7 +1351,6 @@
           }
         },
         "button": {
-          "close": "Κλείσιμο",
           "reload": "Κλείσιμο και ανανέωση σελίδας"
         },
         "header": {
@@ -1426,23 +1369,16 @@
           "label": "Γενικές συντομεύσεις"
         }
       },
-      "button": {
-        "close": "Κλείσιμο"
-      }
+      "button": {}
     },
     "SetInstanceModal": {
-      "button": {
-        "cancel": "Ακύρωση"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "Επιλέξτε το instance σας"
       }
     },
     "Queue": {
-      "button": {
-        "clear": "Καθάρισμα",
-        "close": "Κλείσιμο"
-      },
+      "button": {},
       "label": {
         "duration": "Διάρκεια",
         "addArtistContentFilter": "Απόκρυψη περιεχομένου από αυτόν τον καλλιτέχνη…"
@@ -1450,16 +1386,12 @@
     },
     "forms": {
       "PasswordInput": {
-        "button": {
-          "copy": "Αντιγραφή"
-        }
+        "button": {}
       }
     },
     "radios": {
       "Card": {
-        "button": {
-          "edit": "Επεξεργασία"
-        }
+        "button": {}
       }
     },
     "RemoteSearchForm": {
@@ -1493,13 +1425,7 @@
         "header": {
           "artistChannel": "Κανάλι καλλιτέχνη"
         },
-        "button": {
-          "cancel": "Ακύρωση",
-          "confirm": "Διαγραφή",
-          "delete": "Διαγραφή…",
-          "edit": "Επεξεργασία…",
-          "embed": "Ενσωμάτωση"
-        },
+        "button": {},
         "title": "Κανάλι",
         "modal": {
           "subscribe": {
@@ -1534,9 +1460,7 @@
         "link": {
           "addNew": "Προσθήκη νέου"
         },
-        "button": {
-          "cancel": "Ακύρωση"
-        }
+        "button": {}
       }
     },
     "content": {
@@ -1587,9 +1511,7 @@
         },
         "Form": {
           "button": {
-            "create": "Δημιουργία βιβλιοθήκης",
-            "delete": "Διαγραφή",
-            "confirm": "Διαγραφή βιβλιοθήκης"
+            "create": "Δημιουργία βιβλιοθήκης"
           },
           "modal": {
             "delete": {
@@ -1662,9 +1584,7 @@
           "albums": "Άλμπουμ",
           "artists": "Καλλιτέχνες"
         },
-        "button": {
-          "edit": "Επεξεργασία"
-        }
+        "button": {}
       },
       "Edit": {
         "button": {
@@ -1717,7 +1637,6 @@
           }
         },
         "button": {
-          "cancel": "Ακύρωση",
           "createChannel": "Δημιουργία καναλιού"
         },
         "header": {
@@ -1891,7 +1810,6 @@
             "audioContent": "Περιεχόμενο ήχου"
           },
           "button": {
-            "delete": "Διαγραφή",
             "download": "Λήψη"
           },
           "modal": {
@@ -1922,9 +1840,7 @@
               "followers": "Ακόλουθοι"
             }
           },
-          "button": {
-            "delete": "Διαγραφή"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Διαγραφή της βιβλιοθήκης;"
@@ -1953,10 +1869,7 @@
               "favorited": "Αγαπημένα κομμάτια"
             }
           },
-          "button": {
-            "delete": "Διαγραφή",
-            "edit": "Επεξεργασία"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Διαγραφή του άλμπουμ;"
@@ -1986,10 +1899,7 @@
               "favorited": "Αγαπημένα κομμάτια"
             }
           },
-          "button": {
-            "delete": "Διαγραφή",
-            "edit": "Επεξεργασία"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Διαγραφή του καλλιτέχνη;"
@@ -2005,9 +1915,7 @@
             "albums": "Άλμπουμ",
             "artists": "Καλλιτέχνες"
           },
-          "button": {
-            "delete": "Διαγραφή"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Διαγραφή της ετικέτας;"
@@ -2038,10 +1946,7 @@
               "favorited": "Αγαπημένα κομμάτια"
             }
           },
-          "button": {
-            "delete": "Διαγραφή",
-            "edit": "Επεξεργασία"
-          },
+          "button": {},
           "modal": {
             "delete": {
               "header": "Διαγραφή του κομματιού;"
@@ -2082,9 +1987,7 @@
           "audioContent": "Περιεχόμενο ήχου",
           "channelData": "Στοιχεία καναλιού"
         },
-        "button": {
-          "delete": "Διαγραφή"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Διαγραφή του καναλιού;"
@@ -2131,11 +2034,7 @@
       },
       "Detail": {
         "button": {
-          "cancel": "Ακύρωση",
-          "delete": "Διαγραφή",
-          "confirm": "Διαγραφή λίστας αναπαραγωγής",
-          "edit": "Επεξεργασία",
-          "embed": "Ενσωμάτωση"
+          "confirm": "Διαγραφή λίστας αναπαραγωγής"
         },
         "modal": {
           "delete": {
@@ -2149,10 +2048,7 @@
     },
     "radios": {
       "Detail": {
-        "button": {
-          "confirm": "Διαγραφή ράδιο",
-          "edit": "Επεξεργασία…"
-        },
+        "button": {},
         "modal": {
           "delete": {
             "header": "Θέλετε να διαγράψετε το ράδιο \"{ radio }\";"

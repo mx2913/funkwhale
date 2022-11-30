@@ -23,7 +23,7 @@ const value = useVModel(props, 'modelValue', emit)
 const { t } = useI18n()
 const labels = computed(() => ({
   searchPlaceholder: t('components.common.InlineSearchBar.placeholder.search'),
-  clear: t('components.common.InlineSearchBar.button.clear')
+  clear: t('global.button.clear')
 }))
 
 const search = () => {
