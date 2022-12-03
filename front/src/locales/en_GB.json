@@ -1034,9 +1034,7 @@
             "message": "The metadata included in the file is invalid or some mandatory fields are missing."
           }
         },
-        "button": {
-          "close": "Close"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Debug information",
@@ -1336,7 +1334,6 @@
         },
         "button": {
           "cancel": "Cancel",
-          "close": "Close",
           "finishLater": "Finish later",
           "next": "Next step",
           "previous": "Previous step",
@@ -2395,7 +2392,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Close",
             "show": "Moderation rules…"
           },
           "modal": {
@@ -2704,7 +2700,6 @@
           }
         },
         "button": {
-          "close": "Close",
           "reload": "Close and reload page"
         },
         "header": {
@@ -2756,9 +2751,7 @@
           "unfocus": "Unfocus searchbar"
         }
       },
-      "button": {
-        "close": "Close"
-      },
+      "button": {},
       "header": {
         "modal": "Keyboard shortcuts"
       }

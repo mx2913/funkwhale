@@ -962,9 +962,7 @@
             "message": "Os metadados incluídos no arquivo são inválidos ou alguns campos obrigatórios estão faltando."
           }
         },
-        "button": {
-          "close": "Fechar"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informação de depuração",
@@ -1255,7 +1253,6 @@
         },
         "button": {
           "cancel": "Cancelar",
-          "close": "Fechar",
           "finishLater": "Finalizar depois",
           "next": "Próximo",
           "previous": "Anterior",
@@ -2261,7 +2258,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Fechar",
             "show": "Regra de moderação…"
           },
           "modal": {
@@ -2563,7 +2559,6 @@
           }
         },
         "button": {
-          "close": "Fechar",
           "reload": "Fechar e atualizar a página"
         },
         "header": {
@@ -2615,9 +2610,7 @@
           "unfocus": "Desfocar a barra de pesquisa"
         }
       },
-      "button": {
-        "close": "Fechar"
-      },
+      "button": {},
       "header": {
         "modal": "Atalhos de teclado"
       }
