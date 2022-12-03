@@ -822,9 +822,7 @@
         "title": "Låt"
       },
       "ImportStatusModal": {
-        "button": {
-          "close": "Stängd"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Låtinformation",
@@ -922,7 +920,6 @@
         },
         "button": {
           "cancel": "Ångra",
-          "close": "Stängd",
           "finishLater": "Avslutad",
           "next": "Nästa steg",
           "previous": "Föregående steg",
@@ -1729,9 +1726,7 @@
           }
         },
         "InstancePolicyModal": {
-          "button": {
-            "close": "Stängd"
-          }
+          "button": {}
         },
         "NotesThread": {
           "button": {
@@ -1977,9 +1972,7 @@
             }
           }
         },
-        "button": {
-          "close": "Stängd"
-        },
+        "button": {},
         "header": {
           "saveFailure": "Fel vid sparning av inställningar",
           "failure": "Uppdatera",
@@ -2014,7 +2007,6 @@
     "Queue": {
       "button": {
         "clear": "Rensa",
-        "close": "Stängd",
         "stopRadio": "Stoppa radio"
       },
       "label": {
@@ -2048,9 +2040,7 @@
           "toggleFavorite": "I favoriter"
         }
       },
-      "button": {
-        "close": "Stängd"
-      }
+      "button": {}
     },
     "radios": {
       "Card": {
@@ -3241,6 +3231,11 @@
       "actions": {
         "update": "Uppdatera avatar"
       }
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Stängd"
     }
   }
 }

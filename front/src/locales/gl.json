@@ -1010,9 +1010,7 @@
             "message": "Os metadatos incluídos no ficheiro non son válidos ou faltan algúns campos requeridos."
           }
         },
-        "button": {
-          "close": "Pechar"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Información de depuración",
@@ -1312,7 +1310,6 @@
         },
         "button": {
           "cancel": "Cancelar",
-          "close": "Pechar",
           "finishLater": "Rematar máis tarde",
           "next": "Seguinte paso",
           "previous": "Paso anterior",
@@ -2369,7 +2366,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Pechar",
             "show": "Regras da moderación…"
           },
           "modal": {
@@ -2678,7 +2674,6 @@
           }
         },
         "button": {
-          "close": "Pechar",
           "reload": "Pechar e recargar páxina"
         },
         "header": {
@@ -2730,9 +2725,7 @@
           "unfocus": "Saír da barra de busca"
         }
       },
-      "button": {
-        "close": "Pechar"
-      },
+      "button": {},
       "header": {
         "modal": "Atallos de teclado"
       }
@@ -2762,7 +2755,6 @@
     "Queue": {
       "button": {
         "clear": "Baleirar",
-        "close": "Pechar",
         "stopRadio": "Deter radio"
       },
       "label": {
@@ -4501,6 +4493,11 @@
     "axios": {
       "rateLimitDelay": "Enviaches demasiadas solicitudes en pouco tempo, inténtao de novo en { delay }",
       "rateLimitLater": "Enviaches demasiadas solicitudes en pouco tempo, por favor inténtao máis tarde"
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Pechar"
     }
   }
 }

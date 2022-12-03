@@ -947,9 +947,7 @@
             "message": "ファイルに含まれるメタデータが無効か、必須の項目が入力されていません。"
           }
         },
-        "button": {
-          "close": "閉じる"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "デバッグ",
@@ -1220,7 +1218,6 @@
         },
         "button": {
           "cancel": "キャンセル",
-          "close": "閉じる",
           "next": "次へ",
           "previous": "前のステップ",
           "publish": "公開",
@@ -2195,7 +2192,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "閉じる",
             "show": "モデレーションルール…"
           }
         },
@@ -2462,7 +2458,6 @@
           }
         },
         "button": {
-          "close": "閉じる",
           "reload": "閉じて再読込"
         },
         "header": {
@@ -2513,9 +2508,7 @@
           "unfocus": "検索窓から離れる"
         }
       },
-      "button": {
-        "close": "閉じる"
-      },
+      "button": {},
       "header": {
         "modal": "キーボードショートカット集"
       }
@@ -2543,7 +2536,6 @@
     "Queue": {
       "button": {
         "clear": "クリア",
-        "close": "閉じる",
         "stopRadio": "ラジオを止める"
       },
       "label": {
@@ -4140,6 +4132,11 @@
         "later": "後で",
         "update": "更新"
       }
+    }
+  },
+  "global": {
+    "button": {
+      "close": "閉じる"
     }
   }
 }

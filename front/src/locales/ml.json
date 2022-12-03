@@ -302,9 +302,7 @@
         }
       },
       "ImportStatusModal": {
-        "button": {
-          "close": "അടയ്ക്കുക"
-        }
+        "button": {}
       },
       "AlbumEdit": {
         "header": {
@@ -334,8 +332,7 @@
           "files": "{ n } ഫയൽ | { n } ഫയലുകൾ"
         },
         "button": {
-          "cancel": "റദ്ദാക്കുക",
-          "close": "അടയ്ക്കുക"
+          "cancel": "റദ്ദാക്കുക"
         }
       },
       "LicenseSelect": {
@@ -750,9 +747,7 @@
           }
         },
         "InstancePolicyModal": {
-          "button": {
-            "close": "അടയ്ക്കുക"
-          }
+          "button": {}
         },
         "NotesThread": {
           "button": {
@@ -1034,8 +1029,7 @@
     },
     "Queue": {
       "button": {
-        "clear": "മായ്ക്കുക",
-        "close": "അടയ്ക്കുക"
+        "clear": "മായ്ക്കുക"
       },
       "label": {
         "duration": "വിവരണം"
@@ -1043,15 +1037,11 @@
     },
     "federation": {
       "FetchButton": {
-        "button": {
-          "close": "അടയ്ക്കുക"
-        }
+        "button": {}
       }
     },
     "ShortcutsModal": {
-      "button": {
-        "close": "അടയ്ക്കുക"
-      }
+      "button": {}
     },
     "forms": {
       "PasswordInput": {
@@ -1732,6 +1722,11 @@
           }
         }
       }
+    }
+  },
+  "global": {
+    "button": {
+      "close": "അടയ്ക്കുക"
     }
   }
 }

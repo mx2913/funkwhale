@@ -948,9 +948,7 @@
         "title": "Música"
       },
       "ImportStatusModal": {
-        "button": {
-          "close": "Fechar"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informação da música",
@@ -1057,7 +1055,6 @@
         },
         "button": {
           "cancel": "Cancelar",
-          "close": "Fechar",
           "finishLater": "Acabado",
           "next": "Música seguinte",
           "previous": "Música anterior",
@@ -1965,7 +1962,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Fechar",
             "show": "Atualizar a regra de moderação"
           },
           "modal": {
@@ -2219,9 +2215,7 @@
             }
           }
         },
-        "button": {
-          "close": "Fechar"
-        },
+        "button": {},
         "header": {
           "saveFailure": "Erro ao salvar configurações",
           "failure": "Atualizar",
@@ -2259,9 +2253,7 @@
           "show": "Mostrar atalhos de teclado disponíveis"
         }
       },
-      "button": {
-        "close": "Fechar"
-      },
+      "button": {},
       "header": {
         "modal": "Atalhos do teclado"
       }
@@ -2282,7 +2274,6 @@
     "Queue": {
       "button": {
         "clear": "Claro",
-        "close": "Fechar",
         "stopRadio": "Pare o rádio"
       },
       "label": {
@@ -3820,6 +3811,11 @@
       "actions": {
         "update": "Atualizar"
       }
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Fechar"
     }
   }
 }

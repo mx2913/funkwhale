@@ -949,9 +949,7 @@
             "message": "Metadata v souboru jsou neplatná, nebo některé povinné položky chybí."
           }
         },
-        "button": {
-          "close": "Zavřít"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informace pro vývojáře",
@@ -1241,7 +1239,6 @@
         },
         "button": {
           "cancel": "Zrušit",
-          "close": "Zavřít",
           "finishLater": "Dokončeno",
           "next": "Další stopa",
           "previous": "Předchozí stopa",
@@ -2236,7 +2233,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Zavřít",
             "show": "Pravidla moderace…"
           },
           "modal": {
@@ -2528,7 +2524,6 @@
           }
         },
         "button": {
-          "close": "Zavřít",
           "reload": "Zavřít a obnovit stránku"
         },
         "header": {
@@ -2579,9 +2574,7 @@
           "unfocus": "Opustit vyhledávací pole"
         }
       },
-      "button": {
-        "close": "Zavřít"
-      },
+      "button": {},
       "header": {
         "modal": "Klávesové zkratky"
       }
@@ -2611,7 +2604,6 @@
     "Queue": {
       "button": {
         "clear": "Vyčistit",
-        "close": "Zavřít",
         "stopRadio": "Zastavit rádio"
       },
       "label": {
@@ -4270,6 +4262,11 @@
     "axios": {
       "rateLimitDelay": "Překročili jste limit počtu požadavků, zkuste to prosím znovu za { delay }",
       "rateLimitLater": "Překročili jste limit počtu požadavků, zkuste to prosím znovu později"
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Zavřít"
     }
   }
 }

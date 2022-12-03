@@ -1010,9 +1010,7 @@
             "message": "La metadonada inclusa al fichièr es invalida o de camps obligatòris son absents."
           }
         },
-        "button": {
-          "close": "Tampar"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informacions de debug",
@@ -1312,7 +1310,6 @@
         },
         "button": {
           "cancel": "Anullar",
-          "close": "Tampar",
           "finishLater": "Acabar mai tard",
           "next": "Etapa seguenta",
           "previous": "Etapa precedenta",
@@ -2369,7 +2366,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Tampar",
             "show": "Règlas de moderacion…"
           },
           "modal": {
@@ -2678,7 +2674,6 @@
           }
         },
         "button": {
-          "close": "Tampar",
           "reload": "Tampar e tornar cargar la pagina"
         },
         "header": {
@@ -2730,9 +2725,7 @@
           "unfocus": "Sortir de la recèrca"
         }
       },
-      "button": {
-        "close": "Tampar"
-      },
+      "button": {},
       "header": {
         "modal": "Acorchis clavièr"
       }
@@ -2762,7 +2755,6 @@
     "Queue": {
       "button": {
         "clear": "Escafar",
-        "close": "Tampar",
         "stopRadio": "Arrestar la ràdio"
       },
       "label": {
@@ -4501,6 +4493,11 @@
     "axios": {
       "rateLimitDelay": "Avètz realizat tròpas de requèstas e sètz estat limitat, volgatz tornar ensajar d’aquí { delay }",
       "rateLimitLater": "Avètz realizat tròpas de requèstas e sètz estat limitat, volgatz tornar ensajar mai tard"
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Tampar"
     }
   }
 }

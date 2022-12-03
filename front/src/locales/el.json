@@ -515,9 +515,7 @@
             "message": "Συνέβη κάποιο άγνωστο σφάλμα"
           }
         },
-        "button": {
-          "close": "Κλείσιμο"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Πληροφορίες εντοπισμού σφαλμάτων",
@@ -661,8 +659,7 @@
           "files": "{ n } αρχείο | { n } αρχεία"
         },
         "button": {
-          "cancel": "Ακύρωση",
-          "close": "Κλείσιμο"
+          "cancel": "Ακύρωση"
         },
         "header": {
           "uploadFiles": "Αρχεία προς ανέβασμα"
@@ -1220,9 +1217,7 @@
           }
         },
         "InstancePolicyModal": {
-          "button": {
-            "close": "Κλείσιμο"
-          }
+          "button": {}
         },
         "NotesThread": {
           "button": {
@@ -1407,7 +1402,6 @@
           }
         },
         "button": {
-          "close": "Κλείσιμο",
           "reload": "Κλείσιμο και ανανέωση σελίδας"
         },
         "header": {
@@ -1426,9 +1420,7 @@
           "label": "Γενικές συντομεύσεις"
         }
       },
-      "button": {
-        "close": "Κλείσιμο"
-      }
+      "button": {}
     },
     "SetInstanceModal": {
       "button": {
@@ -1440,8 +1432,7 @@
     },
     "Queue": {
       "button": {
-        "clear": "Καθάρισμα",
-        "close": "Κλείσιμο"
+        "clear": "Καθάρισμα"
       },
       "label": {
         "duration": "Διάρκεια",
@@ -2311,6 +2302,11 @@
   "init": {
     "serviceWorker": {
       "newAppVersion": "Μια νέα έκδοση της εφαρμογής είναι διαθέσιμη."
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Κλείσιμο"
     }
   }
 }

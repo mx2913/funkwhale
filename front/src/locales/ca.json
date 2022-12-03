@@ -149,7 +149,6 @@
     "Queue": {
       "button": {
         "clear": "Netejar",
-        "close": "Tancar",
         "stopRadio": "Parar la ràdio"
       },
       "header": {
@@ -239,9 +238,7 @@
       }
     },
     "ShortcutsModal": {
-      "button": {
-        "close": "Tancar"
-      },
+      "button": {},
       "header": {
         "modal": "Dreceres de teclat"
       },
@@ -1083,7 +1080,6 @@
       "UploadModal": {
         "button": {
           "cancel": "Cancelar",
-          "close": "Tancar",
           "finishLater": "Acabar més tard",
           "next": "Següent pas",
           "previous": "Pas anterior",
@@ -1342,7 +1338,6 @@
     "federation": {
       "FetchButton": {
         "button": {
-          "close": "Tancar",
           "reload": "Tancar i recarregar la pàgina"
         },
         "description": {
@@ -1731,9 +1726,7 @@
         "title": "Biblioteca"
       },
       "ImportStatusModal": {
-        "button": {
-          "close": "Tancar"
-        },
+        "button": {},
         "error": {
           "importFailure": "S'ha produït un error durant la càrrega. Trobaràs més informació a sota.",
           "invalidMetadata": {
@@ -2464,7 +2457,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Tancar",
             "show": "Regles de moderació …"
           },
           "modal": {
@@ -4556,6 +4548,11 @@
         },
         "title": "Ràdio"
       }
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Tancar"
     }
   }
 }

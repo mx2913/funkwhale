@@ -103,7 +103,7 @@ const fetchData = async () => {
       </div>
       <div class="actions">
         <button class="ui deny button">
-          {{ $t('components.manage.moderation.InstancePolicyModal.button.close') }}
+          {{ $t('global.button.close') }}
         </button>
       </div>
     </semantic-modal>

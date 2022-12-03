@@ -911,9 +911,7 @@
             "label": "Metadatos inválidos"
           }
         },
-        "button": {
-          "close": "Cerrar"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Información de depuración",
@@ -1186,7 +1184,6 @@
         },
         "button": {
           "cancel": "Cancelar",
-          "close": "Cerrar",
           "finishLater": "Terminado",
           "next": "Próxima canción",
           "previous": "Canción anterior",
@@ -2190,7 +2187,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Cerrar",
             "show": "Actualizar regla de moderación"
           },
           "modal": {
@@ -2481,7 +2477,6 @@
           }
         },
         "button": {
-          "close": "Cerrar",
           "reload": "Cerrar y recargar la página"
         },
         "header": {
@@ -2526,9 +2521,7 @@
           "show": "Mostrar atajos de teclado disponibles"
         }
       },
-      "button": {
-        "close": "Cerrar"
-      },
+      "button": {},
       "header": {
         "modal": "Atajos de teclado"
       }
@@ -2550,7 +2543,6 @@
     "Queue": {
       "button": {
         "clear": "Borrar",
-        "close": "Cerrar",
         "stopRadio": "Parar radio"
       },
       "label": {
@@ -4200,6 +4192,11 @@
         "later": "Más tarde",
         "update": "Actualizar"
       }
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Cerrar"
     }
   }
 }

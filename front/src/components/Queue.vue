@@ -403,7 +403,7 @@ const coverType = useStorage('queue:cover-type', CoverType.COVER_ART)
                 class="ui right floated basic button"
                 @click="$store.commit('ui/queueFocused', null)"
               >
-                {{ $t('components.Queue.button.close') }}
+                {{ $t('global.button.close') }}
               </button>
               <button
                 class="ui right floated basic button danger"

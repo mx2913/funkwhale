@@ -1010,9 +1010,7 @@
             "message": "Les métadonnées inclues dans le fichier sont invalides, ou certains champs obligatoires sont manquants."
           }
         },
-        "button": {
-          "close": "Fermer"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informations de débogage",
@@ -1312,7 +1310,6 @@
         },
         "button": {
           "cancel": "Annuler",
-          "close": "Fermer",
           "finishLater": "Terminer plus tard",
           "next": "Étape suivante",
           "previous": "Étape précédente",
@@ -2369,7 +2366,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Fermer",
             "show": "Règles de modération…"
           },
           "modal": {
@@ -2678,7 +2674,6 @@
           }
         },
         "button": {
-          "close": "Fermer",
           "reload": "Fermer et recharger la page"
         },
         "header": {
@@ -2730,9 +2725,7 @@
           "unfocus": "Retirer le focus de la barre de recherche"
         }
       },
-      "button": {
-        "close": "Fermer"
-      },
+      "button": {},
       "header": {
         "modal": "Raccourcis clavier"
       }
@@ -2762,7 +2755,6 @@
     "Queue": {
       "button": {
         "clear": "Effacer",
-        "close": "Fermer",
         "stopRadio": "Arrêter la radio"
       },
       "label": {
@@ -4501,6 +4493,11 @@
     "axios": {
       "rateLimitDelay": "Vous avez envoyé trop de requêtes et êtes actuellement limité·e, merci de réessayer dans { delay }",
       "rateLimitLater": "Vous avez envoyé trop de requêtes et êtes actuellement limité·e, merci de réessayer plus tard"
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Fermer"
     }
   }
 }

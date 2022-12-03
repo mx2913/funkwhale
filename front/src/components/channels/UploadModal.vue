@@ -148,7 +148,7 @@ const isLoading = ref(false)
         class="ui basic cancel button"
         @click="update(false)"
       >
-        {{ $t('components.channels.UploadModal.button.close') }}
+        {{ $t('global.button.close') }}
       </button>
     </div>
   </semantic-modal>

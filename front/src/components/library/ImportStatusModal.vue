@@ -184,7 +184,7 @@ const getErrorData = (upload: Upload) => {
     </div>
     <div class="actions">
       <button class="ui deny button">
-        {{ $t('components.library.ImportStatusModal.button.close') }}
+        {{ $t('global.button.close') }}
       </button>
     </div>
   </semantic-modal>

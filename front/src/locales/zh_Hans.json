@@ -149,7 +149,6 @@
     "Queue": {
       "button": {
         "clear": "清除",
-        "close": "关闭",
         "stopRadio": "停止播放电台"
       },
       "header": {
@@ -232,9 +231,7 @@
       }
     },
     "ShortcutsModal": {
-      "button": {
-        "close": "关闭"
-      },
+      "button": {},
       "header": {
         "modal": "键盘快捷键"
       },
@@ -1064,7 +1061,6 @@
       "UploadModal": {
         "button": {
           "cancel": "取消",
-          "close": "关闭",
           "finishLater": "以后再完成",
           "next": "下一步",
           "previous": "上一步",
@@ -1317,7 +1313,6 @@
     "federation": {
       "FetchButton": {
         "button": {
-          "close": "关闭",
           "reload": "关闭并重新加载页面"
         },
         "description": {
@@ -1701,9 +1696,7 @@
         "title": "曲库"
       },
       "ImportStatusModal": {
-        "button": {
-          "close": "关闭"
-        },
+        "button": {},
         "error": {
           "importFailure": "上传处理过程中出错。您可在下方找到更多信息。",
           "invalidMetadata": {
@@ -2432,7 +2425,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "关闭",
             "show": "审核规则…"
           },
           "modal": {
@@ -4504,6 +4496,11 @@
         },
         "title": "电台"
       }
+    }
+  },
+  "global": {
+    "button": {
+      "close": "关闭"
     }
   }
 }

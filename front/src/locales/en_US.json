@@ -184,7 +184,6 @@
         "connectivity": "You may have a connectivity issue."
       },
       "button": {
-        "close": "Close",
         "clear": "Clear",
         "stopRadio": "Stop radio"
       },
@@ -254,9 +253,7 @@
       "header": {
         "modal": "Keyboard shortcuts"
       },
-      "button": {
-        "close": "Close"
-      },
+      "button": {},
       "shortcut": {
         "general": {
           "label": "General shortcuts",
@@ -1118,8 +1115,7 @@
           "update": "Update",
           "next": "Next",
           "publish": "Publish",
-          "finishLater": "Finish later",
-          "close": "Close"
+          "finishLater": "Finish later"
         }
       }
     },
@@ -1377,7 +1373,6 @@
           "pending": "The refresh request hasn't been processed in time by our server. It will be processed later."
         },
         "button": {
-          "close": "Close",
           "reload": "Close and reload page"
         },
         "loader": {
@@ -1787,9 +1782,7 @@
           "documentation": "Read our documentation for this error",
           "support": "Open a support thread (include the debug information below in your message)"
         },
-        "button": {
-          "close": "Close"
-        }
+        "button": {}
       },
       "Podcasts": {
         "title": "Podcasts",
@@ -2491,8 +2484,7 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "show": "Moderation rules…",
-            "close": "Close"
+            "show": "Moderation rules…"
           },
           "modal": {
             "manage": {
@@ -4607,6 +4599,11 @@
           "noTracks": "No tracks have been hadded to this radio yet"
         }
       }
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Close"
     }
   }
 }

@@ -1010,9 +1010,7 @@
             "message": "Metadane zawarte w tym pliku są nieprawidłowe lub brakuje części wymaganych informacji."
           }
         },
-        "button": {
-          "close": "Zamknij"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informacje dla programistów",
@@ -1312,7 +1310,6 @@
         },
         "button": {
           "cancel": "Anuluj",
-          "close": "Zamknij",
           "finishLater": "Ukończ później",
           "next": "Następny krok",
           "previous": "Poprzedni krok",
@@ -2369,7 +2366,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Zamknij",
             "show": "Reguły moderacyjne…"
           },
           "modal": {
@@ -2678,7 +2674,6 @@
           }
         },
         "button": {
-          "close": "Zamknij",
           "reload": "Zamknij i odśwież stronę"
         },
         "header": {
@@ -2730,9 +2725,7 @@
           "unfocus": "Dezaktywuj pasek wyszukiwania"
         }
       },
-      "button": {
-        "close": "Zamknij"
-      },
+      "button": {},
       "header": {
         "modal": "Skróty klawiszowe"
       }
@@ -2762,7 +2755,6 @@
     "Queue": {
       "button": {
         "clear": "Wyczyść",
-        "close": "Zamknij",
         "stopRadio": "Zatrzymaj radio"
       },
       "label": {
@@ -4501,6 +4493,11 @@
     "axios": {
       "rateLimitDelay": "Wysłałeś zbyt wiele zapytań i zostałeś tymczasowo zablokowany, spróbuj ponownie za { delay }",
       "rateLimitLater": "Wysłałeś zbyt wiele zapytań i zostałeś tymczasowo zablokowany, spróbuj ponownie później"
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Zamknij"
     }
   }
 }

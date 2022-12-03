@@ -2789,7 +2789,6 @@
     "Queue": {
       "button": {
         "clear": "Clear",
-        "close": "Close",
         "stopRadio": "Stop radio"
       },
       "label": {
@@ -4542,5 +4541,10 @@
   },
   "App": {
     "loading": "Loading..."
+  },
+  "global": {
+    "button": {
+      "close": "Close"
+    }
   }
 }

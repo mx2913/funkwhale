@@ -2647,7 +2647,6 @@
     "Queue": {
       "button": {
         "clear": "Limpar",
-        "close": "Fechar",
         "stopRadio": "Parar rádio"
       },
       "label": {
@@ -4335,6 +4334,11 @@
     "axios": {
       "rateLimitDelay": "Você foi limitado por enviar muitas solicitações, tente novamente em { delay }",
       "rateLimitLater": "Você foi limitado por enviar muitas solicitações, tente novamente mais tarde"
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Fechar"
     }
   }
 }

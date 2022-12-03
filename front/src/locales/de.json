@@ -155,7 +155,6 @@
     "Queue": {
       "button": {
         "clear": "Leeren",
-        "close": "Schließen",
         "stopRadio": "Radio ausschalten"
       },
       "header": {
@@ -250,9 +249,7 @@
       }
     },
     "ShortcutsModal": {
-      "button": {
-        "close": "Schließen"
-      },
+      "button": {},
       "header": {
         "modal": "Tastenkombinationen"
       },
@@ -1082,7 +1079,6 @@
       "UploadModal": {
         "button": {
           "cancel": "Abbrechen",
-          "close": "Schließen",
           "finishLater": "Später fertigstellen",
           "next": "Nächster Schritt",
           "previous": "Vorheriger Schritt",
@@ -1335,7 +1331,6 @@
     "federation": {
       "FetchButton": {
         "button": {
-          "close": "Schließen",
           "reload": "Schließen und Seite neu laden"
         },
         "description": {
@@ -1720,9 +1715,7 @@
         "title": "Mediathek"
       },
       "ImportStatusModal": {
-        "button": {
-          "close": "Schließen"
-        },
+        "button": {},
         "error": {
           "importFailure": "Ein Fehler ist während des Uploads aufgetreten. Weitere Informationen befinden sich unten.",
           "invalidMetadata": {
@@ -2451,7 +2444,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Schließen",
             "show": "Moderationsregeln…"
           },
           "modal": {
@@ -4523,6 +4515,11 @@
         },
         "title": "Radio"
       }
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Schließen"
     }
   }
 }

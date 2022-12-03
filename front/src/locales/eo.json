@@ -956,9 +956,7 @@
         "title": "Kanto"
       },
       "ImportStatusModal": {
-        "button": {
-          "close": "Fermi"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Kantodatumo",
@@ -1065,7 +1063,6 @@
         },
         "button": {
           "cancel": "Nuligi",
-          "close": "Fermi",
           "finishLater": "Finanto",
           "next": "Baldaŭa kanto",
           "previous": "Antaŭa kanto",
@@ -1979,7 +1976,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Fermi",
             "show": "Ĝisdati moderecan regulon"
           },
           "modal": {
@@ -2234,9 +2230,7 @@
             }
           }
         },
-        "button": {
-          "close": "Fermi"
-        },
+        "button": {},
         "header": {
           "saveFailure": "Eraro kiam konservi preferojn",
           "failure": "Ĝisdatigi",
@@ -2274,9 +2268,7 @@
           "show": "Afiŝi disponeblajn fulmoklavojn"
         }
       },
-      "button": {
-        "close": "Fermi"
-      },
+      "button": {},
       "header": {
         "modal": "Fulmoklavo"
       }
@@ -2297,7 +2289,6 @@
     "Queue": {
       "button": {
         "clear": "Purigi",
-        "close": "Fermi",
         "stopRadio": "Halti radion"
       },
       "label": {
@@ -3847,6 +3838,11 @@
       "actions": {
         "update": "Ĝisdati"
       }
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Fermi"
     }
   }
 }

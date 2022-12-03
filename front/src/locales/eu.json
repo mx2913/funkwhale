@@ -1006,9 +1006,7 @@
             "message": "Fitxategiaren metadatuak baliogabeak dira edo beharrezko eremuak falta dituzte."
           }
         },
-        "button": {
-          "close": "Itxi"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Arazketa informazioa",
@@ -1308,7 +1306,6 @@
         },
         "button": {
           "cancel": "Ezeztatu",
-          "close": "Itxi",
           "finishLater": "Amaitu beranduago",
           "next": "Hurrengo pausoa",
           "previous": "Aurreko pausoa",
@@ -2365,7 +2362,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Itxi",
             "show": "Moderazio arauak…"
           },
           "modal": {
@@ -2674,7 +2670,6 @@
           }
         },
         "button": {
-          "close": "Itxi",
           "reload": "Itxi eta freskatu orria"
         },
         "header": {
@@ -2726,9 +2721,7 @@
           "unfocus": "Kendu fokua bilaketa-barrari"
         }
       },
-      "button": {
-        "close": "Itxi"
-      },
+      "button": {},
       "header": {
         "modal": "Laster-teklak"
       }
@@ -2758,7 +2751,6 @@
     "Queue": {
       "button": {
         "clear": "Garbitu",
-        "close": "Itxi",
         "stopRadio": "Gelditu irratia"
       },
       "label": {
@@ -4497,6 +4489,11 @@
     "axios": {
       "rateLimitDelay": "Eskaera gehiegi bidali dituzu eta mugatua izan zara, saiatu { delay } igarotzean",
       "rateLimitLater": "Eskaera gehiegi bidali dituzu eta mugatua izan zara, saiatu beranduago"
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Itxi"
     }
   }
 }

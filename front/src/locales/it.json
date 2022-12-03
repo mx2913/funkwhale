@@ -1010,9 +1010,7 @@
             "message": "I metadati inclusi nel file non sono validi o alcuni campi obbligatori sono mancanti."
           }
         },
-        "button": {
-          "close": "Chiudi"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Informazioni di debug",
@@ -1312,7 +1310,6 @@
         },
         "button": {
           "cancel": "Annulla",
-          "close": "Chiudi",
           "finishLater": "Finisci più tardi",
           "next": "Prossimo passo",
           "previous": "Passo precedente",
@@ -2369,7 +2366,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Chiudi",
             "show": "Regole di moderazione…"
           },
           "modal": {
@@ -2678,7 +2674,6 @@
           }
         },
         "button": {
-          "close": "Chiudi",
           "reload": "Chiudi e ricarica pagina"
         },
         "header": {
@@ -2730,9 +2725,7 @@
           "unfocus": "Togli il primo piano dalla barra di ricerca"
         }
       },
-      "button": {
-        "close": "Chiudi"
-      },
+      "button": {},
       "header": {
         "modal": "Scorciatoie da tastiera"
       }
@@ -2762,7 +2755,6 @@
     "Queue": {
       "button": {
         "clear": "Svuota",
-        "close": "Chiudi",
         "stopRadio": "Ferma radio"
       },
       "label": {
@@ -4501,6 +4493,11 @@
     "axios": {
       "rateLimitDelay": "Hai inviato troppe richieste e sei stato limitato, riprova tra { delay }",
       "rateLimitLater": "Hai inviato troppe richieste e sei stato limitato, riprova più tardi"
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Chiudi"
     }
   }
 }

@@ -1010,9 +1010,7 @@
             "message": "De metadata bij het bestand zijn ongeldig, of sommige verplichte velden ontbreken."
           }
         },
-        "button": {
-          "close": "Sluiten"
-        },
+        "button": {},
         "table": {
           "error": {
             "debug": "Foutgegevens",
@@ -1312,7 +1310,6 @@
         },
         "button": {
           "cancel": "Annuleren",
-          "close": "Sluiten",
           "finishLater": "Rond later af",
           "next": "Volgende stap",
           "previous": "Vorige stap",
@@ -2369,7 +2366,6 @@
         },
         "InstancePolicyModal": {
           "button": {
-            "close": "Sluiten",
             "show": "Moderatieregels…"
           },
           "modal": {
@@ -2678,7 +2674,6 @@
           }
         },
         "button": {
-          "close": "Sluiten",
           "reload": "Sluiten en pagina vernieuwen"
         },
         "header": {
@@ -2730,9 +2725,7 @@
           "unfocus": "Deselecteer zoekbalk"
         }
       },
-      "button": {
-        "close": "Sluiten"
-      },
+      "button": {},
       "header": {
         "modal": "Sneltoetsen"
       }
@@ -2762,7 +2755,6 @@
     "Queue": {
       "button": {
         "clear": "Wissen",
-        "close": "Sluiten",
         "stopRadio": "Radio stoppen"
       },
       "label": {
@@ -4501,6 +4493,11 @@
     "axios": {
       "rateLimitDelay": "Je hebt te veel verzoeken ingediend en wordt tijdelijk tegengehouden. Probeer het nog eens over { delay }",
       "rateLimitLater": "Je hebt te veel verzoeken ingediend en wordt tijdelijk tegengehouden. Probeer het later nog eens"
+    }
+  },
+  "global": {
+    "button": {
+      "close": "Sluiten"
     }
   }
 }
