@@ -370,10 +370,9 @@ build_documentation:
     paths:
       - public
   rules:
-    - if: $CI_COMMIT_BRANCH == "stable"
+    - if: $CI_COMMIT_BRANCH == "stable" || $CI_COMMIT_BRANCH == "develop"
       when: always
-    - if: $CI_COMMIT_BRANCH == "develop"
-      changes:
+    - changes:
         - docs/**/*
       when: always
   tags:
