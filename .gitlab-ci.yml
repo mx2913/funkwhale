@@ -280,8 +280,6 @@ build_openapi_schema:
 build_documentation:
   stage: build
   image: python:3.11
-  needs:
-    - build_openapi_schema
   dependencies:
     - build_openapi_schema
   variables:
