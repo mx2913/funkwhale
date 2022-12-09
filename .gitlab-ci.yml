@@ -291,7 +291,7 @@ build_documentation:
   variables:
     BUILD_PATH: "../public"
     GIT_STRATEGY: clone
-    GIT_DEPTH: "0"
+    GIT_DEPTH: 0
   before_script:
     - cd docs
     - apt-get update
