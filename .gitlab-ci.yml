@@ -246,6 +246,7 @@ test_api:
 #    - if: $CI_COMMIT_REF_PROTECTED == "true"
 #      when: always
 
+
 build_openapi_schema:
   stage: build
   image: $CI_REGISTRY/funkwhale/backend-test-docker:3.11
@@ -276,6 +277,41 @@ build_openapi_schema:
     expire_in: 2 weeks
     paths:
       - docs/schema.yml
+
+build_documentation:
+  stage: build
+  image: python:3.11
+  dependencies:
+    - build_openapi_schema
+  variables:
+    BUILD_PATH: "../public"
+  before_script:
+    - cd docs
+    - apt-get update
+    - apt-get install -y graphviz git
+    - pip install poetry
+    - poetry install
+    - git switch develop && git pull
+    - git switch stable && git pull
+    - git switch $CI_COMMIT_BRANCH && git pull
+  script:
+    - ./build_docs.sh
+  cache:
+    key: "$CI_PROJECT_ID__sphinx"
+    paths:
+      - "$PIP_CACHE_DIR"
+  artifacts:
+    expire_in: 2 weeks
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == "stable" || $CI_COMMIT_BRANCH == "develop"
+      when: always
+    - changes:
+        - docs/**/*
+      when: always
+  tags:
+    - docker
 
 build_front:
   stage: build
@@ -326,41 +362,6 @@ build_api:
     - tags@funkwhale/funkwhale
     - stable@funkwhale/funkwhale
     - develop@funkwhale/funkwhale
-
-build_documentation:
-  stage: build
-  image: python:3.11
-  dependencies:
-    - build_openapi_schema
-  variables:
-    BUILD_PATH: "../public"
-  before_script:
-    - cd docs
-    - apt-get update
-    - apt-get install -y graphviz git
-    - pip install poetry
-    - poetry install
-    - git switch develop && git pull
-    - git switch stable && git pull
-    - git switch $CI_COMMIT_BRANCH && git pull
-  script:
-    - ./build_docs.sh
-  cache:
-    key: "$CI_PROJECT_ID__sphinx"
-    paths:
-      - "$PIP_CACHE_DIR"
-  artifacts:
-    expire_in: 2 weeks
-    paths:
-      - public
-  rules:
-    - if: $CI_COMMIT_BRANCH == "stable" || $CI_COMMIT_BRANCH == "develop"
-      when: always
-    - changes:
-        - docs/**/*
-      when: always
-  tags:
-    - docker
 
 deploy_documentation:
   stage: publish
