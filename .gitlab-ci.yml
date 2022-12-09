@@ -298,6 +298,8 @@ build_documentation:
     - apt-get install -y graphviz
     - pip install poetry
     - poetry install
+    - git branch stable --track origin/stable || true
+    - git branch develop --track origin/develop || true
   script:
     - ./build_docs.sh
   cache:
