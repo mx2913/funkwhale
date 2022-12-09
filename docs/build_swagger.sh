@@ -5,8 +5,15 @@ set -eux
 SWAGGER_VERSION="4.15.5"
 TARGET_PATH=${TARGET_PATH-"swagger"}
 
-rm -rf "$TARGET_PATH" /tmp/swagger-ui
-git clone --branch="v$SWAGGER_VERSION" --depth=1 "https://github.com/swagger-api/swagger-ui.git" /tmp/swagger-ui
+rm -rf "$TARGET_PATH"
+tmpdir="$(mktemp -d)"
+trap "rm -rf $tmpdir" EXIT
 
-mv /tmp/swagger-ui/dist "$TARGET_PATH"
-sed -i "s#https://petstore.swagger.io/v2/swagger.json#https://dev.funkwhale.audio/funkwhale/funkwhale/-/jobs/artifacts/$CI_COMMIT_BRANCH/raw/docs/schema.yml?job=build_openapi_schema#g" "$TARGET_PATH/swagger-initializer.js"
+pushd "$tmpdir"
+wget "https://github.com/swagger-api/swagger-ui/archive/refs/tags/v$SWAGGER_VERSION.tar.gz" -O swagger-ui.tgz
+tar -xzf swagger-ui.tgz
+mv dist "$TARGET_PATH"
+popd
+cp schema.yml "$TARGET_PATH"
+
+sed -i "s#https://petstore.swagger.io/v2/swagger.json#schema.yml#g" "$TARGET_PATH/swagger-initializer.js"
