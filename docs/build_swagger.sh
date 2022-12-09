@@ -11,7 +11,7 @@ trap 'rm -rf "$tmpdir"' EXIT
 pushd "$tmpdir"
 wget "https://github.com/swagger-api/swagger-ui/archive/refs/tags/v$SWAGGER_VERSION.tar.gz" -O swagger-ui.tgz
 tar -xzf swagger-ui.tgz
-mv */dist "$TARGET_PATH"
+mv ./*/dist "$TARGET_PATH"
 popd
 cp schema.yml "$TARGET_PATH"
 
