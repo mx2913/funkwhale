@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -eux
 
 SWAGGER_VERSION="4.15.5"
