@@ -291,15 +291,14 @@ build_documentation:
     - build_openapi_schema
   variables:
     BUILD_PATH: "../public"
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
   before_script:
     - cd docs
     - apt-get update
-    - apt-get install -y graphviz git
+    - apt-get install -y graphviz
     - pip install poetry
     - poetry install
-    - git switch develop && git pull
-    - git switch stable && git pull
-    - git switch $CI_COMMIT_BRANCH && git pull
   script:
     - ./build_docs.sh
   cache:
