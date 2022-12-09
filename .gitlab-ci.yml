@@ -246,7 +246,6 @@ test_api:
 #    - if: $CI_COMMIT_REF_PROTECTED == "true"
 #      when: always
 
-
 build_openapi_schema:
   stage: build
   image: $CI_REGISTRY/funkwhale/backend-test-docker:3.11
