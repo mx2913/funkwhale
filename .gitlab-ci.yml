@@ -28,7 +28,6 @@ stages:
   - build
   - publish
 
-
 review_front:
   interruptible: true
   stage: deploy
@@ -65,7 +64,6 @@ review_front:
   environment:
     name: review/front/$CI_COMMIT_REF_NAME
     url: http://$CI_PROJECT_NAMESPACE.pages.funkwhale.audio/-/$CI_PROJECT_NAME/-/jobs/$CI_JOB_ID/artifacts/front-review/index.html
-
 
 review_docs:
   interruptible: true
@@ -107,7 +105,6 @@ review_docs:
     - if: $CI_PIPELINE_SOURCE != "merge_request_event" && $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
       when: manual
 
-
 find_broken_links:
   stage: lint
   needs: []
@@ -127,7 +124,6 @@ find_broken_links:
       --exclude-path 'docs/_templates/'
       -- .
 
-
 changelog_snippet:
   interruptible: true
   image: alpine:3.17
@@ -144,7 +140,6 @@ changelog_snippet:
       when: never
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
-
 pre-commit:
   stage: lint
   image: python:3.11
@@ -159,7 +154,6 @@ pre-commit:
     - pip3 install pre-commit
   script:
     - pre-commit run --verbose --all --color=always --show-diff-on-failure
-
 
 eslint:
   interruptible: true
@@ -180,7 +174,6 @@ eslint:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
         - front/**/*
-
 
 test_api:
   interruptible: true
@@ -225,7 +218,6 @@ test_api:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
       when: always
 
-
 # Those tests are disabled for now since no vitest dom emulation is providing
 # AudioContext, which is required for our HTML audio player
 #test_front:
@@ -258,7 +250,6 @@ test_api:
 #    - if: $CI_COMMIT_REF_PROTECTED == "true"
 #      when: always
 
-
 build_openapi_schema:
   stage: build
   image: $CI_REGISTRY/funkwhale/backend-test-docker:3.11
@@ -290,7 +281,6 @@ build_openapi_schema:
     paths:
       - docs/schema.yml
 
-
 build_front:
   stage: build
   image: node:18-alpine
@@ -318,7 +308,6 @@ build_front:
   tags:
     - docker
 
-
 build_api:
   stage: build
   image: bash
@@ -341,7 +330,6 @@ build_api:
     - tags@funkwhale/funkwhale
     - stable@funkwhale/funkwhale
     - develop@funkwhale/funkwhale
-
 
 build_documentation:
   stage: build
@@ -378,7 +366,6 @@ build_documentation:
   tags:
     - docker
 
-
 deploy_documentation:
   stage: publish
   image: alpine
@@ -395,7 +382,6 @@ deploy_documentation:
     - rsync -r -e "ssh -p 2282" $CI_PROJECT_DIR/public/ docs@docs.funkwhale.audio:/htdocs/
   only:
     - stable
-
 
 .docker_publish:
   stage: publish
@@ -414,7 +400,6 @@ deploy_documentation:
     paths:
       - ~/.cargo
 
-
 docker_publish_stable_release:
   # Publish a docker image for releases
   extends: .docker_publish
@@ -432,7 +417,6 @@ docker_publish_stable_release:
     matrix:
       - COMPONENT: ["api", "front"]
 
-
 docker_publish_unstable_release:
   # Publish a docker image for releases
   extends: .docker_publish
@@ -448,7 +432,6 @@ docker_publish_unstable_release:
   parallel:
     matrix:
       - COMPONENT: ["api", "front"]
-
 
 docker_publish_non-release:
   # Publish a docker image for each commit on develop
@@ -466,4 +449,3 @@ docker_publish_non-release:
   parallel:
     matrix:
       - COMPONENT: ["api", "front"]
-
