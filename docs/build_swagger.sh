@@ -7,7 +7,7 @@ TARGET_PATH=${TARGET_PATH-"swagger"}
 
 rm -rf "$TARGET_PATH"
 tmpdir="$(mktemp -d)"
-trap "rm -rf $tmpdir" EXIT
+trap 'rm -rf "$tmpdir"' EXIT
 
 pushd "$tmpdir"
 wget "https://github.com/swagger-api/swagger-ui/archive/refs/tags/v$SWAGGER_VERSION.tar.gz" -O swagger-ui.tgz
