@@ -28,6 +28,7 @@ stages:
   - build
   - publish
 
+
 review_front:
   interruptible: true
   stage: deploy
@@ -64,6 +65,7 @@ review_front:
   environment:
     name: review/front/$CI_COMMIT_REF_NAME
     url: http://$CI_PROJECT_NAMESPACE.pages.funkwhale.audio/-/$CI_PROJECT_NAME/-/jobs/$CI_JOB_ID/artifacts/front-review/index.html
+
 
 review_docs:
   interruptible: true
@@ -105,6 +107,7 @@ review_docs:
     - if: $CI_PIPELINE_SOURCE != "merge_request_event" && $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
       when: manual
 
+
 find_broken_links:
   stage: lint
   needs: []
@@ -124,6 +127,7 @@ find_broken_links:
       --exclude-path 'docs/_templates/'
       -- .
 
+
 changelog_snippet:
   interruptible: true
   image: alpine:3.17
@@ -140,6 +144,7 @@ changelog_snippet:
       when: never
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
+
 pre-commit:
   stage: lint
   image: python:3.11
@@ -154,6 +159,7 @@ pre-commit:
     - pip3 install pre-commit
   script:
     - pre-commit run --verbose --all --color=always --show-diff-on-failure
+
 
 eslint:
   interruptible: true
@@ -174,6 +180,7 @@ eslint:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
         - front/**/*
+
 
 test_api:
   interruptible: true
@@ -218,6 +225,7 @@ test_api:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
       when: always
 
+
 # Those tests are disabled for now since no vitest dom emulation is providing
 # AudioContext, which is required for our HTML audio player
 #test_front:
@@ -250,6 +258,7 @@ test_api:
 #    - if: $CI_COMMIT_REF_PROTECTED == "true"
 #      when: always
 
+
 build_openapi_schema:
   stage: build
   image: $CI_REGISTRY/funkwhale/backend-test-docker:3.11
@@ -281,6 +290,7 @@ build_openapi_schema:
     paths:
       - docs/schema.yml
 
+
 build_front:
   stage: build
   image: node:18-alpine
@@ -308,9 +318,36 @@ build_front:
   tags:
     - docker
 
+
+build_api:
+  stage: build
+  image: bash
+  variables:
+    # Keep the git files attributes during job setup
+    GIT_STRATEGY: clone
+    GIT_DEPTH: "5"
+    FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR: "true"
+  script:
+    - rm -rf api/tests
+    - >
+      if [ "$CI_COMMIT_REF_NAME" == "develop" ] || [ "$CI_COMMIT_REF_NAME" == "stable" ]; then
+        ./scripts/set-api-build-metadata.sh $(echo $CI_COMMIT_SHA | cut -c 1-8);
+      fi
+  artifacts:
+    name: api_${CI_COMMIT_REF_NAME}
+    paths:
+      - api
+  only:
+    - tags@funkwhale/funkwhale
+    - stable@funkwhale/funkwhale
+    - develop@funkwhale/funkwhale
+
+
 build_documentation:
   stage: build
   image: python:3.11
+  dependencies:
+    - build_openapi_schema
   variables:
     BUILD_PATH: "../public"
   before_script:
@@ -342,6 +379,7 @@ build_documentation:
   tags:
     - docker
 
+
 deploy_documentation:
   stage: publish
   image: alpine
@@ -359,9 +397,13 @@ deploy_documentation:
   only:
     - stable
 
+
 .docker_publish:
   stage: publish
   image: egon0/docker-with-buildx-and-git:bash
+  variables:
+    IMAGE_NAME: funkwhale/$COMPONENT
+    FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR: "true"
   tags:
     - multiarch
   services:
@@ -372,13 +414,11 @@ deploy_documentation:
     key: docker_public_${CI_COMMIT_REF_NAME}
     paths:
       - ~/.cargo
-  script:
+
 
 docker_publish_stable_release:
   # Publish a docker image for releases
   extends: .docker_publish
-  variables:
-    IMAGE_NAME: funkwhale/$COMPONENT
   rules:
     - if: $CI_COMMIT_TAG && $CI_COMMIT_REF_NAME =~ /^[0-9]+(.[0-9]+){1,2}$/
   script:
@@ -392,6 +432,7 @@ docker_publish_stable_release:
   parallel:
     matrix:
       - COMPONENT: ["api", "front"]
+
 
 docker_publish_unstable_release:
   # Publish a docker image for releases
@@ -408,6 +449,7 @@ docker_publish_unstable_release:
   parallel:
     matrix:
       - COMPONENT: ["api", "front"]
+
 
 docker_publish_non-release:
   # Publish a docker image for each commit on develop
@@ -426,26 +468,3 @@ docker_publish_non-release:
     matrix:
       - COMPONENT: ["api", "front"]
 
-build_api:
-  # Simply publish a zip containing api/ directory
-  stage: publish
-  image: bash
-  variables:
-    # Keep the git files attributes during job setup
-    GIT_STRATEGY: clone
-    GIT_DEPTH: "5"
-    FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR: "true"
-  script:
-    - rm -rf api/tests
-    - >
-      if [ "$CI_COMMIT_REF_NAME" == "develop" ] || [ "$CI_COMMIT_REF_NAME" == "stable" ]; then
-        ./scripts/set-api-build-metadata.sh $(echo $CI_COMMIT_SHA | cut -c 1-8);
-      fi
-  artifacts:
-    name: api_${CI_COMMIT_REF_NAME}
-    paths:
-      - api
-  only:
-    - tags@funkwhale/funkwhale
-    - stable@funkwhale/funkwhale
-    - develop@funkwhale/funkwhale
