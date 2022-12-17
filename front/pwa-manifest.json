@@ -1,8 +1,6 @@
 {
   "name": "Funkwhale",
   "categories": ["music", "entertainment"],
-  "start_url": null,
-  "scope": null,
   "short_name": "Funkwhale",
   "description": "Your free and federated audio platform",
   "icons": [
