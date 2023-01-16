@@ -56,7 +56,7 @@ def get_tracks_from_xspf(xspf):
             artist_id = Artist.objects.get(name=artist)
             album_id = Album.objects.get(title=album)
         except Exception as e:
-            logger.info(f"Error while quering database : {e!r}")
+            logger.info(f"Error while querying database : {e!r}")
             continue
         try:
             fw_track = Track.objects.get(
@@ -118,7 +118,7 @@ def generate_xspf_from_tracks_ids(tracks_ids):
             track = Track.objects.get(id=track_id)
             write_xspf_track_data(track, xpsf_tracklist)
         except ObjectDoesNotExist as e:
-            logger.info(f"Error while quering database : {e!r}")
+            logger.info(f"Error while querying database : {e!r}")
     return prettify(xpsf_playlist)
 
 
