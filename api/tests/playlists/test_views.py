@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 
-from funkwhale_api.playlists import models
+from funkwhale_api.playlists import models, utils, views
 
 
 def test_can_create_playlist_via_api(logged_in_api_client):
@@ -189,3 +189,41 @@ def test_move_plt_updates_indexes(mocker, factories, logged_in_api_client):
     plt1.refresh_from_db()
     assert plt0.index == 1
     assert plt1.index == 0
+
+
+def test_can_export_xspf_playlist(factories, logged_in_api_client):
+    playlist = factories["playlists.Playlist"](user=logged_in_api_client.user)
+    factories["playlists.PlaylistTrack"].create_batch(size=5, playlist=playlist)
+    url = reverse("api:v2:playlists:playlists-export", kwargs={"pk": playlist.pk})
+    xspf = utils.generate_xspf_from_playlist(playlist.id)
+    response = logged_in_api_client.post(url, {"format": "xspf"})
+    assert response.data == xspf
+
+
+def test_can_import_xspf_playlist(factories, logged_in_api_client):
+    track1 = factories["music.Track"]()
+    track2 = factories["music.Track"]()
+    url = reverse("api:v2:playlists:import-list")
+    xspf = utils.generate_xspf_from_tracks_ids([track1.id, track2.id])
+    response = logged_in_api_client.post(url, {"format": "xspf", "data": xspf})
+    assert response.status_code == 201
+
+
+def test_can_update_from_import(factories, logged_in_api_client):
+    playlist = factories["playlists.Playlist"](user=logged_in_api_client.user)
+    factories["playlists.PlaylistTrack"].create_batch(size=5, playlist=playlist)
+    track1 = factories["music.Track"]()
+    track2 = factories["music.Track"]()
+    url = reverse(
+        "api:v2:playlists:playlists-update-import", kwargs={"pk": playlist.pk}
+    )
+    xspf = utils.generate_xspf_from_tracks_ids([track1.id, track2.id])
+    response = logged_in_api_client.post(url, {"format": "xspf", "data": xspf})
+    url_tracks = reverse(
+        "api:v2:playlists:playlists-tracks", kwargs={"pk": playlist.pk}
+    )
+    response = logged_in_api_client.get(url_tracks)
+
+    assert response.data["count"] == 2
+    assert response.data["results"][0]["track"]["artist"]["name"] == track1.artist.name
+    assert response.data["results"][1]["track"]["artist"]["name"] == track2.artist.name

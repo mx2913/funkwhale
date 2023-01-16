@@ -1,3 +1,4 @@
+import datetime
 import logging
 import re
 
@@ -15,33 +16,31 @@ from funkwhale_api.playlists.models import Playlist
 logger = logging.getLogger(__name__)
 
 
-def clean_namespace_xspf(xspf_file):
+def clean_namespace_xspf(xspf):
     """
-    This will delete any namaespace found in the xspf file. It will also delete any encoding info.
-    This way xspf file will be compatible with our get_track_id_from_xspf function.
+    This will delete any namaespace found in the xspf data. It will also delete any encoding info.
+    This way xspf data will be compatible with our get_track_id_from_xspf function.
     """
-    file = open(xspf_file)
-    with file as f:
-        xspf_str = f.read()
-    xspf_data = re.sub('xmlns="http://xspf.org/ns/0/"', "", xspf_str)
+
+    xspf_data = re.sub('xmlns="http://xspf.org/ns/0/"', "", xspf)
     # This is needed because lxml error : "ValueError: Unicode strings with encoding declaration are
     # not supported. Please use bytes input or XML fragments without declaration."
     xspf_data = re.sub("'encoding='.'", "", xspf_data)
     return xspf_data
 
 
-def get_track_id_from_xspf(xspf_file):
+def get_tracks_from_xspf(xspf):
     """
-    Return a list of funkwhale tracks id from a xspf file. Tracks not found in database are ignored.
+    Return a list of funkwhale tracks from xspf data. Tracks not found in database are ignored.
     """
     track_list = []
-    xspf_data_clean = clean_namespace_xspf(xspf_file)
+    xspf_data_clean = clean_namespace_xspf(xspf)
     tree = etree.fromstring(xspf_data_clean)
+    plt_name = tree.findtext("title")
     tracks = tree.findall(".//track")
     added_track_count = 0
 
     for track in tracks:
-        track_id = ""
         # Getting metadata of the xspf file
         try:
             artist = track.find(".//creator").text
@@ -58,17 +57,19 @@ def get_track_id_from_xspf(xspf_file):
             album_id = Album.objects.get(title=album)
         except Exception as e:
             logger.info(f"Error while quering database : {e!r}")
+            continue
         try:
-            track_id = Track.objects.get(
+            fw_track = Track.objects.get(
                 title=title, artist=artist_id.id, album=album_id.id
             )
         except ObjectDoesNotExist:
             try:
-                track_id = Track.objects.get(title=title, artist=artist_id.id)
+                fw_track = Track.objects.get(title=title, artist=artist_id.id)
             except ObjectDoesNotExist as e:
                 logger.info(f"Couldn't find track in the database : {e!r}")
-        if track_id:
-            track_list.append(track_id.id)
+                continue
+        if fw_track:
+            track_list.append(fw_track)
             added_track_count = added_track_count + 1
 
     logger.info(
@@ -77,7 +78,7 @@ def get_track_id_from_xspf(xspf_file):
         + str(added_track_count)
         + " are gonna be added to playlist."
     )
-    return track_list
+    return track_list, plt_name
 
 
 def generate_xspf_from_playlist(playlist_id):
@@ -97,20 +98,21 @@ def generate_xspf_from_playlist(playlist_id):
 
     for plt_track in plt_tracks:
         track = plt_track.track
-        write_xspf_track_data(track, xpsf_tracklist)
-    return prettify(xpsf_playlist)
+        write_xspf_track_data(track, trackList_xspf)
+    return prettify(top)
 
 
 def generate_xspf_from_tracks_ids(tracks_ids):
     """
     This returns a string containing playlist data in xspf format. It's used for test purposes.
     """
-    xspf_title = "An automated generated playlist"
-    now = datetime.now()
+    xspf_title = "Test"
+    now = datetime.datetime.now()
     xpsf_date = now.strftime("%m/%d/%Y")
     xpsf_playlist = Element("playlist")
     xpsf_tracklist = write_xpsf_headers(xpsf_playlist, xspf_title, xpsf_date)
-
+    title_xspf = SubElement(xpsf_playlist, "title")
+    title_xspf.text = xspf_title
     for track_id in tracks_ids:
         try:
             track = Track.objects.get(id=track_id)

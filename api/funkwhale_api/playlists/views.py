@@ -9,7 +9,7 @@ from funkwhale_api.common import fields, permissions
 from funkwhale_api.music import utils as music_utils
 from funkwhale_api.users.oauth import permissions as oauth_permissions
 
-from . import filters, models, serializers
+from . import filters, models, serializers, utils
 
 
 class PlaylistViewSet(
@@ -140,3 +140,45 @@ class PlaylistViewSet(
             return Response(status=404)
         playlist.insert(plt, to_index)
         return Response(status=204)
+
+    @extend_schema(operation_id="export_playlist")
+    @action(methods=["post"], detail=True)
+    @transaction.atomic
+    def export(self, request, *args, **kwargs):
+        data = request.data
+        if data["format"] == "xspf":
+            playlist = self.get_object()
+            xspf = utils.generate_xspf_from_playlist(playlist.id)
+            return Response(xspf, status=201)
+        else:
+            return Response({"detail": "Format not supported"}, status=400)
+
+    @extend_schema(operation_id="update_playlist")
+    @action(methods=["post"], detail=True)
+    @transaction.atomic
+    def update_import(self, request, *args, **kwargs):
+        data = request.data
+        playlist = self.get_object()
+        if data["format"] == "xspf":
+            tracks, plt_name = utils.get_tracks_from_xspf(data["data"])
+            playlist.playlist_tracks.all().delete()
+            playlist.insert_many(tracks)
+            plt = serializers.PlaylistSerializer(playlist)
+            return Response(plt.data, status=201)
+
+
+class PlaylistImportViewSet(viewsets.ViewSet):
+    permission_classes = []
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        if data["format"] == "xspf":
+            tracks, plt_name = utils.get_tracks_from_xspf(data["data"])
+            plt = models.Playlist.objects.create(
+                name=plt_name, privacy_level="private", user=self.request.user
+            )
+            plt.insert_many(tracks)
+            plt = serializers.PlaylistSerializer(plt)
+            return Response(plt.data, status=201)
+        else:
+            return Response({"detail": "Format not supported"}, status=400)
