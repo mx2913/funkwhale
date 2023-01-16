@@ -1,6 +1,6 @@
 from defusedxml import ElementTree as etree
 
-from funkwhale_api.playlists import models, utils
+from funkwhale_api.playlists import utils
 
 
 def test_get_tracks_from_xspf(factories):
