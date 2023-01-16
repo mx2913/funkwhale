@@ -1,5 +1,6 @@
-from funkwhale_api.common import routers
 from django.conf.urls import url
+
+from funkwhale_api.common import routers
 
 from . import views
 
