@@ -22,7 +22,7 @@ def handler_create_user(
     permissions=[],
     upload_quota=None,
 ):
-    serializer = serializers.RS(
+    serializer = serializers.BaseRegisterSerializer(
         data={
             "username": username,
             "email": email,
