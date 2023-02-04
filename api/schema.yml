@@ -68,8 +68,7 @@ paths:
       tags:
         - activity
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           description: No response body
@@ -167,8 +166,9 @@ paths:
       tags:
         - albums
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -196,8 +196,9 @@ paths:
               $ref: "#/components/schemas/AlbumCreateRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "201":
           content:
@@ -218,8 +219,9 @@ paths:
       tags:
         - albums
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -239,8 +241,9 @@ paths:
       tags:
         - albums
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -344,8 +347,7 @@ paths:
       tags:
         - albums
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -380,8 +382,7 @@ paths:
               $ref: "#/components/schemas/AlbumRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -489,8 +490,9 @@ paths:
       tags:
         - albums
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -598,8 +600,9 @@ paths:
       tags:
         - albums
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:edits
+        - token: []
       responses:
         "200":
           content:
@@ -634,8 +637,9 @@ paths:
               $ref: "#/components/schemas/AlbumRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:edits
+        - token: []
       responses:
         "200":
           content:
@@ -749,8 +753,9 @@ paths:
       tags:
         - artists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -771,8 +776,9 @@ paths:
       tags:
         - artists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -892,8 +898,7 @@ paths:
       tags:
         - artists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -928,8 +933,7 @@ paths:
               $ref: "#/components/schemas/ArtistWithAlbumsRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -1049,8 +1053,9 @@ paths:
       tags:
         - artists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -1170,8 +1175,9 @@ paths:
       tags:
         - artists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:edits
+        - token: []
       responses:
         "200":
           content:
@@ -1206,8 +1212,9 @@ paths:
               $ref: "#/components/schemas/ArtistWithAlbumsRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:edits
+        - token: []
       responses:
         "200":
           content:
@@ -1236,8 +1243,9 @@ paths:
               $ref: "#/components/schemas/AttachmentRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "201":
           content:
@@ -1258,8 +1266,9 @@ paths:
       tags:
         - attachments
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -1279,8 +1288,9 @@ paths:
       tags:
         - attachments
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -1329,8 +1339,7 @@ paths:
               $ref: "#/components/schemas/PasswordChangeRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -1364,8 +1373,7 @@ paths:
               $ref: "#/components/schemas/PasswordResetRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
         - {}
       responses:
         "200":
@@ -1402,8 +1410,7 @@ paths:
               $ref: "#/components/schemas/PasswordResetConfirmRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
         - {}
       responses:
         "200":
@@ -1433,8 +1440,7 @@ paths:
               $ref: "#/components/schemas/RegisterRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "201":
           content:
@@ -1468,8 +1474,7 @@ paths:
               $ref: "#/components/schemas/PasswordChangeRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -1498,8 +1503,7 @@ paths:
               $ref: "#/components/schemas/VerifyEmailRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
         - {}
       responses:
         "200":
@@ -1519,8 +1523,7 @@ paths:
       tags:
         - auth
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -1557,8 +1560,7 @@ paths:
               $ref: "#/components/schemas/UserDetailsRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -1594,8 +1596,7 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedUserDetailsRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -1666,8 +1667,9 @@ paths:
       tags:
         - channels
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -1695,8 +1697,9 @@ paths:
               $ref: "#/components/schemas/ChannelCreateRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "201":
           content:
@@ -1717,8 +1720,9 @@ paths:
       tags:
         - channels
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -1753,8 +1757,9 @@ paths:
               $ref: "#/components/schemas/ChannelUpdateRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -1788,8 +1793,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedChannelUpdateRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -1809,8 +1815,9 @@ paths:
       tags:
         - channels
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -1827,8 +1834,9 @@ paths:
       tags:
         - channels
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -1864,8 +1872,7 @@ paths:
               $ref: "#/components/schemas/ChannelRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -1901,8 +1908,7 @@ paths:
               $ref: "#/components/schemas/ChannelRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "204":
           description: No response body
@@ -1918,8 +1924,7 @@ paths:
       tags:
         - channels
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "204":
           description: No response body
@@ -1929,8 +1934,7 @@ paths:
       tags:
         - channels
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -1959,8 +1963,9 @@ paths:
               $ref: "#/components/schemas/ChannelRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -2005,8 +2010,9 @@ paths:
       tags:
         - favorites
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:favorites
+        - token: []
       responses:
         "200":
           content:
@@ -2034,8 +2040,9 @@ paths:
               $ref: "#/components/schemas/UserTrackFavoriteWriteRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:favorites
+        - token: []
       responses:
         "201":
           content:
@@ -2056,8 +2063,9 @@ paths:
       tags:
         - favorites
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:favorites
+        - token: []
       responses:
         "204":
           description: No response body
@@ -2071,8 +2079,9 @@ paths:
       tags:
         - favorites
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:favorites
+        - token: []
       responses:
         "200":
           content:
@@ -2101,8 +2110,9 @@ paths:
               $ref: "#/components/schemas/UserTrackFavoriteWriteRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:favorites
+        - token: []
       responses:
         "200":
           content:
@@ -2115,8 +2125,9 @@ paths:
       tags:
         - favorites
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:favorites
+        - token: []
       responses:
         "204":
           description: No response body
@@ -2133,8 +2144,7 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -2155,8 +2165,7 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -2189,8 +2198,7 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -2211,8 +2219,7 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -2241,8 +2248,7 @@ paths:
               $ref: "#/components/schemas/FetchRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "201":
           content:
@@ -2263,8 +2269,7 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -2301,8 +2306,9 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:follows
+        - token: []
       responses:
         "200":
           content:
@@ -2330,8 +2336,9 @@ paths:
               $ref: "#/components/schemas/LibraryFollowRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:follows
+        - token: []
       responses:
         "201":
           content:
@@ -2352,8 +2359,9 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:follows
+        - token: []
       responses:
         "200":
           content:
@@ -2373,8 +2381,9 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:follows
+        - token: []
       responses:
         "204":
           description: No response body
@@ -2406,8 +2415,9 @@ paths:
               $ref: "#/components/schemas/LibraryFollowRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:follows
+        - token: []
       responses:
         "404":
           description: No response body
@@ -2441,8 +2451,9 @@ paths:
               $ref: "#/components/schemas/LibraryFollowRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:follows
+        - token: []
       responses:
         "200":
           content:
@@ -2460,8 +2471,9 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:follows
+        - token: []
       responses:
         "200":
           content:
@@ -2510,8 +2522,9 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:notifications
+        - token: []
       responses:
         "200":
           content:
@@ -2532,8 +2545,9 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:notifications
+        - token: []
       responses:
         "200":
           content:
@@ -2568,8 +2582,9 @@ paths:
               $ref: "#/components/schemas/InboxItemRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:notifications
+        - token: []
       responses:
         "200":
           content:
@@ -2603,8 +2618,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedInboxItemRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:notifications
+        - token: []
       responses:
         "200":
           content:
@@ -2644,8 +2660,9 @@ paths:
               $ref: "#/components/schemas/InboxItemRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:notifications
+        - token: []
       responses:
         "200":
           content:
@@ -2666,8 +2683,9 @@ paths:
       tags:
         - federation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -2703,8 +2721,9 @@ paths:
               $ref: "#/components/schemas/LibraryRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -2733,8 +2752,9 @@ paths:
               $ref: "#/components/schemas/LibraryRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -2783,8 +2803,9 @@ paths:
       tags:
         - history
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:listenings
+        - token: []
       responses:
         "200":
           content:
@@ -2812,8 +2833,9 @@ paths:
               $ref: "#/components/schemas/ListeningWriteRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:listenings
+        - token: []
       responses:
         "201":
           content:
@@ -2834,8 +2856,9 @@ paths:
       tags:
         - history
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:listenings
+        - token: []
       responses:
         "200":
           content:
@@ -2861,8 +2884,9 @@ paths:
       tags:
         - instance
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:settings
+        - token: []
       responses:
         "200":
           content:
@@ -2890,8 +2914,9 @@ paths:
       tags:
         - instance
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:settings
+        - token: []
       responses:
         "200":
           content:
@@ -2931,8 +2956,9 @@ paths:
               $ref: "#/components/schemas/GlobalPreferenceRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:settings
+        - token: []
       responses:
         "200":
           content:
@@ -2970,9 +2996,11 @@ paths:
           application/activity+json:
             schema:
               $ref: "#/components/schemas/PatchedGlobalPreferenceRequest"
+        required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:settings
+        - token: []
       responses:
         "200":
           content:
@@ -3006,8 +3034,9 @@ paths:
               $ref: "#/components/schemas/GlobalPreferenceRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:settings
+        - token: []
       responses:
         "200":
           content:
@@ -3092,8 +3121,9 @@ paths:
       tags:
         - libraries
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3121,8 +3151,9 @@ paths:
               $ref: "#/components/schemas/LibraryForOwnerRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "201":
           content:
@@ -3143,8 +3174,9 @@ paths:
       tags:
         - libraries
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3179,8 +3211,9 @@ paths:
               $ref: "#/components/schemas/LibraryForOwnerRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3214,8 +3247,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedLibraryForOwnerRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3235,8 +3269,9 @@ paths:
       tags:
         - libraries
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -3287,8 +3322,9 @@ paths:
       tags:
         - libraries
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3302,8 +3338,9 @@ paths:
       tags:
         - libraries
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           description: No response body
@@ -3327,8 +3364,9 @@ paths:
               $ref: "#/components/schemas/LibraryForOwnerRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           description: No response body
@@ -3337,8 +3375,9 @@ paths:
       tags:
         - libraries
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -3367,8 +3406,9 @@ paths:
       tags:
         - licenses
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3389,8 +3429,9 @@ paths:
       tags:
         - licenses
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3411,8 +3452,9 @@ paths:
       tags:
         - listen
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3473,8 +3515,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:accounts
+        - token: []
       responses:
         "200":
           content:
@@ -3495,8 +3538,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:accounts
+        - token: []
       responses:
         "200":
           content:
@@ -3517,8 +3561,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:accounts
+        - token: []
       responses:
         "200":
           content:
@@ -3558,8 +3603,9 @@ paths:
               $ref: "#/components/schemas/ManageActorRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:accounts
+        - token: []
       responses:
         "200":
           content:
@@ -3596,8 +3642,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3618,8 +3665,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3639,8 +3687,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -3657,8 +3706,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3703,8 +3753,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:domains
+        - token: []
       responses:
         "200":
           content:
@@ -3732,8 +3783,9 @@ paths:
               $ref: "#/components/schemas/ManageDomainRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:domains
+        - token: []
       responses:
         "201":
           content:
@@ -3754,8 +3806,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:domains
+        - token: []
       responses:
         "200":
           content:
@@ -3789,8 +3842,9 @@ paths:
             schema:
               $ref: "#/components/schemas/ManageDomainUpdateRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:domains
+        - token: []
       responses:
         "200":
           content:
@@ -3824,8 +3878,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedManageDomainUpdateRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:domains
+        - token: []
       responses:
         "200":
           content:
@@ -3846,8 +3901,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:domains
+        - token: []
       responses:
         "200":
           content:
@@ -3868,8 +3924,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:domains
+        - token: []
       responses:
         "200":
           content:
@@ -3909,8 +3966,9 @@ paths:
               $ref: "#/components/schemas/ManageDomainRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:domains
+        - token: []
       responses:
         "200":
           content:
@@ -3964,8 +4022,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -3986,8 +4045,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4007,8 +4067,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -4025,8 +4086,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4066,8 +4128,9 @@ paths:
               $ref: "#/components/schemas/ManageAlbumRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4125,8 +4188,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4147,8 +4211,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4168,8 +4233,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -4186,8 +4252,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4227,8 +4294,9 @@ paths:
               $ref: "#/components/schemas/ManageArtistRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4295,8 +4363,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4317,8 +4386,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4353,8 +4423,9 @@ paths:
               $ref: "#/components/schemas/ManageLibraryRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4388,8 +4459,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedManageLibraryRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4409,8 +4481,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -4427,8 +4500,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4468,8 +4542,9 @@ paths:
               $ref: "#/components/schemas/ManageLibraryRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4531,8 +4606,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4553,8 +4629,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4574,8 +4651,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -4592,8 +4670,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4633,8 +4712,9 @@ paths:
               $ref: "#/components/schemas/ManageTrackRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4717,8 +4797,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4739,8 +4820,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4760,8 +4842,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -4797,8 +4880,9 @@ paths:
               $ref: "#/components/schemas/ManageUploadRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -4863,8 +4947,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:policies
+        - token: []
       responses:
         "200":
           content:
@@ -4892,8 +4977,9 @@ paths:
               $ref: "#/components/schemas/ManageInstancePolicyRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:policies
+        - token: []
       responses:
         "201":
           content:
@@ -4914,8 +5000,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:policies
+        - token: []
       responses:
         "200":
           content:
@@ -4950,8 +5037,9 @@ paths:
               $ref: "#/components/schemas/ManageInstancePolicyRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:policies
+        - token: []
       responses:
         "200":
           content:
@@ -4985,8 +5073,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedManageInstancePolicyRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:policies
+        - token: []
       responses:
         "200":
           content:
@@ -5006,8 +5095,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:policies
+        - token: []
       responses:
         "204":
           description: No response body
@@ -5040,8 +5130,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:notes
+        - token: []
       responses:
         "200":
           content:
@@ -5069,8 +5160,9 @@ paths:
               $ref: "#/components/schemas/ManageNoteRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:notes
+        - token: []
       responses:
         "201":
           content:
@@ -5091,8 +5183,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:notes
+        - token: []
       responses:
         "200":
           content:
@@ -5112,8 +5205,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:notes
+        - token: []
       responses:
         "204":
           description: No response body
@@ -5164,8 +5258,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:reports
+        - token: []
       responses:
         "200":
           content:
@@ -5186,8 +5281,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:reports
+        - token: []
       responses:
         "200":
           content:
@@ -5222,8 +5318,9 @@ paths:
               $ref: "#/components/schemas/ManageReportRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:reports
+        - token: []
       responses:
         "200":
           content:
@@ -5257,8 +5354,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedManageReportRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:reports
+        - token: []
       responses:
         "200":
           content:
@@ -5309,8 +5407,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:requests
+        - token: []
       responses:
         "200":
           content:
@@ -5331,8 +5430,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:requests
+        - token: []
       responses:
         "200":
           content:
@@ -5367,8 +5467,9 @@ paths:
               $ref: "#/components/schemas/ManageUserRequestRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:requests
+        - token: []
       responses:
         "200":
           content:
@@ -5402,8 +5503,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedManageUserRequestRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:requests
+        - token: []
       responses:
         "200":
           content:
@@ -5440,8 +5542,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -5469,8 +5572,9 @@ paths:
               $ref: "#/components/schemas/ManageTagRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "201":
           content:
@@ -5490,8 +5594,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -5510,8 +5615,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -5547,8 +5653,9 @@ paths:
               $ref: "#/components/schemas/ManageTagRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -5589,8 +5696,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:invitations
+        - token: []
       responses:
         "200":
           content:
@@ -5617,8 +5725,9 @@ paths:
             schema:
               $ref: "#/components/schemas/ManageInvitationRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:invitations
+        - token: []
       responses:
         "201":
           content:
@@ -5639,8 +5748,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:invitations
+        - token: []
       responses:
         "200":
           content:
@@ -5674,8 +5784,9 @@ paths:
             schema:
               $ref: "#/components/schemas/ManageInvitationRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:invitations
+        - token: []
       responses:
         "200":
           content:
@@ -5709,8 +5820,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedManageInvitationRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:invitations
+        - token: []
       responses:
         "200":
           content:
@@ -5749,8 +5861,9 @@ paths:
             schema:
               $ref: "#/components/schemas/ManageInvitationRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:invitations
+        - token: []
       responses:
         "200":
           content:
@@ -5820,8 +5933,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:users
+        - token: []
       responses:
         "200":
           content:
@@ -5842,8 +5956,9 @@ paths:
       tags:
         - manage
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:instance:users
+        - token: []
       responses:
         "200":
           content:
@@ -5877,8 +5992,9 @@ paths:
             schema:
               $ref: "#/components/schemas/ManageUserRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:users
+        - token: []
       responses:
         "200":
           content:
@@ -5912,8 +6028,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedManageUserRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:instance:users
+        - token: []
       responses:
         "200":
           content:
@@ -5946,8 +6063,9 @@ paths:
       tags:
         - moderation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:filters
+        - token: []
       responses:
         "200":
           content:
@@ -5975,8 +6093,9 @@ paths:
               $ref: "#/components/schemas/UserFilterRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:filters
+        - token: []
       responses:
         "201":
           content:
@@ -5997,8 +6116,9 @@ paths:
       tags:
         - moderation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:filters
+        - token: []
       responses:
         "200":
           content:
@@ -6018,8 +6138,9 @@ paths:
       tags:
         - moderation
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:filters
+        - token: []
       responses:
         "204":
           description: No response body
@@ -6044,8 +6165,9 @@ paths:
               $ref: "#/components/schemas/ReportRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:reports
+        - token: []
       responses:
         "201":
           content:
@@ -6094,8 +6216,7 @@ paths:
       tags:
         - mutations
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -6116,8 +6237,7 @@ paths:
       tags:
         - mutations
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -6137,8 +6257,7 @@ paths:
       tags:
         - mutations
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "204":
           description: No response body
@@ -6170,8 +6289,7 @@ paths:
               $ref: "#/components/schemas/APIMutationRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -6207,8 +6325,7 @@ paths:
               $ref: "#/components/schemas/APIMutationRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -6241,8 +6358,9 @@ paths:
       tags:
         - oauth
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:security
+        - token: []
       responses:
         "200":
           content:
@@ -6270,8 +6388,9 @@ paths:
               $ref: "#/components/schemas/CreateApplicationRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - null
+        - token: []
       responses:
         "201":
           content:
@@ -6291,8 +6410,9 @@ paths:
       tags:
         - oauth
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - null
+        - token: []
       responses:
         "200":
           content:
@@ -6326,8 +6446,9 @@ paths:
               $ref: "#/components/schemas/ApplicationRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:security
+        - token: []
       responses:
         "200":
           content:
@@ -6360,8 +6481,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedApplicationRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:security
+        - token: []
       responses:
         "200":
           content:
@@ -6380,8 +6502,9 @@ paths:
       tags:
         - oauth
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:security
+        - token: []
       responses:
         "204":
           description: No response body
@@ -6412,8 +6535,9 @@ paths:
               $ref: "#/components/schemas/CreateApplicationRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:security
+        - token: []
       responses:
         "200":
           content:
@@ -6437,8 +6561,9 @@ paths:
       tags:
         - oauth
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:security
+        - token: []
       responses:
         "200":
           content:
@@ -6463,8 +6588,9 @@ paths:
       tags:
         - oauth
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:security
+        - token: []
       responses:
         "200":
           content:
@@ -6486,8 +6612,9 @@ paths:
       tags:
         - oauth
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:security
+        - token: []
       responses:
         "204":
           description: No response body
@@ -6497,8 +6624,9 @@ paths:
       tags:
         - oembed
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -6563,8 +6691,9 @@ paths:
       tags:
         - playlists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:playlists
+        - token: []
       responses:
         "200":
           content:
@@ -6592,8 +6721,9 @@ paths:
               $ref: "#/components/schemas/PlaylistRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:playlists
+        - token: []
       responses:
         "201":
           content:
@@ -6614,8 +6744,9 @@ paths:
       tags:
         - playlists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:playlists
+        - token: []
       responses:
         "200":
           content:
@@ -6650,8 +6781,9 @@ paths:
               $ref: "#/components/schemas/PlaylistRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:playlists
+        - token: []
       responses:
         "200":
           content:
@@ -6685,8 +6817,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedPlaylistRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:playlists
+        - token: []
       responses:
         "200":
           content:
@@ -6706,8 +6839,9 @@ paths:
       tags:
         - playlists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:playlists
+        - token: []
       responses:
         "204":
           description: No response body
@@ -6739,8 +6873,9 @@ paths:
               $ref: "#/components/schemas/PlaylistAddManyRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:playlists
+        - token: []
       responses:
         "200":
           content:
@@ -6761,8 +6896,9 @@ paths:
       tags:
         - playlists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:playlists
+        - token: []
       responses:
         "204":
           description: No response body
@@ -6794,8 +6930,9 @@ paths:
               $ref: "#/components/schemas/PlaylistRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:playlists
+        - token: []
       responses:
         "200":
           content:
@@ -6831,8 +6968,9 @@ paths:
               $ref: "#/components/schemas/PlaylistRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:playlists
+        - token: []
       responses:
         "200":
           content:
@@ -6852,8 +6990,9 @@ paths:
       tags:
         - playlists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:playlists
+        - token: []
       responses:
         "204":
           description: No response body
@@ -6920,8 +7059,9 @@ paths:
       tags:
         - playlists
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:playlists
+        - token: []
       responses:
         "200":
           content:
@@ -6954,8 +7094,9 @@ paths:
       tags:
         - plugins
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:plugins
+        - token: []
       responses:
         "200":
           description: No response body
@@ -6964,8 +7105,9 @@ paths:
       tags:
         - plugins
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:plugins
+        - token: []
       responses:
         "201":
           description: No response body
@@ -6982,8 +7124,9 @@ paths:
       tags:
         - plugins
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:plugins
+        - token: []
       responses:
         "200":
           description: No response body
@@ -7000,8 +7143,9 @@ paths:
       tags:
         - plugins
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:plugins
+        - token: []
       responses:
         "200":
           description: No response body
@@ -7018,8 +7162,9 @@ paths:
       tags:
         - plugins
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:plugins
+        - token: []
       responses:
         "200":
           description: No response body
@@ -7036,8 +7181,9 @@ paths:
       tags:
         - plugins
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:plugins
+        - token: []
       responses:
         "200":
           description: No response body
@@ -7090,8 +7236,9 @@ paths:
       tags:
         - radios
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:radios
+        - token: []
       responses:
         "200":
           content:
@@ -7119,8 +7266,9 @@ paths:
               $ref: "#/components/schemas/RadioRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:radios
+        - token: []
       responses:
         "201":
           content:
@@ -7141,8 +7289,9 @@ paths:
       tags:
         - radios
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:radios
+        - token: []
       responses:
         "200":
           content:
@@ -7177,8 +7326,9 @@ paths:
               $ref: "#/components/schemas/RadioRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:radios
+        - token: []
       responses:
         "200":
           content:
@@ -7212,8 +7362,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedRadioRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:radios
+        - token: []
       responses:
         "200":
           content:
@@ -7233,8 +7384,9 @@ paths:
       tags:
         - radios
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:radios
+        - token: []
       responses:
         "204":
           description: No response body
@@ -7251,8 +7403,9 @@ paths:
       tags:
         - radios
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:radios
+        - token: []
       responses:
         "200":
           content:
@@ -7266,8 +7419,9 @@ paths:
       tags:
         - radios
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:radios
+        - token: []
       responses:
         "200":
           content:
@@ -7296,8 +7450,9 @@ paths:
               $ref: "#/components/schemas/RadioRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:radios
+        - token: []
       responses:
         "200":
           content:
@@ -7326,8 +7481,7 @@ paths:
               $ref: "#/components/schemas/RadioSessionRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "201":
           content:
@@ -7348,8 +7502,7 @@ paths:
       tags:
         - radios
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -7378,8 +7531,7 @@ paths:
               $ref: "#/components/schemas/RadioSessionTrackSerializerCreateRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "201":
           content:
@@ -7393,8 +7545,7 @@ paths:
       tags:
         - rate-limit
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -7408,8 +7559,9 @@ paths:
       tags:
         - search
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -7430,8 +7582,9 @@ paths:
       tags:
         - stream
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -7465,8 +7618,9 @@ paths:
       tags:
         - subscriptions
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -7487,8 +7641,9 @@ paths:
       tags:
         - subscriptions
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -7506,8 +7661,9 @@ paths:
       tags:
         - subscriptions
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -7562,8 +7718,9 @@ paths:
       tags:
         - tags
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -7583,8 +7740,9 @@ paths:
       tags:
         - tags
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -7613,8 +7771,7 @@ paths:
               $ref: "#/components/schemas/TextPreviewRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -7761,8 +7918,9 @@ paths:
       tags:
         - tracks
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -7784,8 +7942,9 @@ paths:
       tags:
         - tracks
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -7806,8 +7965,9 @@ paths:
       tags:
         - tracks
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -7942,8 +8102,7 @@ paths:
       tags:
         - tracks
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -7979,8 +8138,7 @@ paths:
               $ref: "#/components/schemas/TrackRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - token: []
       responses:
         "200":
           content:
@@ -8119,8 +8277,9 @@ paths:
       tags:
         - tracks
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -8259,8 +8418,9 @@ paths:
       tags:
         - tracks
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:edits
+        - token: []
       responses:
         "200":
           content:
@@ -8296,8 +8456,9 @@ paths:
               $ref: "#/components/schemas/TrackRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:edits
+        - token: []
       responses:
         "200":
           content:
@@ -8392,8 +8553,9 @@ paths:
       tags:
         - uploads
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -8421,8 +8583,9 @@ paths:
               $ref: "#/components/schemas/UploadForOwnerRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "201":
           content:
@@ -8443,8 +8606,9 @@ paths:
       tags:
         - uploads
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -8479,8 +8643,9 @@ paths:
               $ref: "#/components/schemas/UploadForOwnerRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -8514,8 +8679,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedUploadForOwnerRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -8535,8 +8701,9 @@ paths:
       tags:
         - uploads
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "204":
           description: No response body
@@ -8553,8 +8720,9 @@ paths:
       tags:
         - uploads
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -8594,8 +8762,9 @@ paths:
               $ref: "#/components/schemas/UploadForOwnerRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:libraries
+        - token: []
       responses:
         "200":
           content:
@@ -8631,8 +8800,9 @@ paths:
               $ref: "#/components/schemas/UserWriteRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:profile
+        - token: []
       responses:
         "200":
           content:
@@ -8666,8 +8836,9 @@ paths:
             schema:
               $ref: "#/components/schemas/PatchedUserWriteRequest"
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:profile
+        - token: []
       responses:
         "200":
           content:
@@ -8688,8 +8859,9 @@ paths:
       tags:
         - users
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:security
+        - token: []
       responses:
         "200":
           content:
@@ -8724,8 +8896,9 @@ paths:
               $ref: "#/components/schemas/UserWriteRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:security
+        - token: []
       responses:
         "200":
           content:
@@ -8745,8 +8918,9 @@ paths:
       tags:
         - users
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:security
+        - token: []
       responses:
         "204":
           description: No response body
@@ -8771,8 +8945,9 @@ paths:
               $ref: "#/components/schemas/UserWriteRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:security
+        - token: []
       responses:
         "200":
           description: No response body
@@ -8785,8 +8960,9 @@ paths:
       tags:
         - users
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - read:profile
+        - token: []
       responses:
         "200":
           content:
@@ -8800,8 +8976,9 @@ paths:
       tags:
         - users
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:profile
+        - token: []
       responses:
         "204":
           description: No response body
@@ -8827,8 +9004,9 @@ paths:
               $ref: "#/components/schemas/UserWriteRequest"
         required: true
       security:
-        - oauth2: []
-        - ApplicationToken: []
+        - oauth2:
+            - write:profile
+        - token: []
       responses:
         "200":
           content:
@@ -9165,6 +9343,7 @@ components:
           nullable: true
         artist:
           type: string
+          format: uuid
       required:
         - artist
         - title
@@ -9173,6 +9352,7 @@ components:
       properties:
         cover:
           type: string
+          format: uuid
           writeOnly: true
           nullable: true
         title:
@@ -9195,6 +9375,7 @@ components:
           nullable: true
         artist:
           type: string
+          format: uuid
       required:
         - artist
         - title
@@ -9635,6 +9816,7 @@ components:
       properties:
         cover:
           type: string
+          format: uuid
           writeOnly: true
           nullable: true
         name:
@@ -9720,6 +9902,7 @@ components:
       properties:
         cover:
           type: string
+          format: uuid
           writeOnly: true
           nullable: true
         name:
@@ -10068,10 +10251,12 @@ components:
           type: string
           readOnly: true
         additional_data:
-          type: string
+          type: object
+          additionalProperties: {}
           readOnly: true
         field:
-          type: string
+          type: object
+          additionalProperties: {}
           readOnly: true
       required:
         - additional_data
@@ -10237,7 +10422,7 @@ components:
           format: uuid
           readOnly: true
         target:
-          type: string
+          $ref: "#/components/schemas/Library"
         approved:
           type: boolean
           readOnly: true
@@ -10253,6 +10438,7 @@ components:
       properties:
         target:
           type: string
+          format: uuid
       required:
         - target
     LibraryForOwner:
@@ -13466,6 +13652,7 @@ components:
       properties:
         cover:
           type: string
+          format: uuid
           writeOnly: true
           nullable: true
         name:
@@ -13492,6 +13679,8 @@ components:
       properties:
         value:
           type: string
+      required:
+        - value
     PatchedInboxItemRequest:
       type: object
       properties:
@@ -13671,8 +13860,10 @@ components:
           nullable: true
         library:
           type: string
+          format: uuid
         channel:
           type: string
+          format: uuid
         import_status:
           allOf:
             - $ref: "#/components/schemas/ImportStatusEnum"
@@ -13721,6 +13912,7 @@ components:
           $ref: "#/components/schemas/PrivacyLevelEnum"
         avatar:
           type: string
+          format: uuid
           writeOnly: true
         instance_support_message_display_date:
           type: string
@@ -14776,9 +14968,9 @@ components:
             - $ref: "#/components/schemas/Track"
           nullable: true
         library:
-          type: string
+          $ref: "#/components/schemas/LibraryForOwner"
         channel:
-          type: string
+          $ref: "#/components/schemas/Channel"
         duration:
           type: integer
           readOnly: true
@@ -14840,8 +15032,10 @@ components:
           nullable: true
         library:
           type: string
+          format: uuid
         channel:
           type: string
+          format: uuid
         import_status:
           allOf:
             - $ref: "#/components/schemas/ImportStatusEnum"
@@ -15079,6 +15273,7 @@ components:
           $ref: "#/components/schemas/PrivacyLevelEnum"
         avatar:
           type: string
+          format: uuid
           writeOnly: true
         instance_support_message_display_date:
           type: string
@@ -15119,9 +15314,6 @@ components:
       required:
         - key
   securitySchemes:
-    ApplicationToken:
-      type: http
-      scheme: bearer
     oauth2:
       type: oauth2
       flows:
@@ -15179,6 +15371,9 @@ components:
             write:instance:reports: ""
             write:instance:requests: ""
             write:instance:notes: ""
+    token:
+      type: http
+      scheme: bearer
 servers:
   - url: https://demo.funkwhale.audio
     description: Demo Server
