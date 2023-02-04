@@ -57,8 +57,11 @@ class RegisterSerializer(BaseRegisterSerializer):
     )
 
     def __init__(self, *args, **kwargs):
-        self.approval_enabled = preferences.get("moderation__signup_approval_enabled")
         super().__init__(*args, **kwargs)
+        if getattr(self.context["view"], "swagger_fake_view", False):
+            return
+
+        self.approval_enabled = preferences.get("moderation__signup_approval_enabled")
         if self.approval_enabled:
             customization = preferences.get("moderation__signup_form_customization")
             self.fields[
