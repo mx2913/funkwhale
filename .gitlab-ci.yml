@@ -509,3 +509,28 @@ docker:
     name: docker_metadata_${CI_COMMIT_REF_NAME}
     paths:
       - metadata.json
+
+release:
+  stage: publish
+  needs:
+    - job: build_metadata
+      artifacts: true
+    - job: build_api
+      artifacts: true
+    - job: build_front
+      artifacts: true
+
+  image: $CI_REGISTRY/funkwhale/ci/python:3.11
+  variables:
+    <<: *keep_git_files_permissions
+  before_script:
+    - apt-get update
+    - apt-get install -y zip
+    - >
+      curl "https://gitlab.com/api/v4/projects/gitlab-org%2Frelease-cli/packages/generic/release-cli/latest/release-cli-linux-amd64"
+      --output /usr/local/bin/release-cli
+    - chmod +x /usr/local/bin/release-cli
+    - release-cli -v
+  script:
+    - make build
+    - scripts/ci-release.sh
