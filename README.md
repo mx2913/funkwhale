@@ -10,8 +10,8 @@ Want to help make Funkwhale even better? We welcome contributions from across th
 
 You can find contribution information in our [documentation hub](https://docs.funkwhale.audio).
 
-- [Developer guides](https://docs.funkwhale.audio/developers/index.html)
-- [Contributor guides](https://docs.funkwhale.audio/contributing.html)
+- [Developer guides](https://docs.funkwhale.audio/developer/index.html)
+- [Contributor guides](https://docs.funkwhale.audio/contributor/index.html)
 
 ## Get help
 

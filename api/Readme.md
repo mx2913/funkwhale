@@ -15,7 +15,7 @@ To authenticate with the Funkwhale API:
 4. Use your access token to authenticate your calls with the following format: `Authorization: Bearer <token>`
 5. Refresh your access token by sending a refresh request to `/api/v1/oauth/token`
 
-For more detailed instructions, see [our API authentication documentation](https://docs.funkwhale.audio/developers/authentication.html).
+For more detailed instructions, see [our API authentication documentation](https://docs.funkwhale.audio/developer/api/authentication.html).
 
 ## Application token authentication
 
@@ -32,8 +32,8 @@ Each API call returns HTTP headers to pass the following information:
 - How many more requests in the scope can be made within the rate-limit timeframe (`X-RateLimit-Remaining`)
 - How much time does the client need to wait to send another request (`Retry-After`)
 
-For more information, check our [rate limit documentation](https://docs.funkwhale.audio/admin/configuration.html#api-configuration)
+For more information, check our [rate limit documentation](https://docs.funkwhale.audio/develop/administrator/configuration/env-file.html#api-configuration)
 
 ## Resources
 
-For more information about API usage, refer to [our API documentation](https://docs.funkwhale.audio/api.html).
+For more information about API usage, refer to [our API documentation](https://docs.funkwhale.audio/developer/api/index.html).
