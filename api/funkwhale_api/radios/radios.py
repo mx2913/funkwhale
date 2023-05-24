@@ -4,6 +4,7 @@ import logging
 import random
 from typing import List, Optional, Tuple
 
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import connection
 from django.db.models import Q
@@ -79,7 +80,21 @@ class SessionRadio(SimpleRadio):
 
     def get_choices(self, **kwargs):
         kwargs.update(self.get_queryset_kwargs())
-        queryset = self.get_queryset(**kwargs)
+        if self.session and cache.get(
+            f"radioqueryset{self.__class__.__name__}{self.session.session_key}"
+        ):
+            logger.info("Using redis cache for radio generation")
+            queryset = cache.get(
+                f"radioqueryset{self.__class__.__name__}{self.session.session_key}"
+            )
+        else:
+            queryset = self.get_queryset(**kwargs)
+            logger.info("Setting redis cache for radio generation")
+            cache.set(
+                f"radioqueryset{self.__class__.__name__}{self.session.session_key}",
+                queryset,
+                3600,
+            )
         if self.session:
             queryset = self.filter_from_session(queryset)
             if kwargs.pop("filter_playable", True):
