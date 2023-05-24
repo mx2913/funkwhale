@@ -87,7 +87,7 @@ class SessionRadio(SimpleRadio):
             queryset = cache.get(
                 f"radioqueryset{self.__class__.__name__}{self.session.session_key}"
             )
-        else:
+        elif self.session:
             queryset = self.get_queryset(**kwargs)
             logger.info("Setting redis cache for radio generation")
             cache.set(
@@ -95,6 +95,9 @@ class SessionRadio(SimpleRadio):
                 queryset,
                 3600,
             )
+        else:
+            queryset = self.get_queryset(**kwargs)
+
         if self.session:
             queryset = self.filter_from_session(queryset)
             if kwargs.pop("filter_playable", True):
