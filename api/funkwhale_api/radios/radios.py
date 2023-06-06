@@ -80,18 +80,14 @@ class SessionRadio(SimpleRadio):
 
     def get_choices(self, **kwargs):
         kwargs.update(self.get_queryset_kwargs())
-        if self.session and cache.get(
-            f"radioqueryset{self.__class__.__name__}{self.session.session_key}"
-        ):
+        if self.session and cache.get(f"radioqueryset{self.session.id}"):
             logger.info("Using redis cache for radio generation")
-            queryset = cache.get(
-                f"radioqueryset{self.__class__.__name__}{self.session.session_key}"
-            )
+            queryset = cache.get(f"radioqueryset{self.session.id}")
         elif self.session:
             queryset = self.get_queryset(**kwargs)
             logger.info("Setting redis cache for radio generation")
             cache.set(
-                f"radioqueryset{self.__class__.__name__}{self.session.session_key}",
+                f"radioqueryset{self.session.id}",
                 queryset,
                 3600,
             )
