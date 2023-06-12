@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-from subprocess import call
+from subprocess import check_call
+
+from livereload import Server, shell
+
+BUILD_DIR = "/tmp/_build"
 
 # initial make
-call(["python3", "-m", "sphinx", ".", "/tmp/_build"])
-from livereload import Server, shell  # noqa: E402
+check_call(["make", "build", f"BUILD_DIR={BUILD_DIR}"])
 
 server = Server()
-server.watch("..", shell("python3 -m sphinx . /tmp/_build"))
-server.serve(root="/tmp/_build/", liveport=35730, port=8001, host="0.0.0.0")
+server.watch("..", shell(f"make build BUILD_DIR={BUILD_DIR}"))
+server.serve(root=BUILD_DIR, liveport=35730, port=8001, host="0.0.0.0")

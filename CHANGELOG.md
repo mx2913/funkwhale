@@ -2524,7 +2524,7 @@ And add some more `ProxyPass` directives so that the `Alias` part of your config
 
 In case you are using custom css and theming, you also need to match this block:
 
-```apache2
+```apacheconf
   ProxyPass "/settings.json" "!"
   Alias /settings.json /srv/funkwhale/custom/settings.json
 
