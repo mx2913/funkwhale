@@ -16,11 +16,14 @@ from funkwhale_api.moderation import filters as moderation_filters
 from funkwhale_api.music.models import Artist, Library, Track, Upload
 from funkwhale_api.radios import lb_recommendations
 from funkwhale_api.tags.models import Tag
-
+from funkwhale_api.radios.models import RadioSessionTrack
 from . import filters, models
 from .registries import registry
 
 logger = logging.getLogger(__name__)
+
+from funkwhale_api.music.models import Track, Prefetch
+from funkwhale_api.music import utils as music_utils
 
 
 class SimpleRadio:
@@ -64,11 +67,23 @@ class SessionRadio(SimpleRadio):
         return self.session
 
     def get_queryset(self, **kwargs):
-        qs = Track.objects.all()
+        qs = (
+            Track.objects.all()
+            .with_playable_uploads(actor=None)
+            .select_related("artist", "album__artist", "attributed_to")
+        )
+
         if not self.session:
             return qs
         if not self.session.user:
             return qs
+
+        qs = (
+            Track.objects.all()
+            .with_playable_uploads(self.session.user.actor)
+            .select_related("artist", "album__artist", "attributed_to")
+        )
+
         query = moderation_filters.get_filtered_content_query(
             config=moderation_filters.USER_FILTER_CONFIG["TRACK"],
             user=self.session.user,
@@ -80,20 +95,7 @@ class SessionRadio(SimpleRadio):
 
     def get_choices(self, **kwargs):
         kwargs.update(self.get_queryset_kwargs())
-        if self.session and cache.get(f"radioqueryset{self.session.id}"):
-            logger.info("Using redis cache for radio generation")
-            queryset = cache.get(f"radioqueryset{self.session.id}")
-        elif self.session:
-            queryset = self.get_queryset(**kwargs)
-            logger.info("Setting redis cache for radio generation")
-            cache.set(
-                f"radioqueryset{self.session.id}",
-                queryset,
-                3600,
-            )
-        else:
-            queryset = self.get_queryset(**kwargs)
-
+        queryset = self.get_queryset(**kwargs)
         if self.session:
             queryset = self.filter_from_session(queryset)
             if kwargs.pop("filter_playable", True):
@@ -120,9 +122,82 @@ class SessionRadio(SimpleRadio):
         choices = self.get_choices(**kwargs)
         picked_choices = super().pick_many(choices=choices, quantity=quantity)
         if self.session:
-            for choice in picked_choices:
-                self.session.add(choice)
+            self.session.add(picked_choices)
         return picked_choices
+
+    def cache_batch_radio_track(self, quantity, **kwargs):
+        BATCH_SIZE = 100
+        # get the queryset and apply filters
+        queryset = self.get_queryset(**kwargs)
+        queryset = self.filter_already_played_from_session(queryset)
+        if kwargs["filter_playable"] == True:
+            queryset = queryset.playable_by(
+                self.session.user.actor if self.session.user else None
+            )
+        queryset = self.filter_queryset(queryset)
+
+        # select a random batch of the qs
+        sliced_queryset = queryset.order_by("?")[:BATCH_SIZE]
+        if len(sliced_queryset) == 0:
+            raise ValueError("No more radio candidates")
+        # create the radio session tracks into db in bulk
+        radio_tracks = self.session.add(sliced_queryset)
+
+        # evaluate the queryset to save it in cache
+        evaluated_radio_tracks = [t for t in radio_tracks]
+        logger.debug(
+            f"Setting redis cache for radio generation with radio id {self.session.id}"
+        )
+        cache.set(f"radiosessiontracks{self.session.id}", evaluated_radio_tracks, 3600)
+        cache.set(f"radioqueryset{self.session.id}", sliced_queryset, 3600)
+
+        return sliced_queryset
+
+    def filter_already_played_from_session(self, queryset):
+        if already_played := self.session.session_tracks.filter(
+            played=True
+        ).values_list("track", flat=True):
+            logger.debug("Filtering already played track " + str(already_played))
+            queryset = queryset.exclude(pk__in=already_played)
+        else:
+            logger.debug("No track already played")
+        return queryset
+
+    def get_choices_v2(self, quantity, **kwargs):
+        kwargs.update(self.get_queryset_kwargs())
+        if cached_radio_tracks := cache.get(f"radiosessiontracks{self.session.id}"):
+            logger.debug("Using redis cache for radio generation")
+            radio_tracks = cached_radio_tracks
+            if len(radio_tracks) < quantity:
+                logger.debug(
+                    "Not enough radio tracks in cache. Trying to generate new cache"
+                )
+                sliced_queryset = self.cache_batch_radio_track(quantity, **kwargs)
+            sliced_queryset = cache.get(f"radioqueryset{self.session.id}")
+        else:
+            sliced_queryset = self.cache_batch_radio_track(quantity, **kwargs)
+
+        return sliced_queryset
+
+    def pick_v2(self, **kwargs):
+        return self.pick_many_v2(quantity=1, **kwargs)[0]
+
+    def pick_many_v2(self, quantity, **kwargs):
+        if self.session:
+            sliced_queryset = self.get_choices_v2(quantity, **kwargs)
+            evaluated_radio_tracks = cache.get(f"radiosessiontracks{self.session.id}")
+            batch = evaluated_radio_tracks[0:quantity]
+            for radiotrack in batch:
+                radiotrack.played = True
+                RadioSessionTrack.objects.bulk_update(batch, ["played"])
+
+        else:
+            logger.debug(
+                "No radio session. Can't track user playback. Won't cache queryset results"
+            )
+            sliced_queryset = self.get_choices_v2(quantity, **kwargs)
+
+        return sliced_queryset
 
     def validate_session(self, data, **context):
         return data

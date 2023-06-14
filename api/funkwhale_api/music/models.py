@@ -463,6 +463,8 @@ class TrackQuerySet(common_models.LocalFromFidQuerySet, models.QuerySet):
             return self.exclude(pk__in=matches)
 
     def with_playable_uploads(self, actor):
+        if not actor:
+            uploads = Upload.objects.filter(library__privacy_level="public")
         uploads = Upload.objects.playable_by(actor)
         return self.prefetch_related(
             models.Prefetch("uploads", queryset=uploads, to_attr="playable_uploads")

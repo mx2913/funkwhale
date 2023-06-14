@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.db.models import Q
 from drf_spectacular.utils import extend_schema
 from rest_framework import mixins, status, viewsets
@@ -10,6 +11,10 @@ from funkwhale_api.music.serializers import TrackSerializer
 from funkwhale_api.users.oauth import permissions as oauth_permissions
 
 from . import filters, filtersets, models, serializers
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class RadioViewSet(
@@ -153,6 +158,69 @@ class RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet)
             instance=session_track, context=self.get_serializer_context()
         )
         headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
+    def get_serializer_class(self, *args, **kwargs):
+        if self.action == "create":
+            return serializers.RadioSessionTrackSerializerCreate
+        return super().get_serializer_class(*args, **kwargs)
+
+
+class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    """Return a list of RadioSessionTracks"""
+
+    serializer_class = serializers.RadioSessionTrackSerializer
+    queryset = models.RadioSessionTrack.objects.all()
+    permission_classes = []
+
+    @extend_schema(operation_id="get_radio_tracks")
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        session = serializer.validated_data["session"]
+        count = (
+            serializer.validated_data["count"]
+            if "count" in serializer.validated_data.keys()
+            else 1
+        )
+        filter_playable = (
+            request.data["filter_playable"]
+            if "filter_playable" in request.data.keys()
+            else True
+        )
+        if not request.user.is_authenticated and not request.session.session_key:
+            self.request.session.create()
+        try:
+            assert (request.user == session.user) or (
+                request.session.session_key == session.session_key
+                and session.session_key
+            )
+        except AssertionError:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            session.radio.pick_many_v2(count, filter_playable=filter_playable)
+        except ValueError:
+            return Response(
+                "Radio doesn't have more candidates", status=status.HTTP_404_NOT_FOUND
+            )
+        # self.perform_create(serializer)
+        # dirty override here, since we use a different serializer for creation and detail
+        evaluated_radio_tracks = cache.get(f"radiosessiontracks{session.id}")
+        serializer = self.serializer_class(
+            data=evaluated_radio_tracks[:count],
+            context=self.get_serializer_context(),
+            many="true",
+        )
+        serializer.is_valid()
+        headers = self.get_success_headers(serializer.data)
+
+        # delete the tracks we send from the cache
+        new_cached_radiotracks = evaluated_radio_tracks[count:]
+        cache.set(f"radiosessiontracks{session.id}", new_cached_radiotracks)
+
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )

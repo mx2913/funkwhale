@@ -1,7 +1,10 @@
 from rest_framework import serializers
 
+from funkwhale_api.music import utils as music_utils
+
 from funkwhale_api.music.serializers import TrackSerializer
 from funkwhale_api.users.serializers import UserBasicSerializer
+from funkwhale_api.music import models as music_models
 
 from . import filters, models
 from .radios import registry
@@ -40,9 +43,11 @@ class RadioSerializer(serializers.ModelSerializer):
 
 
 class RadioSessionTrackSerializerCreate(serializers.ModelSerializer):
+    count = serializers.IntegerField(required=False, allow_null=True)
+
     class Meta:
         model = models.RadioSessionTrack
-        fields = ("session",)
+        fields = ("session", "count")
 
 
 class RadioSessionTrackSerializer(serializers.ModelSerializer):

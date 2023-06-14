@@ -68,12 +68,18 @@ class RadioSession(models.Model):
 
         return next_position
 
-    def add(self, track):
-        new_session_track = RadioSessionTrack.objects.create(
-            track=track, session=self, position=self.next_position
-        )
+    def add(self, tracks):
+        next_position = self.next_position
+        radio_session_tracks = []
+        for i, track in enumerate(tracks):
+            radio_session_track = RadioSessionTrack(
+                track=track, session=self, position=next_position + i, played=True
+            )
+            radio_session_tracks.append(radio_session_track)
 
-        return new_session_track
+        new_session_tracks = RadioSessionTrack.objects.bulk_create(radio_session_tracks)
+
+        return new_session_tracks
 
     @property
     def radio(self):
@@ -90,6 +96,7 @@ class RadioSessionTrack(models.Model):
     track = models.ForeignKey(
         Track, related_name="radio_session_tracks", on_delete=models.CASCADE
     )
+    played = models.BooleanField(default=False)
 
     class Meta:
         ordering = ("session", "position")
