@@ -12,10 +12,6 @@ from funkwhale_api.users.oauth import permissions as oauth_permissions
 
 from . import filters, filtersets, models, serializers
 
-import logging
-
-logger = logging.getLogger(__name__)
-
 
 class RadioViewSet(
     mixins.CreateModelMixin,

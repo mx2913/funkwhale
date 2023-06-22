@@ -17,13 +17,11 @@ from funkwhale_api.music.models import Artist, Library, Track, Upload
 from funkwhale_api.radios import lb_recommendations
 from funkwhale_api.tags.models import Tag
 from funkwhale_api.radios.models import RadioSessionTrack
+from funkwhale_api.tags.models import Tag
 from . import filters, models
 from .registries import registry
 
 logger = logging.getLogger(__name__)
-
-from funkwhale_api.music.models import Track, Prefetch
-from funkwhale_api.music import utils as music_utils
 
 
 class SimpleRadio:

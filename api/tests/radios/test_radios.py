@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse
 
 from funkwhale_api.favorites.models import TrackFavorite
+from funkwhale_api.music.models import Track
 from funkwhale_api.radios import models, radios, serializers
 
 
@@ -517,9 +518,6 @@ def test_can_get_choices_for_custom_radio_v2(factories):
     expected = [t.pk for t in tracks]
     for t in choices:
         assert t.id in expected
-
-
-from funkwhale_api.music.models import Track
 
 
 def test_can_cache_radio_track(factories):
