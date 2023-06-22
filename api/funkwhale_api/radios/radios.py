@@ -17,6 +17,7 @@ from funkwhale_api.music.models import Artist, Library, Track, Upload
 from funkwhale_api.radios import lb_recommendations
 from funkwhale_api.tags.models import Tag
 from funkwhale_api.radios.models import RadioSessionTrack
+
 from funkwhale_api.tags.models import Tag
 from . import filters, models
 from .registries import registry
@@ -128,7 +129,7 @@ class SessionRadio(SimpleRadio):
         # get the queryset and apply filters
         queryset = self.get_queryset(**kwargs)
         queryset = self.filter_already_played_from_session(queryset)
-        if kwargs["filter_playable"] == True:
+        if kwargs["filter_playable"] is True:
             queryset = queryset.playable_by(
                 self.session.user.actor if self.session.user else None
             )
