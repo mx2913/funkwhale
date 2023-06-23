@@ -184,9 +184,6 @@ class SessionRadio(SimpleRadio):
 
         return sliced_queryset[:quantity]
 
-    def pick_v2(self, **kwargs):
-        return self.pick_many_v2(quantity=1, **kwargs)[0]
-
     def pick_many_v2(self, quantity, **kwargs):
         if self.session:
             sliced_queryset = self.get_choices_v2(quantity=quantity, **kwargs)

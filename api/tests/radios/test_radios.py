@@ -525,7 +525,7 @@ def test_can_cache_radio_track(factories):
     user = factories["users.User"]()
     radio = radios.RandomRadio()
     session = radio.start_session(user)
-    picked = session.radio.pick_v2(filter_playable=False)
+    picked = session.radio.pick_many_v2(quantity=1, filter_playable=False)
     assert len(picked) == 1
     for t in cache.get(f"radiosessiontracks{session.id}"):
         assert t.track in uploads
