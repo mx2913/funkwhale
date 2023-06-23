@@ -6,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from funkwhale_api.common import permissions as common_permissions
+from funkwhale_api.radios.models import RadioSessionTrack
 from funkwhale_api.music import utils as music_utils
 from funkwhale_api.music.serializers import TrackSerializer
 from funkwhale_api.users.oauth import permissions as oauth_permissions
@@ -181,6 +182,7 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
             if "count" in serializer.validated_data.keys()
             else 1
         )
+        # this is used for test purpose.
         filter_playable = (
             request.data["filter_playable"]
             if "filter_playable" in request.data.keys()
@@ -205,13 +207,20 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
         # self.perform_create(serializer)
         # dirty override here, since we use a different serializer for creation and detail
         evaluated_radio_tracks = cache.get(f"radiosessiontracks{session.id}")
+        batch = evaluated_radio_tracks[:count]
+
         serializer = self.serializer_class(
-            data=evaluated_radio_tracks[:count],
+            data=batch,
             context=self.get_serializer_context(),
             many="true",
         )
         serializer.is_valid()
         headers = self.get_success_headers(serializer.data)
+
+        # mark the RadioTracks has played
+        for radiotrack in batch:
+            radiotrack.played = True
+            RadioSessionTrack.objects.bulk_update(batch, ["played"])
 
         # delete the tracks we send from the cache
         new_cached_radiotracks = evaluated_radio_tracks[count:]

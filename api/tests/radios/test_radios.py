@@ -1,4 +1,6 @@
 import json
+
+import logging
 import random
 
 import pytest
@@ -523,14 +525,35 @@ def test_can_get_choices_for_custom_radio_v2(factories):
 def test_can_cache_radio_track(factories):
     uploads = factories["music.Track"].create_batch(10)
     user = factories["users.User"]()
-    for t in Track.objects.all().playable_by(user.actor):
-        assert t in uploads
-
     radio = radios.RandomRadio()
     session = radio.start_session(user)
     picked = session.radio.pick_many_v2(quantity=1, filter_playable=False)
-    assert len(picked) == 10
-    for t in cache.get(f"radioqueryset{session.id}"):
-        assert t in picked
+    assert len(picked) == 1
     for t in cache.get(f"radiosessiontracks{session.id}"):
         assert t.track in uploads
+
+
+def test_regenerate_cache_if_not_enought_tracks_in_it(
+    factories, caplog, logged_in_api_client
+):
+    logger = logging.getLogger("funkwhale_api.radios.radios")
+    caplog.set_level(logging.INFO)
+    logger.addHandler(caplog.handler)
+
+    factories["music.Track"].create_batch(10)
+    user = factories["users.User"]()
+    url = reverse("api:v1:radios:sessions-list")
+    response = logged_in_api_client.post(url, {"radio_type": "random"})
+    session = models.RadioSession.objects.latest("id")
+    url = reverse("api:v2:radios:tracks-list")
+    logged_in_api_client.post(
+        url, {"session": session.pk, "count": 9, "filter_playable": False}
+    )
+    response = logged_in_api_client.post(
+        url, {"session": session.pk, "count": 10, "filter_playable": False}
+    )
+    pick = json.loads(response.content.decode("utf-8"))
+    assert (
+        "Not enough radio tracks in cache. Trying to generate new cache" in caplog.text
+    )
+    assert len(pick) == 1

@@ -124,9 +124,13 @@ class SessionRadio(SimpleRadio):
             self.session.add(picked_choices)
         return picked_choices
 
-    def cache_batch_radio_track(self, quantity, **kwargs):
+    def cache_batch_radio_track(self, **kwargs):
         BATCH_SIZE = 100
+        # get cached RadioTracks if any
+        old_evaluated_radio_tracks = cache.get(f"radiosessiontracks{self.session.id}")
+
         # get the queryset and apply filters
+        kwargs.update(self.get_queryset_kwargs())
         queryset = self.get_queryset(**kwargs)
         queryset = self.filter_already_played_from_session(queryset)
         if kwargs["filter_playable"] is True:
@@ -137,18 +141,24 @@ class SessionRadio(SimpleRadio):
 
         # select a random batch of the qs
         sliced_queryset = queryset.order_by("?")[:BATCH_SIZE]
-        if len(sliced_queryset) == 0:
+        if len(sliced_queryset) == 0 and not old_evaluated_radio_tracks:
             raise ValueError("No more radio candidates")
-        # create the radio session tracks into db in bulk
-        radio_tracks = self.session.add(sliced_queryset)
 
-        # evaluate the queryset to save it in cache
-        evaluated_radio_tracks = [t for t in radio_tracks]
-        logger.debug(
-            f"Setting redis cache for radio generation with radio id {self.session.id}"
-        )
-        cache.set(f"radiosessiontracks{self.session.id}", evaluated_radio_tracks, 3600)
-        cache.set(f"radioqueryset{self.session.id}", sliced_queryset, 3600)
+        if len(sliced_queryset) > 0:
+            # create the radio session tracks into db in bulk
+            radio_tracks = self.session.add(sliced_queryset)
+
+            # evaluate the queryset to save it in cache
+            evaluated_radio_tracks = [t for t in radio_tracks]
+            if old_evaluated_radio_tracks is not None:
+                evaluated_radio_tracks.append(old_evaluated_radio_tracks)
+            logger.info(
+                f"Setting redis cache for radio generation with radio id {self.session.id}"
+            )
+            cache.set(
+                f"radiosessiontracks{self.session.id}", evaluated_radio_tracks, 3600
+            )
+            cache.set(f"radioqueryset{self.session.id}", sliced_queryset, 3600)
 
         return sliced_queryset
 
@@ -163,38 +173,31 @@ class SessionRadio(SimpleRadio):
         return queryset
 
     def get_choices_v2(self, quantity, **kwargs):
-        kwargs.update(self.get_queryset_kwargs())
         if cached_radio_tracks := cache.get(f"radiosessiontracks{self.session.id}"):
-            logger.debug("Using redis cache for radio generation")
+            logger.info("Using redis cache for radio generation")
             radio_tracks = cached_radio_tracks
             if len(radio_tracks) < quantity:
-                logger.debug(
+                logger.info(
                     "Not enough radio tracks in cache. Trying to generate new cache"
                 )
-                sliced_queryset = self.cache_batch_radio_track(quantity, **kwargs)
+                sliced_queryset = self.cache_batch_radio_track(**kwargs)
             sliced_queryset = cache.get(f"radioqueryset{self.session.id}")
         else:
-            sliced_queryset = self.cache_batch_radio_track(quantity, **kwargs)
+            sliced_queryset = self.cache_batch_radio_track(**kwargs)
 
-        return sliced_queryset
+        return sliced_queryset[:quantity]
 
     def pick_v2(self, **kwargs):
         return self.pick_many_v2(quantity=1, **kwargs)[0]
 
     def pick_many_v2(self, quantity, **kwargs):
         if self.session:
-            sliced_queryset = self.get_choices_v2(quantity, **kwargs)
-            evaluated_radio_tracks = cache.get(f"radiosessiontracks{self.session.id}")
-            batch = evaluated_radio_tracks[0:quantity]
-            for radiotrack in batch:
-                radiotrack.played = True
-                RadioSessionTrack.objects.bulk_update(batch, ["played"])
-
+            sliced_queryset = self.get_choices_v2(quantity=quantity, **kwargs)
         else:
-            logger.debug(
+            logger.info(
                 "No radio session. Can't track user playback. Won't cache queryset results"
             )
-            sliced_queryset = self.get_choices_v2(quantity, **kwargs)
+            sliced_queryset = self.get_choices_v2(quantity=quantity, **kwargs)
 
         return sliced_queryset
 
