@@ -8,7 +8,6 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse
 
 from funkwhale_api.favorites.models import TrackFavorite
-from funkwhale_api.music.models import Track
 from funkwhale_api.radios import models, radios, serializers
 
 
@@ -526,7 +525,7 @@ def test_can_cache_radio_track(factories):
     user = factories["users.User"]()
     radio = radios.RandomRadio()
     session = radio.start_session(user)
-    picked = session.radio.pick_many_v2(quantity=1, filter_playable=False)
+    picked = session.radio.pick_v2(filter_playable=False)
     assert len(picked) == 1
     for t in cache.get(f"radiosessiontracks{session.id}"):
         assert t.track in uploads
@@ -540,7 +539,7 @@ def test_regenerate_cache_if_not_enought_tracks_in_it(
     logger.addHandler(caplog.handler)
 
     factories["music.Track"].create_batch(10)
-    user = factories["users.User"]()
+    factories["users.User"]()
     url = reverse("api:v1:radios:sessions-list")
     response = logged_in_api_client.post(url, {"radio_type": "random"})
     session = models.RadioSession.objects.latest("id")
