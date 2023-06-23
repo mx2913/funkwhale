@@ -14,11 +14,8 @@ from funkwhale_api.federation import fields as federation_fields
 from funkwhale_api.federation import models as federation_models
 from funkwhale_api.moderation import filters as moderation_filters
 from funkwhale_api.music.models import Artist, Library, Track, Upload
-from funkwhale_api.radios import lb_recommendations
 from funkwhale_api.tags.models import Tag
-from funkwhale_api.radios.models import RadioSessionTrack
 
-from funkwhale_api.tags.models import Tag
 from . import filters, models
 from .registries import registry
 
