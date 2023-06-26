@@ -1,6 +1,7 @@
 import datetime
 import json
 import logging
+import pickle
 import random
 from typing import List, Optional, Tuple
 
@@ -124,7 +125,10 @@ class SessionRadio(SimpleRadio):
     def cache_batch_radio_track(self, **kwargs):
         BATCH_SIZE = 100
         # get cached RadioTracks if any
-        old_evaluated_radio_tracks = cache.get(f"radiosessiontracks{self.session.id}")
+        try :
+            cached_evaluated_radio_tracks = pickle.loads(cache.get(f"radiosessiontracks{self.session.id}"))
+        except TypeError :
+            cached_evaluated_radio_tracks = None
 
         # get the queryset and apply filters
         kwargs.update(self.get_queryset_kwargs())
@@ -138,24 +142,23 @@ class SessionRadio(SimpleRadio):
 
         # select a random batch of the qs
         sliced_queryset = queryset.order_by("?")[:BATCH_SIZE]
-        if len(sliced_queryset) == 0 and not old_evaluated_radio_tracks:
+        if len(sliced_queryset) <= 0 and not cached_evaluated_radio_tracks:
             raise ValueError("No more radio candidates")
 
-        if len(sliced_queryset) > 0:
-            # create the radio session tracks into db in bulk
-            radio_tracks = self.session.add(sliced_queryset)
+        # create the radio session tracks into db in bulk
+        radio_tracks = self.session.add(sliced_queryset)
 
-            # evaluate the queryset to save it in cache
-            evaluated_radio_tracks = [t for t in radio_tracks]
-            if old_evaluated_radio_tracks is not None:
-                evaluated_radio_tracks.append(old_evaluated_radio_tracks)
-            logger.info(
-                f"Setting redis cache for radio generation with radio id {self.session.id}"
-            )
-            cache.set(
-                f"radiosessiontracks{self.session.id}", evaluated_radio_tracks, 3600
-            )
-            cache.set(f"radioqueryset{self.session.id}", sliced_queryset, 3600)
+        # evaluate the queryset to save it in cache
+        if cached_evaluated_radio_tracks is not None:
+            radio_tracks = [t for t in radio_tracks]
+            radio_tracks.extend(cached_evaluated_radio_tracks)
+        logger.info(
+            f"Setting redis cache for radio generation with radio id {self.session.id}"
+        )
+        cache.set(
+            f"radiosessiontracks{self.session.id}", pickle.dumps(radio_tracks), 3600
+        )
+        cache.set(f"radioqueryset{self.session.id}", sliced_queryset, 3600)
 
         return sliced_queryset
 
@@ -170,7 +173,8 @@ class SessionRadio(SimpleRadio):
         return queryset
 
     def get_choices_v2(self, quantity, **kwargs):
-        if cached_radio_tracks := cache.get(f"radiosessiontracks{self.session.id}"):
+        if cache.get(f"radiosessiontracks{self.session.id}") :
+            cached_radio_tracks = pickle.loads(cache.get(f"radiosessiontracks{self.session.id}"))
             logger.info("Using redis cache for radio generation")
             radio_tracks = cached_radio_tracks
             if len(radio_tracks) < quantity:

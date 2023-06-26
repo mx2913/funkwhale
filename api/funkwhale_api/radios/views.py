@@ -1,3 +1,5 @@
+import pickle
+
 from django.core.cache import cache
 from django.db.models import Q
 from drf_spectacular.utils import extend_schema
@@ -123,7 +125,7 @@ class RadioSessionViewSet(
         return context
 
 
-class RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class V1_RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = serializers.RadioSessionTrackSerializer
     queryset = models.RadioSessionTrack.objects.all()
     permission_classes = []
@@ -206,9 +208,8 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
             )
         # self.perform_create(serializer)
         # dirty override here, since we use a different serializer for creation and detail
-        evaluated_radio_tracks = cache.get(f"radiosessiontracks{session.id}")
+        evaluated_radio_tracks = pickle.loads(cache.get(f"radiosessiontracks{session.id}"))
         batch = evaluated_radio_tracks[:count]
-
         serializer = self.serializer_class(
             data=batch,
             context=self.get_serializer_context(),
@@ -222,9 +223,9 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
             radiotrack.played = True
             RadioSessionTrack.objects.bulk_update(batch, ["played"])
 
-        # delete the tracks we send from the cache
+        # delete the tracks we sent from the cache
         new_cached_radiotracks = evaluated_radio_tracks[count:]
-        cache.set(f"radiosessiontracks{session.id}", new_cached_radiotracks)
+        cache.set(f"radiosessiontracks{session.id}", pickle.dumps(new_cached_radiotracks))
 
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers

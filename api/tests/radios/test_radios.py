@@ -1,5 +1,6 @@
 import json
 import logging
+import pickle
 import random
 
 import pytest
@@ -103,8 +104,7 @@ def test_can_get_choices_for_custom_radio(factories):
     choices = session.radio.get_choices(filter_playable=False)
 
     expected = [t.pk for t in tracks]
-    for t in list(choices.values_list("id", flat=True)):
-        assert t in expected
+    assert list(choices.values_list("id", flat=True)) == expected
 
 
 def test_cannot_start_custom_radio_if_not_owner_or_not_public(factories):
@@ -423,8 +423,7 @@ def test_get_choices_for_custom_radio_exclude_artist(factories):
     choices = session.radio.get_choices(filter_playable=False)
 
     expected = [u.track.pk for u in included_uploads]
-    for t in list(choices.values_list("id", flat=True)):
-        assert t in expected
+    assert list(choices.values_list("id", flat=True)) == expected
 
 
 def test_get_choices_for_custom_radio_exclude_tag(factories):
@@ -442,8 +441,7 @@ def test_get_choices_for_custom_radio_exclude_tag(factories):
     choices = session.radio.get_choices(filter_playable=False)
 
     expected = [u.track.pk for u in included_uploads]
-    for t in list(choices.values_list("id", flat=True)):
-        assert t in expected
+    assert list(choices.values_list("id", flat=True)) == expected
 
 
 def test_can_start_custom_multiple_radio_from_api(api_client, factories):
@@ -527,7 +525,7 @@ def test_can_cache_radio_track(factories):
     session = radio.start_session(user)
     picked = session.radio.pick_many_v2(quantity=1, filter_playable=False)
     assert len(picked) == 1
-    for t in cache.get(f"radiosessiontracks{session.id}"):
+    for t in pickle.loads(cache.get(f"radiosessiontracks{session.id}")):
         assert t.track in uploads
 
 
