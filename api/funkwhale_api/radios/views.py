@@ -208,7 +208,9 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
             )
         # self.perform_create(serializer)
         # dirty override here, since we use a different serializer for creation and detail
-        evaluated_radio_tracks = pickle.loads(cache.get(f"radiosessiontracks{session.id}"))
+        evaluated_radio_tracks = pickle.loads(
+            cache.get(f"radiosessiontracks{session.id}")
+        )
         batch = evaluated_radio_tracks[:count]
         serializer = self.serializer_class(
             data=batch,
@@ -225,7 +227,9 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
 
         # delete the tracks we sent from the cache
         new_cached_radiotracks = evaluated_radio_tracks[count:]
-        cache.set(f"radiosessiontracks{session.id}", pickle.dumps(new_cached_radiotracks))
+        cache.set(
+            f"radiosessiontracks{session.id}", pickle.dumps(new_cached_radiotracks)
+        )
 
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers

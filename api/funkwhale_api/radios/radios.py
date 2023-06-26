@@ -125,9 +125,11 @@ class SessionRadio(SimpleRadio):
     def cache_batch_radio_track(self, **kwargs):
         BATCH_SIZE = 100
         # get cached RadioTracks if any
-        try :
-            cached_evaluated_radio_tracks = pickle.loads(cache.get(f"radiosessiontracks{self.session.id}"))
-        except TypeError :
+        try:
+            cached_evaluated_radio_tracks = pickle.loads(
+                cache.get(f"radiosessiontracks{self.session.id}")
+            )
+        except TypeError:
             cached_evaluated_radio_tracks = None
 
         # get the queryset and apply filters
@@ -173,8 +175,10 @@ class SessionRadio(SimpleRadio):
         return queryset
 
     def get_choices_v2(self, quantity, **kwargs):
-        if cache.get(f"radiosessiontracks{self.session.id}") :
-            cached_radio_tracks = pickle.loads(cache.get(f"radiosessiontracks{self.session.id}"))
+        if cache.get(f"radiosessiontracks{self.session.id}"):
+            cached_radio_tracks = pickle.loads(
+                cache.get(f"radiosessiontracks{self.session.id}")
+            )
             logger.info("Using redis cache for radio generation")
             radio_tracks = cached_radio_tracks
             if len(radio_tracks) < quantity:
@@ -280,7 +284,9 @@ class CustomMultiple(SessionRadio):
 
     def validate_session(self, data, **context):
         data = super().validate_session(data, **context)
-        if data.get("config") is None:
+        try:
+            data["config"] is not None
+        except KeyError:
             raise serializers.ValidationError(
                 "You must provide a configuration for this radio"
             )
