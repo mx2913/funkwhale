@@ -64,7 +64,6 @@ class SessionRadio(SimpleRadio):
         return self.session
 
     def get_queryset(self, **kwargs):
-
         if not self.session or not self.session.user:
             return (
                 Track.objects.all()
