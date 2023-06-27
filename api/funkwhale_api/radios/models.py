@@ -73,7 +73,7 @@ class RadioSession(models.Model):
         radio_session_tracks = []
         for i, track in enumerate(tracks):
             radio_session_track = RadioSessionTrack(
-                track=track, session=self, position=next_position + i, played=True
+                track=track, session=self, position=next_position + i
             )
             radio_session_tracks.append(radio_session_track)
 
@@ -96,7 +96,6 @@ class RadioSessionTrack(models.Model):
     track = models.ForeignKey(
         Track, related_name="radio_session_tracks", on_delete=models.CASCADE
     )
-    played = models.BooleanField(default=False)
 
     class Meta:
         ordering = ("session", "position")

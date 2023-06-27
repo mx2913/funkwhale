@@ -29,14 +29,14 @@ class SimpleRadio:
     def clean(self, instance):
         return
 
-    def pick(
+    def pick_v1(
         self, choices: List[int], previous_choices: Optional[List[int]] = None
     ) -> int:
         if previous_choices:
             choices = list(set(choices).difference(set(previous_choices)))
         return random.sample(choices, 1)[0]
 
-    def pick_many(self, choices: List[int], quantity: int) -> int:
+    def pick_many_v1(self, choices: List[int], quantity: int) -> int:
         return random.sample(list(set(choices)), quantity)
 
     def weighted_pick(
@@ -64,22 +64,19 @@ class SessionRadio(SimpleRadio):
         return self.session
 
     def get_queryset(self, **kwargs):
-        qs = (
-            Track.objects.all()
-            .with_playable_uploads(actor=None)
-            .select_related("artist", "album__artist", "attributed_to")
-        )
 
-        if not self.session:
-            return qs
-        if not self.session.user:
-            return qs
-
-        qs = (
-            Track.objects.all()
-            .with_playable_uploads(self.session.user.actor)
-            .select_related("artist", "album__artist", "attributed_to")
-        )
+        if not self.session or not self.session.user:
+            return (
+                Track.objects.all()
+                .with_playable_uploads(actor=None)
+                .select_related("artist", "album__artist", "attributed_to")
+            )
+        else:
+            qs = (
+                Track.objects.all()
+                .with_playable_uploads(self.session.user.actor)
+                .select_related("artist", "album__artist", "attributed_to")
+            )
 
         query = moderation_filters.get_filtered_content_query(
             config=moderation_filters.USER_FILTER_CONFIG["TRACK"],
@@ -89,18 +86,6 @@ class SessionRadio(SimpleRadio):
 
     def get_queryset_kwargs(self):
         return {}
-
-    def get_choices(self, **kwargs):
-        kwargs.update(self.get_queryset_kwargs())
-        queryset = self.get_queryset(**kwargs)
-        if self.session:
-            queryset = self.filter_from_session(queryset)
-            if kwargs.pop("filter_playable", True):
-                queryset = queryset.playable_by(
-                    self.session.user.actor if self.session.user else None
-                )
-        queryset = self.filter_queryset(queryset)
-        return queryset
 
     def filter_queryset(self, queryset):
         return queryset
@@ -112,12 +97,24 @@ class SessionRadio(SimpleRadio):
         queryset = queryset.exclude(pk__in=already_played)
         return queryset
 
-    def pick(self, **kwargs):
-        return self.pick_many(quantity=1, **kwargs)[0]
+    def get_choices_v1(self, **kwargs):
+        kwargs.update(self.get_queryset_kwargs())
+        queryset = self.get_queryset(**kwargs)
+        if self.session:
+            queryset = self.filter_from_session(queryset)
+            if kwargs.pop("filter_playable", True):
+                queryset = queryset.playable_by(
+                    self.session.user.actor if self.session.user else None
+                )
+        queryset = self.filter_queryset(queryset)
+        return queryset
 
-    def pick_many(self, quantity, **kwargs):
-        choices = self.get_choices(**kwargs)
-        picked_choices = super().pick_many(choices=choices, quantity=quantity)
+    def pick_v1(self, **kwargs):
+        return self.pick_many_v1(quantity=1, **kwargs)[0]
+
+    def pick_many_v1(self, quantity, **kwargs):
+        choices = self.get_choices_v1(**kwargs)
+        picked_choices = super().pick_many_v1(choices=choices, quantity=quantity)
         if self.session:
             self.session.add(picked_choices)
         return picked_choices
@@ -135,7 +132,8 @@ class SessionRadio(SimpleRadio):
         # get the queryset and apply filters
         kwargs.update(self.get_queryset_kwargs())
         queryset = self.get_queryset(**kwargs)
-        queryset = self.filter_already_played_from_session(queryset)
+        queryset = self.filter_from_session(queryset)
+
         if kwargs["filter_playable"] is True:
             queryset = queryset.playable_by(
                 self.session.user.actor if self.session.user else None
@@ -152,7 +150,7 @@ class SessionRadio(SimpleRadio):
 
         # evaluate the queryset to save it in cache
         if cached_evaluated_radio_tracks is not None:
-            radio_tracks = [t for t in radio_tracks]
+            radio_tracks = list(radio_tracks)
             radio_tracks.extend(cached_evaluated_radio_tracks)
         logger.info(
             f"Setting redis cache for radio generation with radio id {self.session.id}"
@@ -163,16 +161,6 @@ class SessionRadio(SimpleRadio):
         cache.set(f"radioqueryset{self.session.id}", sliced_queryset, 3600)
 
         return sliced_queryset
-
-    def filter_already_played_from_session(self, queryset):
-        if already_played := self.session.session_tracks.filter(
-            played=True
-        ).values_list("track", flat=True):
-            logger.debug("Filtering already played track " + str(already_played))
-            queryset = queryset.exclude(pk__in=already_played)
-        else:
-            logger.debug("No track already played")
-        return queryset
 
     def get_choices_v2(self, quantity, **kwargs):
         if cache.get(f"radiosessiontracks{self.session.id}"):

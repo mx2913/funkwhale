@@ -10,7 +10,6 @@ from rest_framework.response import Response
 from funkwhale_api.common import permissions as common_permissions
 from funkwhale_api.music import utils as music_utils
 from funkwhale_api.music.serializers import TrackSerializer
-from funkwhale_api.radios.models import RadioSessionTrack
 from funkwhale_api.users.oauth import permissions as oauth_permissions
 
 from . import filters, filtersets, models, serializers
@@ -137,15 +136,13 @@ class V1_RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewS
         session = serializer.validated_data["session"]
         if not request.user.is_authenticated and not request.session.session_key:
             self.request.session.create()
-        try:
-            assert (request.user == session.user) or (
-                request.session.session_key == session.session_key
-                and session.session_key
-            )
-        except AssertionError:
+        if not request.user == session.user or not (
+            request.session.session_key == session.session_key and session.session_key
+        ):
             return Response(status=status.HTTP_403_FORBIDDEN)
+
         try:
-            session.radio.pick()
+            session.radio.pick_v1()
         except ValueError:
             return Response(
                 "Radio doesn't have more candidates", status=status.HTTP_404_NOT_FOUND
@@ -192,12 +189,10 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
         )
         if not request.user.is_authenticated and not request.session.session_key:
             self.request.session.create()
-        try:
-            assert (request.user == session.user) or (
-                request.session.session_key == session.session_key
-                and session.session_key
-            )
-        except AssertionError:
+
+        if not request.user == session.user or not (
+            request.session.session_key == session.session_key and session.session_key
+        ):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         try:
@@ -219,11 +214,6 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
         )
         serializer.is_valid()
         headers = self.get_success_headers(serializer.data)
-
-        # mark the RadioTracks has played
-        for radiotrack in batch:
-            radiotrack.played = True
-            RadioSessionTrack.objects.bulk_update(batch, ["played"])
 
         # delete the tracks we sent from the cache
         new_cached_radiotracks = evaluated_radio_tracks[count:]
