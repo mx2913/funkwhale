@@ -136,8 +136,9 @@ class V1_RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewS
         session = serializer.validated_data["session"]
         if not request.user.is_authenticated and not request.session.session_key:
             self.request.session.create()
-        if not request.user == session.user or not (
-            request.session.session_key == session.session_key and session.session_key
+        if not request.user == session.user or (
+            not request.session.session_key == session.session_key
+            and not session.session_key
         ):
             return Response(status=status.HTTP_403_FORBIDDEN)
 
@@ -164,18 +165,19 @@ class V1_RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewS
         return super().get_serializer_class(*args, **kwargs)
 
 
-class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class RadioSessionTracksViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """Return a list of RadioSessionTracks"""
 
     serializer_class = serializers.RadioSessionTrackSerializer
     queryset = models.RadioSessionTrack.objects.all()
     permission_classes = []
 
-    @extend_schema(operation_id="get_radio_tracks")
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+    @extend_schema(operation_id="get_radio_tracks_get")
+    def list(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
         session = serializer.validated_data["session"]
+
         count = (
             serializer.validated_data["count"]
             if "count" in serializer.validated_data.keys()
@@ -183,18 +185,18 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
         )
         # this is used for test purpose.
         filter_playable = (
-            request.data["filter_playable"]
-            if "filter_playable" in request.data.keys()
+            request.query_params["filter_playable"]
+            if "filter_playable" in request.query_params.keys()
             else True
         )
         if not request.user.is_authenticated and not request.session.session_key:
             self.request.session.create()
 
-        if not request.user == session.user or not (
-            request.session.session_key == session.session_key and session.session_key
+        if not request.user == session.user or (
+            not request.session.session_key == session.session_key
+            and not session.session_key
         ):
             return Response(status=status.HTTP_403_FORBIDDEN)
-
         try:
             session.radio.pick_many_v2(count, filter_playable=filter_playable)
         except ValueError:
@@ -213,7 +215,6 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
             many="true",
         )
         serializer.is_valid()
-        headers = self.get_success_headers(serializer.data)
 
         # delete the tracks we sent from the cache
         new_cached_radiotracks = evaluated_radio_tracks[count:]
@@ -222,10 +223,11 @@ class RadioSessionTracksViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet
         )
 
         return Response(
-            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+            serializer.data,
+            status=status.HTTP_201_CREATED,
         )
 
     def get_serializer_class(self, *args, **kwargs):
-        if self.action == "create":
+        if self.action == "list":
             return serializers.RadioSessionTrackSerializerCreate
         return super().get_serializer_class(*args, **kwargs)

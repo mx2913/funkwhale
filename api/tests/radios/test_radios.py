@@ -203,7 +203,7 @@ def test_can_get_track_for_session_from_api_v2(factories, logged_in_api_client):
     session = models.RadioSession.objects.latest("id")
 
     url = reverse("api:v2:radios:tracks-list")
-    response = logged_in_api_client.post(url, {"session": session.pk})
+    response = logged_in_api_client.get(url, {"session": session.pk})
     data = json.loads(response.content.decode("utf-8"))
 
     assert data[0]["track"]["id"] == track.pk
@@ -212,7 +212,7 @@ def test_can_get_track_for_session_from_api_v2(factories, logged_in_api_client):
     next_track = factories["music.Upload"](
         library__actor=actor, import_status="finished"
     ).track
-    response = logged_in_api_client.post(url, {"session": session.pk})
+    response = logged_in_api_client.get(url, {"session": session.pk})
     data = json.loads(response.content.decode("utf-8"))
 
     assert data[0]["track"]["id"] == next_track.id
@@ -470,7 +470,7 @@ def test_session_radio_excludes_previous_picks_v2(factories, logged_in_api_clien
     previous_choices = []
 
     for i in range(5):
-        response = logged_in_api_client.post(
+        response = logged_in_api_client.get(
             url, {"session": session.pk, "filter_playable": False}
         )
         pick = json.loads(response.content.decode("utf-8"))
@@ -478,7 +478,7 @@ def test_session_radio_excludes_previous_picks_v2(factories, logged_in_api_clien
         assert pick[0]["track"]["title"] in [t.title for t in tracks]
         previous_choices.append(pick[0]["track"]["title"])
 
-    response = logged_in_api_client.post(url, {"session": session.pk})
+    response = logged_in_api_client.get(url, {"session": session.pk})
     assert (
         json.loads(response.content.decode("utf-8"))
         == "Radio doesn't have more candidates"
@@ -542,10 +542,10 @@ def test_regenerate_cache_if_not_enought_tracks_in_it(
     response = logged_in_api_client.post(url, {"radio_type": "random"})
     session = models.RadioSession.objects.latest("id")
     url = reverse("api:v2:radios:tracks-list")
-    logged_in_api_client.post(
+    logged_in_api_client.get(
         url, {"session": session.pk, "count": 9, "filter_playable": False}
     )
-    response = logged_in_api_client.post(
+    response = logged_in_api_client.get(
         url, {"session": session.pk, "count": 10, "filter_playable": False}
     )
     pick = json.loads(response.content.decode("utf-8"))
