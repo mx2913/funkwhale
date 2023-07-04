@@ -165,15 +165,16 @@ class V1_RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewS
         return super().get_serializer_class(*args, **kwargs)
 
 
-class RadioSessionTracksViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
-    """Return a list of RadioSessionTracks"""
+class V2_RadioSessionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """Returns a list of RadioSessions"""
 
-    serializer_class = serializers.RadioSessionTrackSerializer
-    queryset = models.RadioSessionTrack.objects.all()
+    serializer_class = serializers.RadioSessionSerializer
+    queryset = models.RadioSession.objects.all()
     permission_classes = []
 
-    @extend_schema(operation_id="get_radio_tracks_get")
-    def list(self, request, *args, **kwargs):
+    @action(detail=True, serializer_class=serializers.RadioSessionTrackSerializer)
+    def tracks(self, request, *args, **kwargs):
+        """Returns tracks for the given radio session"""
         serializer = self.get_serializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
         session = serializer.validated_data["session"]
