@@ -176,7 +176,12 @@ class V2_RadioSessionViewSet(
 
     @action(detail=True, serializer_class=serializers.RadioSessionTrackSerializerCreate)
     def tracks(self, request, pk, *args, **kwargs):
-        data = request.query_params
+        data = {"session": pk}
+        data["count"] = (
+            request.query_params["count"]
+            if "count" in request.query_params.keys()
+            else 1
+        )
         serializer = serializers.RadioSessionTrackSerializerCreate(data=data)
         serializer.is_valid(raise_exception=True)
         session = serializer.validated_data["session"]

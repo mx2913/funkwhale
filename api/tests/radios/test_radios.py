@@ -557,12 +557,8 @@ def test_regenerate_cache_if_not_enought_tracks_in_it(
     response = logged_in_api_client.post(url, {"radio_type": "random"})
     session = models.RadioSession.objects.latest("id")
     url = reverse("api:v2:radios:sessions-tracks", kwargs={"pk": session.pk})
-    logged_in_api_client.get(
-        url, {"session": session.pk, "count": 9, "filter_playable": False}
-    )
-    response = logged_in_api_client.get(
-        url, {"session": session.pk, "count": 10, "filter_playable": False}
-    )
+    logged_in_api_client.get(url, {"count": 9, "filter_playable": False})
+    response = logged_in_api_client.get(url, {"count": 10, "filter_playable": False})
     pick = json.loads(response.content.decode("utf-8"))
     assert (
         "Not enough radio tracks in cache. Trying to generate new cache" in caplog.text
