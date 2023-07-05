@@ -150,6 +150,21 @@ def test_can_use_radio_session_to_filter_choices(factories):
     assert len(set(tracks_id)) == 10
 
 
+def test_can_use_radio_session_to_filter_choices_v2(factories):
+    factories["music.Upload"].create_batch(10)
+    user = factories["users.User"]()
+    radio = radios.RandomRadio()
+    session = radio.start_session(user)
+
+    radio.pick_many_v2(quantity=10, filter_playable=False)
+
+    # ensure 10 different tracks have been suggested
+    tracks_id = [
+        session_track.track.pk for session_track in session.session_tracks.all()
+    ]
+    assert len(set(tracks_id)) == 10
+
+
 def test_can_restore_radio_from_previous_session(factories):
     user = factories["users.User"]()
     radio = radios.RandomRadio()
@@ -202,7 +217,7 @@ def test_can_get_track_for_session_from_api_v2(factories, logged_in_api_client):
     response = logged_in_api_client.post(url, {"radio_type": "random"})
     session = models.RadioSession.objects.latest("id")
 
-    url = reverse("api:v2:radios:tracks-list")
+    url = reverse("api:v2:radios:sessions-tracks", kwargs={"pk": session.pk})
     response = logged_in_api_client.get(url, {"session": session.pk})
     data = json.loads(response.content.decode("utf-8"))
 
@@ -465,7 +480,7 @@ def test_session_radio_excludes_previous_picks_v2(factories, logged_in_api_clien
     url = reverse("api:v1:radios:sessions-list")
     response = logged_in_api_client.post(url, {"radio_type": "random"})
     session = models.RadioSession.objects.latest("id")
-    url = reverse("api:v2:radios:tracks-list")
+    url = reverse("api:v2:radios:sessions-tracks", kwargs={"pk": session.pk})
 
     previous_choices = []
 
@@ -541,7 +556,7 @@ def test_regenerate_cache_if_not_enought_tracks_in_it(
     url = reverse("api:v1:radios:sessions-list")
     response = logged_in_api_client.post(url, {"radio_type": "random"})
     session = models.RadioSession.objects.latest("id")
-    url = reverse("api:v2:radios:tracks-list")
+    url = reverse("api:v2:radios:sessions-tracks", kwargs={"pk": session.pk})
     logged_in_api_client.get(
         url, {"session": session.pk, "count": 9, "filter_playable": False}
     )

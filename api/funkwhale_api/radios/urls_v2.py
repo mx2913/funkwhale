@@ -4,7 +4,7 @@ from . import views
 
 router = routers.OptionalSlashRouter()
 
-router.register(r"sessions", views.V2_RadioSessionViewSet, "tracks")
+router.register(r"sessions", views.V2_RadioSessionViewSet, "sessions")
 
 
 urlpatterns = router.urls

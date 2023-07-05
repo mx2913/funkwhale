@@ -165,17 +165,19 @@ class V1_RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewS
         return super().get_serializer_class(*args, **kwargs)
 
 
-class V2_RadioSessionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class V2_RadioSessionViewSet(
+    mixins.CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+):
     """Returns a list of RadioSessions"""
 
     serializer_class = serializers.RadioSessionSerializer
     queryset = models.RadioSession.objects.all()
     permission_classes = []
 
-    @action(detail=True, serializer_class=serializers.RadioSessionTrackSerializer)
-    def tracks(self, request, *args, **kwargs):
-        """Returns tracks for the given radio session"""
-        serializer = self.get_serializer(data=request.query_params)
+    @action(detail=True, serializer_class=serializers.RadioSessionTrackSerializerCreate)
+    def tracks(self, request, pk, *args, **kwargs):
+        data = request.query_params
+        serializer = serializers.RadioSessionTrackSerializerCreate(data=data)
         serializer.is_valid(raise_exception=True)
         session = serializer.validated_data["session"]
 
@@ -210,9 +212,8 @@ class V2_RadioSessionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             cache.get(f"radiosessiontracks{session.id}")
         )
         batch = evaluated_radio_tracks[:count]
-        serializer = self.serializer_class(
+        serializer = serializers.RadioSessionTrackSerializer(
             data=batch,
-            context=self.get_serializer_context(),
             many="true",
         )
         serializer.is_valid()
@@ -227,8 +228,3 @@ class V2_RadioSessionViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             serializer.data,
             status=status.HTTP_201_CREATED,
         )
-
-    def get_serializer_class(self, *args, **kwargs):
-        if self.action == "list":
-            return serializers.RadioSessionTrackSerializerCreate
-        return super().get_serializer_class(*args, **kwargs)
