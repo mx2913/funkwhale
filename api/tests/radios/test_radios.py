@@ -221,8 +221,7 @@ def test_can_get_track_for_session_from_api_v2(factories, logged_in_api_client):
     response = logged_in_api_client.get(url, {"session": session.pk})
     data = json.loads(response.content.decode("utf-8"))
 
-    assert data[0]["track"]["id"] == track.pk
-    assert data[0]["position"] == 1
+    assert data[0]["id"] == track.pk
 
     next_track = factories["music.Upload"](
         library__actor=actor, import_status="finished"
@@ -230,8 +229,7 @@ def test_can_get_track_for_session_from_api_v2(factories, logged_in_api_client):
     response = logged_in_api_client.get(url, {"session": session.pk})
     data = json.loads(response.content.decode("utf-8"))
 
-    assert data[0]["track"]["id"] == next_track.id
-    assert data[0]["position"] == 2
+    assert data[0]["id"] == next_track.id
 
 
 def test_related_object_radio_validate_related_object(factories):
@@ -489,9 +487,9 @@ def test_session_radio_excludes_previous_picks_v2(factories, logged_in_api_clien
             url, {"session": session.pk, "filter_playable": False}
         )
         pick = json.loads(response.content.decode("utf-8"))
-        assert pick[0]["track"]["title"] not in previous_choices
-        assert pick[0]["track"]["title"] in [t.title for t in tracks]
-        previous_choices.append(pick[0]["track"]["title"])
+        assert pick[0]["title"] not in previous_choices
+        assert pick[0]["title"] in [t.title for t in tracks]
+        previous_choices.append(pick[0]["title"])
 
     response = logged_in_api_client.get(url, {"session": session.pk})
     assert (
@@ -540,8 +538,8 @@ def test_can_cache_radio_track(factories):
     session = radio.start_session(user)
     picked = session.radio.pick_many_v2(quantity=1, filter_playable=False)
     assert len(picked) == 1
-    for t in pickle.loads(cache.get(f"radiosessiontracks{session.id}")):
-        assert t.track in uploads
+    for t in pickle.loads(cache.get(f"radiotracks{session.id}")):
+        assert t in uploads
 
 
 def test_regenerate_cache_if_not_enought_tracks_in_it(

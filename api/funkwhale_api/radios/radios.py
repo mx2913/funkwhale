@@ -123,7 +123,7 @@ class SessionRadio(SimpleRadio):
         # get cached RadioTracks if any
         try:
             cached_evaluated_radio_tracks = pickle.loads(
-                cache.get(f"radiosessiontracks{self.session.id}")
+                cache.get(f"radiotracks{self.session.id}")
             )
         except TypeError:
             cached_evaluated_radio_tracks = None
@@ -145,26 +145,25 @@ class SessionRadio(SimpleRadio):
             raise ValueError("No more radio candidates")
 
         # create the radio session tracks into db in bulk
-        radio_tracks = self.session.add(sliced_queryset)
+        self.session.add(sliced_queryset)
 
         # evaluate the queryset to save it in cache
+        radio_tracks = list(sliced_queryset)
+
         if cached_evaluated_radio_tracks is not None:
-            radio_tracks = list(radio_tracks)
             radio_tracks.extend(cached_evaluated_radio_tracks)
         logger.info(
             f"Setting redis cache for radio generation with radio id {self.session.id}"
         )
-        cache.set(
-            f"radiosessiontracks{self.session.id}", pickle.dumps(radio_tracks), 3600
-        )
+        cache.set(f"radiotracks{self.session.id}", pickle.dumps(radio_tracks), 3600)
         cache.set(f"radioqueryset{self.session.id}", sliced_queryset, 3600)
 
         return sliced_queryset
 
     def get_choices_v2(self, quantity, **kwargs):
-        if cache.get(f"radiosessiontracks{self.session.id}"):
+        if cache.get(f"radiotracks{self.session.id}"):
             cached_radio_tracks = pickle.loads(
-                cache.get(f"radiosessiontracks{self.session.id}")
+                cache.get(f"radiotracks{self.session.id}")
             )
             logger.info("Using redis cache for radio generation")
             radio_tracks = cached_radio_tracks
