@@ -74,6 +74,7 @@ ARG install_dev_deps=0
 RUN --mount=type=cache,target=~/.cache/pip; \
   set -eux; \
   if [ "$install_dev_deps" = "1" ] ; then \
+  if [ "$install_dev_deps" = "1" ] ; then \
    grep -Ev 'cryptography|lxml|pillow|psycopg2|watchfiles' /dev-requirements.txt \
    | pip3 install -r /dev/stdin \
    cryptography==38.0.3 \

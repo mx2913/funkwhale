@@ -7,6 +7,7 @@ import manifest from './pwa-manifest.json'
 
 import VueI18n from '@intlify/unplugin-vue-i18n/vite'
 import Vue from '@vitejs/plugin-vue'
+import VueMacros from 'unplugin-vue-macros/vite'
 
 
 const port = +(process.env.VUE_PORT ?? 8080)
@@ -14,9 +15,17 @@ const port = +(process.env.VUE_PORT ?? 8080)
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   envPrefix: ['VUE_', 'FUNKWHALE_SENTRY_'],
+  build: {
+    sourcemap: true
+  },
   plugins: [
-    // https://github.com/vitejs/vite/tree/main/packages/plugin-vue
-    Vue(),
+    // https://vue-macros.sxzz.moe/
+    VueMacros({
+      plugins: {
+        // https://github.com/vitejs/vite/tree/main/packages/plugin-vue
+        vue: Vue(),
+      }
+    }),
 
     // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
     VueI18n({
@@ -79,7 +88,7 @@ export default defineConfig(({ mode }) => ({
     },
     setupFiles: [
       './test/setup/mock-audio-context.ts',
-      './test/setup/mock-vue-i18n.ts',
+      './test/setup/mock-vue-i18n.ts'
     ]
   }
 }))
