@@ -1,8 +1,10 @@
 import os
+
 import mutagen
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.db.models import Q
+
 from funkwhale_api.music import models, utils
 from funkwhale_api.playlists import models as playlist_models
 from funkwhale_api.users import models as user_models
@@ -69,10 +71,10 @@ def get_fw_track_list(self, directory, playlist, **options):
     return fw_tracks
 
 
-def add_tracks_to_playlist(self, directory, playlist_name, user, **options):
+def add_tracks_to_playlist(self, directory, user, **options):
+    playlist_name = os.path.basename(directory)
     playlist = create_or_check_playlist(self, playlist_name, user, **options)
     fw_track_list = get_fw_track_list(self, directory, playlist, **options)
-
     if options["yes"] is True:
         return playlist.insert_many(fw_track_list, allow_duplicates=False)
 
@@ -124,6 +126,5 @@ class Command(BaseCommand):
         user = user_models.User.objects.get(id=options["user_id"])
 
         for directory in all_subdirectories:
-            self.stdout.write(f"Processing directory: {directory}")
-            playlist_name = os.path.basename(directory)
-            add_tracks_to_playlist(self, directory, playlist_name, user, **options)
+            # self.stdout.write(f"Processing directory: {directory}")
+            add_tracks_to_playlist(self, directory, user, **options)
