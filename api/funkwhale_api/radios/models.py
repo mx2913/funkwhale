@@ -55,7 +55,7 @@ class RadioSession(models.Model):
     config = JSONField(encoder=DjangoJSONEncoder, blank=True, null=True)
 
     def save(self, **kwargs):
-        self.radio.clean(self)
+        # self.radio.clean(self)
         super().save(**kwargs)
 
     @property
@@ -81,11 +81,11 @@ class RadioSession(models.Model):
 
         return new_session_tracks
 
-    @property
-    def radio(self):
+    def radio(self, api_version):
         from .registries import registry
 
-        return registry[self.radio_type](session=self)
+        radio_type = self.radio_type + api_version
+        return registry[radio_type](session=self)
 
 
 class RadioSessionTrack(models.Model):

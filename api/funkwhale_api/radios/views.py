@@ -206,7 +206,14 @@ class V2_RadioSessionViewSet(
         ):
             return Response(status=status.HTTP_403_FORBIDDEN)
         try:
-            session.radio.pick_many_v2(count, filter_playable=filter_playable)
+            # needed for for registeries, and we need to use it for linter
+            from . import radio_v2
+
+            radio_v2.datetime()
+
+            session.radio(api_version="_v2").pick_many_v2(
+                count, filter_playable=filter_playable
+            )
         except ValueError:
             return Response(
                 "Radio doesn't have more candidates", status=status.HTTP_404_NOT_FOUND
