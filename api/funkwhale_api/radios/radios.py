@@ -17,7 +17,7 @@ from funkwhale_api.moderation import filters as moderation_filters
 from funkwhale_api.music.models import Artist, Library, Track, Upload
 from funkwhale_api.tags.models import Tag
 
-from . import filters, models
+from . import filters, lb_recommendations, models
 from .registries import registry
 
 logger = logging.getLogger(__name__)
