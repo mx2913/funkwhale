@@ -4,7 +4,6 @@ import pickle
 import random
 
 from django.core.cache import cache
-
 from django.urls import reverse
 
 from funkwhale_api.favorites.models import TrackFavorite

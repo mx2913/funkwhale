@@ -2,8 +2,8 @@ import json
 import random
 
 import pytest
-from rest_framework.exceptions import ValidationError
 from django.urls import reverse
+from rest_framework.exceptions import ValidationError
 
 from funkwhale_api.favorites.models import TrackFavorite
 from funkwhale_api.radios import models, radios, serializers
@@ -191,7 +191,6 @@ def test_can_get_track_for_session_from_api(factories, logged_in_api_client):
 
 
 def test_related_object_radio_validate_related_object(factories):
-
     # cannot start without related object
     radio = {"radio_type": "tag"}
     serializer = serializers.RadioSessionSerializer()
