@@ -206,10 +206,10 @@ class V2_RadioSessionViewSet(
         ):
             return Response(status=status.HTTP_403_FORBIDDEN)
         try:
-            # # needed for for registeries, and we need to use it for linter
-            from . import radio_v2
+            # # needed for registeries, and we need to use it for linter
+            from . import radios_v2
 
-            radio_v2
+            radios_v2
 
             session.radio.pick_many(count, filter_playable=filter_playable)
         except ValueError:

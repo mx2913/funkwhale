@@ -55,10 +55,6 @@ class RadioSession(models.Model):
     config = JSONField(encoder=DjangoJSONEncoder, blank=True, null=True)
     api_version = models.PositiveIntegerField(blank=True, null=True)
 
-    def save(self, **kwargs):
-        self.radio.clean(self)
-        super().save(**kwargs)
-
     @property
     def next_position(self):
         next_position = 1

@@ -1,11 +1,8 @@
 import json
-import logging
-import pickle
 import random
 
 import pytest
-from django.core.cache import cache
-from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError
 from django.urls import reverse
 
 from funkwhale_api.favorites.models import TrackFavorite
@@ -17,13 +14,13 @@ def test_can_pick_track_from_choices():
 
     radio = radios.SimpleRadio()
 
-    first_pick = radio.pick_v1(choices=choices)
+    first_pick = radio.pick(choices=choices)
 
     assert first_pick in choices
 
     previous_choices = [first_pick]
     for remaining_choice in choices:
-        pick = radio.pick_v1(choices=choices, previous_choices=previous_choices)
+        pick = radio.pick(choices=choices, previous_choices=previous_choices)
         assert pick in set(choices).difference(set(previous_choices))
 
 
@@ -62,14 +59,14 @@ def test_session_radio_excludes_previous_picks(factories):
     radio.start_session(user)
 
     for i in range(5):
-        pick = radio.pick_v1(user=user, filter_playable=False)
+        pick = radio.pick(user=user, filter_playable=False)
         assert pick in tracks
         assert pick not in previous_choices
         previous_choices.append(pick)
 
     with pytest.raises(ValueError):
         # no more picks available
-        radio.pick_v1(user=user, filter_playable=False)
+        radio.pick(user=user, filter_playable=False)
 
 
 def test_can_get_choices_for_favorites_radio(factories):
@@ -80,7 +77,7 @@ def test_can_get_choices_for_favorites_radio(factories):
         TrackFavorite.add(track=random.choice(tracks), user=user)
 
     radio = radios.FavoritesRadio()
-    choices = radio.get_choices_v1(user=user)
+    choices = radio.get_choices(user=user)
 
     assert choices.count() == user.track_favorites.all().count()
 
@@ -88,7 +85,7 @@ def test_can_get_choices_for_favorites_radio(factories):
         assert favorite.track in choices
 
     for i in range(5):
-        pick = radio.pick_v1(user=user)
+        pick = radio.pick(user=user)
         assert pick in choices
 
 
@@ -101,7 +98,7 @@ def test_can_get_choices_for_custom_radio(factories):
     session = factories["radios.CustomRadioSession"](
         custom_radio__config=[{"type": "artist", "ids": [artist.pk]}]
     )
-    choices = session.radio.get_choices_v1(filter_playable=False)
+    choices = session.radio.get_choices(filter_playable=False)
 
     expected = [t.pk for t in tracks]
     assert list(choices.values_list("id", flat=True)) == expected
@@ -141,22 +138,7 @@ def test_can_use_radio_session_to_filter_choices(factories):
     session = radio.start_session(user)
 
     for i in range(10):
-        radio.pick_v1(filter_playable=False)
-
-    # ensure 10 different tracks have been suggested
-    tracks_id = [
-        session_track.track.pk for session_track in session.session_tracks.all()
-    ]
-    assert len(set(tracks_id)) == 10
-
-
-def test_can_use_radio_session_to_filter_choices_v2(factories):
-    factories["music.Upload"].create_batch(10)
-    user = factories["users.User"]()
-    radio = radios.RandomRadio()
-    session = radio.start_session(user)
-
-    radio.pick_many_v2(quantity=10, filter_playable=False)
+        radio.pick(filter_playable=False)
 
     # ensure 10 different tracks have been suggested
     tracks_id = [
@@ -208,41 +190,19 @@ def test_can_get_track_for_session_from_api(factories, logged_in_api_client):
     assert data["position"] == 2
 
 
-def test_can_get_track_for_session_from_api_v2(factories, logged_in_api_client):
-    actor = logged_in_api_client.user.create_actor()
-    track = factories["music.Upload"](
-        library__actor=actor, import_status="finished"
-    ).track
-    url = reverse("api:v1:radios:sessions-list")
-    response = logged_in_api_client.post(url, {"radio_type": "random"})
-    session = models.RadioSession.objects.latest("id")
-
-    url = reverse("api:v2:radios:sessions-tracks", kwargs={"pk": session.pk})
-    response = logged_in_api_client.get(url, {"session": session.pk})
-    data = json.loads(response.content.decode("utf-8"))
-
-    assert data[0]["id"] == track.pk
-
-    next_track = factories["music.Upload"](
-        library__actor=actor, import_status="finished"
-    ).track
-    response = logged_in_api_client.get(url, {"session": session.pk})
-    data = json.loads(response.content.decode("utf-8"))
-
-    assert data[0]["id"] == next_track.id
-
-
 def test_related_object_radio_validate_related_object(factories):
-    user = factories["users.User"]()
+
     # cannot start without related object
-    radio = radios.ArtistRadio()
+    radio = {"radio_type": "tag"}
+    serializer = serializers.RadioSessionSerializer()
     with pytest.raises(ValidationError):
-        radio.start_session(user)
+        serializer.validate(data=radio)
 
     # cannot start with bad related object type
-    radio = radios.ArtistRadio()
+    radio = {"radio_type": "tag", "related_object": "whatever"}
+    serializer = serializers.RadioSessionSerializer()
     with pytest.raises(ValidationError):
-        radio.start_session(user, related_object=user)
+        serializer.validate(data=radio)
 
 
 def test_can_start_artist_radio(factories):
@@ -256,7 +216,7 @@ def test_can_start_artist_radio(factories):
     session = radio.start_session(user, related_object=artist)
     assert session.radio_type == "artist"
     for i in range(5):
-        assert radio.pick_v1(filter_playable=False) in good_tracks
+        assert radio.pick(filter_playable=False) in good_tracks
 
 
 def test_can_start_tag_radio(factories):
@@ -274,7 +234,7 @@ def test_can_start_tag_radio(factories):
     assert session.radio_type == "tag"
 
     for i in range(3):
-        assert radio.pick_v1(filter_playable=False) in good_tracks
+        assert radio.pick(filter_playable=False) in good_tracks
 
 
 def test_can_start_actor_content_radio(factories):
@@ -293,7 +253,7 @@ def test_can_start_actor_content_radio(factories):
     assert session.radio_type == "actor-content"
 
     for i in range(3):
-        assert radio.pick_v1() in good_tracks
+        assert radio.pick() in good_tracks
 
 
 def test_can_start_actor_content_radio_from_api(
@@ -329,7 +289,7 @@ def test_can_start_library_radio(factories):
     assert session.radio_type == "library"
 
     for i in range(3):
-        assert radio.pick_v1(filter_playable=False) in good_tracks
+        assert radio.pick(filter_playable=False) in good_tracks
 
 
 def test_can_start_library_radio_from_api(logged_in_api_client, preferences, factories):
@@ -375,7 +335,7 @@ def test_can_start_less_listened_radio(factories):
     radio.start_session(user)
 
     for i in range(5):
-        assert radio.pick_v1(filter_playable=False) in good_tracks
+        assert radio.pick(filter_playable=False) in good_tracks
 
 
 def test_similar_radio_track(factories):
@@ -392,7 +352,7 @@ def test_similar_radio_track(factories):
     expected_next = factories["music.Track"]()
     factories["history.Listening"](track=expected_next, user=l1.user)
 
-    assert radio.pick_v1(filter_playable=False) == expected_next
+    assert radio.pick(filter_playable=False) == expected_next
 
 
 def test_session_radio_get_queryset_ignore_filtered_track_artist(
@@ -433,7 +393,7 @@ def test_get_choices_for_custom_radio_exclude_artist(factories):
             {"type": "artist", "ids": [excluded_artist.pk], "not": True},
         ]
     )
-    choices = session.radio.get_choices_v1(filter_playable=False)
+    choices = session.radio.get_choices(filter_playable=False)
 
     expected = [u.track.pk for u in included_uploads]
     assert list(choices.values_list("id", flat=True)) == expected
@@ -451,7 +411,7 @@ def test_get_choices_for_custom_radio_exclude_tag(factories):
             {"type": "tag", "names": ["rock"], "not": True},
         ]
     )
-    choices = session.radio.get_choices_v1(filter_playable=False)
+    choices = session.radio.get_choices(filter_playable=False)
 
     expected = [u.track.pk for u in included_uploads]
     assert list(choices.values_list("id", flat=True)) == expected
@@ -471,94 +431,3 @@ def test_can_start_custom_multiple_radio_from_api(api_client, factories):
             format="json",
         )
         assert response.status_code == 201
-
-
-def test_session_radio_excludes_previous_picks_v2(factories, logged_in_api_client):
-    tracks = factories["music.Track"].create_batch(5)
-    url = reverse("api:v1:radios:sessions-list")
-    response = logged_in_api_client.post(url, {"radio_type": "random"})
-    session = models.RadioSession.objects.latest("id")
-    url = reverse("api:v2:radios:sessions-tracks", kwargs={"pk": session.pk})
-
-    previous_choices = []
-
-    for i in range(5):
-        response = logged_in_api_client.get(
-            url, {"session": session.pk, "filter_playable": False}
-        )
-        pick = json.loads(response.content.decode("utf-8"))
-        assert pick[0]["title"] not in previous_choices
-        assert pick[0]["title"] in [t.title for t in tracks]
-        previous_choices.append(pick[0]["title"])
-
-    response = logged_in_api_client.get(url, {"session": session.pk})
-    assert (
-        json.loads(response.content.decode("utf-8"))
-        == "Radio doesn't have more candidates"
-    )
-
-
-def test_can_get_choices_for_favorites_radio_v2(factories):
-    files = factories["music.Upload"].create_batch(10)
-    tracks = [f.track for f in files]
-    user = factories["users.User"]()
-    for i in range(5):
-        TrackFavorite.add(track=random.choice(tracks), user=user)
-
-    radio = radios.FavoritesRadio()
-    session = radio.start_session(user=user)
-    choices = session.radio.get_choices_v2(quantity=100, filter_playable=False)
-
-    assert len(choices) == user.track_favorites.all().count()
-
-    for favorite in user.track_favorites.all():
-        assert favorite.track in choices
-
-
-def test_can_get_choices_for_custom_radio_v2(factories):
-    artist = factories["music.Artist"]()
-    files = factories["music.Upload"].create_batch(5, track__artist=artist)
-    tracks = [f.track for f in files]
-    factories["music.Upload"].create_batch(5)
-
-    session = factories["radios.CustomRadioSession"](
-        custom_radio__config=[{"type": "artist", "ids": [artist.pk]}]
-    )
-    choices = session.radio.get_choices_v2(quantity=1, filter_playable=False)
-
-    expected = [t.pk for t in tracks]
-    for t in choices:
-        assert t.id in expected
-
-
-def test_can_cache_radio_track(factories):
-    uploads = factories["music.Track"].create_batch(10)
-    user = factories["users.User"]()
-    radio = radios.RandomRadio()
-    session = radio.start_session(user)
-    picked = session.radio.pick_many_v2(quantity=1, filter_playable=False)
-    assert len(picked) == 1
-    for t in pickle.loads(cache.get(f"radiotracks{session.id}")):
-        assert t in uploads
-
-
-def test_regenerate_cache_if_not_enought_tracks_in_it(
-    factories, caplog, logged_in_api_client
-):
-    logger = logging.getLogger("funkwhale_api.radios.radios")
-    caplog.set_level(logging.INFO)
-    logger.addHandler(caplog.handler)
-
-    factories["music.Track"].create_batch(10)
-    factories["users.User"]()
-    url = reverse("api:v1:radios:sessions-list")
-    response = logged_in_api_client.post(url, {"radio_type": "random"})
-    session = models.RadioSession.objects.latest("id")
-    url = reverse("api:v2:radios:sessions-tracks", kwargs={"pk": session.pk})
-    logged_in_api_client.get(url, {"count": 9, "filter_playable": False})
-    response = logged_in_api_client.get(url, {"count": 10, "filter_playable": False})
-    pick = json.loads(response.content.decode("utf-8"))
-    assert (
-        "Not enough radio tracks in cache. Trying to generate new cache" in caplog.text
-    )
-    assert len(pick) == 1
