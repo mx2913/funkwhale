@@ -56,7 +56,7 @@ class RadioSession(models.Model):
     api_version = models.PositiveIntegerField(blank=True, null=True)
 
     def save(self, **kwargs):
-        # self.radio.clean(self)
+        self.radio.clean(self)
         super().save(**kwargs)
 
     @property
