@@ -1,11 +1,9 @@
 import datetime
 import json
 import logging
-import pickle
 import random
 from typing import List, Optional, Tuple
 
-from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import connection
 from django.db.models import Q
