@@ -18,7 +18,7 @@ from funkwhale_api.music.models import Artist, Library, Track, Upload
 from funkwhale_api.tags.models import Tag
 
 from . import filters, lb_recommendations, models
-from .registries import registry
+from .registries_v2 import registry
 
 logger = logging.getLogger(__name__)
 
@@ -128,7 +128,7 @@ class SessionRadio(SimpleRadio):
 
         return sliced_queryset
 
-    def get_choices_v2(self, quantity, **kwargs):
+    def get_choices(self, quantity, **kwargs):
         if cache.get(f"radiotracks{self.session.id}"):
             cached_radio_tracks = pickle.loads(
                 cache.get(f"radiotracks{self.session.id}")
@@ -146,14 +146,14 @@ class SessionRadio(SimpleRadio):
 
         return sliced_queryset[:quantity]
 
-    def pick_many_v2(self, quantity, **kwargs):
+    def pick_many(self, quantity, **kwargs):
         if self.session:
-            sliced_queryset = self.get_choices_v2(quantity=quantity, **kwargs)
+            sliced_queryset = self.get_choices(quantity=quantity, **kwargs)
         else:
             logger.info(
                 "No radio session. Can't track user playback. Won't cache queryset results"
             )
-            sliced_queryset = self.get_choices_v2(quantity=quantity, **kwargs)
+            sliced_queryset = self.get_choices(quantity=quantity, **kwargs)
 
         return sliced_queryset
 
@@ -161,14 +161,14 @@ class SessionRadio(SimpleRadio):
         return data
 
 
-@registry.register(name="random_v2")
+@registry.register(name="random")
 class RandomRadio(SessionRadio):
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
         return qs.filter(artist__content_category="music").order_by("?")
 
 
-@registry.register(name="random_library_v2")
+@registry.register(name="random_library")
 class RandomLibraryRadio(SessionRadio):
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
@@ -179,7 +179,7 @@ class RandomLibraryRadio(SessionRadio):
         return qs.filter(query).order_by("?")
 
 
-@registry.register(name="favorites_v2")
+@registry.register(name="favorites")
 class FavoritesRadio(SessionRadio):
     def get_queryset_kwargs(self):
         kwargs = super().get_queryset_kwargs()
@@ -193,7 +193,7 @@ class FavoritesRadio(SessionRadio):
         return qs.filter(pk__in=track_ids, artist__content_category="music")
 
 
-@registry.register(name="custom_v2")
+@registry.register(name="custom")
 class CustomRadio(SessionRadio):
     def get_queryset_kwargs(self):
         kwargs = super().get_queryset_kwargs()
@@ -220,7 +220,7 @@ class CustomRadio(SessionRadio):
         return data
 
 
-@registry.register(name="custom_multiple_v2")
+@registry.register(name="custom_multiple")
 class CustomMultiple(SessionRadio):
     """
     Receive a vuejs generated config and use it to launch a radio session
@@ -269,7 +269,7 @@ class RelatedObjectRadio(SessionRadio):
         return self.model.objects.get(pk=pk)
 
 
-@registry.register(name="tag_v2")
+@registry.register(name="tag")
 class TagRadio(RelatedObjectRadio):
     model = Tag
     related_object_field = serializers.CharField(required=True)
@@ -305,7 +305,7 @@ class NextNotFound(Exception):
     pass
 
 
-@registry.register(name="similar_v2")
+@registry.register(name="similar")
 class SimilarRadio(RelatedObjectRadio):
     model = Track
 
@@ -358,7 +358,7 @@ class SimilarRadio(RelatedObjectRadio):
         return random.choice([c[0] for c in next_candidates])
 
 
-@registry.register(name="artist_v2")
+@registry.register(name="artist")
 class ArtistRadio(RelatedObjectRadio):
     model = Artist
 
@@ -367,7 +367,7 @@ class ArtistRadio(RelatedObjectRadio):
         return qs.filter(artist=self.session.related_object)
 
 
-@registry.register(name="less-listened_v2")
+@registry.register(name="less-listened")
 class LessListenedRadio(SessionRadio):
     def clean(self, instance):
         instance.related_object = instance.user
@@ -383,7 +383,7 @@ class LessListenedRadio(SessionRadio):
         )
 
 
-@registry.register(name="less-listened_library_v2")
+@registry.register(name="less-listened_library")
 class LessListenedLibraryRadio(SessionRadio):
     def clean(self, instance):
         instance.related_object = instance.user
@@ -399,7 +399,7 @@ class LessListenedLibraryRadio(SessionRadio):
         return qs.filter(query).exclude(pk__in=listened).order_by("?")
 
 
-@registry.register(name="actor-content_v2")
+@registry.register(name="actor-content")
 class ActorContentRadio(RelatedObjectRadio):
     """
     Play content from given actor libraries
@@ -422,7 +422,7 @@ class ActorContentRadio(RelatedObjectRadio):
         return obj.full_username
 
 
-@registry.register(name="library_v2")
+@registry.register(name="library")
 class LibraryRadio(RelatedObjectRadio):
     """
     Play content from a given library
@@ -445,7 +445,7 @@ class LibraryRadio(RelatedObjectRadio):
         return obj.uuid
 
 
-@registry.register(name="recently-added_v2")
+@registry.register(name="recently-added")
 class RecentlyAdded(SessionRadio):
     def get_queryset(self, **kwargs):
         date = datetime.date.today() - datetime.timedelta(days=30)
@@ -457,7 +457,7 @@ class RecentlyAdded(SessionRadio):
 
 
 # Use this to experiment on the custom multiple radio with troi
-@registry.register(name="troi_v2")
+@registry.register(name="troi")
 class Troi(SessionRadio):
     """
     Receive a vuejs generated config and use it to launch a troi radio session.

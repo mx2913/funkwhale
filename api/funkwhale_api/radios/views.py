@@ -143,7 +143,7 @@ class V1_RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewS
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         try:
-            session.radio.pick_v1()
+            session.radio.pick()
         except ValueError:
             return Response(
                 "Radio doesn't have more candidates", status=status.HTTP_404_NOT_FOUND
@@ -206,14 +206,12 @@ class V2_RadioSessionViewSet(
         ):
             return Response(status=status.HTTP_403_FORBIDDEN)
         try:
-            # needed for for registeries, and we need to use it for linter
+            # # needed for for registeries, and we need to use it for linter
             from . import radio_v2
 
-            radio_v2.datetime()
+            radio_v2
 
-            session.radio(api_version="_v2").pick_many_v2(
-                count, filter_playable=filter_playable
-            )
+            session.radio.pick_many(count, filter_playable=filter_playable)
         except ValueError:
             return Response(
                 "Radio doesn't have more candidates", status=status.HTTP_404_NOT_FOUND
@@ -236,3 +234,34 @@ class V2_RadioSessionViewSet(
             serializer.data,
             status=status.HTTP_201_CREATED,
         )
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.user.is_authenticated:
+            return queryset.filter(
+                Q(user=self.request.user)
+                | Q(session_key=self.request.session.session_key)
+            )
+
+        return queryset.filter(session_key=self.request.session.session_key).exclude(
+            session_key=None
+        )
+
+    def perform_create(self, serializer):
+        if (
+            not self.request.user.is_authenticated
+            and not self.request.session.session_key
+        ):
+            self.request.session.create()
+        return serializer.save(
+            user=self.request.user if self.request.user.is_authenticated else None,
+            session_key=self.request.session.session_key,
+            api_version=2,
+        )
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["user"] = (
+            self.request.user if self.request.user.is_authenticated else None
+        )
+        return context

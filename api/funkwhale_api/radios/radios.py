@@ -29,14 +29,14 @@ class SimpleRadio:
     def clean(self, instance):
         return
 
-    def pick_v1(
+    def pick(
         self, choices: List[int], previous_choices: Optional[List[int]] = None
     ) -> int:
         if previous_choices:
             choices = list(set(choices).difference(set(previous_choices)))
         return random.sample(choices, 1)[0]
 
-    def pick_many_v1(self, choices: List[int], quantity: int) -> int:
+    def pick_many(self, choices: List[int], quantity: int) -> int:
         return random.sample(list(set(choices)), quantity)
 
     def weighted_pick(
@@ -96,7 +96,7 @@ class SessionRadio(SimpleRadio):
         queryset = queryset.exclude(pk__in=already_played)
         return queryset
 
-    def get_choices_v1(self, **kwargs):
+    def get_choices(self, **kwargs):
         kwargs.update(self.get_queryset_kwargs())
         queryset = self.get_queryset(**kwargs)
         if self.session:
@@ -108,12 +108,12 @@ class SessionRadio(SimpleRadio):
         queryset = self.filter_queryset(queryset)
         return queryset
 
-    def pick_v1(self, **kwargs):
-        return self.pick_many_v1(quantity=1, **kwargs)[0]
+    def pick(self, **kwargs):
+        return self.pick_many(quantity=1, **kwargs)[0]
 
-    def pick_many_v1(self, quantity, **kwargs):
-        choices = self.get_choices_v1(**kwargs)
-        picked_choices = super().pick_many_v1(choices=choices, quantity=quantity)
+    def pick_many(self, quantity, **kwargs):
+        choices = self.get_choices(**kwargs)
+        picked_choices = super().pick_many(choices=choices, quantity=quantity)
         if self.session:
             self.session.add(picked_choices)
         return picked_choices
