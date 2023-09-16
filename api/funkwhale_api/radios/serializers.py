@@ -68,6 +68,7 @@ class RadioSessionSerializer(serializers.ModelSerializer):
             "creation_date",
             "custom_radio",
             "config",
+            "api_version",
         )
 
     def validate(self, data):
