@@ -83,7 +83,9 @@ def test_can_get_choices_for_favorites_radio_v2(factories):
 
     radio = radios_v2.FavoritesRadio()
     session = radio.start_session(user=user, api_version=2)
-    choices = session.radio.get_choices(quantity=100, filter_playable=False)
+    choices = session.radio(api_version=2).get_choices(
+        quantity=100, filter_playable=False
+    )
 
     assert len(choices) == user.track_favorites.all().count()
 
@@ -100,7 +102,9 @@ def test_can_get_choices_for_custom_radio_v2(factories):
     session = factories["radios.CustomRadioSession"](
         custom_radio__config=[{"type": "artist", "ids": [artist.pk]}], api_version=2
     )
-    choices = session.radio.get_choices(quantity=1, filter_playable=False)
+    choices = session.radio(api_version=2).get_choices(
+        quantity=1, filter_playable=False
+    )
 
     expected = [t.pk for t in tracks]
     for t in choices:
@@ -112,7 +116,7 @@ def test_can_cache_radio_track(factories):
     user = factories["users.User"]()
     radio = radios_v2.RandomRadio()
     session = radio.start_session(user, api_version=2)
-    picked = session.radio.pick_many(quantity=1, filter_playable=False)
+    picked = session.radio(api_version=2).pick_many(quantity=1, filter_playable=False)
     assert len(picked) == 1
     for t in pickle.loads(cache.get(f"radiotracks{session.id}")):
         assert t in uploads

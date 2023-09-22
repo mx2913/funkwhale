@@ -143,7 +143,7 @@ class V1_RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewS
             return Response(status=status.HTTP_403_FORBIDDEN)
 
         try:
-            session.radio.pick()
+            session.radio(api_version=1).pick()
         except ValueError:
             return Response(
                 "Radio doesn't have more candidates", status=status.HTTP_404_NOT_FOUND
@@ -207,7 +207,9 @@ class V2_RadioSessionViewSet(
 
             radios_v2
 
-            session.radio.pick_many(count, filter_playable=filter_playable)
+            session.radio(api_version=2).pick_many(
+                count, filter_playable=filter_playable
+            )
         except ValueError:
             return Response(
                 "Radio doesn't have more candidates", status=status.HTTP_404_NOT_FOUND

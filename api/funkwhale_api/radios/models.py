@@ -78,9 +78,8 @@ class RadioSession(models.Model):
 
         return new_session_tracks
 
-    @property
-    def radio(self):
-        if self.api_version == 2:
+    def radio(self, api_version):
+        if api_version == 2:
             from .registries_v2 import registry
         else:
             from .registries import registry
