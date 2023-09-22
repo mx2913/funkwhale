@@ -186,11 +186,6 @@ class V2_RadioSessionViewSet(
         serializer.is_valid(raise_exception=True)
         session = serializer.validated_data["session"]
 
-        count = (
-            serializer.validated_data["count"]
-            if "count" in serializer.validated_data.keys()
-            else 1
-        )
         # this is used for test purpose.
         filter_playable = (
             request.query_params["filter_playable"]
@@ -211,15 +206,14 @@ class V2_RadioSessionViewSet(
 
             radios_v2
 
-            session.radio.pick_many(count, filter_playable=filter_playable)
+            session.radio.pick_many(data["count"], filter_playable=filter_playable)
         except ValueError:
             return Response(
                 "Radio doesn't have more candidates", status=status.HTTP_404_NOT_FOUND
             )
-        # self.perform_create(serializer)
         # dirty override here, since we use a different serializer for creation and detail
         evaluated_radio_tracks = pickle.loads(cache.get(f"radiotracks{session.id}"))
-        batch = evaluated_radio_tracks[:count]
+        batch = evaluated_radio_tracks[: data["count"]]
         serializer = TrackSerializer(
             data=batch,
             many="true",
@@ -227,7 +221,7 @@ class V2_RadioSessionViewSet(
         serializer.is_valid()
 
         # delete the tracks we sent from the cache
-        new_cached_radiotracks = evaluated_radio_tracks[count:]
+        new_cached_radiotracks = evaluated_radio_tracks[data["count"] :]
         cache.set(f"radiotracks{session.id}", pickle.dumps(new_cached_radiotracks))
 
         return Response(

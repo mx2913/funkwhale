@@ -54,18 +54,17 @@ class SessionRadio(SimpleRadio):
         return self.session
 
     def get_queryset(self, **kwargs):
-        if not self.session or not self.session.user:
-            return (
-                Track.objects.all()
-                .with_playable_uploads(actor=None)
-                .select_related("artist", "album__artist", "attributed_to")
-            )
-        else:
-            qs = (
-                Track.objects.all()
-                .with_playable_uploads(self.session.user.actor)
-                .select_related("artist", "album__artist", "attributed_to")
-            )
+        actor = None
+        try:
+            actor = self.session.user.actor
+        except KeyError:
+            pass  # Maybe logging would be helpful
+
+        qs = (
+            Track.objects.all()
+            .with_playable_uploads(actor=actor)
+            .select_related("artist", "album__artist", "attributed_to")
+        )
 
         query = moderation_filters.get_filtered_content_query(
             config=moderation_filters.USER_FILTER_CONFIG["TRACK"],
