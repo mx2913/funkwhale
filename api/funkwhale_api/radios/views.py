@@ -254,7 +254,6 @@ class V2_RadioSessionViewSet(
         return serializer.save(
             user=self.request.user if self.request.user.is_authenticated else None,
             session_key=self.request.session.session_key,
-            api_version=2,
         )
 
     def get_serializer_context(self):

@@ -53,7 +53,6 @@ class RadioSession(models.Model):
     )
     CONFIG_VERSION = 0
     config = JSONField(encoder=DjangoJSONEncoder, blank=True, null=True)
-    api_version = models.PositiveIntegerField(default=1)
 
     @property
     def next_position(self):
