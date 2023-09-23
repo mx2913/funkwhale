@@ -31,9 +31,7 @@ def test_create_artist_radio(factories):
 
 def test_tag_radio_repr(factories, to_api_date):
     tag = factories["tags.Tag"]()
-    session = factories["radios.RadioSession"](
-        related_object=tag, radio_type="tag", api_version=1
-    )
+    session = factories["radios.RadioSession"](related_object=tag, radio_type="tag")
 
     expected = {
         "id": session.pk,
