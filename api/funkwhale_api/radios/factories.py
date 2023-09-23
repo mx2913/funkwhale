@@ -1,5 +1,3 @@
-import random
-
 import factory
 
 from funkwhale_api.factories import NoUpdateOnCreate, registry
@@ -20,7 +18,6 @@ class RadioFactory(NoUpdateOnCreate, factory.django.DjangoModelFactory):
 @registry.register
 class RadioSessionFactory(NoUpdateOnCreate, factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
-    api_version = factory.LazyAttribute(random.randrange(1, 2))
 
     class Meta:
         model = "radios.RadioSession"

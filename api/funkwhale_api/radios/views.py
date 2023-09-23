@@ -149,7 +149,6 @@ class V1_RadioSessionTrackViewSet(mixins.CreateModelMixin, viewsets.GenericViewS
                 "Radio doesn't have more candidates", status=status.HTTP_404_NOT_FOUND
             )
         session_track = session.session_tracks.all().latest("id")
-        # self.perform_create(serializer)
         # dirty override here, since we use a different serializer for creation and detail
         serializer = self.serializer_class(
             instance=session_track, context=self.get_serializer_context()
@@ -214,7 +213,7 @@ class V2_RadioSessionViewSet(
             return Response(
                 "Radio doesn't have more candidates", status=status.HTTP_404_NOT_FOUND
             )
-        # self.perform_create(serializer)
+
         # dirty override here, since we use a different serializer for creation and detail
         evaluated_radio_tracks = pickle.loads(cache.get(f"radiotracks{session.id}"))
         batch = evaluated_radio_tracks[:count]
