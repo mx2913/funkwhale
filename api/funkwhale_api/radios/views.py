@@ -201,10 +201,7 @@ class V2_RadioSessionViewSet(
         ):
             return Response(status=status.HTTP_403_FORBIDDEN)
         try:
-            # # needed for registeries, and we need to use it for linter
-            from . import radios_v2
-
-            radios_v2
+            from . import radios_v2 # noqa
 
             session.radio(api_version=2).pick_many(
                 count, filter_playable=filter_playable
