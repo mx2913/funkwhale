@@ -109,6 +109,7 @@ specs/multi-artist/index
 specs/user-follow/index
 specs/user-deletion/index
 specs/upload-process/index
+specs/genre-tags/index
 
 ```
 
