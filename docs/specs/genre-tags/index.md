@@ -34,7 +34,7 @@ https://musicbrainz.org/ws/2/genre/all
 
 This endpoint accepts the `application/json` header for a JSON response. See the [Musicbrainz API documentation](https://musicbrainz.org/doc/MusicBrainz_API) for more information.
 
-The fetch task should run *initially upon first startup* and then *monthly* thereafter. The pod admin must be able to disable this job or run it manually at their discretion.
+The fetch task should run _initially upon first startup_ and then _monthly_ thereafter. The pod admin must be able to disable this job or run it manually at their discretion.
 
 The task should use the following logic:
 
@@ -57,9 +57,9 @@ When a user uploads new content with genre tags, the tagged item should be linke
 
 #### In-app tagging
 
-When a user uploads new content with *no* genre tags, they should be able to select tags from a dropdown menu. This menu is populated with the tags from the database with the `display_name` shown in the list. When a tag is selected, the item is linked to the associated tag.
+When a user uploads new content with _no_ genre tags, they should be able to select tags from a dropdown menu. This menu is populated with the tags from the database with the `display_name` shown in the list. When a tag is selected, the item is linked to the associated tag.
 
-If a user inserts a new tag, Funkwhale should: 
+If a user inserts a new tag, Funkwhale should:
 
 1. Store the entered string as the tag's `display_name`
 2. Generate a Pascal cased `name` for the tag
