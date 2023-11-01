@@ -66,6 +66,10 @@ tasks:
       echo -e "    \u1b[34m⠀⠀⠈⠻⠷⣦⣤⣤⣴⠾⠟⠁⠀⠀    gitpod\u1b[0m:\u1b[34mfunkwhale"
       echo ""
 
+  - name: Documentation
+    before: cd docs
+    command: make dev
+
 ports:
   - port: 8000
     visibility: public
@@ -90,6 +94,10 @@ ports:
   - port: 8080
     visibility: private
     onOpen: ignore
+
+  - port: 8001
+    visibility: public
+    onOpen: notify
 
 vscode:
   extensions:
