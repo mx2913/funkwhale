@@ -125,7 +125,7 @@ POST /api/v2/users/{id}/follow
 When the server receives a `follow` request, it creates a `follow_request` object containing the status of the follow request which is used to display request information to the target user in their notifications.
 
 :::{note}
-If the **target user** has configured their activity to be _public_, all `Follows` are `Accepted` immediately.
+If the **target user** has configured their profile to be _public_, all `Follows` are `Accepted` immediately.
 :::
 
 #### ActivityPub behavior
