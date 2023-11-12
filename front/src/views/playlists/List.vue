@@ -16,6 +16,8 @@ import $ from 'jquery'
 import PlaylistCardList from '~/components/playlists/CardList.vue'
 import Pagination from '~/components/vui/Pagination.vue'
 
+import { FwButton } from '@funkwhale/ui'
+
 import useSharedLabels from '~/composables/locale/useSharedLabels'
 import useOrdering from '~/composables/navigation/useOrdering'
 import useErrorHandler from '~/composables/useErrorHandler'
@@ -111,12 +113,12 @@ const paginateOptions = computed(() => sortedUniq([12, 25, 50, paginateBy.value]
         {{ $t('views.playlists.List.header.browse') }}
       </h2>
       <template v-if="$store.state.auth.authenticated">
-        <button
-          class="ui success button"
+        <fw-button
+          color="primary"
           @click="$store.commit('playlists/showModal', true)"
         >
           {{ $t('views.playlists.List.button.manage') }}
-        </button>
+        </fw-button>
         <div class="ui hidden divider" />
       </template>
       <form
