@@ -6,6 +6,8 @@ import { useStore } from '~/store'
 
 import axios from 'axios'
 
+import { FwButton } from '@funkwhale/ui'
+
 import AlbumCard from '~/components/audio/album/Card.vue'
 
 import useErrorHandler from '~/composables/useErrorHandler'
@@ -107,13 +109,14 @@ watch(
     </slot>
     <template v-if="nextPage">
       <div class="ui hidden divider" />
-      <button
+      <fw-button
         v-if="nextPage"
-        :class="['ui', 'basic', 'button']"
+        outline
+        color="secondary"
         @click="fetchData(nextPage)"
       >
         {{ $t('components.audio.album.Widget.button.more') }}
-      </button>
+      </fw-button>
     </template>
   </div>
 </template>

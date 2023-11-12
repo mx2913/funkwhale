@@ -8,6 +8,8 @@ import axios from 'axios'
 
 import useErrorHandler from '~/composables/useErrorHandler'
 
+import { FwButton } from '@funkwhale/ui'
+
 import PlaylistCard from '~/components/playlists/Card.vue'
 
 interface Props {
@@ -80,24 +82,25 @@ watch(
         <i class="list icon" />
         {{ $t('components.playlists.Widget.placeholder.noPlaylists') }}
       </div>
-      <button
+      <fw-button
         v-if="$store.state.auth.authenticated"
-        class="ui success icon labeled button"
+        color="primary"
+        icon="bi-list-task"
         @click="$store.commit('playlists/chooseTrack', null)"
       >
-        <i class="list icon" />
         {{ $t('components.playlists.Widget.button.create') }}
-      </button>
+      </fw-button>
     </div>
     <template v-if="nextPage">
       <div class="ui hidden divider" />
-      <button
+      <fw-button
         v-if="nextPage"
-        :class="['ui', 'basic', 'button']"
+        outline
+        color="secondary"
         @click="fetchData(nextPage)"
       >
         {{ $t('components.playlists.Widget.button.more') }}
-      </button>
+      </fw-button>
     </template>
   </div>
 </template>

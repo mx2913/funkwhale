@@ -11,6 +11,8 @@ import useWebSocketHandler from '~/composables/useWebSocketHandler'
 import PlayButton from '~/components/audio/PlayButton.vue'
 import TagsList from '~/components/tags/List.vue'
 
+import { FwButton } from '@funkwhale/ui'
+
 import useErrorHandler from '~/composables/useErrorHandler'
 
 interface Events {
@@ -211,12 +213,13 @@ watch(() => props.websocketHandlers.includes('Listen'), (to) => {
     </div>
     <template v-if="nextPage">
       <div class="ui hidden divider" />
-      <button
-        :class="['ui', 'basic', 'button']"
+      <fw-button
+        outline
+        color="secondary"
         @click="fetchData(nextPage as string)"
       >
         {{ $t('components.audio.track.Widget.button.more') }}
-      </button>
+      </fw-button>
     </template>
   </div>
 </template>
