@@ -1,4 +1,7 @@
 <script setup lang="ts">
+
+import { FwButton } from '@funkwhale/ui'
+
 interface Events {
   (e: 'refresh'): void
 }
@@ -25,13 +28,13 @@ withDefaults(defineProps<Props>(), {
     </h4>
     <div class="inline center aligned text">
       <slot />
-      <button
+      <fw-button
         v-if="refresh"
-        class="ui button"
+        color="secondary"
         @click="emit('refresh')"
       >
         {{ $t('components.common.EmptyState.button.refresh') }}
-      </button>
+      </fw-button>
     </div>
   </div>
 </template>
