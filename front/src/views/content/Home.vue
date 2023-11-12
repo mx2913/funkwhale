@@ -4,6 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { useStore } from '~/store'
 
+import { FwButton } from '@funkwhale/ui'
+
 const { t } = useI18n()
 
 const labels = computed(() => ({
@@ -33,12 +35,12 @@ const defaultQuota = computed(() => humanSize(quota.value * 1e6))
         <p>
           {{ $t('views.content.Home.description.channel.1') }}&#32;{{ $t('views.content.Home.description.channel.2') }}
         </p>
-        <router-link
-          :to="{name: 'profile.overview', params: {username: store.state.auth.username}, hash: '#channels'}"
-          class="ui primary button"
+        <fw-button
+          color="primary"
+          @click="$router.push({name: 'profile.overview', params: {username: store.state.auth.username}, hash: '#channels'})"
         >
           {{ $t('views.content.Home.button.start') }}
-        </router-link>
+        </fw-button>
       </div>
       <div class="ui segment">
         <h2>
@@ -48,12 +50,12 @@ const defaultQuota = computed(() => humanSize(quota.value * 1e6))
         <p>
           {{ $t('views.content.Home.description.upload') }}
         </p>
-        <router-link
-          :to="{name: 'content.libraries.index'}"
-          class="ui primary button"
+        <fw-button
+          color="primary"
+          @click="$router.push({name: 'content.libraries.index'})"
         >
           {{ $t('views.content.Home.button.start') }}
-        </router-link>
+        </fw-button>
       </div>
       <div class="ui segment">
         <h2>
@@ -63,12 +65,12 @@ const defaultQuota = computed(() => humanSize(quota.value * 1e6))
         <p>
           {{ $t('views.content.Home.description.follow') }}
         </p>
-        <router-link
-          :to="{name: 'content.remote.index'}"
-          class="ui primary button"
+        <fw-button
+          color="primary"
+          @click="$router.push({name: 'content.remote.index'})"
         >
           {{ $t('views.content.Home.button.start') }}
-        </router-link>
+        </fw-button>
       </div>
     </div>
   </section>
