@@ -17,3 +17,7 @@ html {
 input[type=search]::-webkit-search-cancel-button {
   appearance: none;
 }
+
+button:enabled, [role="button"]:enabled {
+  cursor: pointer;
+}
