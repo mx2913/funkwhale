@@ -11,6 +11,8 @@ import { useStore } from '~/store'
 import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { FwButton } from '@funkwhale/ui'
+
 const logger = useLogger()
 const store = useStore()
 
@@ -113,18 +115,19 @@ store.dispatch('playlists/fetchOwn')
               <strong>{{ duplicateTrackAddInfo.playlist_name }}</strong>
             </i18n-t>
           </p>
-          <button
-            class="ui small basic cancel button"
+          <fw-button
+            color="secondary"
+            outline
             @click="showDuplicateTrackAddConfirmation = false"
           >
             {{ $t('components.playlists.PlaylistModal.button.cancel') }}
-          </button>
-          <button
-            class="ui small success button"
+          </fw-button>
+          <fw-button
+            primary
             @click="addToPlaylist(lastSelectedPlaylist, true)"
           >
             {{ $t('components.playlists.PlaylistModal.button.addDuplicate') }}
-          </button>
+          </fw-button>
         </div>
         <div
           v-if="errors.length > 0"
@@ -184,13 +187,11 @@ store.dispatch('playlists/fetchOwn')
               :key="key"
             >
               <td>
-                <router-link
-                  class="ui icon basic small button"
-                  :to="{name: 'library.playlists.detail', params: {id: playlist.id }, query: {mode: 'edit'}}"
-                >
-                  <i class="ui pencil icon" />
-                  <span class="visually-hidden">{{ $t('components.playlists.PlaylistModal.button.edit') }}</span>
-                </router-link>
+                <fw-button
+                  color="secondary"
+                  icon="bi-pencil"
+                  @click="$router.push({name: 'library.playlists.detail', params: {id: playlist.id }, query: {mode: 'edit'}})"
+                />
               </td>
               <td>
                 <router-link
@@ -203,15 +204,16 @@ store.dispatch('playlists/fetchOwn')
               <td><human-date :date="playlist.modification_date" /></td>
               <td>{{ playlist.tracks_count }}</td>
               <td>
-                <button
+                <fw-button
                   v-if="track"
-                  class="ui success icon basic small right floated button"
+                  class="right floated"
+                  color="primary"
+                  icon="bi-plus"
                   :title="labels.addToPlaylist"
                   @click.prevent="addToPlaylist(playlist.id, false)"
                 >
-                  <i class="plus icon" />
                   {{ $t('components.playlists.PlaylistModal.button.addTrack') }}
-                </button>
+                </fw-button>
               </td>
             </tr>
           </tbody>
@@ -235,9 +237,13 @@ store.dispatch('playlists/fetchOwn')
       </div>
     </div>
     <div class="actions">
-      <button class="ui basic cancel button">
+      <fw-button
+        color="secondary"
+        outline
+        @click="$store.state.playlists.showModal = false"
+      >
         {{ $t('components.playlists.PlaylistModal.button.cancel') }}
-      </button>
+      </fw-button>
     </div>
   </semantic-modal>
 </template>

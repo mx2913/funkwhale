@@ -6,6 +6,8 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from '~/store'
 
+import { FwButton } from '@funkwhale/ui'
+
 import axios from 'axios'
 import $ from 'jquery'
 
@@ -173,8 +175,10 @@ const submit = async () => {
       </div>
       <div class="field">
         <span id="updatePlaylistLabel" />
-        <button
-          :class="['ui', 'fluid', {'loading': isLoading}, 'button']"
+        <fw-button
+          class="right floated"
+          color="primary"
+          :is-loading="isLoading"
           type="submit"
         >
           <template v-if="playlist">
@@ -183,7 +187,7 @@ const submit = async () => {
           <template v-else>
             {{ $t('components.playlists.Form.button.create') }}
           </template>
-        </button>
+        </fw-button>
       </div>
     </div>
   </form>
