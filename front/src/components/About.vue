@@ -253,7 +253,6 @@ const headerStyle = computed(() => {
               outline
               class="right floated"
               color="secondary"
-              icon="bi-arrow-right"
               @click="$router.push('/about/pod')"
             >
               {{ $t('components.About.header.aboutPod') }}
