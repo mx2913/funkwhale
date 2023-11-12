@@ -2,11 +2,11 @@ import { useColorMode, usePreferredDark } from '@vueuse/core'
 import { computed } from 'vue'
 
 const theme = useColorMode({
-  selector: 'body',
+  selector: 'html',
   modes: {
     auto: '',
-    light: 'theme-light',
-    dark: 'theme-dark'
+    light: 'theme-light light',
+    dark: 'theme-dark dark'
   },
   emitAuto: true
 })
