@@ -7,6 +7,8 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useStore } from '~/store'
 
+import { FwButton } from '@funkwhale/ui'
+
 import PasswordInput from '~/components/forms/PasswordInput.vue'
 
 interface Props {
@@ -137,11 +139,13 @@ const submit = async () => {
         {{ $t('components.auth.LoginForm.message.redirect', { domain: $store.getters['instance/domain'] }) }}
       </p>
     </template>
-    <button
-      :class="['ui', {'loading': isLoading}, 'right', 'floated', buttonClasses, 'button']"
+    <fw-button
+      color="primary"
+      :is-loading="isLoading"
+      class="right floated"
       type="submit"
     >
       {{ $t('components.auth.LoginForm.button.login') }}
-    </button>
+    </fw-button>
   </form>
 </template>

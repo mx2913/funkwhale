@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { FwButton } from '@funkwhale/ui'
 
 const { t } = useI18n()
 const labels = computed(() => ({
@@ -24,12 +25,12 @@ const labels = computed(() => ({
         <p>
           {{ $t('components.auth.Logout.message.loggedIn', { username: $store.state.auth.username }) }}
         </p>
-        <button
-          class="ui button"
+        <fw-button
+          color="secondary"
           @click="$store.dispatch('auth/logout')"
         >
           {{ $t('components.auth.Logout.button.logout') }}
-        </button>
+        </fw-button>
       </div>
       <div
         v-else
@@ -38,12 +39,12 @@ const labels = computed(() => ({
         <h2>
           {{ $t('components.auth.Logout.header.unauthenticated') }}
         </h2>
-        <router-link
-          to="/login"
-          class="ui button"
+        <fw-button
+          color="primary"
+          @click="$router.push('/login')"
         >
           {{ $t('components.auth.Logout.link.login') }}
-        </router-link>
+        </fw-button>
       </div>
     </section>
   </main>
