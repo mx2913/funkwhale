@@ -8,6 +8,8 @@ import useMarkdown from '~/composables/useMarkdown'
 import type { NodeInfo } from '~/store/instance'
 import { useI18n } from 'vue-i18n'
 
+import { FwButton } from '@funkwhale/ui'
+
 const store = useStore()
 const nodeinfo = computed(() => store.state.instance.nodeinfo)
 
@@ -407,13 +409,15 @@ const headerStyle = computed(() => {
 
               <div class="ui hidden divider" />
               <div class="ui fluid horizontally fitted basic clearing segment container">
-                <router-link
-                  to="/about"
-                  class="ui left floated basic secondary button"
+                <fw-button
+                  outline
+                  class="left floated"
+                  color="secondary"
+                  icon="bi-arrow-left"
+                  @click="$router.push('/about')"
                 >
-                  <i class="icon arrow left" />
                   {{ $t('components.AboutPod.link.introduction') }}
-                </router-link>
+                </fw-button>
               </div>
             </div>
           </div>

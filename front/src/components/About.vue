@@ -5,6 +5,8 @@ import { get } from 'lodash-es'
 import { humanSize } from '~/utils/filters'
 import { computed } from 'vue'
 
+import { FwButton } from '@funkwhale/ui'
+
 import SignupForm from '~/components/auth/SignupForm.vue'
 import LogoText from '~/components/LogoText.vue'
 
@@ -177,13 +179,14 @@ const headerStyle = computed(() => {
                     </div>
                   </div>
                 </template>
-
-                <router-link
-                  to="/about/pod"
-                  class="ui fluid basic secondary button"
+                <fw-button
+                  outline
+                  class="right floated"
+                  color="secondary"
+                  @click="$router.push('/about/pod')"
                 >
                   {{ $t('components.About.link.learnMore') }}
-                </router-link>
+                </fw-button>
               </div>
             </div>
           </div>
@@ -246,13 +249,15 @@ const headerStyle = computed(() => {
             </a>
           </div>
           <div class="ui fluid horizontally fitted basic clearing segment container">
-            <router-link
-              to="/about/pod"
-              class="ui right floated basic secondary button"
+            <fw-button
+              outline
+              class="right floated"
+              color="secondary"
+              icon="bi-arrow-right"
+              @click="$router.push('/about/pod')"
             >
               {{ $t('components.About.header.aboutPod') }}
-              <i class="icon arrow right" />
-            </router-link>
+            </fw-button>
           </div>
         </div>
       </div>
