@@ -6,6 +6,8 @@ import { clone } from 'lodash-es'
 
 import axios from 'axios'
 
+import { FwButton } from '@funkwhale/ui'
+
 import ChannelCard from '~/components/audio/ChannelCard.vue'
 
 interface Events {
@@ -72,13 +74,14 @@ fetchData()
     </div>
     <template v-if="nextPage">
       <div class="ui hidden divider" />
-      <button
+      <fw-button
         v-if="nextPage"
-        :class="['ui', 'basic', 'button']"
+        outline
+        color="secondary"
         @click="fetchData(nextPage)"
       >
         {{ $t('components.audio.ChannelsWidget.button.showMore') }}
-      </button>
+      </fw-button>
     </template>
     <template v-if="!isLoading && channels.length === 0">
       <empty-state
