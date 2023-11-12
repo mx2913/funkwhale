@@ -9,6 +9,8 @@ import axios from 'axios'
 
 import SemanticModal from '~/components/semantic/Modal.vue'
 
+import { FwButton } from '@funkwhale/ui'
+
 interface Events {
   (e: 'update:show', show: boolean): void
 }
@@ -122,12 +124,13 @@ const checkAndSwitch = async (url: string) => {
               type="text"
               placeholder="https://funkwhale.server"
             >
-            <button
+            <fw-button
+              color="secondary"
               type="submit"
-              :class="['ui', 'icon', {loading: isLoading}, 'button']"
+              :is-loading="isLoading"
             >
               {{ $t('components.SetInstanceModal.button.submit') }}
-            </button>
+            </fw-button>
           </div>
         </div>
       </form>
@@ -140,14 +143,15 @@ const checkAndSwitch = async (url: string) => {
           <h4>
             {{ $t('components.SetInstanceModal.header.suggestions') }}
           </h4>
-          <button
+          <fw-button
             v-for="(url, key) in suggestedInstances"
             :key="key"
-            class="ui basic button"
+            outline
+            color="secondary"
             @click="checkAndSwitch(url)"
           >
             {{ url }}
-          </button>
+          </fw-button>
         </div>
       </form>
     </div>
