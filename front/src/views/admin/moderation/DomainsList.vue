@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { computed, ref } from 'vue'
 
+import { FwButton } from '@funkwhale/ui'
+
 import axios from 'axios'
 
 import DomainsTable from '~/components/manage/moderation/DomainsTable.vue'
@@ -96,13 +98,13 @@ const createDomain = async () => {
             <label for="allowed">{{ $t('views.admin.moderation.DomainsList.label.addToAllowList') }}</label>
           </div>
           <div class="field">
-            <button
-              :class="['ui', {'loading': isCreating}, 'success', 'button']"
+            <fw-button
+              color="primary"
               type="submit"
-              :disabled="isCreating"
+              :is-disabled="isCreating"
             >
               {{ $t('views.admin.moderation.DomainsList.button.add') }}
-            </button>
+            </fw-button>
           </div>
         </div>
       </form>
