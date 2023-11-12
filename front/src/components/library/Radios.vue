@@ -11,6 +11,8 @@ import { syncRef } from '@vueuse/core'
 import { sortedUniq } from 'lodash-es'
 import { useStore } from '~/store'
 
+import { FwButton } from '@funkwhale/ui'
+
 import axios from 'axios'
 import $ from 'jquery'
 
@@ -153,13 +155,13 @@ const paginateOptions = computed(() => sortedUniq([12, 25, 50, paginateBy.value]
       <h3 class="ui header">
         {{ $t('components.library.Radios.header.user') }}
       </h3>
-      <router-link
+      <fw-button
         v-if="isAuthenticated"
-        class="ui success button"
-        to="/library/radios/build"
+        color="primary"
+        @click="$router.push('/library/radios/build')"
       >
         {{ $t('components.library.Radios.button.create') }}
-      </router-link>
+      </fw-button>
       <div class="ui hidden divider" />
       <form
         :class="['ui', {'loading': isLoading}, 'form']"

@@ -5,6 +5,7 @@ import { ref, computed } from 'vue'
 import { useStore } from '~/store'
 
 import RadioButton from './Button.vue'
+import { FwButton } from '@funkwhale/ui'
 
 interface Props {
   type: string
@@ -60,18 +61,19 @@ const customRadioId = computed(() => props.customRadio?.id ?? null)
       />
       <div class="ui hidden divider" />
       <radio-button
-        class="right floated button"
         :type="type"
+        class="right floated"
         :custom-radio-id="customRadioId"
         :object-id="objectId"
       />
-      <router-link
+      <fw-button
         v-if="$store.state.auth.authenticated && type === 'custom' && radio.user.id === $store.state.auth.profile?.id"
-        class="ui success button right floated"
-        :to="{name: 'library.radios.edit', params: {id: customRadioId }}"
-      >
-        {{ $t('components.radios.Card.button.edit') }}
-      </router-link>
+        color="secondary"
+        class="right floated"
+        icon="bi-pencil"
+        title="{{ $t('components.radios.Card.button.edit') }}"
+        @click="$router.push({name: 'library.radios.edit', params: {id: customRadioId }})"
+      />
     </div>
   </div>
 </template>

@@ -5,6 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from '~/store'
 import { computed } from 'vue'
 
+import { FwButton } from '@funkwhale/ui'
+
 interface Props {
   customRadioId?: number | null
   type?: string
@@ -74,14 +76,11 @@ const toggleRadio = () => {
 </script>
 
 <template>
-  <button
-    :class="['ui', 'primary', {'inverted': running}, 'icon', 'labeled', 'button']"
+  <fw-button
+    :outline="running"
+    icon="bi-broadcast"
     @click="toggleRadio"
   >
-    <i
-      class="ui feed icon"
-      role="button"
-    />
     {{ buttonLabel }}
-  </button>
+  </fw-button>
 </template>
