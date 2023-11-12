@@ -6,6 +6,8 @@ import { computed, reactive, ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from '~/store'
 
+import { FwButton } from '@funkwhale/ui'
+
 import axios from 'axios'
 
 import LoginForm from '~/components/auth/LoginForm.vue'
@@ -213,11 +215,13 @@ fetchInstanceSettings()
         >
       </div>
     </template>
-    <button
-      :class="['ui', buttonClasses, {'loading': isLoading}, ' right floated button']"
+    <fw-button
+      color="primary"
+      class="right floated"
+      :is-loading="isLoading"
       type="submit"
     >
       {{ $t('components.auth.SignupForm.button.create') }}
-    </button>
+    </fw-button>
   </form>
 </template>
