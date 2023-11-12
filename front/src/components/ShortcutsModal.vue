@@ -4,6 +4,8 @@ import { useVModel } from '@vueuse/core'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { FwButton } from '@funkwhale/ui'
+
 interface Events {
   (e: 'update:show', show: boolean): void
 }
@@ -153,9 +155,12 @@ const player = computed(() => [
       </div>
     </section>
     <footer class="actions">
-      <button class="ui basic cancel button">
+      <fw-button
+        color="secondary"
+        @click="showRef = !showRef"
+      >
         {{ $t('components.ShortcutsModal.button.close') }}
-      </button>
+      </fw-button>
     </footer>
   </semantic-modal>
 </template>
