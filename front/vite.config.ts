@@ -8,6 +8,9 @@ import manifest from './pwa-manifest.json'
 import VueI18n from '@intlify/unplugin-vue-i18n/vite'
 import Vue from '@vitejs/plugin-vue'
 import VueMacros from 'unplugin-vue-macros/vite'
+import VueDevTools from 'vite-plugin-vue-devtools'
+
+import { fileURLToPath, URL } from "url"
 
 const port = +(process.env.VUE_PORT ?? 8080)
 
@@ -15,6 +18,9 @@ const port = +(process.env.VUE_PORT ?? 8080)
 export default defineConfig(({ mode }) => ({
   envPrefix: ['VUE_', 'FUNKWHALE_SENTRY_'],
   plugins: [
+    // https://github.com/webfansplz/vite-plugin-vue-devtools
+    VueDevTools(),
+
     // https://vue-macros.sxzz.moe/
     VueMacros({
       plugins: {
@@ -48,12 +54,21 @@ export default defineConfig(({ mode }) => ({
   server: {
     port
   },
-  resolve: {
-    alias: {
-      '#': resolve(__dirname, './src/worker'),
-      '?': resolve(__dirname, './test'),
-      '~': resolve(__dirname, './src')
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          @use "./src/style/global-vars" as *;
+        `
+      }
     }
+  },
+  resolve: {
+    alias: [
+      { find: '#', replacement: fileURLToPath(new URL('./src/worker', import.meta.url)) },
+      { find: '?', replacement: fileURLToPath(new URL('./test', import.meta.url)) },
+      { find: '~', replacement: fileURLToPath(new URL('./src', import.meta.url)) }
+    ]
   },
   build: {
     sourcemap: true,

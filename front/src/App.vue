@@ -87,6 +87,7 @@ store.dispatch('auth/fetchUser')
       'has-bottom-player': tracks.length > 0,
       'queue-focused': store.state.ui.queueFocused
     }"
+    id="fw-content"
   >
     <!-- here, we display custom stylesheets, if any -->
     <link
@@ -102,11 +103,6 @@ store.dispatch('auth/fetchUser')
       @show:set-instance-modal="showSetInstanceModal = !showSetInstanceModal"
       @show:shortcuts-modal="toggleShortcutsModal"
     />
-    <set-instance-modal v-model:show="showSetInstanceModal" />
-    <service-messages />
-    <transition name="queue">
-      <queue v-show="store.state.ui.queueFocused" />
-    </transition>
 
     <router-view v-slot="{ Component }">
       <template v-if="Component">
@@ -122,6 +118,13 @@ store.dispatch('auth/fetchUser')
       </template>
     </router-view>
 
+    <set-instance-modal v-model:show="showSetInstanceModal" />
+    <service-messages />
+
+    <transition name="queue">
+      <queue v-show="store.state.ui.queueFocused" />
+    </transition>
+
     <audio-player />
     <playlist-modal v-if="store.state.auth.authenticated" />
     <channel-upload-modal v-if="store.state.auth.authenticated" />
@@ -130,3 +133,12 @@ store.dispatch('auth/fetchUser')
     <shortcuts-modal v-model:show="showShortcutsModal" />
   </div>
 </template>
+
+<style scoped lang="scss">
+#fw-content {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: $desktop-sidebar-width 1fr;
+  background: var(--fw-beige-100);
+}
+</style>

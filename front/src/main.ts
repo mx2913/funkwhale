@@ -3,6 +3,9 @@ import type { InitModule, InitModuleContext } from '~/types'
 import store, { key } from '~/store'
 import router from '~/router'
 
+import FunkwhaleUI from '@funkwhale/ui'
+import '@funkwhale/ui/style.css'
+
 import { createApp, defineAsyncComponent, h } from 'vue'
 
 import useLogger from '~/composables/useLogger'
@@ -37,6 +40,7 @@ const app = createApp({
 
 app.use(router)
 app.use(store, key)
+app.use(FunkwhaleUI)
 
 const modules: Record<string | 'axios', { install?: InitModule }> = import.meta.glob('./init/*.ts', { eager: true })
 const moduleContext: InitModuleContext = {
