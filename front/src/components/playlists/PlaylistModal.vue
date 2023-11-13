@@ -190,6 +190,7 @@ store.dispatch('playlists/fetchOwn')
                 <fw-button
                   color="secondary"
                   icon="bi-pencil"
+                  :title="$t('components.playlists.PlaylistModal.button.edit')"
                   @click="$router.push({name: 'library.playlists.detail', params: {id: playlist.id }, query: {mode: 'edit'}})"
                 />
               </td>

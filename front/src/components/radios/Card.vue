@@ -71,7 +71,7 @@ const customRadioId = computed(() => props.customRadio?.id ?? null)
         color="secondary"
         class="right floated"
         icon="bi-pencil"
-        title="{{ $t('components.radios.Card.button.edit') }}"
+        :title="$t('components.radios.Card.button.edit')"
         @click="$router.push({name: 'library.radios.edit', params: {id: customRadioId }})"
       />
     </div>
