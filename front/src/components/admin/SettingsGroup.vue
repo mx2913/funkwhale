@@ -7,6 +7,8 @@ import { ref, computed, reactive } from 'vue'
 import { useStore } from '~/store'
 import useLogger from '~/composables/useLogger'
 
+import { FwButton } from '@funkwhale/ui'
+
 interface Props {
   group: SettingsGroup
   settingsData: SettingsDataEntry[]
@@ -237,11 +239,13 @@ const save = async () => {
         </div>
       </div>
     </div>
-    <button
+    <fw-button
+      color="primary"
+      class="right floated"
+      :is-loading="isLoading"
       type="submit"
-      :class="['ui', {'loading': isLoading}, 'right', 'floated', 'success', 'button']"
     >
       {{ $t('components.admin.SettingsGroup.button.save') }}
-    </button>
+    </fw-button>
   </form>
 </template>
