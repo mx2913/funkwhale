@@ -72,6 +72,7 @@ hidden: true
 
 developer/index
 developer/architecture
+developer/ap-overview
 developer/setup/index
 developer/contribute/index
 developer/workflows/index
