@@ -83,7 +83,9 @@ To prevent disrupted uploads, the following UX should be implemented
 - The user should have the option to cancel an upload at any time
 - If an upload is sent to the background, it should notify the user in some way when the upload is complete
 
-> See the [interactive prototype](https://design.funkwhale.audio/#/view/e3a187f0-0f5e-11ed-adb9-fff9e854a67c?page-id=d9f9f4d0-1a7b-11ed-8551-a35b3c702efa&section=interactions&index=0) for an overview of the behavior. [name=Sporiff]
+:::{seealso}
+See the [interactive prototype](https://design.funkwhale.audio/#/view/e3a187f0-0f5e-11ed-adb9-fff9e854a67c?page-id=d9f9f4d0-1a7b-11ed-8551-a35b3c702efa&section=interactions&index=0) for an overview of the behavior.
+:::
 
 ### Backend behavior
 
