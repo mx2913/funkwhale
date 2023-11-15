@@ -1,4 +1,4 @@
-# User deletion spec
+# User deletion
 
 ## Terminology
 
@@ -57,7 +57,7 @@ sequenceDiagram
 
 The Funkwhale client API is responsible for handling deletion requests and actioning the resulting cascade deletion. Users should request a deletion using a `DELETE` request:
 
-```http
+```text
 DELETE /api/v2/users/{id}
 ```
 
