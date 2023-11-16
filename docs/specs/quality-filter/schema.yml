@@ -1,0 +1,44 @@
+FormatFilter:
+  name: format
+  in: query
+  required: false
+  description: "Comma separated list of file extensions to filter results by"
+  schema:
+    type: array
+    items:
+      type: string
+      enum:
+        - "flac"
+        - "ogg"
+        - "mp3"
+        - "opus"
+        - "aac"
+        - "m4a"
+        - "aiff"
+        - "aif"
+TagsFilter:
+  name: has_tags
+  in: query
+  required: false
+  description: "Filter content by whether it has tags (true) or not (false). Leave this blank to return all results"
+  schema:
+    type: boolean
+MBIDFilter:
+  name: has_mbid
+  in: query
+  required: false
+  description: "Filter content by whether it has a MusicBrainz ID (true) or not (false). Leave this blank to return all results"
+  schema:
+    type: boolean
+QualityFilter:
+  name: quality
+  in: query
+  required: false
+  description: "Filter content based on the quality of the associated files"
+  schema:
+    type: string
+    enum:
+      - "low"
+      - "medium"
+      - "high"
+      - "very_high"
