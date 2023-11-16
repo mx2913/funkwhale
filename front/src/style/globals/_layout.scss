@@ -74,13 +74,6 @@
   > .main.pusher,
   > .footer {
     position: relative;
-    @include media(">desktop") {
-      margin-left: $desktop-sidebar-width !important;
-    }
-
-    @include media(">widedesktop") {
-      margin-left: $widedesktop-sidebar-width !important;;
-    }
     transform: none !important;
   }
 }

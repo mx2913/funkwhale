@@ -1,9 +1,8 @@
 @use "./_vars" as *;
 
 // not in vars because not meant to be overridden
-$desktop-sidebar-width: 275px;
-$widedesktop-sidebar-width: 275px;
-$bottom-player-height: 4rem;
+// TODO (wvffle): Already imported globally in every file, needs to be redesigned
+@use "./global-vars" as *;
 
 @import "@funkwhale/ui/style.css";
 
