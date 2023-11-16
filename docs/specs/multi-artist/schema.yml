@@ -1,14 +1,16 @@
 SimpleArtist:
   type: object
   required:
-    - id
+    - guid
     - fid
     - name
     - contentCategory
     - local
   properties:
-    id:
-      type: integer
+    guid:
+      type: string
+      format: uuid
+      description: "The globally unique ID of the artist"
     fid:
       type: string
       format: url
@@ -32,16 +34,23 @@ Artist:
   allOf:
     - $ref: "#/SimpleArtist"
     - type: object
+      required:
+        - creationDate
+        - recordingCount
+        - releases
       properties:
         creationDate:
           type: string
           format: date-time
+          description: "The date on which the artist was added to the server"
         recordingCount:
           type: integer
+          description: "The number of recordings credited to the artist"
         tags:
           type: array
           items:
             type: string
+          description: "Any tags associated with the artist"
         releases:
           type: array
           items:
@@ -54,7 +63,11 @@ ArtistCredit:
   properties:
     name:
       type: string
-    id:
-      type: integer
+      description: "The name of the artist"
+    guid:
+      type: string
+      format: uuid
+      description: "The globally unique ID of the artist"
     joinPhrase:
       type: string
+      description: "The phrase used to join this artist's name in the credits. For example: 'feat', '&', '+'"
