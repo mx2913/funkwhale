@@ -204,14 +204,6 @@ paths:
           description: Filter releases by artist
           schema:
             type: integer
-        - name: id
-          in: query
-          required: false
-          description: Filter releases by ID
-          schema:
-            type: array
-            items:
-              type: string
         - name: collection
           in: query
           required: false
@@ -265,6 +257,41 @@ paths:
                 $ref: "#/components/schemas/SimpleRelease"
         "401":
           $ref: "#/components/responses/Unauthorized"
+  /api/v2/release-groups:
+    get:
+      tags:
+        - Releases
+      summary: "Retrieve a list of release groups"
+      description: "Retrieve a list of all release groups on the server"
+      operationId: getReleaseGroups
+      parameters:
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/pageSizeParam"
+        - name: primary_type
+          in: query
+          required: false
+          description: "Filter results by their primary type"
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/ReleaseTypeEnum"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Pagination"
+                  - type: object
+                    required:
+                      - results
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/ReleaseGroup"
   /api/v2/tags/podcasts:
     get:
       tags:
@@ -634,9 +661,11 @@ components:
         guid:
           type: string
           format: uuid
+          description: "The globally unique ID of the listening object"
         createdDate:
           type: string
           format: date-time
+          description: "The date on which the listening was recorded"
         recording:
           $ref: "#/components/schemas/SimpleRecording"
         user:
@@ -693,7 +722,18 @@ components:
       allOf:
         - $ref: "#/components/schemas/SimpleRelease"
         - type: object
+          required:
+            - artistCredit
+            - creationDate
+            - recordingCount
+            - duration
+            - attributedTo
+            - local
+            - releaseGroup
+            - recordings
           properties:
+            artistCredit:
+              $ref: "specs/multi-artist/schema.yml#/ArtistCredit"
             creationDate:
               type: string
               format: date-time
@@ -708,49 +748,48 @@ components:
               $ref: "#/components/schemas/SimpleActor"
             local:
               type: boolean
+            releaseGroup:
+              $ref: "#/components/schemas/SimpleReleaseGroup"
             recordings:
               type: array
               items:
                 $ref: "#/components/schemas/SimpleRecording"
     ReleaseGroup:
-      type: object
-      required:
-        - guid
-        - artist
-        - primaryType
-      properties:
-        guid:
-          type: string
-          format: uuid
-        artistCredit:
-          type: array
-          items:
-            $ref: "specs/multi-artist/schema.yml#/ArtistCredit"
-        primaryType:
-          $ref: "#/components/schemas/ReleaseTypeEnum"
-        secondaryType:
-          type: string
-          enum:
-            - compilation
-            - soundtrack
-            - spokenword
-            - interview
-            - audiobook
-            - audio-drama
-            - live
-            - remix
-            - dj-mix
-            - mixtape
-            - demo
-            - field-recording
-        releases:
-          type: array
-          items:
-            $ref: "#/components/schemas/SimpleRelease"
+      allOf:
+        - $ref: "#/components/schemas/SimpleReleaseGroup"
+        - type: object
+          required:
+            - guid
+            - artist
+            - releases
+          properties:
+            artistCredit:
+              type: array
+              items:
+                $ref: "specs/multi-artist/schema.yml#/ArtistCredit"
+            secondaryType:
+              type: string
+              enum:
+                - compilation
+                - soundtrack
+                - spokenword
+                - interview
+                - audiobook
+                - audio-drama
+                - live
+                - remix
+                - dj-mix
+                - mixtape
+                - demo
+                - field-recording
+            releases:
+              type: array
+              items:
+                $ref: "#/components/schemas/SimpleRelease"
     ReleaseTypeEnum:
       type: string
       default: album
-      description: The type of release
+      description: "The type of release"
       enum:
         - album
         - single
@@ -815,7 +854,7 @@ components:
     SimpleRecording:
       type: object
       required:
-        - id
+        - guid
         - fid
         - name
         - playable
@@ -824,8 +863,9 @@ components:
         - artist
         - cover
       properties:
-        id:
-          type: integer
+        guid:
+          type: string
+          format: uuid
         fid:
           type: string
           format: url
@@ -846,13 +886,14 @@ components:
     SimpleRelease:
       type: object
       required:
-        - id
+        - guid
         - fid
         - name
         - local
       properties:
-        id:
-          type: integer
+        guid:
+          type: string
+          format: uuid
         fid:
           type: string
           format: url
@@ -863,21 +904,36 @@ components:
           type: string
         playable:
           type: boolean
-        releaseGroup:
-          type: string
-          format: uuid
         cover:
           $ref: "#/components/schemas/CoverUrls"
+    SimpleReleaseGroup:
+      type: object
+      required:
+        - guid
+        - primaryType
+      properties:
+        guid:
+          type: string
+          format: uuid
+          description: "The unique identifier of the release group"
+        name:
+          type: string
+        primaryType:
+          $ref: "#/components/schemas/ReleaseTypeEnum"
+        releaseVersions:
+          type: integer
+          description: "The number of releases associated with this release group"
     SimpleUser:
       type: object
       required:
-        - id
+        - guid
         - username
         - fullUsername
         - avatar
       properties:
-        id:
-          type: integer
+        guid:
+          type: string
+          format: uuid
         username:
           type: string
         fullUsername:

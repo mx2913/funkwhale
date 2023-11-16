@@ -9,16 +9,25 @@ SimpleCollection:
     guid:
       type: string
       format: uuid
+      description: "The globally unique ID of the collection"
     name:
       type: string
+      description: "The user-defined name of the collection"
     local:
       type: boolean
+      description: "Whether the collection is hosted on the server the request is made against"
     owner:
       $ref: "../../schema.yml#/components/schemas/SimpleActor"
 Collection:
   allOf:
     - $ref: "#/SimpleCollection"
     - type: object
+      required:
+        - items
       properties:
+        description:
+          type: string
+          description: "The user-defined description of the collection"
         items:
           type: integer
+          description: "The total number of items in the collection"
