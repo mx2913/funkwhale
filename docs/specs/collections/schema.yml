@@ -1,0 +1,24 @@
+SimpleCollection:
+  type: object
+  required:
+    - guid
+    - name
+    - local
+    - owner
+  properties:
+    guid:
+      type: string
+      format: uuid
+    name:
+      type: string
+    local:
+      type: boolean
+    owner:
+      $ref: "../../schema.yml#/components/schemas/SimpleActor"
+Collection:
+  allOf:
+    - $ref: "#/SimpleCollection"
+    - type: object
+      properties:
+        items:
+          type: integer

@@ -1,0 +1,60 @@
+SimpleArtist:
+  type: object
+  required:
+    - id
+    - fid
+    - name
+    - contentCategory
+    - local
+  properties:
+    id:
+      type: integer
+    fid:
+      type: string
+      format: url
+    mbid:
+      type: string
+      format: uuid
+    name:
+      type: string
+    contentCategory:
+      type: string
+      enum:
+        - music
+        - podcast
+        - other
+    local:
+      type: boolean
+    channel:
+      type: string
+      format: uuid
+Artist:
+  allOf:
+    - $ref: "#/SimpleArtist"
+    - type: object
+      properties:
+        creationDate:
+          type: string
+          format: date-time
+        recordingCount:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        releases:
+          type: array
+          items:
+            $ref: "../../schema.yml#/components/schemas/SimpleRelease"
+ArtistCredit:
+  type: object
+  required:
+    - name
+    - id
+  properties:
+    name:
+      type: string
+    id:
+      type: integer
+    joinPhrase:
+      type: string
