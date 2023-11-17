@@ -59,7 +59,7 @@ ArtistCredit:
   type: object
   required:
     - name
-    - id
+    - guid
   properties:
     name:
       type: string
