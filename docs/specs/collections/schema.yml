@@ -28,6 +28,26 @@ Collection:
         description:
           type: string
           description: "The user-defined description of the collection"
-        items:
+        recordingCount:
           type: integer
           description: "The total number of items in the collection"
+NewCollection:
+  type: object
+  required:
+    - name
+  properties:
+    name:
+      type: string
+      description: "The new name for the collection"
+    description:
+      type: string
+      description: "The new description for the collection"
+UpdateCollection:
+  type: object
+  properties:
+    name:
+      type: string
+      description: "The new name for the collection"
+    description:
+      type: string
+      description: "The new description for the collection"
