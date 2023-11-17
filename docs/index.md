@@ -113,7 +113,7 @@ hidden: true
 ---
 
 changelog
-changes/funkwhale-0-changelog
+0.x Changelog <changes/funkwhale-0-changelog>
 
 ```
 
