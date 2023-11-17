@@ -55,6 +55,10 @@ Artist:
           type: array
           items:
             $ref: "../../schema.yml#/components/schemas/SimpleRelease"
+        collections:
+          type: array
+          items:
+            $ref: "../collections/schema.yml#/SimpleCollection"
 ArtistCredit:
   type: object
   required:
