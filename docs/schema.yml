@@ -767,6 +767,10 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/SimpleRecording"
+            collections:
+              type: array
+              items:
+                $ref: "specs/collections/schema.yml#/SimpleCollection"
     ReleaseGroup:
       allOf:
         - $ref: "#/components/schemas/SimpleReleaseGroup"
