@@ -300,6 +300,28 @@ paths:
                 $ref: "#/components/schemas/SimpleRelease"
         "401":
           $ref: "#/components/responses/Unauthorized"
+  /api/v2/releases/{guid}:
+    get:
+      tags:
+        - Releases
+      summary: Retrieve a specific release from the server
+      description: Retrieve a specific release from the server
+      operationId: getRelease
+      parameters:
+        - name: guid
+          in: path
+          required: true
+          description: The GUID of the collection
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimpleRelease"
   /api/v2/release-groups:
     get:
       tags:
@@ -670,6 +692,7 @@ components:
         - createdDate
         - user
         - recording
+        - actor
       properties:
         guid:
           type: string
@@ -681,8 +704,12 @@ components:
           description: "The date on which the listening was recorded"
         recording:
           $ref: "#/components/schemas/SimpleRecording"
+        release:
+          $ref: "#/components/schemas/SimpleRelease"
         user:
           $ref: "#/components/schemas/SimpleUser"
+        actor:
+          $ref: "#/components/schemas/SimpleActor"
     Pagination:
       type: object
       required:
@@ -721,10 +748,6 @@ components:
               format: uuid
             downloadsCount:
               type: integer
-            discNumber:
-              type: integer
-            position:
-              type: integer
             attributedTo:
               $ref: "#/components/schemas/SimpleActor"
             collections:
@@ -738,12 +761,12 @@ components:
           required:
             - artistCredit
             - creationDate
-            - recordingCount
+            - trackCount
             - duration
             - attributedTo
             - local
             - releaseGroup
-            - recordings
+            - tracks
           properties:
             artistCredit:
               $ref: "specs/multi-artist/schema.yml#/ArtistCredit"
@@ -753,7 +776,7 @@ components:
             releaseDate:
               type: string
               format: date
-            recordingCount:
+            trackCount:
               type: integer
             duration:
               type: integer
@@ -763,10 +786,10 @@ components:
               type: boolean
             releaseGroup:
               $ref: "#/components/schemas/SimpleReleaseGroup"
-            recordings:
+            tracks:
               type: array
               items:
-                $ref: "#/components/schemas/SimpleRecording"
+                $ref: "#/components/schemas/Track"
             collections:
               type: array
               items:
@@ -862,8 +885,6 @@ components:
           type: boolean
         local:
           type: boolean
-        release:
-          $ref: "#/components/schemas/SimpleRelease"
         artistCredit:
           type: array
           items:
@@ -929,6 +950,21 @@ components:
           type: string
         avatar:
           $ref: "#/components/schemas/CoverUrls"
+    Track:
+      type: object
+      required:
+        - recording
+      properties:
+        recording:
+          type: string
+          format: uuid
+          description: "The unique ID of the recording associated with the track"
+        entryNumber:
+          type: integer
+          description: "The disc or chapter the track is contained in"
+        position:
+          type: integer
+          description: "The position of the track in the disc or chapter"
   securitySchemes:
     oauth2:
       type: oauth2
