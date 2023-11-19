@@ -27,9 +27,13 @@ SimpleArtist:
         - other
     local:
       type: boolean
-    channel:
-      type: string
-      format: uuid
+    cover:
+      $ref: "../../schema.yml#/components/schemas/CoverUrls"
+    tags:
+      type: array
+      items:
+        type: string
+      description: "Any tags associated with the artist"
 Artist:
   allOf:
     - $ref: "#/SimpleArtist"
@@ -46,19 +50,6 @@ Artist:
         recordingCount:
           type: integer
           description: "The number of recordings credited to the artist"
-        tags:
-          type: array
-          items:
-            type: string
-          description: "Any tags associated with the artist"
-        releases:
-          type: array
-          items:
-            $ref: "../../schema.yml#/components/schemas/SimpleRelease"
-        collections:
-          type: array
-          items:
-            $ref: "../collections/schema.yml#/SimpleCollection"
 ArtistCredit:
   type: object
   required:

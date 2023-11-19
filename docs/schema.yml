@@ -21,6 +21,7 @@ servers:
           - "https"
         default: "https"
 tags:
+  - name: Artists
   - name: Collections
   - name: History
   - name: Instance
@@ -28,17 +29,18 @@ tags:
   - name: Releases
   - name: Tags
 paths:
-  /api/v2/collections:
+  /api/v2/artists:
     get:
       tags:
-        - Collections
-      summary: "Retrieve a list of collections from the server"
-      description: "Retrieve a list of collections stored on the server"
-      operationId: getCollections
+        - Artists
+      summary: "Fetch a list of artists"
+      description: "Fetch a list of artists from the server"
+      operationId: getArtists
       parameters:
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/pageParam"
         - $ref: "#/components/parameters/pageSizeParam"
+        - $ref: "#/components/parameters/tags"
       responses:
         "200":
           description: Successful operation
@@ -54,7 +56,128 @@ paths:
                       results:
                         type: array
                         items:
-                          $ref: "specs/collections/schema.yml#/Collection"
+                          $ref: "specs/multi-artist/schema.yml#/SimpleArtist"
+  /api/v2/artists/{guid}:
+    get:
+      tags:
+        - Artists
+      summary: "Fetch a specific artist"
+      description: "Fetch a specific artist from the server"
+      operationId: getArtist
+      parameters:
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "specs/multi-artist/schema.yml#/Artist"
+  /api/v2/artists/{guid}/recordings:
+    get:
+      tags:
+        - Artists
+      summary: "Retrieve all recordings associated with an artist"
+      description: "Retrieve all recordings associated with an artist"
+      operationId: getArtistRecordings
+      parameters:
+        - name: guid
+          in: path
+          required: true
+          description: The GUID of the artist
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/pageSizeParam"
+        - $ref: "#/components/parameters/tags"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Pagination"
+                  - type: object
+                    required:
+                      - results
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/SimpleRecording"
+  /api/v2/artists/{guid}/releases:
+    get:
+      tags:
+        - Artists
+      summary: "Retrieve all releases associated with an artist"
+      description: "Retrieve all releases associated with an artist"
+      operationId: getArtistReleases
+      parameters:
+        - name: guid
+          in: path
+          required: true
+          description: The GUID of the artist
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/pageSizeParam"
+        - $ref: "#/components/parameters/tags"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Pagination"
+                  - type: object
+                    required:
+                      - results
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/SimpleRelease"
+  /api/v2/collections:
+    get:
+      tags:
+        - Collections
+      summary: "Retrieve a list of collections from the server"
+      description: "Retrieve a list of collections stored on the server"
+      operationId: getCollections
+      parameters:
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/pageSizeParam"
+        - name: owner
+          in: query
+          required: false
+          description: "Filter recordings by owner"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Pagination"
+                  - type: object
+                    required:
+                      - results
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "specs/collections/schema.yml#/SimpleCollection"
     post:
       tags:
         - Collections
@@ -142,6 +265,111 @@ paths:
       responses:
         "200":
           description: Successful operation
+  /api/v2/collections/{guid}/recordings:
+    get:
+      tags:
+        - Collections
+      summary: "Retrieve all recordings contained in a collection"
+      description: "Retrieve all recordings contained in a collection"
+      operationId: getCollectionRecordings
+      parameters:
+        - name: guid
+          in: path
+          required: true
+          description: The GUID of the collection
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/pageSizeParam"
+        - $ref: "#/components/parameters/tags"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Pagination"
+                  - type: object
+                    required:
+                      - results
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/SimpleRecording"
+  /api/v2/collections/{guid}/releases:
+    get:
+      tags:
+        - Collections
+      summary: "Retrieve all releases contained in a collection"
+      description: "Retrieve all releases contained in a collection"
+      operationId: getCollectionReleases
+      parameters:
+        - name: guid
+          in: path
+          required: true
+          description: The GUID of the collection
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/pageSizeParam"
+        - $ref: "#/components/parameters/tags"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Pagination"
+                  - type: object
+                    required:
+                      - results
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/SimpleRelease"
+  /api/v2/collections/{guid}/artists:
+    get:
+      tags:
+        - Collections
+      summary: "Retrieve all artists contained in a collection"
+      description: "Retrieve all artists contained in a collection"
+      operationId: getCollectionArtists
+      parameters:
+        - name: guid
+          in: path
+          required: true
+          description: The GUID of the collection
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/query"
+        - $ref: "#/components/parameters/pageParam"
+        - $ref: "#/components/parameters/pageSizeParam"
+        - $ref: "#/components/parameters/tags"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Pagination"
+                  - type: object
+                    required:
+                      - results
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "specs/multi-artist/schema.yml#/SimpleArtist"
   /api/v2/instance/nodeinfo/2.1:
     get:
       tags:
@@ -173,6 +401,7 @@ paths:
         - $ref: "specs/quality-filter/schema.yml#/TagsFilter"
         - $ref: "specs/quality-filter/schema.yml#/MBIDFilter"
         - $ref: "specs/quality-filter/schema.yml#/QualityFilter"
+        - $ref: "#/components/parameters/tags"
         - name: release
           in: query
           required: false
@@ -223,7 +452,7 @@ paths:
                       results:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Recording"
+                          $ref: "#/components/schemas/SimpleRecording"
         "401":
           $ref: "#/components/responses/Unauthorized"
   /api/v2/releases:
@@ -241,6 +470,7 @@ paths:
         - $ref: "specs/quality-filter/schema.yml#/TagsFilter"
         - $ref: "specs/quality-filter/schema.yml#/MBIDFilter"
         - $ref: "specs/quality-filter/schema.yml#/QualityFilter"
+        - $ref: "#/components/parameters/tags"
         - name: artist
           in: query
           required: false
@@ -277,7 +507,7 @@ paths:
                       results:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Release"
+                          $ref: "#/components/schemas/SimpleRelease"
     post:
       tags:
         - Releases
@@ -321,7 +551,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SimpleRelease"
+                $ref: "#/components/schemas/Release"
   /api/v2/release-groups:
     get:
       tags:
@@ -333,6 +563,7 @@ paths:
         - $ref: "#/components/parameters/query"
         - $ref: "#/components/parameters/pageParam"
         - $ref: "#/components/parameters/pageSizeParam"
+        - $ref: "#/components/parameters/tags"
         - name: primary_type
           in: query
           required: false
@@ -558,6 +789,15 @@ components:
       description: A free text field to filter results
       schema:
         type: string
+    tags:
+      name: tags
+      in: query
+      required: false
+      description: "A comma-separated list of tags to filter results by"
+      schema:
+        type: array
+        items:
+          type: string
   schemas:
     Actor:
       allOf:
@@ -578,6 +818,9 @@ components:
                 - group
                 - organization
                 - service
+            url:
+              type: string
+              format: url
     Category:
       type: object
       required:
@@ -598,13 +841,13 @@ components:
     CoverUrls:
       type: object
       required:
-        - uuid
+        - guid
         - mimetype
         - size
         - creationDate
         - urls
       properties:
-        uuid:
+        guid:
           type: string
           format: uuid
         mimetype:
@@ -704,8 +947,6 @@ components:
           description: "The date on which the listening was recorded"
         recording:
           $ref: "#/components/schemas/SimpleRecording"
-        release:
-          $ref: "#/components/schemas/SimpleRelease"
         user:
           $ref: "#/components/schemas/SimpleUser"
         actor:
@@ -750,16 +991,11 @@ components:
               type: integer
             attributedTo:
               $ref: "#/components/schemas/SimpleActor"
-            collections:
-              type: array
-              items:
-                $ref: "specs/collections/schema.yml#/SimpleCollection"
     Release:
       allOf:
         - $ref: "#/components/schemas/SimpleRelease"
         - type: object
           required:
-            - artistCredit
             - creationDate
             - trackCount
             - duration
@@ -768,8 +1004,6 @@ components:
             - releaseGroup
             - tracks
           properties:
-            artistCredit:
-              $ref: "specs/multi-artist/schema.yml#/ArtistCredit"
             creationDate:
               type: string
               format: date-time
@@ -790,17 +1024,13 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/Track"
-            collections:
-              type: array
-              items:
-                $ref: "specs/collections/schema.yml#/SimpleCollection"
     ReleaseGroup:
       allOf:
         - $ref: "#/components/schemas/SimpleReleaseGroup"
         - type: object
           required:
             - guid
-            - artist
+            - artistCredit
             - releases
           properties:
             artistCredit:
@@ -846,9 +1076,6 @@ components:
         - domain
       properties:
         fid:
-          type: string
-          format: url
-        url:
           type: string
           format: url
         fullUsername:
@@ -897,6 +1124,7 @@ components:
         - guid
         - fid
         - name
+        - artistCredit
         - local
       properties:
         guid:
@@ -910,6 +1138,8 @@ components:
           format: uuid
         name:
           type: string
+        artistCredit:
+          $ref: "specs/multi-artist/schema.yml#/ArtistCredit"
         playable:
           type: boolean
         cover:
