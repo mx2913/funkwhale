@@ -14,7 +14,7 @@ tasks:
       docker-compose up -d
 
       poetry env use python
-      poetry install
+      make install
 
       gp ports await 5432
 

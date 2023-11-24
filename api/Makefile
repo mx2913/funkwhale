@@ -4,7 +4,7 @@ CPU_CORES := $(shell N=$$(nproc); echo $$(( $$N > 4 ? 4 : $$N )))
 .PHONY: install lint
 
 install:
-	poetry install
+	poetry install --all-extras
 
 lint:
 	poetry run pylint \
