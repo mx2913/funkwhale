@@ -303,6 +303,23 @@ LISTENING_CREATED = "listening_created"
 """
 Called when a track is being listened
 """
+LISTENING_SYNC = "listening_sync"
+"""
+Called by the task manager to trigger listening sync
+"""
+FAVORITE_CREATED = "favorite_created"
+"""
+Called when a track is being liked
+"""
+FAVORITE_DELETED = "favorite_deleted"
+"""
+Called when a favorite track is being unliked
+"""
+FAVORITE_SYNC = "favorite_sync"
+"""
+Called by the task manager to trigger favorite sync
+"""
+
 SCAN = "scan"
 """
 

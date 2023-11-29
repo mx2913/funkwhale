@@ -36,7 +36,6 @@ def delete_non_alnum_characters(text):
 def resolve_recordings_to_fw_track(recordings):
     """
     Tries to match a troi recording entity to a fw track using the typesense index.
-    It will save the results in the match_mbid attribute of the Track table.
     For test purposes : if multiple fw tracks are returned, we log the information
     but only keep the best result in db to avoid duplicates.
     """
