@@ -276,6 +276,7 @@ LOCAL_APPS = (
     # Your stuff: custom apps go here
     "funkwhale_api.instance",
     "funkwhale_api.audio",
+    "funkwhale_api.contrib.listenbrainz",
     "funkwhale_api.music",
     "funkwhale_api.requests",
     "funkwhale_api.favorites",

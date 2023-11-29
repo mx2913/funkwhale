@@ -1,3 +1,5 @@
+from config import plugins
+
 from django.db.models import Prefetch
 from drf_spectacular.utils import extend_schema
 from rest_framework import mixins, status, viewsets
@@ -44,6 +46,11 @@ class TrackFavoriteViewSet(
         instance = self.perform_create(serializer)
         serializer = self.get_serializer(instance=instance)
         headers = self.get_success_headers(serializer.data)
+        plugins.trigger_hook(
+            plugins.FAVORITE_CREATED,
+            track_favorite=serializer.instance,
+            confs=plugins.get_confs(self.request.user),
+        )
         record.send(instance)
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
@@ -76,6 +83,11 @@ class TrackFavoriteViewSet(
         except (AttributeError, ValueError, models.TrackFavorite.DoesNotExist):
             return Response({}, status=400)
         favorite.delete()
+        plugins.trigger_hook(
+            plugins.FAVORITE_DELETED,
+            track_favorite=favorite,
+            confs=plugins.get_confs(self.request.user),
+        )
         return Response([], status=status.HTTP_204_NO_CONTENT)
 
     @extend_schema(
