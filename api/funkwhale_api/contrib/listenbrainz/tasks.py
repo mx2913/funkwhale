@@ -1,13 +1,12 @@
 import datetime
 import pylistenbrainz
 
-from config import plugins
 from django.utils import timezone
-
-from funkwhale_api.users import models
-from funkwhale_api.taskapp import celery
+from config import plugins
 from funkwhale_api.history import models as history_models
 from funkwhale_api.music import models as music_models
+from funkwhale_api.taskapp import celery
+from funkwhale_api.users import models
 
 
 @celery.app.task(name="listenbrainz.trigger_listening_sync_with_listenbrainz")

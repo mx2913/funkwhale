@@ -27,7 +27,7 @@ from funkwhale_api.activity import record
 from funkwhale_api.federation import actors
 from funkwhale_api.moderation import mrf
 from funkwhale_api.music import licenses
-
+from funkwhale_api.contrib import listenbrainz
 from . import utils as test_utils
 
 pytest_plugins = "aiohttp.pytest_plugin"
@@ -275,6 +275,16 @@ def disabled_musicbrainz(mocker):
         "musicbrainzngs.musicbrainz._safe_read",
         side_effect=Exception("Disabled network calls"),
     )
+
+
+# @pytest.fixture()
+# def disabled_listenbrainz(mocker):
+#     # we ensure no listenbrainz requests gets out
+#     yield mocker.patch.object(
+#         listenbrainz.client.ListenBrainzClient,
+#         "_submit",
+#         return_value=None,
+#     )
 
 
 @pytest.fixture(autouse=True)
