@@ -4,13 +4,6 @@ from django.utils import timezone
 import funkwhale_api
 import pylistenbrainz
 
-<<<<<<< HEAD
-=======
-from config import plugins
-from django.utils import timezone
-
-from . import tasks
->>>>>>> bf0c861a0 (implement listening and favorite sync with listenbrainz)
 from .funkwhale_startup import PLUGIN
 
 from funkwhale_api.history import models as history_models
@@ -25,17 +18,10 @@ def submit_listen(listening, conf, **kwargs):
 
     logger = PLUGIN["logger"]
     logger.info("Submitting listen to ListenBrainz")
-<<<<<<< HEAD
     client = liblistenbrainz.ListenBrainz()
     client.set_auth_token(user_token)
     listen = get_listen(listening.track)
 
-=======
-
-    listen = get_listen(listening.track)
-    client = pylistenbrainz.ListenBrainz()
-    client.set_auth_token(user_token)
->>>>>>> bf0c861a0 (implement listening and favorite sync with listenbrainz)
     client.submit_single_listen(listen)
 
 
@@ -65,19 +51,13 @@ def get_listen(track):
     if upload:
         additional_info["duration"] = upload.duration
 
-<<<<<<< HEAD
     return liblistenbrainz.Listen(
-=======
-    return pylistenbrainz.Listen(
->>>>>>> bf0c861a0 (implement listening and favorite sync with listenbrainz)
         track_name=track.title,
         artist_name=track.artist.name,
         listened_at=int(timezone.now()),
         release_name=release_name,
         additional_info=additional_info,
     )
-<<<<<<< HEAD
-=======
 
 
 @plugins.register_hook(plugins.FAVORITE_CREATED, PLUGIN)
@@ -152,4 +132,3 @@ def sync_favorites_from_listenbrainz(user, conf):
         )
     except history_models.Listening.DoesNotExist:
         tasks.import_listenbrainz_favorites(user, user_name, last_ts)
->>>>>>> bf0c861a0 (implement listening and favorite sync with listenbrainz)

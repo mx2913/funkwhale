@@ -1,7 +1,8 @@
 import datetime
-import pytest
 
 import pylistenbrainz
+import pytest
+
 from funkwhale_api.contrib.listenbrainz import tasks
 from funkwhale_api.history import models as history_models
 
