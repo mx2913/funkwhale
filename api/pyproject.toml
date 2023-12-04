@@ -58,8 +58,8 @@ channels = { extras = ["daphne"], version = "==4.0.0" }
 channels-redis = "==4.1.0"
 
 # Celery
-kombu = "==5.2.4"
-celery = "==5.2.7"
+kombu = "5.3.4"
+celery = "5.3.6"
 
 # Deployment
 gunicorn = "==20.1.0"
