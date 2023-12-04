@@ -4,9 +4,13 @@ import store, { key } from '~/store'
 import router from '~/router'
 
 import { createApp, defineAsyncComponent, h } from 'vue'
+import { createPinia } from 'pinia'
 
 import useLogger from '~/composables/useLogger'
 import useTheme from '~/composables/useTheme'
+
+import Funkwhale from '@funkwhale/ui'
+import '@funkwhale/ui/style.css'
 
 import '~/style/_main.scss'
 
@@ -35,8 +39,12 @@ const app = createApp({
   }
 })
 
+const pinia = createPinia()
+
 app.use(router)
+app.use(pinia)
 app.use(store, key)
+app.use(Funkwhale)
 
 const modules: Record<string | 'axios', { install?: InitModule }> = import.meta.glob('./init/*.ts', { eager: true })
 const moduleContext: InitModuleContext = {

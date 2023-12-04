@@ -8,6 +8,7 @@ import manifest from './pwa-manifest.json'
 import VueI18n from '@intlify/unplugin-vue-i18n/vite'
 import Vue from '@vitejs/plugin-vue'
 import VueMacros from 'unplugin-vue-macros/vite'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 const port = +(process.env.VUE_PORT ?? 8080)
 
@@ -43,7 +44,11 @@ export default defineConfig(({ mode }) => ({
         navigateFallback: 'index.html'
       },
       manifest
-    })
+    }),
+
+    // https://github.com/davidmyersdev/vite-plugin-node-polyfills
+    // see: https://github.com/Borewit/music-metadata-browser/issues/836
+    nodePolyfills()
   ],
   server: {
     port
