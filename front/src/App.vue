@@ -130,3 +130,8 @@ store.dispatch('auth/fetchUser')
     <shortcuts-modal v-model:show="showShortcutsModal" />
   </div>
 </template>
+<style>
+html, body {
+  font-size: 16px;
+}
+</style>
