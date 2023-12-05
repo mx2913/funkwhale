@@ -1,9 +1,11 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia'
-import { computed, reactive, readonly, ref, watchEffect, markRaw, toRaw } from 'vue'
-import { whenever, useWebWorker } from '@vueuse/core'
+import { computed, reactive, readonly, ref, watchEffect, markRaw, toRaw, type Ref } from 'vue'
+import { whenever, useWebWorker, type UseWebWorkerReturn } from '@vueuse/core'
+import { not } from '@vueuse/math'
 import axios from 'axios'
-import FileMetadataParserWorker from '~/ui/workers/file-metadata-parser.ts?worker'
+
+import FileMetadataParserWorker, { type MetadataParsingResult } from '~/ui/workers/file-metadata-parser.ts?worker'
 
 import { getCoverUrl, getTags, type Tags } from '~/ui/composables/metadata'
 
@@ -28,9 +30,25 @@ interface UploadQueueEntry {
 }
 
 export const useUploadsStore = defineStore('uploads', () => {
+  const uploadQueue: UploadQueueEntry[] = reactive([])
+  const currentIndex = ref(0)
+  const currentUpload = computed(() => uploadQueue[currentIndex.value])
+  const isUploading = computed(() => !!currentUpload.value)
+
   // Tag extraction with a Web Worker
-  const { post: retrieveMetadata, data: workerData, worker } = useWebWorker(FileMetadataParserWorker)
-  whenever(workerData, (reactiveData) => {
+  const worker = ref<UseWebWorkerReturn<MetadataParsingResult>>()
+  const retrieveMetadata = (entry: Pick<UploadQueueEntry, 'id' | 'file'>) => {
+    if (!worker.value) worker.value = useWebWorker<MetadataParsingResult>(FileMetadataParserWorker)
+    worker.value.post(entry)
+  }
+
+  whenever(not(isUploading), () => {
+    worker.value?.terminate()
+    worker.value = undefined
+  })
+
+
+  whenever(() => worker.value?.data, (reactiveData) => {
     const data = toRaw(reactiveData)
     if (data.status === 'success') {
       const id = data.id as number
@@ -72,8 +90,6 @@ export const useUploadsStore = defineStore('uploads', () => {
       }
     })
 
-    // TODO: Handle failure with a try/catch block
-
     console.log(`[${entry.id}] import complete!`)
     entry.importedAt = new Date()
   }
@@ -90,11 +106,6 @@ export const useUploadsStore = defineStore('uploads', () => {
     console.log('sending message to worker', id)
     retrieveMetadata({ id, file })
   }
-
-  const uploadQueue: UploadQueueEntry[] = reactive([])
-  const currentIndex = ref(0)
-  const currentUpload = computed(() => uploadQueue[currentIndex.value])
-  const isUploading = computed(() => !!currentUpload.value)
 
   // Upload the file whenever it is available
   whenever(currentUpload, (entry) => upload(entry).catch((error) => {
@@ -120,11 +131,21 @@ export const useUploadsStore = defineStore('uploads', () => {
     }
   })
 
+  const cancelAll = () => {
+    for (const upload of uploadQueue) {
+      upload.abortController.abort()
+    }
+
+    uploadQueue.length = 0
+    currentIndex.value = 0
+  }
+
   // Return public API
   return {
     isUploading,
     queueUpload,
     currentUpload,
+    cancelAll,
     queue: readonly(uploadQueue)
   }
 })
