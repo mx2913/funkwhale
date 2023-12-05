@@ -1,6 +1,21 @@
 /// <reference lib="webworker" />
 
-import { getCoverUrl, getTags } from '~/ui/composables/metadata'
+import { getCoverUrl, getTags, type Tags } from '~/ui/composables/metadata'
+
+export interface MetadataParsingSuccess {
+  id: number
+  status: 'success'
+  tags: Tags
+  coverUrl: string | undefined
+}
+
+export interface MetadataParsingFailure {
+  id: number
+  status: 'failure'
+  error: Error
+}
+
+export type MetadataParsingResult = MetadataParsingSuccess | MetadataParsingFailure
 
 
 const parse = async (id: number, file: File) => {

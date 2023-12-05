@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
-import { whenever, computedAsync, useWebWorkerFn } from '@vueuse/core'
 import { UseTimeAgo } from '@vueuse/components'
 import { Icon } from '@iconify/vue';
 import { useUploadsStore } from '~/ui/stores/upload'
@@ -52,31 +51,28 @@ const libraryModalAlertOpen = ref(true)
 const serverPath = ref('/srv/funkwhale/data/music')
 
 // Upload
-const files = ref<File[]>([])
-
 const combinedFileSize = computed(() => bytesToHumanSize(
-  files.value.reduce((acc, file) => acc + file.size, 0)
+  uploads.queue.reduce((acc, { file }) => acc + file.size, 0)
 ))
 
 const uploads = useUploadsStore()
 const processFiles = (fileList: FileList) => {
   console.log('processFiles', fileList)
-  // NOTE: Append fileList elements in reverse order so they appear in the UI in the order, user selected them
-  for (const file of Array.from(fileList).reverse()) {
-    files.value.push(file)
-  }
-
   for (const file of fileList) {
     uploads.queueUpload(file)
   }
 
 }
+
+const cancel = () => {
+  libraryOpen.value = false
+  uploads.cancelAll()
+}
 </script>
 
 <template>
   <div class="flex items-center">
-    <h1>Upload</h1>
-    <div class="flex-spacer" />
+    <h1 class="mr-auto">Upload</h1>
 
     <div class="filesystem-stats">
       <div class="filesystem-stats--progress" :style="`--progress: ${filesystemProgress}%`" />
@@ -95,7 +91,7 @@ const processFiles = (fileList: FileList) => {
 
   <p> Select a destination for your audio files: </p>
 
-  <div class="flex space-between">
+  <div class="flex justify-between">
     <FwCard
       v-for="tab in tabs" :key="tab.label"
       :title="tab.label"
@@ -134,10 +130,10 @@ const processFiles = (fileList: FileList) => {
       />
 
       <!-- Upload path -->
-      <div v-if="files && files.length > 0">
+      <div v-if="uploads.queue.length > 0">
         <div class="list-header">
           <div class="file-count">
-            {{ files.length }} files, {{ combinedFileSize }}
+            {{ uploads.queue.length }} files, {{ combinedFileSize }}
           </div>
 
           <FwButton color="secondary">All</FwButton>
@@ -212,7 +208,7 @@ const processFiles = (fileList: FileList) => {
       </template>
 
       <template #actions>
-        <FwButton @click="libraryOpen = false" color="secondary">Cancel</FwButton>
+        <FwButton @click="cancel" color="secondary">Cancel</FwButton>
         <FwButton @click="libraryOpen = false">
           {{ uploads.queue.length ? 'Continue in background' : 'Save and close' }}
         </FwButton>
@@ -228,33 +224,16 @@ h1 {
   font-family: Lato, sans-serif;
 }
 
-.flex {
-  display: flex;
-  align-items: flex-start;
+.flex:not(.flex-col) {
+  .funkwhale.button {
+    &:first-child {
+      margin-left: 0;
+    }
 
-  &:not(.flex-col) {
-    .funkwhale.button {
-      &:first-child {
-        margin-left: 0;
-      }
-
-      &:last-child {
-        margin-right: 0;
-      }
+    &:last-child {
+      margin-right: 0;
     }
   }
-}
-
-.items-center {
-  align-items: center;
-}
-
-.space-between {
-  justify-content: space-between;
-}
-
-.flex-spacer {
-  flex: 1;
 }
 
 .filesystem-stats {
@@ -346,14 +325,6 @@ h1 {
       }
     }
   }
-}
-
-.w-full {
-  width: 100%;
-}
-
-.mr-4 {
-  margin-right: 1rem;
 }
 
 label {
@@ -467,6 +438,4 @@ label {
     border-color: transparent !important;
   }
 }
-
-
 </style>
