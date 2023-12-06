@@ -269,6 +269,7 @@ def test_throttle_calls_attach_info(method, mocker):
 
 
 def test_allow_request(api_request, settings, mocker):
+    settings.THROTTLING_ENABLED = True
     settings.THROTTLING_RATES = {"test": {"rate": "2/s"}}
     ip = "92.92.92.92"
     request = api_request.get("/", HTTP_X_FORWARDED_FOR=ip)
