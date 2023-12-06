@@ -1,6 +1,7 @@
 import json
 
 from allauth.account.adapter import get_adapter
+from allauth.account.utils import send_email_confirmation
 from dj_rest_auth import views as rest_auth_views
 from dj_rest_auth.registration import views as registration_views
 from django import http
@@ -11,7 +12,7 @@ from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from funkwhale_api.common import authentication, preferences, throttling
+from funkwhale_api.common import preferences, throttling
 
 from . import models, serializers, tasks
 
@@ -37,7 +38,7 @@ class RegisterView(registration_views.RegisterView):
         user = super().perform_create(serializer)
         if not user.is_active:
             # manual approval, we need to send the confirmation e-mail by hand
-            authentication.send_email_confirmation(self.request, user)
+            send_email_confirmation(self.request, user)
         if user.invitation:
             user.invitation.set_invited_user(user)
 

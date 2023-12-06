@@ -1193,7 +1193,7 @@ if BROWSABLE_API_ENABLED:
         "rest_framework.renderers.BrowsableAPIRenderer",
     )
 
-REST_AUTH_SERIALIZERS = {
+REST_AUTH = {
     "PASSWORD_RESET_SERIALIZER": "funkwhale_api.users.serializers.PasswordResetSerializer",  # noqa
     "PASSWORD_RESET_CONFIRM_SERIALIZER": "funkwhale_api.users.serializers.PasswordResetConfirmSerializer",  # noqa
 }

@@ -340,4 +340,8 @@ class UserChangeEmailSerializer(serializers.Serializer):
             email=request.user.email,
             defaults={"verified": False, "primary": True},
         )
-        current.change(request, self.validated_data["email"], confirm=True)
+        if request.user.email != self.validated_data["email"]:
+            current.email = self.validated_data["email"]
+            current.verified = False
+            current.save()
+            current.send_confirmation()
