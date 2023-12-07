@@ -1,4 +1,4 @@
-# New upload process spec
+# Upload process
 
 ## The issue
 
@@ -57,23 +57,28 @@ The new workflow goes as follows:
 4. The user selects the location to which they want to upload their content
 5. The user selects the files they want to upload from a file picker, or by dragging and dropping files onto the modal
 6. The user can select a "Upload in background" button which dismisses the modal but _continues the upload_
-7. Funkwhale assesses if all files have the correct metadata and highlights any issues for the user to fix _with a meaningful message_
+7. Funkwhale assesses if all files have the correct metadata and highlights any issues for the user to fix _with a meaningful message_. The frontend keep the connection open until the API sends a response
 
 ```{mermaid}
 flowchart TD
-
-    upload([User selects the upload button]) --> modal(An upload modal opens)
-    modal --> select{The user selects their upload target}
-    select --> |Library/Collection| library(The modal displays a list of libraries/collections)
-    select --> |Music channel| music(The modal displays the user's music channels)
-    select --> |Podcast channel| podcast(The modal displays the user's podcast channels)
-    library & music & podcast --> choose(The user chooses the upload location)
-    choose --> files[The user drags files to upload\nor selects files in a file picker]
-    files --> wait(The user waits for the upload to complete) & close(The user closes the modal)
-    wait & close --> process(Funkwhale processes the uploads\nand verifies metadata)
-    process --> message([Funkwhale returns status messages for all uploads\nand notifies the user the the upload is complete])
-
+   upload([User selects the upload button]) --> modal(An upload modal opens)
+   modal --> select{The user selects their upload target}
+   select --> |Library/Collection| library(The modal displays a list of libraries/collections)
+   select --> |Music channel| music(The modal displays the user's music channels)
+   select --> |Podcast channel| podcast(The modal displays the user's podcast channels)
+   library & music & podcast --> choose(The user chooses the upload location)
+   choose --> files[The user drags files to upload\nor selects files in a file picker]
+   files --> wait(The user waits for the upload to complete) & close(The user closes the modal)
+   wait & close --> process(Funkwhale processes the uploads\nand verifies metadata)
+   process --> message([Funkwhale returns status messages for all uploads\nand notifies the user the the upload is complete])
 ```
+
+The frontend should reflect the **status** of the upload to inform the user how the upload is progressing:
+
+- `Failed`: The file is improperly tagged **or** the API has responded with an error
+- `Uploading`: The file is being sent to the server
+- `Processing`: The server is processing the file and no success response has been returned yet
+- `Success`: The API has responded with a `200: Success` response and passed back information about the upload.
 
 #### UX considerations
 
@@ -94,6 +99,85 @@ The upload process remains the same on the backend. However, the error checking 
 - Failed metadata checks should be explicit about what issues were found in the metadata and should return this in a readable way for the user to fix
 - If an upload fails partway, this should be made clear so that the user can attempt a reupload
 - The backend should return a meaningful status message reflecting the file processing state
+
+#### Response structure (V2 only)
+
+If the upload succeeds, the API should respond with a `200: Success` message and return a payload containing the following information:
+
+- The upload `guid`
+- The `title` of the uploaded file
+- The `createdDate` of the upload
+- The `fileType` of the upload
+- The associated `recording`
+- The associated `release`
+- The `owner` (actor) of the upload
+
+```json
+{
+  "guid": "18c455d8-9840-4000-804d-c53e92d85d01",
+  "title": "string",
+  "createdDate": "1970-01-01T00:00:00.000Z",
+  "fileType": "flac",
+  "recording": {
+    "guid": "18c455d8-9840-4000-82af-67024a9e2018",
+    "fid": "http://example.com",
+    "name": "string",
+    "playable": false,
+    "local": false,
+    "artistCredit": [
+      {
+        "name": "string",
+        "guid": "18c455d8-9840-4000-8271-2731b97a2c01",
+        "mbid": "18c455d8-9840-4000-8f04-1f9dd7f16201",
+        "joinPhrase": "string"
+      }
+    ],
+    "cover": {
+      "guid": "18c455d8-9840-4000-85af-4178e969db01",
+      "mimetype": "string",
+      "size": 0,
+      "creationDate": "1970-01-01T00:00:00.000Z",
+      "urls": {
+        "source": "http://example.com",
+        "original": "http://example.com"
+      }
+    }
+  },
+  "release": {
+    "guid": "18c455d8-9840-4000-81e9-3cc3a7567201",
+    "fid": "http://example.com",
+    "mbid": "18c455d8-9840-4000-8b86-dd1e40a7bb80",
+    "name": "string",
+    "artistCredit": [
+      {
+        "name": "string",
+        "guid": "18c455d8-9840-4000-88dc-fd4cf3957201",
+        "mbid": "18c455d8-9840-4000-8e40-35019dd11180",
+        "joinPhrase": "string"
+      }
+    ],
+    "playable": false,
+    "cover": {
+      "guid": "18c455d8-9840-4000-831e-ea8add02c380",
+      "mimetype": "string",
+      "size": 0,
+      "creationDate": "1970-01-01T00:00:00.000Z",
+      "urls": {
+        "source": "http://example.com",
+        "original": "http://example.com"
+      }
+    }
+  },
+  "owner": {
+    "fid": "http://example.com",
+    "fullUsername": "string",
+    "preferredUsername": "string",
+    "name": "string",
+    "domain": "string",
+    "local": false
+  }
+}
+```
 
 ## Availability
 
