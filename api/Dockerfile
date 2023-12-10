@@ -1,4 +1,4 @@
-FROM alpine:3.17 as requirements
+FROM alpine:3.19 as requirements
 
 # We need this additional step to avoid having poetrys deps interacting with our
 # dependencies. This is only required until alpine 3.16 is released, since this
@@ -16,7 +16,7 @@ RUN set -eux; \
   poetry export --without-hashes --extras typesense > requirements.txt; \
   poetry export --without-hashes --with dev > dev-requirements.txt;
 
-FROM alpine:3.17 as builder
+FROM alpine:3.19 as builder
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
@@ -84,7 +84,7 @@ RUN --mount=type=cache,target=~/.cache/pip; \
     watchfiles==0.18.1; \
   fi
 
-FROM alpine:3.17 as production
+FROM alpine:3.19 as production
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
