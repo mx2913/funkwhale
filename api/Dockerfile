@@ -1,9 +1,5 @@
 FROM alpine:3.19 as requirements
 
-# We need this additional step to avoid having poetrys deps interacting with our
-# dependencies. This is only required until alpine 3.16 is released, since this
-# allows us to install poetry as package.
-
 RUN set -eux; \
   apk add --no-cache \
   poetry \
@@ -41,11 +37,11 @@ RUN set -eux; \
   openssl-dev \
   postgresql-dev \
   zlib-dev \
-  py3-cryptography=38.0.3-r1 \
+  py3-cryptography=41.0.7-r0 \
   py3-lxml=4.9.3-r1 \
-  py3-pillow=9.3.0-r0 \
-  py3-psycopg2=2.9.5-r0 \
-  py3-watchfiles=0.18.1-r0 \
+  py3-pillow=10.1.0-r1 \
+  py3-psycopg2=2.9.9-r0 \
+  py3-watchfiles=0.19.0-r1 \
   python3-dev
 
 # Create virtual env
@@ -65,11 +61,11 @@ RUN --mount=type=cache,target=~/.cache/pip; \
   # to install the deps using pip.
   grep -Ev 'cryptography|lxml|pillow|psycopg2|watchfiles' /requirements.txt \
   | pip3 install -r /dev/stdin \
-  cryptography==38.0.3 \
+  cryptography==41.0.7 \
   lxml==4.9.3 \
-  pillow==9.3.0 \
-  psycopg2==2.9.5 \
-  watchfiles==0.18.1
+  pillow==10.1.0 \
+  psycopg2==2.9.9 \
+  watchfiles==0.19.0
 
 ARG install_dev_deps=0
 RUN --mount=type=cache,target=~/.cache/pip; \
@@ -80,8 +76,8 @@ RUN --mount=type=cache,target=~/.cache/pip; \
     cryptography==38.0.3 \
     lxml==4.9.3 \
     pillow==9.3.0 \
-    psycopg2==2.9.5 \
-    watchfiles==0.18.1; \
+    psycopg2==2.9.9 \
+    watchfiles==0.19.0; \
   fi
 
 FROM alpine:3.19 as production
@@ -101,11 +97,11 @@ RUN set -eux; \
   libpq \
   libxml2 \
   libxslt \
-  py3-cryptography=38.0.3-r1 \
+  py3-cryptography=41.0.7-r0 \
   py3-lxml=4.9.3-r1 \
-  py3-pillow=9.3.0-r0 \
-  py3-psycopg2=2.9.5-r0 \
-  py3-watchfiles=0.18.1-r0 \
+  py3-pillow=10.1.0-r1 \
+  py3-psycopg2=2.9.9-r0 \
+  py3-watchfiles=0.19.0-r1 \
   python3 \
   tzdata
 
