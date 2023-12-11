@@ -4383,7 +4383,7 @@
             "sharingLink": "Lien de partage"
           },
           "link": {
-            "scan": "Analyser maintenant ",
+            "scan": "Analyser maintenant",
             "scanDetails": "Détails"
           },
           "message": {
@@ -4392,7 +4392,7 @@
           },
           "meta": {
             "failedTracks": "Pistes échouées : {tracks}",
-            "lastUpdate": "Dernière mise à jour : ",
+            "lastUpdate": "Dernière mise à jour :",
             "tracks": "{ n } piste | { n } pistes"
           },
           "modal": {
