@@ -1,16 +1,17 @@
 
 import { defineStore, acceptHMRUpdate } from 'pinia'
-import { computed, reactive, readonly, ref, watchEffect, markRaw, toRaw, type Ref } from 'vue'
+import { computed, reactive, readonly, ref, markRaw, toRaw, unref } from 'vue'
 import { whenever, useWebWorker, type UseWebWorkerReturn } from '@vueuse/core'
 import { not } from '@vueuse/math'
 import axios from 'axios'
 
-import FileMetadataParserWorker, { type MetadataParsingResult } from '~/ui/workers/file-metadata-parser.ts?worker'
+import FileMetadataParserWorker from '~/ui/workers/file-metadata-parser.ts?worker'
+import type { MetadataParsingResult } from '~/ui/workers/file-metadata-parser'
 
-import { getCoverUrl, getTags, type Tags } from '~/ui/composables/metadata'
+import type { Tags } from '~/ui/composables/metadata'
 
 interface UploadQueueEntry {
-  id: string
+  id: number
   file: File
 
   // Upload info
@@ -38,7 +39,7 @@ export const useUploadsStore = defineStore('uploads', () => {
   // Tag extraction with a Web Worker
   const worker = ref<UseWebWorkerReturn<MetadataParsingResult>>()
   const retrieveMetadata = (entry: Pick<UploadQueueEntry, 'id' | 'file'>) => {
-    if (!worker.value) worker.value = useWebWorker<MetadataParsingResult>(FileMetadataParserWorker)
+    if (!worker.value) worker.value = useWebWorker<MetadataParsingResult>(() => new FileMetadataParserWorker())
     worker.value.post(entry)
   }
 
@@ -47,18 +48,17 @@ export const useUploadsStore = defineStore('uploads', () => {
     worker.value = undefined
   })
 
-
   whenever(() => worker.value?.data, (reactiveData) => {
-    const data = toRaw(reactiveData)
+    const data = toRaw(unref(reactiveData))
     if (data.status === 'success') {
-      const id = data.id as number
-      const tags  = data.tags as Tags
-      const coverUrl = data.coverUrl as string
+      const id = data.id
+      const tags  = data.tags
+      const coverUrl = data.coverUrl
 
       uploadQueue[id].tags = markRaw(tags)
       uploadQueue[id].coverUrl = coverUrl
     } else {
-      const id = data.id as number
+      const id = data.id
       const entry = uploadQueue[id]
 
       entry.error = data.error
@@ -74,15 +74,15 @@ export const useUploadsStore = defineStore('uploads', () => {
     const body = new FormData()
     body.append('file', entry.file)
 
-    const uploadProgress = ref(0)
-
     await axios.post('https://httpbin.org/post', body, {
       headers: {
         'Content-Type': 'multipart/form-data'
       },
       signal: entry.abortController.signal,
       onUploadProgress: (e) => {
-        entry.progress = Math.floor(e.loaded / e.total * 100)
+        // NOTE: If e.total is absent, we use the file size instead. This is only an approximation, as e.total is the total size of the request, not just the file.
+        // see: https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent/total
+        entry.progress = Math.floor(e.loaded / (e.total ?? entry.file.size) * 100)
 
         if (entry.progress === 100) {
           console.log(`[${entry.id}] upload complete!`)
@@ -127,7 +127,7 @@ export const useUploadsStore = defineStore('uploads', () => {
   window.addEventListener('beforeunload', (event) => {
     if (isUploading.value) {
       event.preventDefault()
-      event.returnValue = 'The upload is still in progress. Are you sure you want to leave?'
+      return event.returnValue = 'The upload is still in progress. Are you sure you want to leave?'
     }
   })
 
@@ -144,6 +144,7 @@ export const useUploadsStore = defineStore('uploads', () => {
   return {
     isUploading,
     queueUpload,
+    currentIndex: readonly(currentIndex),
     currentUpload,
     cancelAll,
     queue: readonly(uploadQueue)

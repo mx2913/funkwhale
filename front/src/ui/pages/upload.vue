@@ -45,7 +45,6 @@ const currentTab = ref(tabs[0].label)
 
 // Modals
 const libraryOpen = ref(false)
-const libraryModalAlertOpen = ref(true)
 
 // Server import
 const serverPath = ref('/srv/funkwhale/data/music')
@@ -68,6 +67,20 @@ const cancel = () => {
   libraryOpen.value = false
   uploads.cancelAll()
 }
+
+// Sorting
+const sortItems = reactive([
+  { label: 'Upload time', value: 'upload-time' },
+  { label: 'Upload time 2', value: 'upload-time-2' },
+  { label: 'Upload time 3', value: 'upload-time-3' }
+])
+const currentSort = ref(sortItems[0])
+
+// Filtering
+const filterItems = reactive([
+  { label: 'All', value: 'all' }
+])
+const currentFilter = ref(filterItems[0])
 </script>
 
 <template>
@@ -111,13 +124,13 @@ const cancel = () => {
   <div>
     <FwButton @click="libraryOpen = true">Open library</FwButton>
     <FwModal v-model="libraryOpen" title="Upload music to library">
-      <template #alert v-if="libraryModalAlertOpen">
+      <template #alert="{ closeAlert }">
         <FwAlert>
           Before uploading, please ensure your files are tagged properly.
           We recommend using Picard for that purpose.
 
           <template #actions>
-            <FwButton @click="libraryModalAlertOpen = false">Got it</FwButton>
+            <FwButton @click="closeAlert">Got it</FwButton>
           </template>
         </FwAlert>
       </template>
@@ -136,8 +149,8 @@ const cancel = () => {
             {{ uploads.queue.length }} files, {{ combinedFileSize }}
           </div>
 
-          <FwButton color="secondary">All</FwButton>
-          <FwButton color="secondary">Upload time</FwButton>
+          <FwSelect icon="bi:filter" v-model="currentFilter" :items="filterItems" />
+          <FwSelect icon="bi:sort-down" v-model="currentSort" :items="sortItems" />
         </div>
 
         <div class="file-list">
