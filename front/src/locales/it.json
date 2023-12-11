@@ -1,4 +1,7 @@
 {
+  "App": {
+    "loading": "Caricando…"
+  },
   "components": {
     "About": {
       "description": {
@@ -14,6 +17,9 @@
         "funkwhale": "Una piattaforma sociale dove ascoltare e condividere musica",
         "publicContent": "Naviga tra i contenuti pubblici",
         "signup": "Registrati"
+      },
+      "help": {
+        "closedRegistrations": "Le iscrizioni sono chiuse su questo pod. Ti puoi registrare su un altro pod usando il link seguente."
       },
       "link": {
         "findOtherPod": "Trova un altro pod",
@@ -3642,7 +3648,8 @@
             },
             "audioContent": {
               "bitrate": {
-                "label": "Bitrate"
+                "label": "Bitrate",
+                "value": "{bitrate}/s"
               },
               "cachedSize": "Dimensione in cache",
               "duration": "Durata",
@@ -3794,7 +3801,8 @@
                 "value": "Errore durante il recupero delle informazioni del nodo"
               },
               "software": {
-                "label": "Software"
+                "label": "Software",
+                "value": "{name} ({version})"
               },
               "totalUsers": "Utenti totali"
             }
@@ -4537,6 +4545,7 @@
       "Detail": {
         "button": {
           "confirm": "Elimina radio",
+          "delete": "Elimina",
           "edit": "Modifica…"
         },
         "empty": {
