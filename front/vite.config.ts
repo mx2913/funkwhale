@@ -1,7 +1,8 @@
 import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig, type PluginOption } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import { resolve } from 'path'
+import { fileURLToPath, URL } from 'node:url'
+import UnoCSS from 'unocss/vite'
 
 import manifest from './pwa-manifest.json'
 
@@ -26,7 +27,7 @@ export default defineConfig(({ mode }) => ({
 
     // https://github.com/intlify/bundle-tools/tree/main/packages/vite-plugin-vue-i18n
     VueI18n({
-      include: resolve(__dirname, './src/locales/**')
+      include: fileURLToPath(new URL('./src/locales/**', import.meta.url))
     }),
 
     // https://github.com/btd/rollup-plugin-visualizer
@@ -48,17 +49,21 @@ export default defineConfig(({ mode }) => ({
 
     // https://github.com/davidmyersdev/vite-plugin-node-polyfills
     // see: https://github.com/Borewit/music-metadata-browser/issues/836
-    nodePolyfills()
+    nodePolyfills(),
+
+
+    // https://unocss.dev/
+    UnoCSS()
   ],
   server: {
     port
   },
   resolve: {
-    alias: {
-      '#': resolve(__dirname, './src/worker'),
-      '?': resolve(__dirname, './test'),
-      '~': resolve(__dirname, './src')
-    }
+    alias: [
+      { find: '#', replacement: fileURLToPath(new URL('./src/ui/workers', import.meta.url)) },
+      { find: '?', replacement: fileURLToPath(new URL('./test', import.meta.url)) },
+      { find: '~', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+    ]
   },
   build: {
     sourcemap: true,

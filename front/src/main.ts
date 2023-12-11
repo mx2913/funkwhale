@@ -16,6 +16,8 @@ import '~/style/_main.scss'
 
 import '~/api'
 
+import 'virtual:uno.css'
+
 // NOTE: Set the theme as fast as possible
 useTheme()
 
