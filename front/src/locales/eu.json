@@ -4383,7 +4383,7 @@
             "sharingLink": "Esteka partekatzen"
           },
           "link": {
-            "scan": "Eskaneatu orain ",
+            "scan": "Eskaneatu orain",
             "scanDetails": "Xehetasunak"
           },
           "message": {
@@ -4392,7 +4392,7 @@
           },
           "meta": {
             "failedTracks": "Huts egin duten pistak: {tracks}",
-            "lastUpdate": "Azken eguneraketa: ",
+            "lastUpdate": "Azken eguneraketa:",
             "tracks": "Pista { n } | { n } pista"
           },
           "modal": {
