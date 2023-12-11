@@ -4391,20 +4391,20 @@
             "scanSkipped": "Scan ausgelassen (der letzte Scan fand kurz zuvor statt)"
           },
           "meta": {
-            "failedTracks": "Fehlgeschlagene Titel:",
+            "failedTracks": "Fehlgeschlagene Titel: {tracks}",
             "lastUpdate": "Letzte Aktualisierung:",
-            "tracks": "{ n } Titel | { n } Titel"
+            "tracks": "Keine Titel | { n } Titel | { n } Titel"
           },
           "modal": {
             "unfollow": {
               "content": {
                 "warning": "Wenn du diese Mediathek nicht mehr folgst, verlierst du den Zugriff auf alle ihre Inhalte."
               },
-              "header": "Das Abonnement an dieser Mediathek beenden?"
+              "header": "Möchtest du das Abonnement dieser Mediathek beenden?"
             }
           },
           "tooltip": {
-            "private": "Diese Mediathek ist privat. Der Zugriff bedarf der Genehmigung des Eigentümers / der Eigentümerin",
+            "private": "Diese Mediathek ist privat. Der Zugriff bedarf der Genehmigung der Eigentümer*in",
             "public": "Diese Mediathek ist öffentlich. Du kannst auf den Inhalt ohne Einschränkung zugreifen"
           }
         },
