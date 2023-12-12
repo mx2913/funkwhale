@@ -101,6 +101,7 @@ caption: Specifications
 hidden: true
 ---
 
+specs/activitypub-overview/index
 specs/collections/index
 specs/nodeinfo21/index
 specs/offline-mode/index

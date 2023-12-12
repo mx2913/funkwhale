@@ -1,35 +1,29 @@
-Funkwhale ActivityPub overview
-===
+# ActivityPub overview
 
 ## Actors
 
-Funkwhale uses [ActivityPub actors](https://www.w3.org/TR/activitypub/#actor-objects) to hold and manage access to content. There are five main types of actor:
+Funkwhale uses [ActivityPub actors][actor-object] to hold and manage access to content. There are five main types of actor:
 
 Service actor
-
-: The **Service actor** is a special actor that represents a Funkwhale pod. ActivityPub actors can [follow this actor](https://www.w3.org/TR/activitypub/#follow-activity-outbox) to receive updates to public content stored on the pod.
+: The **Service actor** is a special actor that represents a Funkwhale pod. ActivityPub actors can [follow this actor][follow-activity] to receive updates to public content stored on the pod.
 
 User
+: A **User** is an actor that represents **either** a person with a Funkwhale account **or** a _virtual_ user that controls access to a **Channel**. _Regular_ **Users** can own Funkwhale **Collection** actors to add content to their [ActivityPub Collection][collections].
 
-: A **User** is an actor that represents **either** a person with a Funkwhale account **or** a *virtual* user that controls access to a **Channel**. *Regular* **Users** can own Funkwhale **Collection** actors to add content to their [ActivityPub Collection](https://www.w3.org/TR/activitypub/#collections).
+: _Regular_ **Users** may follow other **Users** to receive updates about the **User's** _Favorites_ ([likes collection](https://www.w3.org/TR/activitypub/#likes)) and _Listening activity_.
 
-: *Regular* **Users** may follow other **Users** to receive updates about the **User's** *Favorites* ([likes collection](https://www.w3.org/TR/activitypub/#likes)) and *Listening activity*.
-
-: Multiple *regular* **Users** can own a *virtual* **User** to control access to a **Channel**. This is useful in the example of bands or groups who might share access to a joint account. A **User** may authenticate as the *virtual* user to add content to a **Channel's**
- [ActivityPub Collection](https://www.w3.org/TR/activitypub/#collections).
+: Multiple _regular_ **Users** can own a _virtual_ **User** to control access to a **Channel**. This is useful in the example of bands or groups who might share access to a joint account. A **User** may authenticate as the _virtual_ user to add content to a **Channel's**
+[ActivityPub Collection][collections].
 
 Collection
-
-: A **Collection** is an actor that represents a collection of content owned by a **User**. ActivityPub actors can [follow this actor](https://www.w3.org/TR/activitypub/#follow-activity-outbox) to be notified of changes to the collection's content.
+: A **Collection** is an actor that represents a collection of content owned by a **User**. ActivityPub actors can [follow this actor][follow-activity] to be notified of changes to the collection's content.
 
 Channel
-
-: A **Channel** is an actor that represents a public stream of content owned by a *virtual* **User**. Funkwhale **Users** with access to the *virtual* **User** may manage content in the **Channel's** collection. ActivityPub actors can [follow this actor](https://www.w3.org/TR/activitypub/#follow-activity-outbox) to be notified of changes to the collection's content.
+: A **Channel** is an actor that represents a public stream of content owned by a _virtual_ **User**. Funkwhale **Users** with access to the _virtual_ **User** may manage content in the **Channel's** collection. ActivityPub actors can [follow this actor][follow-activity] to be notified of changes to the collection's content.
 
 Each actor must have a globally unique username that identifies them across federation. The `preferredUsername` field should be used to render the actor's name in all representations. Actor owners can change the `preferredUsername` of the actor at any time to update how it is represented.
 
-
-```mermaid
+```{mermaid}
 erDiagram
     Pod ||--|| ServiceActor : contains
     Pod ||--|{ Users: contains
@@ -45,11 +39,11 @@ erDiagram
 
 ## Service actor outbox
 
-The **Service actor** publishes *public* Funkwhale content to its [outbox](https://www.w3.org/TR/activitypub/#outbox). When new content is added to a *public* **Collection** or to a **Channel**, this update is added to the **Service actor's** outbox. Actors in the [follower collection](https://www.w3.org/TR/activitypub/#followers) receive updates in their [inbox](https://www.w3.org/TR/activitypub/#inbox) and display the new content.
+The **Service actor** publishes _public_ Funkwhale content to its [outbox][outbox]. When new content is added to a _public_ **Collection** or to a **Channel**, this update is added to the **Service actor's** outbox. Actors in the [followers collection][followers-collection] receive updates in their [inbox][inbox] and display the new content.
 
-Pods may follow one another's public content by having their **Service actor** follow the target pod's **Service actor**. If the target **Service actor** [accepts](https://www.w3.org/TR/activitypub/#accept-activity-inbox) the follow request, the requesting **Service actor** is added to the target **Service actor's** follower collection.
+Pods may follow one another's public content by having their **Service actor** follow the target pod's **Service actor**. If the target **Service actor** [accepts][accept-activity] the follow request, the requesting **Service actor** is added to the target **Service actor's** follower collection.
 
-```mermaid
+```{mermaid}
 sequenceDiagram
     Pod A->>Pod B: Follow
     Pod B-->>Pod A: Accept
@@ -60,11 +54,11 @@ sequenceDiagram
 
 **Service actors** publish the following to their outbox:
 
-* Addition of new public content (represented as [created actvities](https://www.w3.org/TR/activitypub/#create-activity-inbox) against content objects)
-* Deletion of public content (represented as [delete activities](https://www.w3.org/TR/activitypub/#delete-activity-inbox) against content objects)
-* Changes to public content details (represented as [update activities](https://www.w3.org/TR/activitypub/#update-activity-inbox) against content objects)
+- Addition of new public content (represented as [created actvities][create-inbox] against content objects)
+- Deletion of public content (represented as [delete activities][delete-activity] against content objects)
+- Changes to public content details (represented as [update activities][update-activity] against content objects)
 
-```mermaid
+```{mermaid}
 sequenceDiagram
     User->>Service actor: Add new public content
     Service actor->>Outbox: Create content object
@@ -79,14 +73,14 @@ sequenceDiagram
 
 ## Regular user outbox
 
-**Regular** actors publish the following to their [outbox](https://www.w3.org/TR/activitypub/#outbox):
+**Regular** actors publish the following to their [outbox][outbox]:
 
-* Their favorites (represented as liked objects in their [likes collection](https://www.w3.org/TR/activitypub/#likes)
-* Their listens (represented as [created actvities](https://www.w3.org/TR/activitypub/#create-activity-inbox) against listening objects)
+- Their favorites (represented as liked objects in their [likes collection][likes]
+- Their listens (represented as [created activities][create-inbox] against listening objects)
 
 ### Favorite action
 
-```mermaid
+```{mermaid}
 sequenceDiagram
     par
         User->>Funkwhale API: Favorite content
@@ -97,7 +91,7 @@ sequenceDiagram
 
 ### Listen action
 
-```mermaid
+```{mermaid}
 sequenceDiagram
     par
         User->>Funkwhale API: Listen
@@ -108,13 +102,13 @@ sequenceDiagram
 
 ## Collection outbox
 
-**Collection** actors publish the following to their [outbox](https://www.w3.org/TR/activitypub/#outbox):
+**Collection** actors publish the following to their [outbox][outbox]:
 
-* Addition of new content (represented as [created actvities](https://www.w3.org/TR/activitypub/#create-activity-inbox) against content objects)
-* Deletion of content (represented as [delete activities](https://www.w3.org/TR/activitypub/#delete-activity-inbox) against content objects)
-* Changes to content details (represented as [update activities](https://www.w3.org/TR/activitypub/#update-activity-inbox) against content objects)
+- Addition of new content (represented as [created activities][create-inbox] against content objects)
+- Deletion of content (represented as [delete activities][delete-activity] against content objects)
+- Changes to content details (represented as [update activities][update-activity] against content objects)
 
-```mermaid
+```{mermaid}
 sequenceDiagram
     User->>Collection: Add new content
     Collection->>Outbox: Create content object
@@ -129,13 +123,13 @@ sequenceDiagram
 
 ## Channel outbox
 
-**Channel** actors publish the following to their [outbox](https://www.w3.org/TR/activitypub/#outbox):
+**Channel** actors publish the following to their [outbox][outbox]:
 
-* Addition of new content (represented as [created actvities](https://www.w3.org/TR/activitypub/#create-activity-inbox) against content objects)
-* Deletion of content (represented as [delete activities](https://www.w3.org/TR/activitypub/#delete-activity-inbox) against content objects)
-* Changes to content details (represented as [update activities](https://www.w3.org/TR/activitypub/#update-activity-inbox) against content objects)
+- Addition of new content (represented as [created actvities][create-inbox] against content objects)
+- Deletion of content (represented as [delete activities][delete-activity] against content objects)
+- Changes to content details (represented as [update activities][update-activity] against content objects)
 
-```mermaid
+```{mermaid}
 sequenceDiagram
     User->>Channel: Add new content
     Channel->>Outbox: Create content object
@@ -148,4 +142,14 @@ sequenceDiagram
     Outbox->>Follower collection: Update content object
 ```
 
-###### tags: `specs` `in-progress` `activitypub`
+[actor-object]: https://www.w3.org/TR/activitypub/#actor-objects
+[inbox]: https://www.w3.org/TR/activitypub/#inbox
+[outbox]: https://www.w3.org/TR/activitypub/#outbox
+[collections]: https://www.w3.org/TR/activitypub/#collections
+[followers-collection]: https://www.w3.org/TR/activitypub/#followers
+[create-inbox]: https://www.w3.org/TR/activitypub/#create-activity-inbox
+[likes]: https://www.w3.org/TR/activitypub/#likes
+[delete-activity]: https://www.w3.org/TR/activitypub/#delete-activity-inbox
+[update-activity]: https://www.w3.org/TR/activitypub/#update-activity-inbox
+[accept-activity]: https://www.w3.org/TR/activitypub/#accept-activity-inbox
+[follow-activity]: https://www.w3.org/TR/activitypub/#follow-activity-outbox
