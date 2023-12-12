@@ -1,44 +1,24 @@
 # User deletion
 
-## Terminology
-
-The following terminology is used throughout this document:
-
-User
-: A **person** with an account on a Funkwhale server or ActivityPub-enabled platform.
-
-Object
-: A collection of information - formatted as [`JSON-LD`](https://json-ld.org/) - that represents entities such as content, users, or activities performed in Funkwhale. See the [ActivityPub specification](https://www.w3.org/TR/activitypub/#obj) for more details.
-
-Activity
-: A verb that describes an action targeting an **Object**. This informs the receiving server what it needs to do with the object. For example: `Create`, `Delete`, `Undo`, `Follow`, `Block`.
-
-Actor
-: An ActivityPub object acting on behalf of another object across federated services. See the [ActivityPub specification][actor] for more details.
-
-Tombstone
-: A status that marks an object as deleted but leaves some metadata intact to prevent reuse.
-
 ## The issue
 
 Funkwhale users broadcast activities such as Listenings and Favorites both locally and over federation. Users require the ability to fully delete their presence from local and federated servers to comply with their request.
 
 ## The solution
 
-User deletions must be actioned as _cascading_ deletions both locally and across federation. Any action associated with a user's actor should be deleted, and the actor itself must be marked as `Tombstoned` to prevent another user from claiming the actor in future.
+User deletions must be actioned as _cascading_ deletions both locally and across federation. Any action or information associated with a user's {term}`actor <Actor>` should be deleted, and the actor itself must be marked as {term}`Tombstoned <Tombstone>` to prevent another user from claiming the actor in future.
+
+:::{important}
+If the user owns any joint Channels or Playlists, these should only be deleted if the user is the **only** user with access to the {term}`object <Object>`.
+:::
 
 When a user deletes their account, the following must happen:
 
 1. The local server must remove all Favorites, Listenings, Collections, and Uploads owned by the actor
-
-:::{info}
-If the user owns any joint Channels or Playlists, these should only be deleted if the user is the **only** user with access to the object.
-:::
-
-3. The local server must delete the user's actor and mark it as `Tombstoned`
-4. The local server must delete the actor of any Channels owned solely by the user and mark them as `Tombstoned`
-5. The local server's **Service actor** must broadcast the deletion to the **Service actors** of all servers known to it
-6. Remote servers should delete all data associated with the deleted actor, including cached content belonging to the actor
+2. The local server must delete the user's profile and mark their actor as `Tombstoned`
+3. The local server must delete the profile of any Channels owned solely by the user and mark their actor as `Tombstoned`
+4. The local server's {term}`Service actor` must broadcast the deletion {term}`activity <Activity>` to the **Service actors** of all servers known to it
+5. Remote servers should delete all data associated with the deleted actor, including cached content belonging to the actor
 
 ```{mermaid}
 sequenceDiagram
