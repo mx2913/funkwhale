@@ -26,6 +26,16 @@
       "prConcurrentLimit": 0
     },
     {
+      "matchBaseBranches": ["develop"],
+      "matchUpdateTypes": ["major"],
+      "prPriority": 2
+    },
+    {
+      "matchBaseBranches": ["develop"],
+      "matchUpdateTypes": ["minor"],
+      "prPriority": 1
+    },
+    {
       "matchUpdateTypes": ["major", "minor"],
       "matchBaseBranches": ["stable"],
       "enabled": false
