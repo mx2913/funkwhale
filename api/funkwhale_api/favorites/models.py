@@ -12,7 +12,7 @@ class TrackFavorite(models.Model):
     track = models.ForeignKey(
         Track, related_name="track_favorites", on_delete=models.CASCADE
     )
-    from_listenbrainz = models.BooleanField(default=None, null=True)
+    source = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         unique_together = ("track", "user")

@@ -8,6 +8,8 @@ from funkwhale_api.music import models as music_models
 from funkwhale_api.taskapp import celery
 from funkwhale_api.users import models
 
+from .funkwhale_startup import PLUGIN
+
 
 @celery.app.task(name="listenbrainz.trigger_listening_sync_with_listenbrainz")
 def trigger_listening_sync_with_listenbrainz():
@@ -64,20 +66,34 @@ def add_lb_listenings_to_db(listens, user):
             listen.additional_info.get("submission_client")
             and listen.additional_info.get("submission_client")
             == "Funkwhale ListenBrainz plugin"
+            and history_models.Listening.objects.filter(
+                creation_date=listen.listened_at
+            ).exists()
         ):
             continue
+
+        mbid = (
+            listen.mbid_mapping
+            if hasattr(listen, "mbid_mapping")
+            else listen.recording_mbid
+        )
+
+        if not mbid:
+            logger = PLUGIN["logger"]
+            logger.info("Received listening doesn't have a mbid. Skipping...")
+
         try:
-            track = music_models.Track.objects.get(mbid=listen.recording_mbid)
+            track = music_models.Track.objects.get(mbid=mbid)
         except music_models.Track.DoesNotExist:
-            # to do : resolve non mbid listens ?
+            logger.info("Received listening doesn't exist in fw database. Skipping...")
             continue
 
         user = user
         fw_listen = history_models.Listening(
-            creation_date=listen.listened_at,
+            creation_date=timezone.make_aware(listen.listened_at),
             track=track,
             user=user,
-            from_listenbrainz=True,
+            source="Listenbrainz",
         )
         fw_listens.append(fw_listen)
 

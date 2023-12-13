@@ -17,7 +17,7 @@ class Listening(models.Model):
         on_delete=models.CASCADE,
     )
     session_key = models.CharField(max_length=100, null=True, blank=True)
-    from_listenbrainz = models.BooleanField(default=None, null=True)
+    source = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
         ordering = ("-creation_date",)
