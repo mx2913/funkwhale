@@ -1,0 +1,103 @@
+openapi: 3.1.0
+info:
+  description: "Interactive documentation for [Funkwhale](https://funkwhale.audio) API."
+  version: "2.0.0"
+  title: "Funkwhale API"
+servers:
+  - url: "https://demo.funkwhale.audio"
+    description: "Demo server"
+  - url: "https://open.audio"
+    description: "Real server with real content"
+  - url: "https://{domain}"
+    description: "Custom server"
+    variables:
+      domain:
+        default: yourdomain
+        description: "Your Funkwhale Domain"
+      protocol:
+        enum:
+          - "http"
+          - "https"
+        default: "https"
+tags:
+  - name: Users
+paths:
+  /api/v2/users:
+    $ref: "users/schema.yml#/paths/~1users"
+components:
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: The number of the result page you want to return
+      schema:
+        type: number
+        format: integer
+    PageSizeParam:
+      name: page_size
+      in: query
+      required: false
+      description: The number of results to return on each page. Defaults to 50.
+      schema:
+        type: number
+        default: 50
+    Query:
+      name: q
+      in: query
+      required: false
+      description: A free text field to filter results
+      schema:
+        type: string
+  schemas:
+    ImageUrls:
+      type: object
+      description: "Metadata and file links for the object's associated art"
+      required:
+        - guid
+        - mimetype
+        - size
+        - creationDate
+        - urls
+      properties:
+        guid:
+          type: string
+          format: uuid
+          description: "The unique ID of the cover"
+        mimetype:
+          type: string
+          description: "The data type (filetype) of the cover file"
+        size:
+          type: integer
+          description: "The size of the file"
+        creationDate:
+          type: string
+          format: date-time
+          description: "The date and time on which the cover object was created"
+        urls:
+          type: object
+          description: "All URLs associated with the cover"
+          required:
+            - original
+          properties:
+            source:
+              type: string
+              format: url
+              description: "The source of the cover"
+            original:
+              type: string
+              format: url
+              description: "The upload in its original size and format"
+    Pagination:
+      type: object
+      required:
+        - total
+      properties:
+        total:
+          type: integer
+        next:
+          type: string
+          format: url
+        previous:
+          type: string
+          format: url

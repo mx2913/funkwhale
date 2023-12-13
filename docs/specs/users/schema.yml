@@ -1,0 +1,131 @@
+paths:
+  /users:
+    get:
+      tags:
+        - Users
+      summary: "Fetch a list of users"
+      description: "Fetch a list of users from the server"
+      operationId: getUsers
+      parameters:
+        - $ref: "../schema.yml#/components/parameters/Query"
+        - $ref: "../schema.yml#/components/parameters/PageParam"
+        - $ref: "../schema.yml#/components/parameters/PageSizeParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schema.yml#/components/schemas/Pagination"
+                  - type: object
+                    required:
+                      - results
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/SimpleUser"
+              example:
+                total: 1
+                results:
+                  - guid: "eaf72973-b62b-45ed-8549-f427919e6555"
+                    username: "betterraves"
+                    preferredUsername: "betterraves"
+                    domain: "https://open.audio"
+                    name: "Agate"
+components:
+  schemas:
+    SimpleUser:
+      type: object
+      required:
+        - guid
+        - username
+        - preferredUsername
+        - domain
+      properties:
+        guid:
+          type: string
+          format: uuid
+          description: "The unique ID of the user"
+        username:
+          type: string
+          description: "The user's account username"
+        preferredUsername:
+          type: string
+          description: "The username displayed on the user's profile"
+        domain:
+          type: string
+          format: url
+          description: "The domain the user belongs to"
+        name:
+          type: string
+          description: "The user's real name"
+    User:
+      allOf:
+        - $ref: "#/components/schemas/SimpleUser"
+        - type: object
+          properties:
+            createdDate:
+              type: string
+              format: date-time
+              description: "The date and time the user profile was created"
+            summary:
+              type: string
+              format: html
+              description: "A brief summary of the user"
+            avatar:
+              $ref: "../schema.yml#/components/schemas/ImageUrls"
+    SimpleActor:
+      type: object
+      required:
+        - fid
+        - preferredUsername
+        - fullUsername
+        - local
+        - domain
+      properties:
+        fid:
+          type: string
+          format: url
+          description: "The federation ID of the actor"
+        fullUsername:
+          type: string
+          description: "The username and domain of the actor"
+        preferredUsername:
+          type: string
+          description: "The user-selected preferred username"
+        name:
+          type: string
+          description: "The name of the actor"
+        domain:
+          type: string
+          description: "The domain the actor is associated with"
+        local:
+          type: boolean
+          description: "Whether the actor belongs to the server serving the request"
+    Actor:
+      allOf:
+        - $ref: "#/components/schemas/SimpleActor"
+        - type: object
+          properties:
+            lastFetchDate:
+              type: string
+              format: date-time
+              description: "The date and time on which the server last fetched information about the actor"
+            manuallyApprovesFollowers:
+              type: boolean
+              description: "Whether the user manually approves followers"
+            type:
+              type: string
+              description: "The type of ActivityPub actor the object represents"
+              enum:
+                - person
+                - tombstone
+                - application
+                - group
+                - organization
+                - service
+            url:
+              type: string
+              format: url
