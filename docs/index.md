@@ -66,6 +66,17 @@ moderator/allow-listing/index
 ```{toctree}
 ---
 maxdepth: 1
+caption: Concepts
+hidden: true
+---
+
+concepts/user/index
+
+```
+
+```{toctree}
+---
+maxdepth: 1
 caption: Developer documentation
 hidden: true
 ---
