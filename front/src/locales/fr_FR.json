@@ -878,7 +878,7 @@
         },
         "link": {
           "managePlugins": "Gérer les greffons",
-          "newApp": "Créer une nouvelle application"
+          "newApp": "Enregistrer une nouvelle application"
         },
         "message": {
           "confirmDelete": "Votre demande de suppression a été envoyée, votre compte et le contenu associé sera supprimé sous peu",
