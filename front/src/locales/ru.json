@@ -4392,7 +4392,7 @@
           },
           "meta": {
             "failedTracks": "Ошибки в треках: {tracks}",
-            "lastUpdate": "Последнее обновление: ",
+            "lastUpdate": "Последнее обновление:",
             "tracks": "{ n } трек | { n } трека"
           },
           "modal": {
