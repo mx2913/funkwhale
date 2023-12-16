@@ -4392,7 +4392,7 @@
           },
           "meta": {
             "failedTracks": "Cancións que fallaron: {tracks}",
-            "lastUpdate": "Última actualización: ",
+            "lastUpdate": "Última actualización:",
             "tracks": "{ n } canción | { n } cancións"
           },
           "modal": {
