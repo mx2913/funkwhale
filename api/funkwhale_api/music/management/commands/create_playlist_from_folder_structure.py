@@ -132,7 +132,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--only_mbid",
             default=False,
-            help='Only files tagged with mbid will be used. Can be usefull to create playlist from folders \
+            help='Only files tagged with mbid will be used. Can be useful to create playlist from folders \
             that are not "in-place" imported into funkwhale',
         )
 

@@ -5,9 +5,9 @@ import pytest
 from funkwhale_api.common import utils as common_utils
 from funkwhale_api.music.management.commands import (
     check_inplace_files,
+    create_playlist_from_folder_structure,
     fix_uploads,
     prune_library,
-    create_playlist_from_folder_structure,
 )
 from funkwhale_api.playlists import models as playlist_models
 
@@ -213,9 +213,10 @@ def test_create_playlist_from_folder_structure(factories, tmp_path):
     c = create_playlist_from_folder_structure.Command()
     options = {
         "dir_name": DATA_DIR,
-        "user_id": user.id,
+        "user_name": user.username,
         "privacy_level": "me",
         "yes": True,
+        "no_dry_run": True,
     }
     c.handle(**options)
 
