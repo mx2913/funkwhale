@@ -3,31 +3,34 @@ Favorite and listenings sync with listenbrainz
 
 ## The issue
 
-This is a new feature allowing better recommendations and radios. Also Troi need some local data to resolve avoid server load on listenbrainz side. 
+This is a new feature that allows users to sync listening and favorites with ListenBrainz. It can be used to import liked and listened content from other services (YouTube, Deezer, etc) into Funkwhale. Additionally, it enables Troi to utilize local data instead of making queries to ListenBrainz servers, reducing the load on their side and improving performance in recommendation generation.
 
 ## Proposed solution
 
-Sync favorite and listenings with listenbrainz to get better recommendations and to filter out recently listened tracks from radios.
+Update the Listenbrainz plugin to send likes to listenbrainz. Add tasks to get listenings and favorites from Listenbrainz
 
 ## Feature behavior
 
-We will query listenings and favorites from Listenbrainz and add the related attributes to funkwhale tables. 
+Pulling will happen dayly for active users. 
+Pushing will happen each time a track is listened or favored. 
 
 ### Backend
 Use the listenbrainz funkwhale plugin to handle this. 
 
-- Update the `TrackFavorite` and `Listening` models with a new boolean attribute : `from_listenbrainz`
-Api endpoints can be found here : https://listenbrainz.readthedocs.io/en/latest/users/api/core.html
+- Update the `TrackFavorite` and `Listening` models with a new boolean attribute : `source`. 
+- When `TrackFavorite` or `Listening` is created from the plugin `source` is set to `Listenbrainz`
 
-- A task to sync listenings and favorites daily. 
-- A special care has to be made to avoid listenings duplicates in case the user scrobble listening from funkwhale to musicbrainz. We can use the `submission_client` attribute of lb listenning and exclude the one coming from "Funkwhale ListenBrainz plugin"
+- A task to pull listenings and favorites daily. 
+- A special care has to be made to avoid listenings duplicates in case the user scrobble listening from funkwhale to musicbrainz. We can use the `submission_client` attribute of lb listenning and exclude the one coming from "Funkwhale ListenBrainz plugin" and than have the same timestamp. 
 
 ### Frontend
 
 In the Listenbrainz pluging add: 
 - User setting to set the listenbrainz User token
-- User setting to choose if favorite sync will be from fw to lb, from lb to fw or both side
-- USer setting to enable Listenbrainz listening syncc
+- Push listens
+- Pull listens
+- Push favorites
+- Pull favorites
 
 ## Availability
 
