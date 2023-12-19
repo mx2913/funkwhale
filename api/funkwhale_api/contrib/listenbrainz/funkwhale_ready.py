@@ -25,7 +25,8 @@ def submit_listen(listening, conf, **kwargs):
     client.submit_single_listen(listen)
 
 
-def get_listen(track):
+def get_listen(listening):
+    track = listening.track
     additional_info = {
         "media_player": "Funkwhale",
         "media_player_version": funkwhale_api.__version__,
@@ -54,7 +55,7 @@ def get_listen(track):
     return liblistenbrainz.Listen(
         track_name=track.title,
         artist_name=track.artist.name,
-        listened_at=int(timezone.now()),
+        listened_at=listening.creation_date.timestamp(),
         release_name=release_name,
         additional_info=additional_info,
     )
@@ -74,7 +75,7 @@ def submit_favorite_creation(track_favorite, conf, **kwargs):
             "This tracks doesn't have a mbid. Feedback will not be sublited to Listenbrainz"
         )
         return
-    # client.feedback(track, 1)
+    client.submit_user_feedback(1, track.mbid)
 
 
 @plugins.register_hook(plugins.FAVORITE_DELETED, PLUGIN)
@@ -91,13 +92,12 @@ def submit_favorite_deletion(track_favorite, conf, **kwargs):
             "This tracks doesn't have a mbid. Feedback will not be submited to Listenbrainz"
         )
         return
-    # client.feedback(track, 0)
+    client.submit_user_feedback(0, track.mbid)
 
 
 @plugins.register_hook(plugins.LISTENING_SYNC, PLUGIN)
 def sync_listenings_from_listenbrainz(user, conf):
     user_name = conf["user_name"]
-    user_token = conf["user_token"]
 
     if not user_name or not conf["sync_listenings"]:
         return
@@ -110,8 +110,10 @@ def sync_listenings_from_listenbrainz(user, conf):
             .latest("creation_date")
             .values_list("creation_date", flat=True)
         )
+        last_ts.timestamp()
     except history_models.Listening.DoesNotExist:
         tasks.import_listenbrainz_listenings(user, user_name, ts=0)
+        return
 
     tasks.import_listenbrainz_listenings(user, user_name, ts=last_ts)
 
@@ -119,7 +121,6 @@ def sync_listenings_from_listenbrainz(user, conf):
 @plugins.register_hook(plugins.FAVORITE_SYNC, PLUGIN)
 def sync_favorites_from_listenbrainz(user, conf):
     user_name = conf["user_name"]
-    user_token = conf["user_token"]
 
     if not user_name or not conf["sync_favorites"]:
         return
@@ -130,5 +131,9 @@ def sync_favorites_from_listenbrainz(user, conf):
             .latest("creation_date")
             .values_list("creation_date", flat=True)
         )
+        last_ts.timestamp()
     except history_models.Listening.DoesNotExist:
-        tasks.import_listenbrainz_favorites(user, user_name, last_ts)
+        tasks.import_listenbrainz_favorites(user, user_name, ts=0)
+        return
+
+    tasks.import_listenbrainz_favorites(user, user_name, ts=last_ts)
