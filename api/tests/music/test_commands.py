@@ -217,6 +217,7 @@ def test_create_playlist_from_folder_structure(factories, tmp_path):
         "privacy_level": "me",
         "yes": True,
         "no_dry_run": True,
+        "only_mbid": False,
     }
     c.handle(**options)
 
