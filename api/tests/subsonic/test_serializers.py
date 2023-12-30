@@ -184,6 +184,8 @@ def test_get_album_serializer(factories):
         "year": album.release_date.year,
         "coverArt": f"al-{album.id}",
         "genre": tagged_item.tag.name,
+        "genres": [{"name": tagged_item.tag.name}],
+        "musicBrainzId": album.mbid,
         "duration": 43,
         "playCount": album.tracks.aggregate(l=Count("listenings"))["l"] or 0,
         "song": [
@@ -207,6 +209,7 @@ def test_get_album_serializer(factories):
                 "albumId": album.pk,
                 "artistId": artist.pk,
                 "type": "music",
+                "musicBrainzId": track.mbid,
             }
         ],
     }

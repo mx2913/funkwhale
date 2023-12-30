@@ -126,6 +126,7 @@ def get_track_data(album, track, upload):
         "albumId": album.pk if album else "",
         "artistId": album.artist.pk if album else track.artist.pk,
         "type": "music",
+        "musicBrainzId": str(track.mbid or ""),
     }
     if album and album.attachment_cover_id:
         data["coverArt"] = f"al-{album.id}"
@@ -149,13 +150,16 @@ def get_album2_data(album):
         "created": to_subsonic_date(album.creation_date),
         "duration": album.duration,
         "playCount": album.tracks.aggregate(l=Count("listenings"))["l"] or 0,
+        "musicBrainzId": str(album.mbid or ""),
     }
     if album.attachment_cover_id:
         payload["coverArt"] = f"al-{album.id}"
     if album.tagged_items:
+        genres = [{"name": i.tag.name} for i in album.tagged_items.all()]
         # exposes only first genre since the specification uses singular noun
-        first_genre = album.tagged_items.first()
-        payload["genre"] = first_genre.tag.name if first_genre else ""
+        payload["genre"] = genres[0]["name"] if len(genres) > 0 else ""
+        # OpenSubsonic full genre list
+        payload["genres"] = genres
     if album.release_date:
         payload["year"] = album.release_date.year
     try:

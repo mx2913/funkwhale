@@ -32,9 +32,11 @@ ET._serialize_xml = ET._serialize["xml"] = _serialize_xml
 def structure_payload(data):
     payload = {
         "funkwhaleVersion": funkwhale_api.__version__,
+        "serverVersion": funkwhale_api.__version__,
         "status": "ok",
         "type": "funkwhale",
         "version": "1.16.0",
+        "openSubsonic": "true",
     }
     payload.update(data)
     if "detail" in payload:

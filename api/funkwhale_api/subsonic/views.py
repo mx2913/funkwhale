@@ -183,6 +183,20 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     @action(
         detail=False,
         methods=["get", "post"],
+        url_name="get_open_subsonic_extensions",
+        permission_classes=[],
+        url_path="getOpenSubsonicExtensions",
+    )
+    def get_open_subsonic_extensions(self, request, *args, **kwargs):
+        data = {
+            # No specific extensions are currently supported
+            "openSubsonicExtensions": [""],
+        }
+        return response.Response(data, status=200)
+
+    @action(
+        detail=False,
+        methods=["get", "post"],
         url_name="get_artists",
         url_path="getArtists",
     )

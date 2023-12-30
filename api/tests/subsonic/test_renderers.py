@@ -17,6 +17,8 @@ from funkwhale_api.subsonic import renderers
                 "version": "1.16.0",
                 "type": "funkwhale",
                 "funkwhaleVersion": funkwhale_api.__version__,
+                "serverVersion": funkwhale_api.__version__,
+                "openSubsonic": "true",
                 "hello": "world",
             },
         ),
@@ -30,6 +32,8 @@ from funkwhale_api.subsonic import renderers
                 "version": "1.16.0",
                 "type": "funkwhale",
                 "funkwhaleVersion": funkwhale_api.__version__,
+                "serverVersion": funkwhale_api.__version__,
+                "openSubsonic": "true",
                 "hello": "world",
                 "error": {"code": 10, "message": "something went wrong"},
             },
@@ -41,6 +45,8 @@ from funkwhale_api.subsonic import renderers
                 "version": "1.16.0",
                 "type": "funkwhale",
                 "funkwhaleVersion": funkwhale_api.__version__,
+                "serverVersion": funkwhale_api.__version__,
+                "openSubsonic": "true",
                 "hello": "world",
                 "error": {"code": 0, "message": "something went wrong"},
             },
@@ -59,6 +65,8 @@ def test_json_renderer():
             "version": "1.16.0",
             "type": "funkwhale",
             "funkwhaleVersion": funkwhale_api.__version__,
+            "serverVersion": funkwhale_api.__version__,
+            "openSubsonic": "true",
             "hello": "world",
         }
     }
@@ -81,8 +89,9 @@ def test_xml_renderer_dict_to_xml():
 
 def test_xml_renderer():
     payload = {"hello": "world"}
-    expected = '<?xml version="1.0" encoding="UTF-8"?>\n<subsonic-response funkwhaleVersion="{}" hello="world" status="ok" type="funkwhale" version="1.16.0" xmlns="http://subsonic.org/restapi" />'  # noqa
-    expected = expected.format(funkwhale_api.__version__).encode()
+    expected = '<?xml version="1.0" encoding="UTF-8"?>\n<subsonic-response funkwhaleVersion="{}" hello="world" openSubsonic="true" serverVersion="{}" status="ok" type="funkwhale" version="1.16.0" xmlns="http://subsonic.org/restapi" />'  # noqa
+    version = funkwhale_api.__version__
+    expected = expected.format(version, version).encode()
 
     renderer = renderers.SubsonicXMLRenderer()
     rendered = renderer.render(payload)
