@@ -166,7 +166,11 @@ def test_get_artist_info2(
     artist = factories["music.Artist"](playable=True)
     playable_by = mocker.spy(music_models.ArtistQuerySet, "playable_by")
 
-    expected = {"artist-info2": {}}
+    expected = {
+        "artistInfo2": {
+            "musicBrainzId": [artist.mbid],
+        }
+    }
     response = logged_in_api_client.get(url, {"id": artist.pk})
 
     assert response.status_code == 200
