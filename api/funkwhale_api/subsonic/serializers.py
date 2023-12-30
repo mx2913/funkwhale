@@ -131,7 +131,7 @@ def get_track_data(album, track, upload):
     if album and album.attachment_cover_id:
         data["coverArt"] = f"al-{album.id}"
     if upload.bitrate:
-        data["bitrate"] = int(upload.bitrate / 1000)
+        data["bitRate"] = int(upload.bitrate / 1000)
     if upload.size:
         data["size"] = upload.size
     if album and album.release_date:
@@ -347,7 +347,7 @@ def get_channel_episode_data(upload, channel_id):
         "genre": "Podcast",
         "size": upload.size if upload.size else "",
         "duration": upload.duration if upload.duration else "",
-        "bitrate": upload.bitrate / 1000 if upload.bitrate else "",
+        "bitRate": upload.bitrate / 1000 if upload.bitrate else "",
         "contentType": upload.mimetype or "audio/mpeg",
         "suffix": upload.extension or "mp3",
         "status": "completed",
