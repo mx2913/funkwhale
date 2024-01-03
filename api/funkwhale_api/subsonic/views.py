@@ -189,8 +189,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     )
     def get_open_subsonic_extensions(self, request, *args, **kwargs):
         data = {
-            # No specific extensions are currently supported
-            "openSubsonicExtensions": [""],
+            "openSubsonicExtensions": [{"name": "formPost", "versions": [1]}],
         }
         return response.Response(data, status=200)
 

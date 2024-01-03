@@ -97,6 +97,23 @@ def test_ping(f, db, api_client):
     assert response.data == expected
 
 
+@pytest.mark.parametrize("f", ["xml", "json"])
+def test_get_open_subsonic_extensions(f, db, api_client):
+    url = reverse("api:subsonic:subsonic-get_open_subsonic_extensions")
+    response = api_client.get(url, {"f": f})
+
+    expected = {
+        "openSubsonicExtensions": [
+            {
+                "name": "formPost",
+                "versions": [1],
+            }
+        ],
+    }
+    assert response.status_code == 200
+    assert response.data == expected
+
+
 @pytest.mark.parametrize("f", ["json"])
 def test_get_artists(
     f, db, logged_in_api_client, factories, mocker, queryset_equal_queries
