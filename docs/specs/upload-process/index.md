@@ -2,11 +2,11 @@
 
 ## The issue
 
-Our current upload process is quite cumbersome and can be confusing for new users. Essentially, users have to know exactly where they want to put content before they've even uploaded it, and once it's uploaded it's hard to move.
+Funkwhale's current upload process is cumbersome and can be confusing for new users. Essentially, users have to know exactly where they want to put content before they've even uploaded it, and once it's uploaded it's hard to move.
 
 There are currently 2 upload flows:
 
-### Upload to library
+:::{dropdown} Upload to library
 
 Uploading to a content library is the oldest upload mechanism in Funkwhale. The flow goes like this:
 
@@ -15,9 +15,11 @@ Uploading to a content library is the oldest upload mechanism in Funkwhale. The 
 3. The user chooses which library they want to upload to and clicks "Upload"
 4. The user selects content or drags and drops it to complete the upload
 
-### Upload to a channel
+:::
 
-Channels are a newer feature, but the upload process is largely the same:
+:::{dropdown} Upload to a channel
+
+Channels are a newer feature, but the upload process is similar:
 
 1. The user clicks on the upload button
 2. The user selects "Publish your work in a channel"
@@ -26,6 +28,8 @@ Channels are a newer feature, but the upload process is largely the same:
 5. The user enters some metadata about the entry
 6. The user selects content or drags and drops it to complete the upload
 7. The user inputs relevant details about each track
+
+:::
 
 ## Proposed solution
 
@@ -41,7 +45,7 @@ The new feature will present an upload menu that gives users all upload options 
 
 Once the user selects an option, they can select the target from a dropdown and start uploading straight away.
 
-### Frontend
+## Frontend
 
 The new workflow goes as follows:
 
@@ -70,37 +74,100 @@ flowchart TD
    choose --> files[The user drags files to upload\nor selects files in a file picker]
    files --> wait(The user waits for the upload to complete) & close(The user closes the modal)
    wait & close --> process(Funkwhale processes the uploads\nand verifies metadata)
-   process --> message([Funkwhale returns status messages for all uploads\nand notifies the user the the upload is complete])
+   process --> message([Funkwhale returns status messages for all uploads\nand notifies the user the upload is complete])
 ```
 
 The frontend should reflect the **status** of the upload to inform the user how the upload is progressing:
 
 - `Failed`: The file is improperly tagged **or** the API has responded with an error
-- `Uploading`: The file is being sent to the server
-- `Processing`: The server is processing the file and no success response has been returned yet
+- `Uploading`: The frontend is uploading the file to the server
+- `Processing`: The server is processing the file and hasn't returned a response
 - `Success`: The API has responded with a `200: Success` response and passed back information about the upload.
 
-#### UX considerations
+### UX considerations
 
-To prevent disrupted uploads, the following UX should be implemented
+To prevent disrupted uploads, we should implement the following UX:
 
 - If the user dismisses the modal with the escape key, by clicking outside the modal, or by moving back to the previous page, _the user should be warned and given the option to cancel their upload or continue it in the background_
 - The user should have the option to cancel an upload at any time
-- If an upload is sent to the background, it should notify the user in some way when the upload is complete
+- If the user sends the upload modal to the background, Funkwhale should notify the user when the upload is complete
 
 :::{seealso}
 See the [interactive prototype](https://design.funkwhale.audio/#/view/e3a187f0-0f5e-11ed-adb9-fff9e854a67c?page-id=d9f9f4d0-1a7b-11ed-8551-a35b3c702efa&section=interactions&index=0) for an overview of the behavior.
 :::
 
-### Backend behavior
+## Backend
 
-The upload process remains the same on the backend. However, the error checking needs to be more descriptive. For example:
+The Funkwhale API needs to support the following use cases:
 
-- Failed metadata checks should be explicit about what issues were found in the metadata and should return this in a readable way for the user to fix
-- If an upload fails partway, this should be made clear so that the user can attempt a reupload
-- The backend should return a meaningful status message reflecting the file processing state
+1. Imports carried out using the Funkwhale web app
+2. Uploads sent from other clients using the API
 
-#### Response structure (V2 only)
+These two processes differ in how they handle uploaded content as defined below.
+
+### Web app uploads
+
+Users may upload their content using the web app. The web app is responsible for the following:
+
+1. Checking the file's metadata and verifying that all mandatory tags are present
+2. Displaying the progress of an import
+
+```{mermaid}
+sequenceDiagram
+  WebApp->>+API: POST /api/v2/import-groups
+  API-->>WebApp: 201 GUID
+  loop For each file
+    WebApp->>API: POST /api/v2/import-groups/{guid}
+    API-->>WebApp: 200 Creation message
+  end
+```
+
+#### Import groups
+
+To give import results more structure, each import created in the web app must belong to an import group. And import group is a simple collection of imports.
+
+Authenticated users may create import groups by sending a POST request to the `/api/v2/import-groups` endpoint with no request body.
+
+```console
+$ curl -X POST "/api/v2/import-groups" \
+ -H "accept: application/json"
+```
+
+The API should respond with a `201: Created` response and the `guid` of the newly created collection.
+
+```json
+{
+  "status": "201",
+  "guid": "18c697b6-f0b0-4000-84cd-30e3e4b1a201"
+}
+```
+
+Once the server creates the import group, the web app can send imported files to the `/api/v2/import-groups/{guid}` endpoint to add new imports to the group. The import must contain:
+
+- A `metadata` object containing **at least**
+  - The `title` of the imported file
+  - The `artist.name` of the artist
+
+```console
+$ curl -X 'POST' \
+  '/api/v2/import-groups/18c697b6-f0b0-4000-84cd-30e3e4b1a201' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'metadata={"title": "Juggernaut", \
+  "mbid": "3fa85f64-5717-4562-b3fc-2c963f66afa6", \
+  "tags": ["Rock"], \
+  "position": 1, \
+  "entryNumber": 1, \
+  "releaseDate": "2023-12-14", \
+  "license": "string", \
+  "release": {"title": "Juggernaut", "artist": "Autoheart", "mbid": "3fa85f64-5717-4562-b3fc-2c963f66afa6"}, \
+  "artist": {"name": "Autoheart","mbid": "3fa85f64-5717-4562-b3fc-2c963f66afa6"} \
+}' \
+  -F 'audioFile=@Autoheart - Juggernaut.opus;type=audio/opus' \
+  -F 'cover=@cover.png;type=image/png'
+```
+
+### Response structure (V2 only)
 
 If the upload succeeds, the API should respond with a `200: Success` message and return a payload containing the following information:
 
