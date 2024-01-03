@@ -50,6 +50,7 @@ def get_artist_data(artist_values):
         "name": artist_values["name"],
         "albumCount": artist_values["_albums_count"],
         "coverArt": "ar-{}".format(artist_values["id"]),
+        "musicBrainzId": str(artist_values.get("mbid", "")),
     }
 
 
@@ -58,7 +59,7 @@ class GetArtistsSerializer(serializers.Serializer):
         payload = {"ignoredArticles": "", "index": []}
         queryset = queryset.with_albums_count()
         queryset = queryset.order_by(functions.Lower("name"))
-        values = queryset.values("id", "_albums_count", "name")
+        values = queryset.values("id", "_albums_count", "name", "mbid")
 
         first_letter_mapping = collections.defaultdict(list)
         for artist in values:
@@ -126,6 +127,7 @@ def get_track_data(album, track, upload):
         "albumId": album.pk if album else "",
         "artistId": album.artist.pk if album else track.artist.pk,
         "type": "music",
+        "mediaType": "song",
         "musicBrainzId": str(track.mbid or ""),
     }
     if album and album.attachment_cover_id:
@@ -150,6 +152,7 @@ def get_album2_data(album):
         "created": to_subsonic_date(album.creation_date),
         "duration": album.duration,
         "playCount": album.tracks.aggregate(l=Count("listenings"))["l"] or 0,
+        "mediaType": "album",
         "musicBrainzId": str(album.mbid or ""),
     }
     if album.attachment_cover_id:

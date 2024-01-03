@@ -596,7 +596,7 @@ def test_search3(f, db, logged_in_api_client, factories):
     artist_qs = (
         music_models.Artist.objects.with_albums_count()
         .filter(pk=artist.pk)
-        .values("_albums_count", "id", "name")
+        .values("_albums_count", "id", "name", "mbid")
     )
     assert response.status_code == 200
     assert response.data == {

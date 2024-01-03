@@ -90,12 +90,14 @@ def test_get_artists_serializer(factories):
                         "name": artist1.name,
                         "albumCount": 3,
                         "coverArt": f"ar-{artist1.id}",
+                        "musicBrainzId": artist1.mbid,
                     },
                     {
                         "id": artist2.pk,
                         "name": artist2.name,
                         "albumCount": 2,
                         "coverArt": f"ar-{artist2.id}",
+                        "musicBrainzId": artist2.mbid,
                     },
                 ],
             },
@@ -107,6 +109,7 @@ def test_get_artists_serializer(factories):
                         "name": artist3.name,
                         "albumCount": 0,
                         "coverArt": f"ar-{artist3.id}",
+                        "musicBrainzId": artist3.mbid,
                     }
                 ],
             },
@@ -185,6 +188,7 @@ def test_get_album_serializer(factories):
         "coverArt": f"al-{album.id}",
         "genre": tagged_item.tag.name,
         "genres": [{"name": tagged_item.tag.name}],
+        "mediaType": "album",
         "musicBrainzId": album.mbid,
         "duration": 43,
         "playCount": album.tracks.aggregate(l=Count("listenings"))["l"] or 0,
@@ -209,6 +213,7 @@ def test_get_album_serializer(factories):
                 "albumId": album.pk,
                 "artistId": artist.pk,
                 "type": "music",
+                "mediaType": "song",
                 "musicBrainzId": track.mbid,
             }
         ],

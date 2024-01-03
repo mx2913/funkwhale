@@ -550,7 +550,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
                 "search_fields": ["name"],
                 "queryset": (
                     music_models.Artist.objects.with_albums_count().values(
-                        "id", "_albums_count", "name"
+                        "id", "_albums_count", "name", "mbid"
                     )
                 ),
                 "serializer": lambda qs: [serializers.get_artist_data(a) for a in qs],
