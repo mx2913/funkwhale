@@ -18,12 +18,11 @@ docker-build: docker-metadata
 build-metadata:
 	./scripts/build_metadata.py --format env | tee build_metadata.env
 
-VERSION ?= $(shell git describe --tags --abbrev=0)
 BUILD_DIR = dist
 package:
 	rm -Rf $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)
-	tar --create --gunzip --file='$(BUILD_DIR)/funkwhale-api-$(VERSION).tar.gz' \
+	tar --create --gunzip --file='$(BUILD_DIR)/funkwhale-api.tar.gz' \
 		--owner='root' \
 		--group='root' \
 		--exclude-vcs \
@@ -36,11 +35,11 @@ package:
 		api/Readme.md
 
 	cd '$(BUILD_DIR)' && \
-	tar --extract --gunzip --file='funkwhale-api-$(VERSION).tar.gz' && \
-	zip -q 'funkwhale-api-$(VERSION).zip' -r api && \
+	tar --extract --gunzip --file='funkwhale-api.tar.gz' && \
+	zip -q 'funkwhale-api.zip' -r api && \
 	rm -Rf api
 
-	tar --create --gunzip --file='$(BUILD_DIR)/funkwhale-front-$(VERSION).tar.gz' \
+	tar --create --gunzip --file='$(BUILD_DIR)/funkwhale-front.tar.gz' \
 		--owner='root' \
 		--group='root' \
 		--exclude-vcs \
@@ -48,8 +47,8 @@ package:
 		front/dist
 
 	cd '$(BUILD_DIR)' && \
-	tar --extract --gunzip --file='funkwhale-front-$(VERSION).tar.gz' && \
-	zip -q 'funkwhale-front-$(VERSION).zip' -r front && \
+	tar --extract --gunzip --file='funkwhale-front.tar.gz' && \
+	zip -q 'funkwhale-front.zip' -r front && \
 	rm -Rf front
 
 	cd '$(BUILD_DIR)' && sha256sum * > SHA256SUMS

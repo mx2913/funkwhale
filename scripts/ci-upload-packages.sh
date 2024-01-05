@@ -12,11 +12,6 @@ error() {
 
 command -v curl > /dev/null || error "curl command not found!"
 
-CI_API_V4_URL="https://dev.funkwhale.audio/api/v4"
-CI_PROJECT_ID="955"
-CI_COMMIT_REF_NAME="1.3.0-rc4"
-CI_JOB_TOKEN="glpat-GyMCY55RP2D_pGjqnkKe"
-
 PACKAGE_REGISTRY_URL="$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic"
 PACKAGE_NAME="funkwhale"
 PACKAGE_VERSION="$CI_COMMIT_REF_NAME"
