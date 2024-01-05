@@ -45,7 +45,7 @@ The new feature will present an upload menu that gives users all upload options 
 
 Once the user selects an option, they can select the target from a dropdown and start uploading straight away.
 
-## Frontend
+## Web app
 
 The new workflow goes as follows:
 
@@ -61,7 +61,7 @@ The new workflow goes as follows:
 4. The user selects the location to which they want to upload their content
 5. The user selects the files they want to upload from a file picker, or by dragging and dropping files onto the modal
 6. The user can select a "Upload in background" button which dismisses the modal but _continues the upload_
-7. Funkwhale assesses if all files have the correct metadata and highlights any issues for the user to fix _with a meaningful message_. The frontend keep the connection open until the API sends a response
+7. Funkwhale assesses if all files have the correct metadata and highlights any issues for the user to fix _with a meaningful message_. The web app keep the connection open until the API sends a response
 
 ```{mermaid}
 flowchart TD
@@ -77,10 +77,10 @@ flowchart TD
    process --> message([Funkwhale returns status messages for all uploads\nand notifies the user the upload is complete])
 ```
 
-The frontend should reflect the **status** of the upload to inform the user how the upload is progressing:
+The web app should reflect the **status** of the upload to inform the user how the upload is progressing:
 
 - `Failed`: The file is improperly tagged **or** the API has responded with an error
-- `Uploading`: The frontend is uploading the file to the server
+- `Uploading`: The web app is uploading the file to the server
 - `Processing`: The server is processing the file and hasn't returned a response
 - `Success`: The API has responded with a `200: Success` response and passed back information about the upload.
 
@@ -88,7 +88,7 @@ The frontend should reflect the **status** of the upload to inform the user how 
 
 To prevent disrupted uploads, we should implement the following UX:
 
-- If the user dismisses the modal with the escape key, by clicking outside the modal, or by moving back to the previous page, _the user should be warned and given the option to cancel their upload or continue it in the background_
+- If the user dismisses the modal with the escape key, by clicking outside the modal, or by moving back to the previous page, _the web app must warn the user and given the option to cancel their upload or continue it in the background_
 - The user should have the option to cancel an upload at any time
 - If the user sends the upload modal to the background, Funkwhale should notify the user when the upload is complete
 
@@ -98,59 +98,106 @@ See the [interactive prototype](https://design.funkwhale.audio/#/view/e3a187f0-0
 
 ## Backend
 
-The Funkwhale API needs to support the following use cases:
-
-1. Imports carried out using the Funkwhale web app
-2. Uploads sent from other clients using the API
-
-These two processes differ in how they handle uploaded content as defined below.
-
-### Web app uploads
-
-Users may upload their content using the web app. The web app is responsible for the following:
-
-1. Checking the file's metadata and verifying that all mandatory tags are present
-2. Displaying the progress of an import
+To give upload results more structure, each upload created in the web app must belong to an upload group. An upload group is a simple collection of uploads.
 
 ```{mermaid}
 sequenceDiagram
-  WebApp->>+API: POST /api/v2/import-groups
-  API-->>WebApp: 201 GUID
+  Client->>+API: POST /api/v2/upload-groups
+  API-->>Client: 201 GUID
   loop For each file
-    WebApp->>API: POST /api/v2/import-groups/{guid}
-    API-->>WebApp: 200 Creation message
+    Client->>API: POST /api/v2/upload-groups/{guid}/uploads
+    API-->>Client: 200 Creation message
   end
 ```
 
-#### Import groups
+### Upload group creation
 
-To give import results more structure, each import created in the web app must belong to an import group. And import group is a simple collection of imports.
-
-Authenticated users may create import groups by sending a POST request to the `/api/v2/import-groups` endpoint with no request body.
+Authenticated users may create upload groups by sending a POST request to the `/api/v2/upload-groups` endpoint with no request body.
 
 ```console
-$ curl -X POST "/api/v2/import-groups" \
+$ curl -X POST "/api/v2/upload-groups" \
  -H "accept: application/json"
 ```
 
-The API should respond with a `201: Created` response and the `guid` of the newly created collection.
+The user may optionally send a group `name` in the body of the request to give the release group a meaningful name.
+
+```console
+$ curl -X POST "/api/v2/upload-groups" \
+  -H "Content-type: application/json" \
+  -d '{
+  "name": "My cool group"
+}'
+```
+
+:::{note}
+If no `name` is present, the server should use the timestamp of the request as the upload group's `name`.
+:::
+
+The API should respond with the following information:
+
+- A `201: Created` response
+- The `name` of the newly created upload group
+- The `guid` of the newly created upload group
+- The `uploadUrl` where clients can send new uploads or query the uploads in the group
 
 ```json
 {
   "status": "201",
-  "guid": "18c697b6-f0b0-4000-84cd-30e3e4b1a201"
+  "name": "My cool group",
+  "guid": "18c697b6-f0b0-4000-84cd-30e3e4b1a201",
+  "uploadUrl": "/api/v2/upload-groups/18c697b6-f0b0-4000-84cd-30e3e4b1a201/uploads"
 }
 ```
 
-Once the server creates the import group, the web app can send imported files to the `/api/v2/import-groups/{guid}` endpoint to add new imports to the group. The import must contain:
+Clients should also be able to send a PATCH request to alter the `name` of an upload group:
+
+```console
+$ curl -X PATCH "/api/v2/upload-groups/18c697b6-f0b0-4000-84cd-30e3e4b1a201"" \
+  -H "Content-type: application/json" \
+  -d '{
+  "name": "My cool group"
+}'
+```
+
+The server should respond with a `200: OK` response to reflect that the request updated the resource.
+
+```json
+{
+  "status": "200",
+  "name": "My cool group",
+  "guid": "18c697b6-f0b0-4000-84cd-30e3e4b1a201",
+  "uploadUrl": "/api/v2/upload-groups/18c697b6-f0b0-4000-84cd-30e3e4b1a201/uploads"
+}
+```
+
+### File upload
+
+Once the server creates the upload group, the client can send files to the `/api/v2/upload-groups/{guid}/uploads` endpoint to add new uploads to the group.
+
+This endpoint must support 2 methods controlled by the `Content-Type` header:
+
+1. A single file as an `octet-stream`
+   - If the client sends an audio file as an `octet-stream`, the server is responsible for parsing the file metadata and managing the import
+2. A `multipart/form-data` submission including metadata, the audio file, and an optional cover. This method enables the client to set parse and set metadata information independent of the server
+
+If the client sends a `multipart/form-data` submission, the payload must contain:
 
 - A `metadata` object containing **at least**
-  - The `title` of the imported file
+  - The `title` of the uploaded file
   - The `artist.name` of the artist
+- An optional `target` object containing _any of the following_:
+  - An array of collections
+  - An array of channels
+  - A library
+- The audio file
+
+:::{important}
+If the client doesn't specify a `target`, the server must implicitly add the upload to the built-in `Uploads` collection.
+:::
 
 ```console
 $ curl -X 'POST' \
-  '/api/v2/import-groups/18c697b6-f0b0-4000-84cd-30e3e4b1a201' \
+  '/api/v2/upload-groups/18c697b6-f0b0-4000-84cd-30e3e4b1a201/uploads' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -F 'metadata={"title": "Juggernaut", \
@@ -163,11 +210,12 @@ $ curl -X 'POST' \
   "release": {"title": "Juggernaut", "artist": "Autoheart", "mbid": "3fa85f64-5717-4562-b3fc-2c963f66afa6"}, \
   "artist": {"name": "Autoheart","mbid": "3fa85f64-5717-4562-b3fc-2c963f66afa6"} \
 }' \
+  -F 'target={"collections": ["18cda279-b570-4000-800d-580fc7ecb401"]}' \
   -F 'audioFile=@Autoheart - Juggernaut.opus;type=audio/opus' \
   -F 'cover=@cover.png;type=image/png'
 ```
 
-### Response structure (V2 only)
+#### Response structure
 
 If the upload succeeds, the API should respond with a `200: Success` message and return a payload containing the following information:
 
@@ -175,18 +223,24 @@ If the upload succeeds, the API should respond with a `200: Success` message and
 - The `title` of the uploaded file
 - The `createdDate` of the upload
 - The `fileType` of the upload
+- The `target` of the upload
 - The associated `recording`
 - The associated `release`
 - The `owner` (actor) of the upload
 
 ```json
 {
-  "guid": "18c455d8-9840-4000-804d-c53e92d85d01",
+  "guid": "18cda279-b5a0-4000-89fc-811321642380",
   "title": "string",
   "createdDate": "1970-01-01T00:00:00.000Z",
   "fileType": "flac",
+  "uploadGroup": "18cda279-b5a0-4000-8f5b-fa6702365101",
+  "status": "Succeeded",
+  "target": {
+    "collections": ["18cda279-b5a0-4000-8d96-e9c3c9045c01"]
+  },
   "recording": {
-    "guid": "18c455d8-9840-4000-82af-67024a9e2018",
+    "guid": "18cda279-b5a0-4000-889e-8f6a6a54f401",
     "fid": "http://example.com",
     "name": "string",
     "playable": false,
@@ -194,13 +248,13 @@ If the upload succeeds, the API should respond with a `200: Success` message and
     "artistCredit": [
       {
         "name": "string",
-        "guid": "18c455d8-9840-4000-8271-2731b97a2c01",
-        "mbid": "18c455d8-9840-4000-8f04-1f9dd7f16201",
+        "guid": "18cda279-b5a0-4000-88b1-d3f39c359101",
+        "mbid": "18cda279-b5a0-4000-89ff-4e4993cadd01",
         "joinPhrase": "string"
       }
     ],
     "cover": {
-      "guid": "18c455d8-9840-4000-85af-4178e969db01",
+      "guid": "18cda279-b5a0-4000-83c2-afe780820380",
       "mimetype": "string",
       "size": 0,
       "creationDate": "1970-01-01T00:00:00.000Z",
@@ -211,21 +265,21 @@ If the upload succeeds, the API should respond with a `200: Success` message and
     }
   },
   "release": {
-    "guid": "18c455d8-9840-4000-81e9-3cc3a7567201",
+    "guid": "18cda279-b5a0-4000-8e2c-622921d05d01",
     "fid": "http://example.com",
-    "mbid": "18c455d8-9840-4000-8b86-dd1e40a7bb80",
+    "mbid": "18cda279-b5a0-4000-868d-ee9479980d80",
     "name": "string",
     "artistCredit": [
       {
         "name": "string",
-        "guid": "18c455d8-9840-4000-88dc-fd4cf3957201",
-        "mbid": "18c455d8-9840-4000-8e40-35019dd11180",
+        "guid": "18cda279-b5a0-4000-8492-68d322f50701",
+        "mbid": "18cda279-b5a0-4000-8bc1-f4454eecf980",
         "joinPhrase": "string"
       }
     ],
     "playable": false,
     "cover": {
-      "guid": "18c455d8-9840-4000-831e-ea8add02c380",
+      "guid": "18cda279-b5a0-4000-85d3-596516082580",
       "mimetype": "string",
       "size": 0,
       "creationDate": "1970-01-01T00:00:00.000Z",
