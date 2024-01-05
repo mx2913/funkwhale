@@ -20,7 +20,7 @@ build-metadata:
 
 VERSION ?= $(shell git describe --tags --abbrev=0)
 BUILD_DIR = dist
-build:
+package:
 	rm -Rf $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)
 	tar --create --gunzip --file='$(BUILD_DIR)/funkwhale-api-$(VERSION).tar.gz' \

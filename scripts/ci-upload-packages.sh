@@ -51,25 +51,9 @@ release_json() {
   printf '{"name": "%s", "tag_name": "%s", "assets": { "links": [%s]}}' "$PACKAGE_VERSION" "$PACKAGE_VERSION" "$1"
 }
 
-# publish_release <release_json>
-publish_release() {
-  echo "publishing release $PACKAGE_VERSION"
-  curl \
-    --fail \
-    --show-error \
-    --request POST \
-    --header "Content-Type: application/json" \
-    --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" \
-    --data "$1" \
-    "$CI_API_V4_URL/projects/$CI_PROJECT_ID/releases"
-  echo
-}
-
 release_assets=()
 for asset_path in dist/*; do
   asset="$(basename "$asset_path")"
   publish_asset "$asset" "$asset_path"
   release_assets+=("$(release_asset_json "$asset")")
 done
-
-publish_release "$(release_json "$(join_by , "${release_assets[@]}")")"
