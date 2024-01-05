@@ -33,7 +33,7 @@ publish_asset() {
   curl \
     --fail \
     --show-error \
-    --header "PRIVATE-TOKEN: $CI_JOB_TOKEN" \
+    --header "JOB-TOKEN: $CI_JOB_TOKEN" \
     --upload-file "$2" \
     "$PACKAGE_REGISTRY_URL/$PACKAGE_NAME/$PACKAGE_VERSION/$1"
   echo
