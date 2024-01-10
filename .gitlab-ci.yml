@@ -473,7 +473,7 @@ docker:
           --set *.cache-to=type=registry,ref=$DOCKER_CACHE_IMAGE:$CI_COMMIT_BRANCH,mode=max,oci-mediatypes=false
           --push
 
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_PROJECT_NAME == "funkwhale"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_PROJECT_NAMESPACE == "funkwhale"
       # We don't provide priviledged runners to everyone, so we can only build docker images in the funkwhale group
       variables:
         BUILD_ARGS: >
