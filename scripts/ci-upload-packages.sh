@@ -16,12 +16,6 @@ PACKAGE_REGISTRY_URL="$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic"
 PACKAGE_NAME="funkwhale"
 PACKAGE_VERSION="$CI_COMMIT_REF_NAME"
 
-join_by() {
-  local IFS="$1"
-  shift
-  echo "$*"
-}
-
 # publish_asset <asset> <file>
 publish_asset() {
   echo "publishing release asset $asset"
@@ -39,11 +33,6 @@ release_asset_json() {
   printf '{"name": "%s", "url": "%s", "link_type": "package"}' \
     "$1" \
     "$PACKAGE_REGISTRY_URL/$PACKAGE_NAME/$PACKAGE_VERSION/$1"
-}
-
-# release_json <release_assets_json>
-release_json() {
-  printf '{"name": "%s", "tag_name": "%s", "assets": { "links": [%s]}}' "$PACKAGE_VERSION" "$PACKAGE_VERSION" "$1"
 }
 
 release_assets=()
