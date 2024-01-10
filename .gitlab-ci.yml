@@ -525,9 +525,6 @@ package:
   image: $CI_REGISTRY/funkwhale/ci/python:3.11
   variables:
     <<: *keep_git_files_permissions
-  before_script:
-    - apt-get update
-    - apt-get install -y zip
   script:
     - make package
     - scripts/ci-upload-packages.sh
