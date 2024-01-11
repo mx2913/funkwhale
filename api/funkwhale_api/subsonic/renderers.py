@@ -6,6 +6,10 @@ from rest_framework import renderers
 import funkwhale_api
 
 
+class TagValue(str):
+    """Use this for string values that must be rendered as tags instead of attributes in XML."""
+
+
 # from https://stackoverflow.com/a/8915039
 # because I want to avoid a lxml dependency just for outputting cdata properly
 # in a RSS feed
@@ -83,6 +87,10 @@ def dict_to_xml_tree(root_tag, d, parent=None):
                     el = ET.Element(key)
                     el.text = str(obj)
                 root.append(el)
+        elif isinstance(value, TagValue):
+            el = ET.Element(key)
+            el.text = str(value)
+            root.append(el)
         else:
             if key == "value":
                 root.text = str(value)
