@@ -4,7 +4,7 @@ import pytest
 from django.db.models.aggregates import Count
 
 from funkwhale_api.music import models as music_models
-from funkwhale_api.subsonic import serializers
+from funkwhale_api.subsonic import renderers, serializers
 
 
 @pytest.mark.parametrize(
@@ -148,6 +148,24 @@ def test_get_artist_serializer(factories):
     }
 
     assert serializers.GetArtistSerializer(artist).data == expected
+
+
+def test_get_artist_info_2_serializer(factories):
+    content = factories["common.Content"]()
+    artist = factories["music.Artist"](with_cover=True, description=content)
+
+    expected = {
+        "musicBrainzId": artist.mbid,
+        "mediumImageUrl": renderers.TagValue(
+            artist.attachment_cover.download_url_medium_square_crop
+        ),
+        "largeImageUrl": renderers.TagValue(
+            artist.attachment_cover.download_url_large_square_crop
+        ),
+        "biography": renderers.TagValue(artist.description.rendered),
+    }
+
+    assert serializers.GetArtistInfo2Serializer(artist).data == expected
 
 
 @pytest.mark.parametrize(

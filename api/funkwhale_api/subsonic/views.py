@@ -269,19 +269,8 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     @find_object(music_models.Artist.objects.all(), filter_playable=True)
     def get_artist_info2(self, request, *args, **kwargs):
         artist = kwargs.pop("obj")
-        artist_info = {}
-        if artist.mbid:
-            artist_info["musicBrainzId"] = [str(artist.mbid)]
-        if artist.attachment_cover:
-            artist_info["mediumImageUrl"] = [
-                artist.attachment_cover.download_url_medium_square_crop
-            ]
-            artist_info["largeImageUrl"] = [
-                artist.attachment_cover.download_url_large_square_crop
-            ]
-        if artist.description:
-            artist_info["biography"] = [artist.description.rendered]
-        payload = {"artistInfo2": artist_info}
+        data = serializers.GetArtistInfo2Serializer(artist).data
+        payload = {"artistInfo2": data}
 
         return response.Response(payload, status=200)
 

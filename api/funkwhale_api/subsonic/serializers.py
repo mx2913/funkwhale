@@ -7,6 +7,8 @@ from funkwhale_api.history import models as history_models
 from funkwhale_api.music import models as music_models
 from funkwhale_api.music import utils as music_utils
 
+from .renderers import TagValue
+
 
 def to_subsonic_date(date):
     """
@@ -100,6 +102,23 @@ class GetArtistSerializer(serializers.Serializer):
             if album.release_date:
                 album_data["year"] = album.release_date.year
             payload["album"].append(album_data)
+        return payload
+
+
+class GetArtistInfo2Serializer(serializers.Serializer):
+    def to_representation(self, artist):
+        payload = {}
+        if artist.mbid:
+            payload["musicBrainzId"] = TagValue(artist.mbid)
+        if artist.attachment_cover:
+            payload["mediumImageUrl"] = TagValue(
+                artist.attachment_cover.download_url_medium_square_crop
+            )
+            payload["largeImageUrl"] = TagValue(
+                artist.attachment_cover.download_url_large_square_crop
+            )
+        if artist.description:
+            payload["biography"] = TagValue(artist.description.rendered)
         return payload
 
 
