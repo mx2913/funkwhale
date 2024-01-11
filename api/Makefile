@@ -7,6 +7,7 @@ install:
 	poetry install --all-extras
 
 export DJANGO_SETTINGS_MODULE=config.settings.local
+export FUNKWHALE_URL=http://schema.generation
 
 lint:
 	poetry run pylint \
