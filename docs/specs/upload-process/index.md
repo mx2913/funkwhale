@@ -110,7 +110,9 @@ sequenceDiagram
   end
 ```
 
-### Upload group creation
+Clients may also send a file to the `/api/v2/uploads` endpoint. This endpoint accepts **only** a file with no additional metadata nor target.
+
+### Upload group
 
 Authenticated users may create upload groups by sending a POST request to the `/api/v2/upload-groups` endpoint with no request body.
 
@@ -170,7 +172,7 @@ The server should respond with a `200: OK` response to reflect that the request 
 }
 ```
 
-### File upload
+#### File upload
 
 Once the server creates the upload group, the client can send files to the `/api/v2/upload-groups/{guid}/uploads` endpoint to add new uploads to the group.
 
@@ -215,7 +217,33 @@ $ curl -X 'POST' \
   -F 'cover=@cover.png;type=image/png'
 ```
 
-#### Response structure
+### File upload
+
+If the client doesn't have the capability to send a multipart request or the user prefers to simply send plain files, the file can be uploaded by sending a POST request to the `/api/v2/uploads` endpoint.
+
+On receipt of a file, the server should respond with a `202: Accepted` response to inform the client that the server has received the file but not yet processed it. The server must then:
+
+- Create a **daily** upload group, if none exists for the current 24 hour period
+- Add the upload to the daily upload group. All uploads sent through the `/api/v2/uploads` endpoint must be assigned to the daily upload group so that users can check the upload's status in the web app
+- Add the built-in **Uploads** collection as the upload's `target`
+
+```console
+$ curl -X 'POST'\
+  '/api/v2/uploads' \
+  -H 'Content-Type: application/octet-stream'
+  -F 'audioFile=@Autoheart - Juggernaut.opus;type=audio/opus'
+```
+
+```json
+{
+  "status": "202",
+  "guid": "18c697b6-f0b0-4000-84cd-30e3e4b1a201"
+}
+```
+
+The client should then be able to query the status of a specific upload by sending a GET request to the `/api/v2/uploads/{guid}` endpoint. This endpoint must contain the information listed below.
+
+### Response structure
 
 If the upload succeeds, the API should respond with a `200: Success` message and return a payload containing the following information:
 
