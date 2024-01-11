@@ -850,3 +850,15 @@ class SearchResultSerializer(serializers.Serializer):
     tracks = TrackSerializer(many=True)
     albums = AlbumSerializer(many=True)
     tags = tags_serializers.TagSerializer(many=True)
+
+
+class UploadGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UploadGroup
+        fields = "__all__"
+
+    name = serializers.CharField(required=False)
+    uploadUrl = serializers.SerializerMethodField(read_only=True)
+
+    def get_uploadUrl(self, value):
+        return f"{settings.FUNKWHALE_URL}/api/v2/upload-groups/{value.guid}/uploads"
