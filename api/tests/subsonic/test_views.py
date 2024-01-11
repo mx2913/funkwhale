@@ -185,7 +185,7 @@ def test_get_artist_info2(
 
     expected = {
         "artistInfo2": {
-            "musicBrainzId": [artist.mbid],
+            "musicBrainzId": artist.mbid,
         }
     }
     response = logged_in_api_client.get(url, {"id": artist.pk})
