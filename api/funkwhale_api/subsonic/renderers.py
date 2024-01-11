@@ -35,6 +35,8 @@ ET._serialize_xml = ET._serialize["xml"] = _serialize_xml
 
 def structure_payload(data):
     payload = {
+        # funkwhaleVersion is deprecated and will be removed in a future
+        # release. Use serverVersion instead.
         "funkwhaleVersion": funkwhale_api.__version__,
         "serverVersion": funkwhale_api.__version__,
         "status": "ok",
