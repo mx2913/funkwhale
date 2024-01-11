@@ -1,8 +1,10 @@
 from django.conf.urls import include, url
 
 from funkwhale_api.common import routers as common_routers
+from funkwhale_api.music.views import UploadGroupViewSet
 
 router = common_routers.OptionalSlashRouter()
+router.register(r"upload-groups", UploadGroupViewSet, "upload-groups")
 v2_patterns = router.urls
 
 v2_patterns += [

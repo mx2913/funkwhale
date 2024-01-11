@@ -928,3 +928,10 @@ class OembedView(views.APIView):
         serializer.is_valid(raise_exception=True)
         embed_data = serializer.save()
         return Response(embed_data)
+
+
+class UploadGroupViewSet(viewsets.ModelViewSet):
+    permission_classes = [oauth_permissions.ScopePermission]
+    required_scope = "libraries"
+    queryset = models.UploadGroup.objects.all()
+    serializer_class = serializers.UploadGroupSerializer

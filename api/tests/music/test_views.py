@@ -1590,3 +1590,33 @@ def test_fs_import_cancel_already_running(
 
     assert response.status_code == 204
     assert cache.get("fs-import:status") == "canceled"
+
+
+def test_can_create_upload_group_without_name(logged_in_api_client):
+    count = models.UploadGroup.objects.count()
+
+    url = reverse("api:v2:upload-groups-list")
+    response = logged_in_api_client.post(url)
+
+    assert response.status_code == 201
+    assert count + 1 == models.UploadGroup.objects.count()
+    assert response.data.get("guid") != ""
+    assert response.data.get("name") != ""
+    assert "https://test.federation/api/v2/upload-groups/" in response.data.get(
+        "uploadUrl"
+    )
+
+
+def test_can_create_upload_group_with_name(logged_in_api_client):
+    count = models.UploadGroup.objects.count()
+
+    url = reverse("api:v2:upload-groups-list")
+    response = logged_in_api_client.post(url, {"name": "Test Name"})
+
+    assert response.status_code == 201
+    assert count + 1 == models.UploadGroup.objects.count()
+    assert response.data.get("guid") != ""
+    assert response.data.get("name") == "Test Name"
+    assert "https://test.federation/api/v2/upload-groups/" in response.data.get(
+        "uploadUrl"
+    )
