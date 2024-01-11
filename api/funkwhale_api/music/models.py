@@ -1431,3 +1431,8 @@ def update_request_status(sender, instance, created, **kwargs):
         # let's mark the request as imported since the import is over
         instance.import_request.status = "imported"
         return instance.import_request.save(update_fields=["status"])
+
+
+class UploadGroup(models.Model):
+    name = models.CharField(max_length=255, default=datetime.datetime.now)
+    guid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
