@@ -810,6 +810,56 @@ def test_user_can_create_upload(logged_in_api_client, factories, mocker, audio_f
     m.assert_called_once_with(tasks.process_upload.delay, upload_id=upload.pk)
 
 
+def test_upload_creates_implicit_upload_group(
+    logged_in_api_client, factories, mocker, audio_file
+):
+    library = factories["music.Library"](actor__user=logged_in_api_client.user)
+    url = reverse("api:v1:uploads-list")
+    upload_group_count = models.UploadGroup.objects.count()
+
+    response = logged_in_api_client.post(
+        url,
+        {
+            "audio_file": audio_file,
+            "source": "upload://test",
+            "library": library.uuid,
+            "import_metadata": '{"title": "foo"}',
+        },
+    )
+
+    assert response.status_code == 201
+    assert upload_group_count + 1 == models.UploadGroup.objects.count()
+    assert (
+        models.UploadGroup.objects.filter(
+            name=str(datetime.datetime.date(datetime.datetime.now()))
+        ).count()
+        == 1
+    )
+
+
+def test_upload_creates_named_upload_group(
+    logged_in_api_client, factories, mocker, audio_file
+):
+    library = factories["music.Library"](actor__user=logged_in_api_client.user)
+    url = reverse("api:v1:uploads-list")
+    upload_group_count = models.UploadGroup.objects.count()
+
+    response = logged_in_api_client.post(
+        url,
+        {
+            "audio_file": audio_file,
+            "source": "upload://test",
+            "import_reference": "test",
+            "library": library.uuid,
+            "import_metadata": '{"title": "foo"}',
+        },
+    )
+
+    assert response.status_code == 201
+    assert upload_group_count + 1 == models.UploadGroup.objects.count()
+    assert models.UploadGroup.objects.filter(name="test").count() == 1
+
+
 def test_user_can_create_upload_in_channel(
     logged_in_api_client, factories, mocker, audio_file
 ):

@@ -165,6 +165,14 @@ class TrackFactory(
 
 
 @registry.register
+class UploadGroupFactory(factory.django.DjangoModelFactory):
+    name = factory.Faker("name")
+
+    class Meta:
+        model = "music.UploadGroup"
+
+
+@registry.register
 class UploadFactory(NoUpdateOnCreate, factory.django.DjangoModelFactory):
     fid = factory.Faker("federation_url")
     track = factory.SubFactory(TrackFactory)
@@ -172,6 +180,7 @@ class UploadFactory(NoUpdateOnCreate, factory.django.DjangoModelFactory):
     audio_file = factory.django.FileField(
         from_path=os.path.join(SAMPLES_PATH, "test.ogg")
     )
+    upload_group = factory.SubFactory(UploadGroupFactory)
 
     bitrate = None
     size = None

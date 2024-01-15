@@ -790,7 +790,11 @@ class UploadViewSet(
         return context
 
     def perform_create(self, serializer):
-        upload = serializer.save()
+        group_name = serializer.validated_data.get("import_reference") or str(
+            datetime.datetime.date(datetime.datetime.now())
+        )
+        upload_group, _ = models.UploadGroup.objects.get_or_create(name=group_name)
+        upload = serializer.save(upload_group=upload_group)
         if upload.import_status == "pending":
             common_utils.on_commit(tasks.process_upload.delay, upload_id=upload.pk)
 
