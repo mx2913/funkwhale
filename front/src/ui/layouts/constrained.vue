@@ -12,7 +12,7 @@
 main {
   padding: 56px 48px;
   font-size: 16px;
-  max-width: 48rem;
+  max-width: 78rem;
 }
 
 </style>
