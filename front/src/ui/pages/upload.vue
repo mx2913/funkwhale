@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue'
-import { UseTimeAgo } from '@vueuse/components'
-import { Icon } from '@iconify/vue';
+import { reactive, computed } from 'vue'
 import { useUploadsStore } from '~/ui/stores/upload'
+import { bytesToHumanSize } from '~/ui/composables/bytes'
+import UploadModal from '~/ui/components/UploadModal.vue'
 
 const filesystemStats = reactive({
   total: 10737418240,
@@ -14,73 +14,29 @@ const filesystemProgress = computed(() => {
   return filesystemStats.used / filesystemStats.total * 100
 })
 
-const bytesToHumanSize = (bytes: number) => {
-  const sizes = ['B', 'KB', 'MB', 'GB', 'TB']
-  if (bytes === 0) return '0 B'
-  const i = Math.floor(Math.log(bytes) / Math.log(1024))
-  if (i === 0) return `${bytes} ${sizes[i]}`
-  return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`
-}
-
-const tabs = [
-  {
-    label: 'Music library',
-    icon: 'headphones',
-    description: 'Host music you listen to.',
-  },
-  {
-    label: 'Music channel',
-    icon: 'music-note-beamed',
-    description: 'Publish music you make.'
-  },
-  {
-    label: 'Podcast channel',
-    icon: 'mic',
-    description: 'Publish podcast you make.',
-  },
-]
-
-const currentTab = ref(tabs[0].label)
-
-
-// Modals
-const libraryOpen = ref(false)
-
-// Server import
-const serverPath = ref('/srv/funkwhale/data/music')
-
-// Upload
-const combinedFileSize = computed(() => bytesToHumanSize(
-  uploads.queue.reduce((acc, { file }) => acc + file.size, 0)
-))
-
 const uploads = useUploadsStore()
-const processFiles = (fileList: FileList) => {
-  console.log('processFiles', fileList)
-  for (const file of fileList) {
-    uploads.queueUpload(file)
-  }
-
-}
-
-const cancel = () => {
-  libraryOpen.value = false
-  uploads.cancelAll()
-}
-
-// Sorting
-const sortItems = reactive([
-  { label: 'Upload time', value: 'upload-time' },
-  { label: 'Upload time 2', value: 'upload-time-2' },
-  { label: 'Upload time 3', value: 'upload-time-3' }
-])
-const currentSort = ref(sortItems[0])
-
-// Filtering
-const filterItems = reactive([
-  { label: 'All', value: 'all' }
-])
-const currentFilter = ref(filterItems[0])
+const tabs = computed(() => [
+  {
+    label: 'Running',
+    key: 'running',
+    enabled: uploads.uploadGroups.length > 0
+  },
+  {
+    label: 'New',
+    key: '',
+    enabled: true
+  },
+  {
+    label: 'History',
+    key: 'history',
+    enabled: true
+  },
+  {
+    label: 'All files',
+    key: 'all',
+    enabled: true
+  },
+].filter(tab => tab.enabled))
 </script>
 
 <template>
@@ -102,132 +58,17 @@ const currentFilter = ref(filterItems[0])
 
   </div>
 
-  <p> Select a destination for your audio files: </p>
-
-  <div class="flex justify-between">
-    <FwCard
-      v-for="tab in tabs" :key="tab.label"
-      :title="tab.label"
-      :class="currentTab === tab.label && 'active'"
-      @click="currentTab = tab.label"
-    >
-      <template #image>
-        <div class="image-icon">
-          <Icon :icon="'bi:' + tab.icon" />
-        </div>
-      </template>
-      {{ tab.description }}
-      <div class="radio-button" />
-    </FwCard>
+  <div class="mb-4 -ml-2">
+    <RouterLink v-for="tab in tabs" :key="tab.key" :to="`/ui/upload/${tab.key}`" custom #="{ navigate, isExactActive }">
+      <FwPill @click="navigate" :color="isExactActive ? 'primary' : 'secondary'">
+        {{ tab.label }}
+      </FwPill>
+    </RouterLink>
   </div>
 
-  <div>
-    <FwButton @click="libraryOpen = true">Open library</FwButton>
-    <FwModal v-model="libraryOpen" title="Upload music to library">
-      <template #alert="{ closeAlert }">
-        <FwAlert>
-          Before uploading, please ensure your files are tagged properly.
-          We recommend using Picard for that purpose.
+  <RouterView />
 
-          <template #actions>
-            <FwButton @click="closeAlert">Got it</FwButton>
-          </template>
-        </FwAlert>
-      </template>
-
-      <FwFileInput
-        :accept="['.flac', '.ogg', '.opus', '.mp3', '.aac', '.aif', '.aiff', '.m4a']"
-        multiple
-        auto-reset
-        @files="processFiles"
-      />
-
-      <!-- Upload path -->
-      <div v-if="uploads.queue.length > 0">
-        <div class="list-header">
-          <div class="file-count">
-            {{ uploads.queue.length }} files, {{ combinedFileSize }}
-          </div>
-
-          <FwSelect icon="bi:filter" v-model="currentFilter" :items="filterItems" />
-          <FwSelect icon="bi:sort-down" v-model="currentSort" :items="sortItems" />
-        </div>
-
-        <div class="file-list">
-          <div v-for="track in uploads.queue" :key="track.id" class="list-track">
-            <div class="track-cover">
-              <Transition mode="out-in">
-                <img
-                  v-if="track.coverUrl"
-                  :src="track.coverUrl"
-                />
-                <Icon v-else icon="bi:disc" />
-              </Transition>
-            </div>
-            <Transition mode="out-in">
-              <div v-if="track.tags" class="track-data">
-                <div class="track-title">{{ track.tags.title }}</div>
-                {{ track.tags.artist }} / {{ track.tags.album }}
-              </div>
-              <div v-else class="track-title">
-                {{ track.file.name }}
-              </div>
-            </Transition>
-            <div class="upload-state">
-              <FwPill :color="track.failReason ? 'red' : track.importedAt ? 'blue' : 'secondary'">
-                {{
-                  track.failReason
-                    ? 'failed'
-                    : track.importedAt
-                      ? 'imported'
-                      : track.progress === 100
-                        ? 'processing'
-                        : 'uploading'
-                }}
-              </FwPill>
-              <div v-if="track.importedAt" class="track-progress">
-                <UseTimeAgo :time="track.importedAt" v-slot="{ timeAgo }">{{ timeAgo }}</UseTimeAgo>
-              </div>
-              <div v-else class="track-progress">
-                {{ bytesToHumanSize(track.file.size / 100 * track.progress) }}
-                / {{ bytesToHumanSize(track.file.size) }}
-                ⋅ {{ track.progress }}%
-              </div>
-            </div>
-            <FwButton
-              icon="bi:chevron-right"
-              variant="ghost"
-              color="secondary"
-              :is-loading="!track.importedAt"
-              :disabled="!track.importedAt"
-            />
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Import path -->
-      <template v-else>
-        <label>Import from server directory</label>
-        <div class="flex items-center">
-          <FwInput
-            v-model="serverPath"
-            class="w-full mr-4"
-          />
-          <FwButton color="secondary">
-            Import
-          </FwButton>
-        </div>
-      </template>
-
-      <template #actions>
-        <FwButton @click="cancel" color="secondary">Cancel</FwButton>
-        <FwButton @click="libraryOpen = false">
-          {{ uploads.queue.length ? 'Continue in background' : 'Save and close' }}
-        </FwButton>
-      </template>
-    </FwModal>
-  </div>
+  <UploadModal />
 </template>
 
 <style scoped lang="scss">

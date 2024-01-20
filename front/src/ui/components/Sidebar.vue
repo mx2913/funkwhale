@@ -28,7 +28,7 @@ const uploads = useUploadsStore()
           <Transition>
             <div v-if="uploads.currentIndex < uploads.queue.length" class="upload-progress">
               <div class="progress fake" />
-              <div class="progress" :style="{ maxWidth: `${uploads.currentIndex / uploads.queue.length * 100}%` }" />
+              <div class="progress" :style="{ maxWidth: `${uploads.progress}%` }" />
             </div>
           </Transition>
         </FwButton>
