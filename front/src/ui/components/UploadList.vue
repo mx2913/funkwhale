@@ -3,6 +3,7 @@ import type { UploadGroupEntry } from '~/ui/stores/upload'
 import { bytesToHumanSize } from '~/ui/composables/bytes'
 import { UseTimeAgo } from '@vueuse/components'
 import CoverArt from '~/ui/components/CoverArt.vue'
+import { Icon } from '@iconify/vue'
 
 defineProps<{
   uploads: UploadGroupEntry[]
@@ -25,15 +26,22 @@ defineProps<{
         </div>
       </Transition>
       <div class="upload-state">
-        <FwPill :color="track.failReason ? 'red' : track.importedAt ? 'blue' : 'secondary'">
+        <FwTooltip v-if="track.failReason" :tooltip="track.failReason">
+          <FwPill color="red">
+            <template #image>
+              <Icon icon="bi:question" class="h-4 w-4" />
+            </template>
+
+            failed
+          </FwPill>
+        </FwTooltip>
+        <FwPill v-else :color="track.importedAt ? 'blue' : 'secondary'">
           {{
-            track.failReason
-              ? 'failed'
-              : track.importedAt
-                ? 'imported'
-                : track.progress === 100
-                  ? 'processing'
-                  : 'uploading'
+            track.importedAt
+              ? 'imported'
+              : track.progress === 100
+                ? 'processing'
+                : 'uploading'
           }}
         </FwPill>
         <div v-if="track.importedAt" class="track-timeago">
