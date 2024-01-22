@@ -106,7 +106,8 @@ commands = ["createsuperuser", "makemigrations"]
 
 
 @pytest.mark.parametrize("command", commands)
-def test_blocked_commands(command):
+def test_blocked_commands(command, mocker):
+    mocker.patch.dict(os.environ, {"FORCE": "0"})
     with pytest.raises(CommandError):
         call_command(command)
 
