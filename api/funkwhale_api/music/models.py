@@ -739,7 +739,7 @@ class Upload(models.Model):
         on_delete=models.CASCADE,
     )
     upload_group = models.ForeignKey(
-        "UploadGroup", related_name="uploads", on_delete=models.CASCADE
+        "UploadGroup", related_name="uploads", on_delete=models.CASCADE, null=True
     )
 
     # metadata from federation
