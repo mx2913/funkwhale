@@ -2,7 +2,7 @@
 import type { QueueTrack } from '~/composables/audio/queue'
 
 import { useIntervalFn, useStyleTag, useToggle, useWindowSize } from '@vueuse/core'
-import { computed, nextTick, onMounted, ref, watchEffect, defineAsyncComponent } from 'vue'
+import { computed, nextTick, onMounted, watchEffect, defineAsyncComponent } from 'vue'
 
 import { useQueue } from '~/composables/audio/queue'
 import { useStore } from '~/store'
