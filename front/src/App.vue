@@ -14,7 +14,6 @@ const ChannelUploadModal = defineAsyncComponent(() => import('~/components/chann
 const PlaylistModal = defineAsyncComponent(() => import('~/components/playlists/PlaylistModal.vue'))
 const FilterModal = defineAsyncComponent(() => import('~/components/moderation/FilterModal.vue'))
 const ReportModal = defineAsyncComponent(() => import('~/components/moderation/ReportModal.vue'))
-const SetInstanceModal = defineAsyncComponent(() => import('~/components/SetInstanceModal.vue'))
 const ServiceMessages = defineAsyncComponent(() => import('~/components/ServiceMessages.vue'))
 const ShortcutsModal = defineAsyncComponent(() => import('~/components/ShortcutsModal.vue'))
 const AudioPlayer = defineAsyncComponent(() => import('~/components/audio/Player.vue'))
@@ -72,7 +71,6 @@ const [showShortcutsModal, toggleShortcutsModal] = useToggle(false)
 onKeyboardShortcut('h', () => toggleShortcutsModal())
 
 const { width } = useWindowSize()
-const showSetInstanceModal = ref(false)
 
 // Fetch user data on startup
 // NOTE: We're not checking if we're authenticated in the store,
@@ -99,10 +97,8 @@ store.dispatch('auth/fetchUser')
 
     <sidebar
       :width="width"
-      @show:set-instance-modal="showSetInstanceModal = !showSetInstanceModal"
       @show:shortcuts-modal="toggleShortcutsModal"
     />
-    <set-instance-modal v-model:show="showSetInstanceModal" />
     <service-messages />
     <transition name="queue">
       <queue v-show="store.state.ui.queueFocused" />

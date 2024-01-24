@@ -18,15 +18,10 @@ import Logo from '~/components/Logo.vue'
 import useThemeList from '~/composables/useThemeList'
 import useTheme from '~/composables/useTheme'
 
-interface Events {
-  (e: 'show:set-instance-modal'): void
-}
-
 interface Props {
   width: number
 }
 
-const emit = defineEmits<Events>()
 defineProps<Props>()
 
 const store = useStore()
@@ -543,12 +538,12 @@ onMounted(() => {
             v-if="!isProduction"
             class="item"
           >
-            <a
-              role="button"
-              href=""
+            <router-link
+              to="/instance-chooser"
               class="link item"
-              @click.prevent="emit('show:set-instance-modal')"
-            >{{ $t('components.Sidebar.link.switchInstance') }}</a>
+            >
+              {{ $t('components.Sidebar.link.switchInstance') }}
+            </router-link>
           </div>
         </nav>
       </section>

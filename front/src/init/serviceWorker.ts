@@ -9,6 +9,12 @@ const { t } = i18n.global
 const logger = useLogger()
 
 export const install: InitModule = ({ store }) => {
+  // NOTE: Return early if we're not running in a browser
+  if ('TAURI_PLATFORM' in import.meta.env) {
+    logger.info('Tauri detected, skipping service worker registration')
+    // return
+  }
+
   const updateSW = registerSW({
     onRegisterError (error) {
       const importStatementsSupported = navigator.userAgent.includes('Chrome')
