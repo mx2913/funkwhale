@@ -7,11 +7,9 @@ import manage from './manage'
 import store from '~/store'
 import auth from './auth'
 import user from './user'
-import ui from './ui'
 import { requireLoggedIn } from '~/router/guards'
 
 export default [
-  ...ui,
   {
     path: '/',
     name: 'index',

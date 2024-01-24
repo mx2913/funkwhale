@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useUploadsStore } from '../stores/upload';
+import { useUploadsStore } from '../stores/upload'
 
 const searchQuery = ref('')
 
@@ -19,26 +19,51 @@ const uploads = useUploadsStore()
     <div class="sticky-content">
       <nav class="quick-actions">
         <RouterLink to="/">
-          <img src="../../assets/logo/logo.svg" alt="Logo" class="logo" />
+          <img
+            src="../../assets/logo/logo.svg"
+            alt="Logo"
+            class="logo"
+          >
         </RouterLink>
 
-        <FwButton icon="bi:wrench" color="secondary" variant="ghost" />
+        <FwButton
+          icon="bi:wrench"
+          color="secondary"
+          variant="ghost"
+        />
 
-        <FwButton icon="bi:upload" color="secondary" variant="ghost" :class="[{ active: route.name === 'ui.upload' }, 'icon-only']">
-          <Transition>
-            <div v-if="uploads.currentIndex < uploads.queue.length" class="upload-progress">
-              <div class="progress fake" />
-              <div class="progress" :style="{ maxWidth: `${uploads.progress}%` }" />
-            </div>
-          </Transition>
-        </FwButton>
+        <RouterLink to="/upload">
+          <FwButton
+            icon="bi:upload"
+            color="secondary"
+            variant="ghost"
+            :class="[{ active: route.name === 'ui.upload' }, 'icon-only']"
+          >
+            <Transition>
+              <div
+                v-if="uploads.currentIndex < uploads.queue.length"
+                class="upload-progress"
+              >
+                <div class="progress fake" />
+                <div
+                  class="progress"
+                  :style="{ maxWidth: `${uploads.progress}%` }"
+                />
+              </div>
+            </Transition>
+          </FwButton>
+        </RouterLink>
 
-        <FwButton icon="bi:inbox" color="secondary" variant="ghost" />
+        <FwButton
+          icon="bi:inbox"
+          color="secondary"
+          variant="ghost"
+        />
 
         <a
-          @click.prevent
           href=""
           class="avatar"
+          @click.prevent
         >
           <img
             v-if="$store.state.auth.authenticated && $store.state.auth.profile?.avatar?.urls.medium_square_crop"
@@ -66,24 +91,82 @@ const uploads = useUploadsStore()
 
       <h3>Explore</h3>
       <nav class="button-list">
-        <FwButton color="secondary" variant="ghost" icon="bi-compass">All Funkwhale</FwButton>
-        <FwButton color="secondary" variant="ghost" icon="bi-music-note-beamed">Music</FwButton>
-        <FwButton color="secondary" variant="ghost" icon="bi-mic">Podcasts</FwButton>
+        <FwButton
+          color="secondary"
+          variant="ghost"
+          icon="bi-compass"
+        >
+          All Funkwhale
+        </FwButton>
+        <FwButton
+          color="secondary"
+          variant="ghost"
+          icon="bi-music-note-beamed"
+        >
+          Music
+        </FwButton>
+        <FwButton
+          color="secondary"
+          variant="ghost"
+          icon="bi-mic"
+        >
+          Podcasts
+        </FwButton>
       </nav>
 
       <h3>Library</h3>
       <div class="pill-list">
         <FwPill>Music</FwPill>
-        <FwPill outline>Podcasts</FwPill>
-        <FwPill outline>Sharing</FwPill>
+        <FwPill outline>
+          Podcasts
+        </FwPill>
+        <FwPill outline>
+          Sharing
+        </FwPill>
       </div>
       <nav class="button-list">
-        <FwButton color="secondary" variant="ghost" icon="bi-collection">Collections</FwButton>
-        <FwButton color="secondary" variant="ghost" icon="bi-person">Artists</FwButton>
-        <FwButton color="secondary" variant="ghost" icon="bi-disc">Albums</FwButton>
-        <FwButton color="secondary" variant="ghost" icon="bi-music-note-list">Playlists</FwButton>
-        <FwButton color="secondary" variant="ghost" icon="bi-question-diamond">Radios</FwButton>
-        <FwButton color="secondary" variant="ghost" icon="bi-heart">Favorites</FwButton>
+        <FwButton
+          color="secondary"
+          variant="ghost"
+          icon="bi-collection"
+        >
+          Collections
+        </FwButton>
+        <FwButton
+          color="secondary"
+          variant="ghost"
+          icon="bi-person"
+        >
+          Artists
+        </FwButton>
+        <FwButton
+          color="secondary"
+          variant="ghost"
+          icon="bi-disc"
+        >
+          Albums
+        </FwButton>
+        <FwButton
+          color="secondary"
+          variant="ghost"
+          icon="bi-music-note-list"
+        >
+          Playlists
+        </FwButton>
+        <FwButton
+          color="secondary"
+          variant="ghost"
+          icon="bi-question-diamond"
+        >
+          Radios
+        </FwButton>
+        <FwButton
+          color="secondary"
+          variant="ghost"
+          icon="bi-heart"
+        >
+          Favorites
+        </FwButton>
       </nav>
     </div>
   </aside>
@@ -154,7 +237,6 @@ aside {
           }
         }
       }
-
 
       > :first-child {
         margin-right: auto;

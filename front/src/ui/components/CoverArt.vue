@@ -15,8 +15,14 @@ const coverUrl = computed(() => {
 <template>
   <div class="cover-art">
     <Transition mode="out-in">
-      <img v-if="coverUrl" :src="coverUrl" />
-      <Icon v-else icon="bi:disc" />
+      <img
+        v-if="coverUrl"
+        :src="coverUrl"
+      >
+      <Icon
+        v-else
+        icon="bi:disc"
+      />
     </Transition>
   </div>
 </template>

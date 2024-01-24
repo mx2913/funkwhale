@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 import { UploadGroup } from '~/ui/stores/upload'
 import VerticalCollapse from '~/ui/components/VerticalCollapse.vue'
 import UploadList from '~/ui/components/UploadList.vue'
 import { UseTimeAgo } from '@vueuse/components'
 import { Icon } from '@iconify/vue'
-
 
 defineProps<{ groups: UploadGroup[], isUploading?: boolean }>()
 
@@ -19,7 +18,7 @@ const toggle = (group: UploadGroup) => {
 const labels = {
   'music-library': 'Music library',
   'music-channel': 'Music channel',
-  'podcast-channel': 'Podcast channel',
+  'podcast-channel': 'Podcast channel'
 }
 
 const getDescription = (group: UploadGroup) => {
@@ -31,9 +30,9 @@ const getDescription = (group: UploadGroup) => {
     let element = group.type === 'music-library'
       ? metadata.tags.album
       : metadata.tags.title
-    
-    element = acc.length < 3 
-      ? element 
+
+    element = acc.length < 3
+      ? element
       : '...'
 
     if (!acc.includes(element)) {
@@ -47,62 +46,105 @@ const getDescription = (group: UploadGroup) => {
 
 <template>
   <div>
-    <div 
-      class="upload-group"
-      v-for="group of groups" 
+    <div
+      v-for="group of groups"
       :key="group.guid"
+      class="upload-group"
     >
       <div class="flex items-center">
         <div class="upload-group-header">
-          <div class="upload-group-title">{{ labels[group.type] }}</div>
-          <div class="upload-group-albums">{{ getDescription(group) }}</div>
+          <div class="upload-group-title">
+            {{ labels[group.type] }}
+          </div>
+          <div class="upload-group-albums">
+            {{ getDescription(group) }}
+          </div>
         </div>
-        
+
         <div class="timeago">
-          <UseTimeAgo :time="group.createdAt" v-slot="{ timeAgo }">{{ timeAgo }}</UseTimeAgo>
+          <UseTimeAgo
+            v-slot="{ timeAgo }"
+            :time="group.createdAt"
+          >
+            {{ timeAgo }}
+          </UseTimeAgo>
         </div>
 
-
-        <FwPill v-if="group.failedCount > 0" color="red">
+        <FwPill
+          v-if="group.failedCount > 0"
+          color="red"
+        >
           <template #image>
-            <div class="flex items-center justify-center">{{ group.failedCount }}</div>
+            <div class="flex items-center justify-center">
+              {{ group.failedCount }}
+            </div>
           </template>
           failed
         </FwPill>
 
-        <FwPill v-if="group.importedCount > 0" color="blue">
+        <FwPill
+          v-if="group.importedCount > 0"
+          color="blue"
+        >
           <template #image>
-            <div class="flex items-center justify-center">{{ group.importedCount }}</div>
+            <div class="flex items-center justify-center">
+              {{ group.importedCount }}
+            </div>
           </template>
           imported
         </FwPill>
 
-        <FwPill v-if="group.processingCount > 0" color="secondary">
+        <FwPill
+          v-if="group.processingCount > 0"
+          color="secondary"
+        >
           <template #image>
-            <div class="flex items-center justify-center">{{ group.processingCount }}</div>
+            <div class="flex items-center justify-center">
+              {{ group.processingCount }}
+            </div>
           </template>
           processing
         </FwPill>
 
-
         <FwButton
-          @click="toggle(group)"
           variant="ghost"
           color="secondary"
           class="icon-only"
+          @click="toggle(group)"
         >
           <template #icon>
-            <Icon icon="bi:chevron-right" :rotate="group === openUploadGroup ? 1 : 0" />
+            <Icon
+              icon="bi:chevron-right"
+              :rotate="group === openUploadGroup ? 1 : 0"
+            />
           </template>
         </FwButton>
       </div>
 
-      <div v-if="isUploading" class="flex items-center upload-progress">
-        <FwButton v-if="group.processingCount === 0 && group.failedCount > 0" @click="group.retry()" color="secondary">Retry</FwButton>
-        <FwButton v-else-if="group.queue.length !== group.importedCount" @click="group.cancel()" color="secondary">Interrupt</FwButton>
+      <div
+        v-if="isUploading"
+        class="flex items-center upload-progress"
+      >
+        <FwButton
+          v-if="group.processingCount === 0 && group.failedCount > 0"
+          color="secondary"
+          @click="group.retry()"
+        >
+          Retry
+        </FwButton>
+        <FwButton
+          v-else-if="group.queue.length !== group.importedCount"
+          color="secondary"
+          @click="group.cancel()"
+        >
+          Interrupt
+        </FwButton>
 
         <div class="progress">
-          <div class="progress-bar" :style="{ width: `${group.progress}%` }" />
+          <div
+            class="progress-bar"
+            :style="{ width: `${group.progress}%` }"
+          />
         </div>
 
         <div class="shrink-0">
@@ -110,7 +152,11 @@ const getDescription = (group: UploadGroup) => {
         </div>
       </div>
 
-      <VerticalCollapse @click.stop :open="openUploadGroup === group" class="collapse">
+      <VerticalCollapse
+        :open="openUploadGroup === group"
+        class="collapse"
+        @click.stop
+      >
         <UploadList :uploads="group.queue" />
       </VerticalCollapse>
     </div>
@@ -143,7 +189,6 @@ const getDescription = (group: UploadGroup) => {
   font-size: 0.875rem;
   color: var(--fw-gray-600);
 }
-
 
 .upload-progress {
   font-size: 0.875rem;

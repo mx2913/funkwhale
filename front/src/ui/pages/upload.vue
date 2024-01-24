@@ -6,7 +6,7 @@ import UploadModal from '~/ui/components/UploadModal.vue'
 
 const filesystemStats = reactive({
   total: 10737418240,
-  used: 3e9,
+  used: 3e9
 })
 
 const filesystemProgress = computed(() => {
@@ -35,16 +35,21 @@ const tabs = computed(() => [
     label: 'All files',
     key: 'all',
     enabled: true
-  },
+  }
 ].filter(tab => tab.enabled))
 </script>
 
 <template>
   <div class="flex items-center">
-    <h1 class="mr-auto">Upload</h1>
+    <h1 class="mr-auto">
+      Upload
+    </h1>
 
     <div class="filesystem-stats">
-      <div class="filesystem-stats--progress" :style="`--progress: ${filesystemProgress}%`" />
+      <div
+        class="filesystem-stats--progress"
+        :style="`--progress: ${filesystemProgress}%`"
+      />
       <div class="flex items-center">
         {{ bytesToHumanSize(filesystemStats.total) }} total
 
@@ -55,12 +60,20 @@ const tabs = computed(() => [
         {{ bytesToHumanSize(filesystemStats.total - filesystemStats.used) }} available
       </div>
     </div>
-
   </div>
 
   <div class="mb-4 -ml-2">
-    <RouterLink v-for="tab in tabs" :key="tab.key" :to="`/ui/upload/${tab.key}`" custom #="{ navigate, isExactActive }">
-      <FwPill @click="navigate" :color="isExactActive ? 'primary' : 'secondary'">
+    <RouterLink
+      v-for="tab in tabs"
+      :key="tab.key"
+      :to="`/ui/upload/${tab.key}`"
+      custom
+      #="{ navigate, isExactActive }"
+    >
+      <FwPill
+        :color="isExactActive ? 'primary' : 'secondary'"
+        @click="navigate"
+      >
         {{ tab.label }}
       </FwPill>
     </RouterLink>

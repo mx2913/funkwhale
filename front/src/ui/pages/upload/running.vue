@@ -5,5 +5,8 @@ const uploads = useUploadsStore()
 </script>
 
 <template>
-  <UploadGroupList :groups="uploads.uploadGroups" :is-uploading="true" />
+  <UploadGroupList
+    :groups="uploads.uploadGroups"
+    :is-uploading="true"
+  />
 </template>

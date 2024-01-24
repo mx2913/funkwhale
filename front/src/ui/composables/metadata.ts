@@ -40,7 +40,7 @@ export const getCoverUrl = async (tags: Tags): Promise<string | undefined> => {
       onerror: () => reject(reader.error)
     })
 
-    reader.readAsDataURL(new File([picture.data], "", { type: picture.type }))
+    reader.readAsDataURL(new File([picture.data], '', { type: picture.type }))
   })
 }
 
