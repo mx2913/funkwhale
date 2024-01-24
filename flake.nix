@@ -19,7 +19,7 @@
       ];
     };
     lib = nixpkgs.lib;
-    
+
     commonLibraries = with pkgs;[
       # Tauri dependencies
       webkitgtk_4_1
@@ -41,7 +41,7 @@
       gst_all_1.gst-plugins-good
       gst_all_1.gst-plugins-base
     ];
-    
+
 
     packages = with pkgs; [
       # More tauri dependencies
@@ -56,13 +56,18 @@
       nodejs
       corepack
 
-      # API dependencies / Frontend scripts 
+      # API dependencies / Frontend scripts
       python3
+      pre-commit
     ];
 
   in {
     devShell = pkgs.mkShell {
       buildInputs = commonLibraries ++ packages;
+
+      shellHook = ''
+        pre-commit install
+      '';
 
       LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath commonLibraries;
 
@@ -81,7 +86,7 @@
       in "${base}:${gsettings-schema}:$XDG_DATA_DIRS";
 
       GIO_MODULE_DIR = "${pkgs.glib-networking}/lib/gio/modules/";
-        
+
 
       # Avoid white screen running with Nix
       # https://github.com/tauri-apps/tauri/issues/4315#issuecomment-1207755694
