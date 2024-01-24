@@ -131,7 +131,7 @@ export const TAURI_DEFAULT_INSTANCE_URL = 'tauri://force-instance-chooser/'
 // 3. use the url specified when building via VUE_APP_INSTANCE_URL
 // 4. use the current url
 const DEFAULT_INSTANCE_URL = (() => {
-  if ('TAURI_PLATFORM' in import.meta.env) {
+  if ('TAURI_ENV_PLATFORM' in import.meta.env) {
     return TAURI_DEFAULT_INSTANCE_URL
   }
 

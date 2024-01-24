@@ -1647,10 +1647,10 @@
     magic-string "^0.25.0"
     string.prototype.matchall "^4.0.6"
 
-"@tauri-apps/api@1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.5.3.tgz#f7b362b1f30aadb0a8bbeb7ae111755c0ed33d73"
-  integrity sha512-zxnDjHHKjOsrIzZm6nO5Xapb/BxqUq1tc7cGkFXsFkGTsSWgCPH1D8mm0XS9weJY2OaR73I3k3S+b7eSzJDfqA==
+"@tauri-apps/api@2.0.0-alpha.14":
+  version "2.0.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-2.0.0-alpha.14.tgz#bb08d206787f9b1c6fdc939f3e1764e1a0992f5d"
+  integrity sha512-j9WxOIsNqt+0CypY8wu0dSsTJJQw3H37yIdyYsgrjvHgJ/yQB0AAbOFBo6+v3C/fZ35ydswgeFCBEoeK9NC7QA==
 
 "@tauri-apps/cli-darwin-arm64@2.0.0-alpha.21":
   version "2.0.0-alpha.21"

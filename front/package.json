@@ -20,7 +20,7 @@
     "@funkwhale/ui": "0.2.2",
     "@sentry/tracing": "7.47.0",
     "@sentry/vue": "7.47.0",
-    "@tauri-apps/api": "1.5.3",
+    "@tauri-apps/api": "2.0.0-alpha.14",
     "@vue/runtime-core": "3.3.11",
     "@vueuse/core": "10.3.0",
     "@vueuse/integrations": "10.3.0",
