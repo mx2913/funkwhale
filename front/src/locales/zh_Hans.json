@@ -222,28 +222,6 @@
         "unsupported": "这种类型的对象还不受支持"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "取消",
-        "submit": "提交"
-      },
-      "header": {
-        "chooseInstance": "选择实例",
-        "failure": "无法连接至指定 URL",
-        "suggestions": "建议的选择"
-      },
-      "help": {
-        "notFunkwhaleServer": "输入的地址不是 Funkwhale 服务器",
-        "selectPod": "若要继续，请指定您要连接的 Funkwhale 实例。您可以直接输入地址，或从建议的选项中选择一个。",
-        "serverDown": "服务器可能开小差了"
-      },
-      "label": {
-        "url": "实例 URL"
-      },
-      "message": {
-        "newUrl": "您当前正在使用地址为 { url } 的 Funkwhale 实例"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "关闭"
@@ -4516,6 +4494,28 @@
           }
         },
         "title": "电台"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "取消",
+        "submit": "提交"
+      },
+      "header": {
+        "chooseInstance": "选择实例",
+        "failure": "无法连接至指定 URL",
+        "suggestions": "建议的选择"
+      },
+      "help": {
+        "notFunkwhaleServer": "输入的地址不是 Funkwhale 服务器",
+        "selectPod": "若要继续，请指定您要连接的 Funkwhale 实例。您可以直接输入地址，或从建议的选项中选择一个。",
+        "serverDown": "服务器可能开小差了"
+      },
+      "label": {
+        "url": "实例 URL"
+      },
+      "message": {
+        "newUrl": "您当前正在使用地址为 { url } 的 Funkwhale 实例"
       }
     }
   }

@@ -1998,19 +1998,6 @@
         }
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Ångra",
-        "submit": "Skicka in"
-      },
-      "header": {
-        "chooseInstance": "Välj din instans",
-        "suggestions": "Föreslagna val"
-      },
-      "label": {
-        "url": "Instansradio"
-      }
-    },
     "Queue": {
       "button": {
         "clear": "Rensa",
@@ -3041,6 +3028,19 @@
         "header": {
           "tracks": "Låtar"
         }
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Ångra",
+        "submit": "Skicka in"
+      },
+      "header": {
+        "chooseInstance": "Välj din instans",
+        "suggestions": "Föreslagna val"
+      },
+      "label": {
+        "url": "Instansradio"
       }
     }
   },

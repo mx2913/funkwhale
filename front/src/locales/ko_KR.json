@@ -128,6 +128,7 @@
           "createAccount": "{ app } 이 Funkwhale 계정에 접근하려고 합니다"
         }
       }
-    }
+    },
+    "ChooseInstance": null
   }
 }

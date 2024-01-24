@@ -229,29 +229,6 @@
         "unsupported": ""
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "",
-        "submit": ""
-      },
-      "header": {
-        "chooseInstance": "",
-        "failure": "",
-        "suggestions": ""
-      },
-      "help": {
-        "notFunkwhaleServer": "",
-        "selectPod": "",
-        "serverDown": ""
-      },
-      "label": {
-        "url": ""
-      },
-      "message": {
-        "currentConnection": "",
-        "newUrl": ""
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": ""
@@ -4610,6 +4587,29 @@
           }
         },
         "title": ""
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "",
+        "submit": ""
+      },
+      "header": {
+        "chooseInstance": "",
+        "failure": "",
+        "suggestions": ""
+      },
+      "help": {
+        "notFunkwhaleServer": "",
+        "selectPod": "",
+        "serverDown": ""
+      },
+      "label": {
+        "url": ""
+      },
+      "message": {
+        "currentConnection": "",
+        "newUrl": ""
       }
     }
   }

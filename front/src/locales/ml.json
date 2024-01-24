@@ -1026,12 +1026,6 @@
         }
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "റദ്ദാക്കുക",
-        "submit": "സമർപ്പിക്കുക"
-      }
-    },
     "Queue": {
       "button": {
         "clear": "മായ്ക്കുക",
@@ -1616,6 +1610,12 @@
           "confirm": "റേഡിയോ ഇല്ലാതാക്കുക"
         },
         "title": "റേഡിയോ"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "റദ്ദാക്കുക",
+        "submit": "സമർപ്പിക്കുക"
       }
     }
   },

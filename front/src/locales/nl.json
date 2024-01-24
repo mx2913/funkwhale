@@ -229,29 +229,6 @@
         "unsupported": "Dit soort object wordt nog niet ondersteund"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Annuleren",
-        "submit": "Indienen"
-      },
-      "header": {
-        "chooseInstance": "Kies je server",
-        "failure": "Het is niet mogelijk om verbinding te maken met de opgegeven URL",
-        "suggestions": "Aanbevelingen"
-      },
-      "help": {
-        "notFunkwhaleServer": "Het opgegeven adres is geen Funkwhale-server",
-        "selectPod": "Selecteer met welke Funkwhale-server je wil verbinden. Voer zelf de URL in, of kies een van de suggesties.",
-        "serverDown": "De server is mogelijk niet beschikbaar"
-      },
-      "label": {
-        "url": "Server-URL"
-      },
-      "message": {
-        "currentConnection": "U bent nu verbonden met { 0 }. Als je doorgaat wordt je verbinding verbroken met je huidige instance en je lokale data zal worden verwijderd.",
-        "newUrl": "Je gebruikt nu de Funkwhale-server op { url }"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Sluiten"
@@ -4609,6 +4586,29 @@
           }
         },
         "title": "Radio"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Annuleren",
+        "submit": "Indienen"
+      },
+      "header": {
+        "chooseInstance": "Kies je server",
+        "failure": "Het is niet mogelijk om verbinding te maken met de opgegeven URL",
+        "suggestions": "Aanbevelingen"
+      },
+      "help": {
+        "notFunkwhaleServer": "Het opgegeven adres is geen Funkwhale-server",
+        "selectPod": "Selecteer met welke Funkwhale-server je wil verbinden. Voer zelf de URL in, of kies een van de suggesties.",
+        "serverDown": "De server is mogelijk niet beschikbaar"
+      },
+      "label": {
+        "url": "Server-URL"
+      },
+      "message": {
+        "currentConnection": "U bent nu verbonden met { 0 }. Als je doorgaat wordt je verbinding verbroken met je huidige instance en je lokale data zal worden verwijderd.",
+        "newUrl": "Je gebruikt nu de Funkwhale-server op { url }"
       }
     }
   }

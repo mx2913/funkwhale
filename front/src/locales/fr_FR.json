@@ -229,29 +229,6 @@
         "unsupported": "Ce type d'objet n'est pas encore pris en charge"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Annuler",
-        "submit": "Valider"
-      },
-      "header": {
-        "chooseInstance": "Choisissez votre instance",
-        "failure": "Impossible de se connecter à l'URL renseignée",
-        "suggestions": "Suggestions"
-      },
-      "help": {
-        "notFunkwhaleServer": "L'adresse fournie n'est pas un serveur Funkwhale",
-        "selectPod": "Pour continuer, sélectionnez le pod Funkwhale auquel vous souhaitez vous connecter. Entrez l'adresse directement, ou sélectionnez l'un des choix suggérés.",
-        "serverDown": "Le serveur est peut-être hors-service"
-      },
-      "label": {
-        "url": "Adresse de l'instance"
-      },
-      "message": {
-        "currentConnection": "Vous êtes actuellement connecté à { 0 }. Si vous continuez, vous serez déconnecté de l’instance actuelle et toutes vos données locales seront supprimées.",
-        "newUrl": "Vous utilisez maintenant l’instance Funkwhale sur { url }"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Fermer"
@@ -4610,6 +4587,29 @@
           }
         },
         "title": "Radio"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Annuler",
+        "submit": "Valider"
+      },
+      "header": {
+        "chooseInstance": "Choisissez votre instance",
+        "failure": "Impossible de se connecter à l'URL renseignée",
+        "suggestions": "Suggestions"
+      },
+      "help": {
+        "notFunkwhaleServer": "L'adresse fournie n'est pas un serveur Funkwhale",
+        "selectPod": "Pour continuer, sélectionnez le pod Funkwhale auquel vous souhaitez vous connecter. Entrez l'adresse directement, ou sélectionnez l'un des choix suggérés.",
+        "serverDown": "Le serveur est peut-être hors-service"
+      },
+      "label": {
+        "url": "Adresse de l'instance"
+      },
+      "message": {
+        "currentConnection": "Vous êtes actuellement connecté à { 0 }. Si vous continuez, vous serez déconnecté de l’instance actuelle et toutes vos données locales seront supprimées.",
+        "newUrl": "Vous utilisez maintenant l’instance Funkwhale sur { url }"
       }
     }
   }

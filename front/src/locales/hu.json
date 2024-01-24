@@ -949,7 +949,8 @@
           "create": "Hozzáférés a lejátszási listákhoz"
         }
       }
-    }
+    },
+    "ChooseInstance": null
   },
   "init": {
     "serviceWorker": {

@@ -192,16 +192,6 @@
         }
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Ακύρωση",
-        "submit": "Υποβολή"
-      },
-      "header": {
-        "chooseInstance": "Επιλέξτε το instance σας",
-        "failure": "Δεν είναι δυνατή η σύνδεση στο συγκεκριμένο URL"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Κλείσιμο"
@@ -2460,6 +2450,16 @@
             "header": "Θέλετε να διαγράψετε το ράδιο \"{ radio }\";"
           }
         }
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Ακύρωση",
+        "submit": "Υποβολή"
+      },
+      "header": {
+        "chooseInstance": "Επιλέξτε το instance σας",
+        "failure": "Δεν είναι δυνατή η σύνδεση στο συγκεκριμένο URL"
       }
     }
   }

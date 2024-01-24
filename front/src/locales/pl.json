@@ -212,28 +212,6 @@
         "unsupported": "Ten rodzaj obiektu nie jest jeszcze wspierany"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Anuluj",
-        "submit": "Prześlij"
-      },
-      "header": {
-        "chooseInstance": "Wybierz instancję",
-        "failure": "Nie można połączyć się z podanym adresem URL",
-        "suggestions": "Polecane"
-      },
-      "help": {
-        "notFunkwhaleServer": "Pod podanym adresem nie ma instancji Funkwhale",
-        "selectPod": "Aby kontynuować proszę wybrać instancję Funkwhale do której chcesz się połączyć. Wpisz bezpośrednio adres albo wybierz jedną z sugerowanych opcji.",
-        "serverDown": "Serwer może być niedostępny"
-      },
-      "label": {
-        "url": "Adres URL instancji"
-      },
-      "message": {
-        "newUrl": "Używasz teraz instancji Funkwhale pod adresem { url }"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Zamknij"
@@ -4507,6 +4485,28 @@
           }
         },
         "title": "Stacja radiowa"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Anuluj",
+        "submit": "Prześlij"
+      },
+      "header": {
+        "chooseInstance": "Wybierz instancję",
+        "failure": "Nie można połączyć się z podanym adresem URL",
+        "suggestions": "Polecane"
+      },
+      "help": {
+        "notFunkwhaleServer": "Pod podanym adresem nie ma instancji Funkwhale",
+        "selectPod": "Aby kontynuować proszę wybrać instancję Funkwhale do której chcesz się połączyć. Wpisz bezpośrednio adres albo wybierz jedną z sugerowanych opcji.",
+        "serverDown": "Serwer może być niedostępny"
+      },
+      "label": {
+        "url": "Adres URL instancji"
+      },
+      "message": {
+        "newUrl": "Używasz teraz instancji Funkwhale pod adresem { url }"
       }
     }
   }

@@ -229,29 +229,6 @@
         "unsupported": "Aquest tipus d'objecte encara no és compatible"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Cancelar",
-        "submit": "Envia"
-      },
-      "header": {
-        "chooseInstance": "Escull la teva instància",
-        "failure": "No és possible conectar-se a la URL assenyalada",
-        "suggestions": "Opcions suggerides"
-      },
-      "help": {
-        "notFunkwhaleServer": "L’adreça indicada no és un servidor Funkwhale",
-        "selectPod": "Per continuar, si us plau selecciona la instància de Funkwahale on et vols conectar. Introdueix directamente l'adreça o selecciona una de les suggerides.",
-        "serverDown": "El servidor pot estar inactiu"
-      },
-      "label": {
-        "url": "Adreça de la instància"
-      },
-      "message": {
-        "currentConnection": "Actualment esteu connectat a {0}. Si continueu, se us desconnectarà de la vostra instància actual i se suprimiran totes les vostres dades locals.",
-        "newUrl": "Ara utilitzeu la instància de Funkwhale a { url }"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Tancar"
@@ -4610,6 +4587,29 @@
           }
         },
         "title": "Ràdio"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Cancelar",
+        "submit": "Envia"
+      },
+      "header": {
+        "chooseInstance": "Escull la teva instància",
+        "failure": "No és possible conectar-se a la URL assenyalada",
+        "suggestions": "Opcions suggerides"
+      },
+      "help": {
+        "notFunkwhaleServer": "L’adreça indicada no és un servidor Funkwhale",
+        "selectPod": "Per continuar, si us plau selecciona la instància de Funkwahale on et vols conectar. Introdueix directamente l'adreça o selecciona una de les suggerides.",
+        "serverDown": "El servidor pot estar inactiu"
+      },
+      "label": {
+        "url": "Adreça de la instància"
+      },
+      "message": {
+        "currentConnection": "Actualment esteu connectat a {0}. Si continueu, se us desconnectarà de la vostra instància actual i se suprimiran totes les vostres dades locals.",
+        "newUrl": "Ara utilitzeu la instància de Funkwhale a { url }"
       }
     }
   }

@@ -208,20 +208,6 @@
         "unsupported": "Bu tür nesne henüz desteklenmiyor"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "İptal",
-        "submit": "Gönder"
-      },
-      "header": {
-        "failure": "Verilen URL'e bağlanılamaz",
-        "suggestions": "Önerilen seçimler"
-      },
-      "help": {
-        "notFunkwhaleServer": "Verilen adres bir Funkwhale sunucusu değil",
-        "serverDown": "Sunucu çökük olabilir"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Kapat"
@@ -1689,6 +1675,20 @@
         "meta": {
           "tracks": "{ n } parça | { n } parça"
         }
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "İptal",
+        "submit": "Gönder"
+      },
+      "header": {
+        "failure": "Verilen URL'e bağlanılamaz",
+        "suggestions": "Önerilen seçimler"
+      },
+      "help": {
+        "notFunkwhaleServer": "Verilen adres bir Funkwhale sunucusu değil",
+        "serverDown": "Sunucu çökük olabilir"
       }
     }
   }

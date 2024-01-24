@@ -228,29 +228,6 @@
         "unsupported": "Questo tipo di oggetto non è ancora supportato"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Annulla",
-        "submit": "Invia"
-      },
-      "header": {
-        "chooseInstance": "Scegli la tua istanza",
-        "failure": "Non è possibile connettersi all'URL dato",
-        "suggestions": "Scelte suggerite"
-      },
-      "help": {
-        "notFunkwhaleServer": "L'indirizzo fornito non è quello di un server Funkwhale",
-        "selectPod": "Per continuare, per favore seleziona l'istanza Funkwhale alla quale vuoi connetterti. Inserisci l'indirizzo direttamente, o selezionane uno dalla lista di suggerimenti.",
-        "serverDown": "Il server potrebbe essere caduto"
-      },
-      "label": {
-        "url": "URL dell'istanza"
-      },
-      "message": {
-        "currentConnection": "Attualmente sei connesso a { 0 }. Se continui, sarai disconnesso dalla tua istanza corrente e tutti i tuoi dati locali saranno eliminati.",
-        "newUrl": "Ora stai utilizzando l'istanza Funkwhale su { url }"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Chiudi"
@@ -4563,6 +4540,29 @@
           }
         },
         "title": "Radio"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Annulla",
+        "submit": "Invia"
+      },
+      "header": {
+        "chooseInstance": "Scegli la tua istanza",
+        "failure": "Non è possibile connettersi all'URL dato",
+        "suggestions": "Scelte suggerite"
+      },
+      "help": {
+        "notFunkwhaleServer": "L'indirizzo fornito non è quello di un server Funkwhale",
+        "selectPod": "Per continuare, per favore seleziona l'istanza Funkwhale alla quale vuoi connetterti. Inserisci l'indirizzo direttamente, o selezionane uno dalla lista di suggerimenti.",
+        "serverDown": "Il server potrebbe essere caduto"
+      },
+      "label": {
+        "url": "URL dell'istanza"
+      },
+      "message": {
+        "currentConnection": "Attualmente sei connesso a { 0 }. Se continui, sarai disconnesso dalla tua istanza corrente e tutti i tuoi dati locali saranno eliminati.",
+        "newUrl": "Ora stai utilizzando l'istanza Funkwhale su { url }"
       }
     }
   }
