@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { forceInstanceChooser } from './guards'
 import routes from './routes'
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(import.meta.env.VUE_APP_ROUTER_BASE_URL as string ?? '/'),
   linkActiveClass: 'active',
   routes,
@@ -22,3 +23,9 @@ export default createRouter({
     })
   }
 })
+
+router.beforeEach((to, from, next) => {
+  return forceInstanceChooser(to, from, next)
+})
+
+export default router

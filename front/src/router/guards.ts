@@ -3,6 +3,7 @@ import type { Permission } from '~/store/auth'
 
 import useLogger from '~/composables/useLogger'
 import store from '~/store'
+import { TAURI_DEFAULT_INSTANCE_URL } from '~/store/instance'
 
 const logger = useLogger()
 
@@ -17,11 +18,21 @@ export const hasPermissions = (permission: Permission) => (to: RouteLocationNorm
 
 export const requireLoggedIn = (fallbackLocation?: RouteLocationNamedRaw) => (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   if (store.state.auth.authenticated) return next()
-  logger.debug('!', to)
   return next(fallbackLocation ?? { name: 'login', query: { next: to.fullPath } })
 }
 
 export const requireLoggedOut = (fallbackLocation: RouteLocationNamedRaw) => (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
   if (!store.state.auth.authenticated) return next()
   return next(fallbackLocation)
+}
+
+export const forceInstanceChooser = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+  if (to.path === '/instance-chooser') return next()
+
+  // Force instance chooser if unset by tauri
+  if (store.getters['instance/url'].href === TAURI_DEFAULT_INSTANCE_URL) {
+    return next(`/instance-chooser?next=${encodeURIComponent(to.fullPath)}`)
+  }
+
+  return next()
 }

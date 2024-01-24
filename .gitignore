@@ -106,3 +106,6 @@ tsconfig.tsbuildinfo
 
 # Vscode
 .vscode/
+
+# Direnv
+.direnv/
