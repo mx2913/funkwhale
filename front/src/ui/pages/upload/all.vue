@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { computed } from 'vue';
-import { bytesToHumanSize } from '~/ui/composables/bytes';
-import { useUploadsStore, type UploadGroupEntry } from '~/ui/stores/upload';
+import { computed } from 'vue'
+import { bytesToHumanSize } from '~/ui/composables/bytes'
+import { useUploadsStore, type UploadGroupEntry } from '~/ui/stores/upload'
 import CoverArt from '~/ui/components/CoverArt.vue'
 
 interface Recording {
@@ -49,20 +49,30 @@ const columns = [
 </script>
 
 <template>
-  <div v-if="allTracks.length === 0" class="flex flex-col items-center py-32">
-    <Icon icon="bi:file-earmark-music" class="h-16 w-16" />
+  <div
+    v-if="allTracks.length === 0"
+    class="flex flex-col items-center py-32"
+  >
+    <Icon
+      icon="bi:file-earmark-music"
+      class="h-16 w-16"
+    />
 
     <h3>There is no file in your library</h3>
     <p>Try uploading some before coming back here!</p>
   </div>
-  <FwTable v-else 
-    id-key="guid" 
-    :columns="columns" 
+  <FwTable
+    v-else
+    id-key="guid"
+    :columns="columns"
     :rows="allTracks"
   >
     <template #col-title="{ row, value }">
       <div class="flex items-center">
-        <CoverArt :src="row.metadata" class="mr-2" />
+        <CoverArt
+          :src="row.metadata"
+          class="mr-2"
+        />
         {{ value }}
       </div>
     </template>

@@ -3,7 +3,10 @@ defineProps<{ open: boolean }>()
 </script>
 
 <template>
-  <div class="v-collapse" :class="{ open }">
+  <div
+    class="v-collapse"
+    :class="{ open }"
+  >
     <div class="v-collapse-body">
       <slot />
     </div>

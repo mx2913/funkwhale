@@ -11,9 +11,7 @@ import { useStore } from '~/store'
 
 import useLogger from '~/composables/useLogger'
 
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
+import { useLocalStorage } from '@vueuse/core'
 
 const logger = useLogger()
 logger.debug('App setup()')
@@ -46,10 +44,12 @@ watchEffect(() => {
 // NOTE: We're not checking if we're authenticated in the store,
 //       because we want to learn if we are authenticated at all
 store.dispatch('auth/fetchUser')
+
+const isUIv2 = useLocalStorage('ui-v2', false)
 </script>
 
 <template>
-  <UiApp v-if="route.fullPath.startsWith('/ui')" />
+  <UiApp v-if="isUIv2" />
   <LegacyLayout v-else />
 </template>
 

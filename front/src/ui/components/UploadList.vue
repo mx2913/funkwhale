@@ -14,28 +14,53 @@ defineProps<{
 
 <template>
   <div class="file-list">
-    <div v-for="track in uploads" :key="track.id" class="list-track" :class="{ wide }">
-      <CoverArt :src="track.metadata" class="track-cover" />
+    <div
+      v-for="track in uploads"
+      :key="track.id"
+      class="list-track"
+      :class="{ wide }"
+    >
+      <CoverArt
+        :src="track.metadata"
+        class="track-cover"
+      />
       <Transition mode="out-in">
-        <div v-if="track.metadata?.tags" class="track-data">
-          <div class="track-title">{{ track.metadata.tags.title }}</div>
+        <div
+          v-if="track.metadata?.tags"
+          class="track-data"
+        >
+          <div class="track-title">
+            {{ track.metadata.tags.title }}
+          </div>
           {{ track.metadata.tags.artist }} / {{ track.metadata.tags.album }}
         </div>
-        <div v-else class="track-title">
+        <div
+          v-else
+          class="track-title"
+        >
           {{ track.file.name }}
         </div>
       </Transition>
       <div class="upload-state">
-        <FwTooltip v-if="track.failReason" :tooltip="track.failReason">
+        <FwTooltip
+          v-if="track.failReason"
+          :tooltip="track.failReason"
+        >
           <FwPill color="red">
             <template #image>
-              <Icon icon="bi:question" class="h-4 w-4" />
+              <Icon
+                icon="bi:question"
+                class="h-4 w-4"
+              />
             </template>
 
             failed
           </FwPill>
         </FwTooltip>
-        <FwPill v-else :color="track.importedAt ? 'blue' : 'secondary'">
+        <FwPill
+          v-else
+          :color="track.importedAt ? 'blue' : 'secondary'"
+        >
           {{
             track.importedAt
               ? 'imported'
@@ -44,10 +69,21 @@ defineProps<{
                 : 'uploading'
           }}
         </FwPill>
-        <div v-if="track.importedAt" class="track-timeago">
-          <UseTimeAgo :time="track.importedAt" v-slot="{ timeAgo }">{{ timeAgo }}</UseTimeAgo>
+        <div
+          v-if="track.importedAt"
+          class="track-timeago"
+        >
+          <UseTimeAgo
+            v-slot="{ timeAgo }"
+            :time="track.importedAt"
+          >
+            {{ timeAgo }}
+          </UseTimeAgo>
         </div>
-        <div v-else class="track-progress">
+        <div
+          v-else
+          class="track-progress"
+        >
           {{ bytesToHumanSize(track.file.size / 100 * track.progress) }}
           / {{ bytesToHumanSize(track.file.size) }}
           ⋅ {{ track.progress }}%
@@ -55,10 +91,10 @@ defineProps<{
       </div>
       <FwButton
         v-if="track.failReason"
-        @click="track.retry()"
         icon="bi:arrow-repeat"
         variant="ghost"
         color="secondary"
+        @click="track.retry()"
       />
       <FwButton
         v-else

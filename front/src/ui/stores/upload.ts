@@ -1,4 +1,3 @@
-
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { computed, reactive, readonly, ref, markRaw, toRaw, unref, watch } from 'vue'
 import { whenever, useWebWorker } from '@vueuse/core'
@@ -108,7 +107,7 @@ export class UploadGroup {
     return this.queue.filter((entry) => !entry.importedAt && !entry.failReason).length
   }
 
-  queueUpload(file: File) {
+  queueUpload (file: File) {
     const entry = new UploadGroupEntry(file, this)
     this.queue.push(entry)
 
@@ -151,7 +150,7 @@ watch(currentUploadGroup, (_, from) => {
 })
 
 // Tag extraction with a Web Worker
-const { post: retrieveMetadata, data: workerMetadata} = useWebWorker<MetadataParsingResult>(() => new FileMetadataParserWorker())
+const { post: retrieveMetadata, data: workerMetadata } = useWebWorker<MetadataParsingResult>(() => new FileMetadataParserWorker())
 whenever(workerMetadata, (reactiveData) => {
   const data = toRaw(unref(reactiveData))
   const entry = UploadGroup.entries[data.id]
@@ -198,7 +197,7 @@ export const useUploadsStore = defineStore('uploads', () => {
   window.addEventListener('beforeunload', (event) => {
     if (isUploading.value) {
       event.preventDefault()
-      return event.returnValue = 'The upload is still in progress. Are you sure you want to leave?'
+      return (event.returnValue = 'The upload is still in progress. Are you sure you want to leave?')
     }
   })
 
@@ -212,7 +211,7 @@ export const useUploadsStore = defineStore('uploads', () => {
     currentIndex: readonly(currentIndex),
     currentUpload,
     queue: readonly(uploadQueue),
-    uploadGroups: uploadGroups,
+    uploadGroups,
     createUploadGroup,
     currentUploadGroup,
     progress

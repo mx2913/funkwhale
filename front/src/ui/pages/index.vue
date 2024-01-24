@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
 import { UseTimeAgo } from '@vueuse/components'
-import { Icon } from '@iconify/vue';
+import { Icon } from '@iconify/vue'
 import { useUploadsStore } from '~/ui/stores/upload'
 import { bytesToHumanSize } from '~/ui/composables/bytes'
 
 const filesystemStats = reactive({
   total: 10737418240,
-  used: 3e9,
+  used: 3e9
 })
 
 const filesystemProgress = computed(() => {
@@ -19,7 +19,7 @@ const tabs = [
   {
     label: 'Music library',
     icon: 'headphones',
-    description: 'Host music you listen to.',
+    description: 'Host music you listen to.'
   },
   {
     label: 'Music channel',
@@ -29,12 +29,11 @@ const tabs = [
   {
     label: 'Podcast channel',
     icon: 'mic',
-    description: 'Publish podcast you make.',
-  },
+    description: 'Publish podcast you make.'
+  }
 ]
 
 const currentTab = ref(tabs[0].label)
-
 
 // Modals
 const libraryOpen = ref(false)
@@ -53,7 +52,6 @@ const processFiles = (fileList: FileList) => {
   for (const file of fileList) {
     uploads.queueUpload(file)
   }
-
 }
 
 const cancel = () => {
@@ -78,10 +76,15 @@ const currentFilter = ref(filterItems[0])
 
 <template>
   <div class="flex items-center">
-    <h1 class="mr-auto">Upload</h1>
+    <h1 class="mr-auto">
+      Upload
+    </h1>
 
     <div class="filesystem-stats">
-      <div class="filesystem-stats--progress" :style="`--progress: ${filesystemProgress}%`" />
+      <div
+        class="filesystem-stats--progress"
+        :style="`--progress: ${filesystemProgress}%`"
+      />
       <div class="flex items-center">
         {{ bytesToHumanSize(filesystemStats.total) }} total
 
@@ -92,14 +95,14 @@ const currentFilter = ref(filterItems[0])
         {{ bytesToHumanSize(filesystemStats.total - filesystemStats.used) }} available
       </div>
     </div>
-
   </div>
 
   <p> Select a destination for your audio files: </p>
 
   <div class="flex justify-between">
     <FwCard
-      v-for="tab in tabs" :key="tab.label"
+      v-for="tab in tabs"
+      :key="tab.label"
       :title="tab.label"
       :class="currentTab === tab.label && 'active'"
       @click="currentTab = tab.label"
@@ -115,15 +118,22 @@ const currentFilter = ref(filterItems[0])
   </div>
 
   <div>
-    <FwButton @click="libraryOpen = true">Open library</FwButton>
-    <FwModal v-model="libraryOpen" title="Upload music to library">
+    <FwButton @click="libraryOpen = true">
+      Open library
+    </FwButton>
+    <FwModal
+      v-model="libraryOpen"
+      title="Upload music to library"
+    >
       <template #alert="{ closeAlert }">
         <FwAlert>
           Before uploading, please ensure your files are tagged properly.
           We recommend using Picard for that purpose.
 
           <template #actions>
-            <FwButton @click="closeAlert">Got it</FwButton>
+            <FwButton @click="closeAlert">
+              Got it
+            </FwButton>
           </template>
         </FwAlert>
       </template>
@@ -142,18 +152,38 @@ const currentFilter = ref(filterItems[0])
             {{ uploads.queue.length }} files, {{ combinedFileSize }}
           </div>
 
-          <FwSelect icon="bi:filter" v-model="currentFilter" :items="filterItems" />
-          <FwSelect icon="bi:sort-down" v-model="currentSort" :items="sortItems" />
+          <FwSelect
+            v-model="currentFilter"
+            icon="bi:filter"
+            :items="filterItems"
+          />
+          <FwSelect
+            v-model="currentSort"
+            icon="bi:sort-down"
+            :items="sortItems"
+          />
         </div>
 
         <div class="file-list">
-          <div v-for="track in uploads.queue" :key="track.id" class="list-track">
+          <div
+            v-for="track in uploads.queue"
+            :key="track.id"
+            class="list-track"
+          >
             <Transition mode="out-in">
-              <div v-if="track.tags" class="track-data">
-                <div class="track-title">{{ track.tags.title }}</div>
+              <div
+                v-if="track.tags"
+                class="track-data"
+              >
+                <div class="track-title">
+                  {{ track.tags.title }}
+                </div>
                 {{ track.tags.artist }} / {{ track.tags.album }}
               </div>
-              <div v-else class="track-title">
+              <div
+                v-else
+                class="track-title"
+              >
                 {{ track.file.name }}
               </div>
             </Transition>
@@ -169,10 +199,21 @@ const currentFilter = ref(filterItems[0])
                         : 'uploading'
                 }}
               </FwPill>
-              <div v-if="track.importedAt" class="track-progress">
-                <UseTimeAgo :time="track.importedAt" v-slot="{ timeAgo }">{{ timeAgo }}</UseTimeAgo>
+              <div
+                v-if="track.importedAt"
+                class="track-progress"
+              >
+                <UseTimeAgo
+                  v-slot="{ timeAgo }"
+                  :time="track.importedAt"
+                >
+                  {{ timeAgo }}
+                </UseTimeAgo>
               </div>
-              <div v-else class="track-progress">
+              <div
+                v-else
+                class="track-progress"
+              >
                 {{ bytesToHumanSize(track.file.size / 100 * track.progress) }}
                 / {{ bytesToHumanSize(track.file.size) }}
                 ⋅ {{ track.progress }}%
@@ -187,7 +228,6 @@ const currentFilter = ref(filterItems[0])
             />
           </div>
         </div>
-
       </div>
 
       <!-- Import path -->
@@ -205,7 +245,12 @@ const currentFilter = ref(filterItems[0])
       </template>
 
       <template #actions>
-        <FwButton @click="cancel" color="secondary">Cancel</FwButton>
+        <FwButton
+          color="secondary"
+          @click="cancel"
+        >
+          Cancel
+        </FwButton>
         <FwButton @click="libraryOpen = false">
           {{ uploads.queue.length ? 'Continue in background' : 'Save and close' }}
         </FwButton>

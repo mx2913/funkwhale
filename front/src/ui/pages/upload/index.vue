@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue';
+import { Icon } from '@iconify/vue'
 import { useUploadsStore, type UploadGroupType } from '~/ui/stores/upload'
 import { ref } from 'vue'
 
@@ -15,22 +15,21 @@ const tabs: Tab[] = [
     label: 'Music library',
     icon: 'headphones',
     description: 'Host music you listen to.',
-    key: 'music-library',
+    key: 'music-library'
   },
   {
     label: 'Music channel',
     icon: 'music-note-beamed',
     description: 'Publish music you make.',
-    key: 'music-channel',
+    key: 'music-channel'
   },
   {
     label: 'Podcast channel',
     icon: 'mic',
     description: 'Publish podcast you make.',
-    key: 'podcast-channel',
-  },
+    key: 'podcast-channel'
+  }
 ]
-
 
 const currentTab = ref(tabs[0])
 
@@ -46,7 +45,8 @@ const openLibrary = () => {
 
     <div class="flex gap-8">
       <FwCard
-        v-for="tab in tabs" :key="tab.key"
+        v-for="tab in tabs"
+        :key="tab.key"
         :title="tab.label"
         :class="currentTab.key === tab.key && 'active'"
         @click="currentTab = tab"
@@ -61,7 +61,9 @@ const openLibrary = () => {
       </FwCard>
     </div>
 
-    <FwButton @click="openLibrary">Open library</FwButton>
+    <FwButton @click="openLibrary">
+      Open library
+    </FwButton>
   </div>
 </template>
 

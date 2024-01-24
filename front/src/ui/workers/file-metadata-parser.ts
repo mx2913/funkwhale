@@ -17,7 +17,6 @@ export interface MetadataParsingFailure {
 
 export type MetadataParsingResult = MetadataParsingSuccess | MetadataParsingFailure
 
-
 const parse = async (id: string, file: File) => {
   try {
     console.log(`[${id}] parsing...`)

@@ -11,7 +11,7 @@ const libraryOpen = computed({
   get: () => !!uploads.currentUploadGroup,
   set: (value) => {
     if (!value) {
-        uploads.currentUploadGroup = undefined
+      uploads.currentUploadGroup = undefined
     }
   }
 })
@@ -30,7 +30,7 @@ const combinedFileSize = computed(() => bytesToHumanSize(
 
 // Actions
 const processFiles = (fileList: FileList) => {
-  if (!uploads.currentUploadGroup) return 
+  if (!uploads.currentUploadGroup) return
 
   for (const file of fileList) {
     uploads.currentUploadGroup.queueUpload(file)
@@ -71,14 +71,19 @@ const currentFilter = ref(filterItems[0])
 </script>
 
 <template>
-  <FwModal v-model="libraryOpen" title="Upload music to library">
+  <FwModal
+    v-model="libraryOpen"
+    title="Upload music to library"
+  >
     <template #alert="{ closeAlert }">
       <FwAlert>
         Before uploading, please ensure your files are tagged properly.
         We recommend using Picard for that purpose.
 
         <template #actions>
-          <FwButton @click="closeAlert">Got it</FwButton>
+          <FwButton @click="closeAlert">
+            Got it
+          </FwButton>
         </template>
       </FwAlert>
     </template>
@@ -97,12 +102,19 @@ const currentFilter = ref(filterItems[0])
           {{ queue.length }} files, {{ combinedFileSize }}
         </div>
 
-        <FwSelect icon="bi:filter" v-model="currentFilter" :items="filterItems" />
-        <FwSelect icon="bi:sort-down" v-model="currentSort" :items="sortItems" />
+        <FwSelect
+          v-model="currentFilter"
+          icon="bi:filter"
+          :items="filterItems"
+        />
+        <FwSelect
+          v-model="currentSort"
+          icon="bi:sort-down"
+          :items="sortItems"
+        />
       </div>
 
       <UploadList :uploads="queue" />
-
     </div>
 
     <!-- Import path -->
@@ -120,7 +132,12 @@ const currentFilter = ref(filterItems[0])
     </template>
 
     <template #actions>
-      <FwButton @click="cancel" color="secondary">Cancel</FwButton>
+      <FwButton
+        color="secondary"
+        @click="cancel"
+      >
+        Cancel
+      </FwButton>
       <FwButton @click="continueInBackground">
         {{ uploads.queue.length ? 'Continue in background' : 'Save and close' }}
       </FwButton>
