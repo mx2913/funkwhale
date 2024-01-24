@@ -2454,7 +2454,6 @@
     },
     "ChooseInstance": {
       "button": {
-        "cancel": "Ακύρωση",
         "submit": "Υποβολή"
       },
       "header": {

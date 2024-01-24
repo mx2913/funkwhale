@@ -1614,7 +1614,6 @@
     },
     "ChooseInstance": {
       "button": {
-        "cancel": "റദ്ദാക്കുക",
         "submit": "സമർപ്പിക്കുക"
       }
     }

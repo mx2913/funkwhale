@@ -4591,7 +4591,6 @@
     },
     "ChooseInstance": {
       "button": {
-        "cancel": "Zrušit",
         "submit": "Odeslat"
       },
       "header": {

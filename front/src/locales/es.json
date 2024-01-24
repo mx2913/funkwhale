@@ -3940,7 +3940,6 @@
     },
     "ChooseInstance": {
       "button": {
-        "cancel": "Cancelar",
         "submit": "Enviar"
       },
       "header": {
