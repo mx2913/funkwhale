@@ -157,7 +157,8 @@
           "createAccount": "{ app } 需要訪問您的funkwhale賬戶"
         }
       }
-    }
+    },
+    "ChooseInstance": null
   },
   "init": {
     "serviceWorker": {

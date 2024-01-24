@@ -215,28 +215,6 @@
         "unsupported": "Aqueste tipe d’objècte es pas encara compatible"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Anullar",
-        "submit": "Validar"
-      },
-      "header": {
-        "chooseInstance": "Causissètz vòstra instància",
-        "failure": "Connexion impossibla a l’URL donada",
-        "suggestions": "Suggestions"
-      },
-      "help": {
-        "notFunkwhaleServer": "L’adreça donada es pas un servidor Funkwhale",
-        "selectPod": "Per contunhar, seleccionatz una instància Funkwhale que volètz vos i connectar. Picatz l’adreça dirèctament, o seleccionatz-ne una dins las en suggestion.",
-        "serverDown": "Se pòt que lo servidor siá atudat"
-      },
-      "label": {
-        "url": "URL de l’instància"
-      },
-      "message": {
-        "newUrl": "Utilizatz una instància Funkwhale a {url}"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Tampar"
@@ -4547,6 +4525,28 @@
           }
         },
         "title": "Ràdio"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Anullar",
+        "submit": "Validar"
+      },
+      "header": {
+        "chooseInstance": "Causissètz vòstra instància",
+        "failure": "Connexion impossibla a l’URL donada",
+        "suggestions": "Suggestions"
+      },
+      "help": {
+        "notFunkwhaleServer": "L’adreça donada es pas un servidor Funkwhale",
+        "selectPod": "Per contunhar, seleccionatz una instància Funkwhale que volètz vos i connectar. Picatz l’adreça dirèctament, o seleccionatz-ne una dins las en suggestion.",
+        "serverDown": "Se pòt que lo servidor siá atudat"
+      },
+      "label": {
+        "url": "URL de l’instància"
+      },
+      "message": {
+        "newUrl": "Utilizatz una instància Funkwhale a {url}"
       }
     }
   }

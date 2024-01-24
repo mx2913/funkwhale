@@ -229,29 +229,6 @@
         "unsupported": "Diese Art von Objekt wird noch nicht unterstützt"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Abbrechen",
-        "submit": "Abschicken"
-      },
-      "header": {
-        "chooseInstance": "Wähle deine Instanz aus",
-        "failure": "Es lässt sich keine Verbindung zur angegebenen Adresse herstellen",
-        "suggestions": "Empfehlungen"
-      },
-      "help": {
-        "notFunkwhaleServer": "Die angegebene Adresse ist kein Funkwhale-Server",
-        "selectPod": "Wähle bitte nun den Funkhwhale-Pod aus, zu dem du dich verbinden möchtest. Gib die Adresse direkt an, oder wähle einen der Vorschläge aus.",
-        "serverDown": "Der Server läuft wahrscheinlich nicht"
-      },
-      "label": {
-        "url": "Pod-Adresse"
-      },
-      "message": {
-        "currentConnection": "Du bist aktuell mit { 0 } verbunden. Wenn du fortfährst, wird die Verbindung unterbrochen und alle lokalen Daten werden gelöscht.",
-        "newUrl": "Du verwendest jetzt den Funkwhale-Pod unter { url }"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Schließen"
@@ -4610,6 +4587,29 @@
           }
         },
         "title": "Radio"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Abbrechen",
+        "submit": "Abschicken"
+      },
+      "header": {
+        "chooseInstance": "Wähle deine Instanz aus",
+        "failure": "Es lässt sich keine Verbindung zur angegebenen Adresse herstellen",
+        "suggestions": "Empfehlungen"
+      },
+      "help": {
+        "notFunkwhaleServer": "Die angegebene Adresse ist kein Funkwhale-Server",
+        "selectPod": "Wähle bitte nun den Funkhwhale-Pod aus, zu dem du dich verbinden möchtest. Gib die Adresse direkt an, oder wähle einen der Vorschläge aus.",
+        "serverDown": "Der Server läuft wahrscheinlich nicht"
+      },
+      "label": {
+        "url": "Pod-Adresse"
+      },
+      "message": {
+        "currentConnection": "Du bist aktuell mit { 0 } verbunden. Wenn du fortfährst, wird die Verbindung unterbrochen und alle lokalen Daten werden gelöscht.",
+        "newUrl": "Du verwendest jetzt den Funkwhale-Pod unter { url }"
       }
     }
   }

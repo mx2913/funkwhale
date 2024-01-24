@@ -229,29 +229,6 @@
         "unsupported": "Objektu mota hau ez da onartzen oraindik"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Ezeztatu",
-        "submit": "Bidali"
-      },
-      "header": {
-        "chooseInstance": "Zure instantzia hautatu",
-        "failure": "Ezin da konektatu emandako URLarekin",
-        "suggestions": "Iradokitako aukerak"
-      },
-      "help": {
-        "notFunkwhaleServer": "Emandako helbidea ez da Funkwhale zerbitzari bat",
-        "selectPod": "Jarraitzeko, hautatu konektatu nahi duzun Funkwhale instantzia. Sartu helbidea zuzenean, edo hautatu iradokizunetako bat.",
-        "serverDown": "Zerbitzaria erorita egon daiteke"
-      },
-      "label": {
-        "url": "Instantziaren URLa"
-      },
-      "message": {
-        "currentConnection": "{ 0 } instantziara konektatuta zaude orain. Jarraituz gero, uneko instantziatik deskonektatuko zara eta datu lokal guztiak ezabatuko dira.",
-        "newUrl": "{ url } Funkwhale instantzia erabiltzen ari zara orain"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Itxi"
@@ -4610,6 +4587,29 @@
           }
         },
         "title": "Irratia"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Ezeztatu",
+        "submit": "Bidali"
+      },
+      "header": {
+        "chooseInstance": "Zure instantzia hautatu",
+        "failure": "Ezin da konektatu emandako URLarekin",
+        "suggestions": "Iradokitako aukerak"
+      },
+      "help": {
+        "notFunkwhaleServer": "Emandako helbidea ez da Funkwhale zerbitzari bat",
+        "selectPod": "Jarraitzeko, hautatu konektatu nahi duzun Funkwhale instantzia. Sartu helbidea zuzenean, edo hautatu iradokizunetako bat.",
+        "serverDown": "Zerbitzaria erorita egon daiteke"
+      },
+      "label": {
+        "url": "Instantziaren URLa"
+      },
+      "message": {
+        "currentConnection": "{ 0 } instantziara konektatuta zaude orain. Jarraituz gero, uneko instantziatik deskonektatuko zara eta datu lokal guztiak ezabatuko dira.",
+        "newUrl": "{ url } Funkwhale instantzia erabiltzen ari zara orain"
       }
     }
   }

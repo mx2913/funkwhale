@@ -2281,19 +2281,6 @@
         "modal": "Fulmoklavo"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Nuligi",
-        "submit": "Submeti"
-      },
-      "header": {
-        "chooseInstance": "Elekti vian instanco",
-        "suggestions": "Sugestaj elektoj"
-      },
-      "label": {
-        "url": "Instanca datumo"
-      }
-    },
     "Queue": {
       "button": {
         "clear": "Purigi",
@@ -3629,6 +3616,19 @@
         "header": {
           "tracks": "Kantoj"
         }
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Nuligi",
+        "submit": "Submeti"
+      },
+      "header": {
+        "chooseInstance": "Elekti vian instanco",
+        "suggestions": "Sugestaj elektoj"
+      },
+      "label": {
+        "url": "Instanca datumo"
       }
     }
   },

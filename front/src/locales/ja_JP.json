@@ -228,26 +228,6 @@
         "unsupported": "このようなタイプのオブジェクトは、サポートされていません"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "キャンセル"
-      },
-      "header": {
-        "chooseInstance": "インスタンスを選んでください",
-        "failure": "入力されたURLにアクセスできません",
-        "suggestions": "おすすめのポッド"
-      },
-      "help": {
-        "notFunkwhaleServer": "入力されたURL先はFunkwhaleのサーバーではありません",
-        "serverDown": "サーバーがダウンしてるかもしれません"
-      },
-      "label": {
-        "url": "FunkwhaleインスタンスのURL"
-      },
-      "message": {
-        "newUrl": "現在{url}のFunkwhaleインスタンスを利用しています"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "閉じる"
@@ -4351,6 +4331,26 @@
           }
         },
         "title": "ラジオ"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "キャンセル"
+      },
+      "header": {
+        "chooseInstance": "インスタンスを選んでください",
+        "failure": "入力されたURLにアクセスできません",
+        "suggestions": "おすすめのポッド"
+      },
+      "help": {
+        "notFunkwhaleServer": "入力されたURL先はFunkwhaleのサーバーではありません",
+        "serverDown": "サーバーがダウンしてるかもしれません"
+      },
+      "label": {
+        "url": "FunkwhaleインスタンスのURL"
+      },
+      "message": {
+        "newUrl": "現在{url}のFunkwhaleインスタンスを利用しています"
       }
     }
   }

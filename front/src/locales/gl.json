@@ -229,29 +229,6 @@
         "unsupported": "Aínda non está soportado este obxeto"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Cancelar",
-        "submit": "Enviar"
-      },
-      "header": {
-        "chooseInstance": "Elixe a túa instancia",
-        "failure": "Non se puido conectar ao URL proporcionado",
-        "suggestions": "Opcións suxeridas"
-      },
-      "help": {
-        "notFunkwhaleServer": "O enderezo proporcionado non é un servidor Funkwhale",
-        "selectPod": "Para continuar, elixe a instancia de Funkwhale á que te queres conectar. Escribe o enderezo directamente, ou elixe unha das opcións suxeridas.",
-        "serverDown": "Igoal non está a funcionar o servidor"
-      },
-      "label": {
-        "url": "URL da instancia"
-      },
-      "message": {
-        "currentConnection": "Neste intre tes conexión con { 0 }. Se continúas desconectarémoste da instancia actual e os datos locais serán eliminados.",
-        "newUrl": "Estás utilizando a instancia Funkwhale en { url }"
-      }
-    },
     "ShortcutsModal": {
       "button": {
         "close": "Pechar"
@@ -4610,6 +4587,29 @@
           }
         },
         "title": "Radio"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "cancel": "Cancelar",
+        "submit": "Enviar"
+      },
+      "header": {
+        "chooseInstance": "Elixe a túa instancia",
+        "failure": "Non se puido conectar ao URL proporcionado",
+        "suggestions": "Opcións suxeridas"
+      },
+      "help": {
+        "notFunkwhaleServer": "O enderezo proporcionado non é un servidor Funkwhale",
+        "selectPod": "Para continuar, elixe a instancia de Funkwhale á que te queres conectar. Escribe o enderezo directamente, ou elixe unha das opcións suxeridas.",
+        "serverDown": "Igoal non está a funcionar o servidor"
+      },
+      "label": {
+        "url": "URL da instancia"
+      },
+      "message": {
+        "currentConnection": "Neste intre tes conexión con { 0 }. Se continúas desconectarémoste da instancia actual e os datos locais serán eliminados.",
+        "newUrl": "Estás utilizando a instancia Funkwhale en { url }"
       }
     }
   }
