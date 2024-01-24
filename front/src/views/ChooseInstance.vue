@@ -38,7 +38,7 @@ const checkAndSwitch = async (url: string) => {
     await axios.get(instanceUrl + '/api/v1/instance/nodeinfo/2.0/')
 
     store.commit('ui/addMessage', {
-      content: t('components.SetInstanceModal.message.newUrl', { url: instanceUrl }),
+      content: t('views.ChooseInstance.message.newUrl', { url: instanceUrl }),
       date: new Date()
     })
 
@@ -57,11 +57,11 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
 
 <template>
   <div class="instance-chooser">
-    <img src="../assets/logo/logo-full-500.png" />
+    <img src="../assets/logo/logo-full-500.png">
 
     <div class="card">
       <h3 class="header">
-        {{ t('components.SetInstanceModal.header.chooseInstance') }}
+        {{ t('views.ChooseInstance.header.chooseInstance') }}
       </h3>
 
       <div class="scrolling content">
@@ -71,14 +71,14 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
           class="ui negative message"
         >
           <h4 class="header">
-            {{ t('components.SetInstanceModal.header.failure') }}
+            {{ t('views.ChooseInstance.header.failure') }}
           </h4>
           <ul class="list">
             <li>
-              {{ t('components.SetInstanceModal.help.serverDown') }}
+              {{ t('views.ChooseInstance.help.serverDown') }}
             </li>
             <li>
-              {{ t('components.SetInstanceModal.help.notFunkwhaleServer') }}
+              {{ t('views.ChooseInstance.help.notFunkwhaleServer') }}
             </li>
           </ul>
         </div>
@@ -91,7 +91,7 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
             v-if="store.state.instance.instanceUrl && !isTauriInstance"
             class="description"
           >
-            <i18n-t keypath="components.SetInstanceModal.message.currentConnection">
+            <i18n-t keypath="views.ChooseInstance.message.currentConnection">
               <a
                 :href="store.state.instance.instanceUrl"
                 target="_blank"
@@ -102,12 +102,15 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
             </i18n-t>
             {{ t('', {url: store.state.instance.instanceUrl, hostname: store.getters['instance/domain']}) }}
           </p>
-          <p v-else class="description">
-            {{ t('components.SetInstanceModal.help.selectPod') }}
+          <p
+            v-else
+            class="description"
+          >
+            {{ t('views.ChooseInstance.help.selectPod') }}
           </p>
 
           <div class="field">
-            <label for="instance-picker">{{ t('components.SetInstanceModal.label.url') }}</label>
+            <label for="instance-picker">{{ t('views.ChooseInstance.label.url') }}</label>
             <div class="ui action input">
               <input
                 id="instance-picker"
@@ -119,7 +122,7 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
                 type="submit"
                 :class="['ui', 'icon', {loading: isLoading}, 'button']"
               >
-                {{ t('components.SetInstanceModal.button.submit') }}
+                {{ t('views.ChooseInstance.button.submit') }}
               </button>
             </div>
           </div>
@@ -134,7 +137,7 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
         >
           <div class="field">
             <h4>
-              {{ t('components.SetInstanceModal.header.suggestions') }}
+              {{ t('views.ChooseInstance.header.suggestions') }}
             </h4>
             <div class="h-scroll">
               <button

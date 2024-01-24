@@ -22,7 +22,7 @@ export default [
   {
     path: '/instance-chooser',
     name: 'instance-chooser',
-    component: () => import('~/views/ChooseInstance.vue'),
+    component: () => import('~/views/ChooseInstance.vue')
   },
   {
     path: '/index.html',
