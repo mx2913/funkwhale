@@ -4334,9 +4334,7 @@
       }
     },
     "ChooseInstance": {
-      "button": {
-        "cancel": "キャンセル"
-      },
+      "button": {},
       "header": {
         "chooseInstance": "インスタンスを選んでください",
         "failure": "入力されたURLにアクセスできません",

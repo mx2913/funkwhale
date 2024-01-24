@@ -3620,7 +3620,6 @@
     },
     "ChooseInstance": {
       "button": {
-        "cancel": "Nuligi",
         "submit": "Submeti"
       },
       "header": {

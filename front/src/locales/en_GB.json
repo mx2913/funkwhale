@@ -4591,7 +4591,6 @@
     },
     "ChooseInstance": {
       "button": {
-        "cancel": "Cancel",
         "submit": "Submit"
       },
       "header": {

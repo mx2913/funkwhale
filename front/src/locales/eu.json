@@ -4591,7 +4591,6 @@
     },
     "ChooseInstance": {
       "button": {
-        "cancel": "Ezeztatu",
         "submit": "Bidali"
       },
       "header": {

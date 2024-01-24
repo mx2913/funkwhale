@@ -4529,7 +4529,6 @@
     },
     "ChooseInstance": {
       "button": {
-        "cancel": "Anullar",
         "submit": "Validar"
       },
       "header": {

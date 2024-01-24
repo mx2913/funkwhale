@@ -3032,7 +3032,6 @@
     },
     "ChooseInstance": {
       "button": {
-        "cancel": "Ångra",
         "submit": "Skicka in"
       },
       "header": {
