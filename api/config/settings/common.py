@@ -1031,6 +1031,12 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
     ),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    "TEST_REQUEST_RENDERER_CLASSES": [
+        "rest_framework.renderers.MultiPartRenderer",
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.TemplateHTMLRenderer",
+        "funkwhale_api.playlists.renderers.PlaylistXspfRenderer",
+    ],
     "NUM_PROXIES": env.int("NUM_PROXIES", default=1),
 }
 THROTTLING_ENABLED = env.bool("THROTTLING_ENABLED", default=True)

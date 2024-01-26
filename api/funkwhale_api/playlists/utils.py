@@ -15,37 +15,27 @@ from funkwhale_api.playlists.models import Playlist
 
 logger = logging.getLogger(__name__)
 
-
-def clean_namespace_xspf(xspf):
-    """
-    This will delete any namaespace found in the xspf data. It will also delete any encoding info.
-    This way xspf data will be compatible with our get_track_id_from_xspf function.
-    """
-
-    xspf_data = re.sub('xmlns="http://xspf.org/ns/0/"', "", xspf)
-    # This is needed because lxml error : "ValueError: Unicode strings with encoding declaration are
-    # not supported. Please use bytes input or XML fragments without declaration."
-    xspf_data = re.sub("'encoding='.'", "", xspf_data)
-    return xspf_data
+# could use https://github.com/alastair/xspf/blob/master/xspf.py#L5 ?
 
 
 def get_tracks_from_xspf(xspf):
     """
-    Return a list of funkwhale tracks from xspf data. Tracks not found in database are ignored.
+    Return a list of funkwhale tracks from xspf string. Tracks not found in database are ignored.
     """
+    ns = "{http://xspf.org/ns/0/}"
+
     track_list = []
-    xspf_data_clean = clean_namespace_xspf(xspf)
-    tree = etree.fromstring(xspf_data_clean)
-    plt_name = tree.findtext("title")
-    tracks = tree.findall(".//track")
+    tree = etree.fromstring(xspf)
+    plt_name = tree.findtext(f"{ns}title")
+    tracks = tree.findall(f".//{ns}track")
     added_track_count = 0
 
     for track in tracks:
         # Getting metadata of the xspf file
         try:
-            artist = track.find(".//creator").text
-            title = track.find(".//title").text
-            album = track.find(".//album").text
+            artist = track.find(f".//{ns}creator").text
+            title = track.find(f".//{ns}title").text
+            album = track.find(f".//{ns}album").text
         except AttributeError as e:
             logger.info(
                 f"Couldn't find the following attribute while parsing the xml file : {e!r}"
@@ -86,7 +76,6 @@ def generate_xspf_from_playlist(playlist_id):
     This returns a string containing playlist data in xspf format
     """
     fw_playlist = Playlist.objects.get(id=playlist_id)
-    plt_tracks = fw_playlist.playlist_tracks.prefetch_related("track")
     plt_tracks = fw_playlist.playlist_tracks.prefetch_related("track")
     top = Element("playlist")
     top.set("version", "1")

@@ -14,8 +14,12 @@ v2_patterns += [
     re_path(
         r"^radios/",
         include(("funkwhale_api.radios.urls_v2", "radios"), namespace="radios"),
-        r"^playlists/",
-        include(("funkwhale_api.playlists.urls", "playlists"), namespace="playlists"),
+    ),
+    url(
+        r"^",
+        include(
+            ("funkwhale_api.playlists.urls_v2", "playlists"), namespace="playlists"
+        ),
     ),
 ]
 
