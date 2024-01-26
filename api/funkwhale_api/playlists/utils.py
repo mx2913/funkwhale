@@ -91,40 +91,6 @@ def generate_xspf_from_playlist(playlist_id):
     return prettify(top)
 
 
-def generate_xspf_from_tracks_ids(tracks_ids):
-    """
-    This returns a string containing playlist data in xspf format. It's used for test purposes.
-    """
-    xspf_title = "Test"
-    now = datetime.datetime.now()
-    xpsf_date = now.strftime("%m/%d/%Y")
-    xpsf_playlist = Element("playlist")
-    xpsf_tracklist = write_xpsf_headers(xpsf_playlist, xspf_title, xpsf_date)
-    title_xspf = SubElement(xpsf_playlist, "title")
-    title_xspf.text = xspf_title
-    for track_id in tracks_ids:
-        try:
-            track = Track.objects.get(id=track_id)
-            write_xspf_track_data(track, xpsf_tracklist)
-        except ObjectDoesNotExist as e:
-            logger.info(f"Error while querying database : {e!r}")
-    return prettify(xpsf_playlist)
-
-
-def write_xpsf_headers(xpsf_playlist, xpsf_title, xpsf_date):
-    """
-    This generate the playlist metadata and return a trackList subelement used to insert each track
-    into the playlist
-    """
-    xpsf_playlist.set("version", "1")
-    title_xspf = SubElement(xpsf_playlist, "title")
-    title_xspf.text = xpsf_title
-    date_xspf = SubElement(xpsf_playlist, "date")
-    date_xspf.text = xpsf_date
-    trackList_xspf = SubElement(xpsf_playlist, "trackList")
-    return trackList_xspf
-
-
 def write_xspf_track_data(track, trackList_xspf):
     """
     Insert a track into the trackList subelement of a xspf file
