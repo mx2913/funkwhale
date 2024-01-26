@@ -103,6 +103,8 @@ watch(locale, (locale) => {
 })
 
 const isProduction = import.meta.env.PROD
+const isTauri = 'TAURI_ENV_PLATFORM' in import.meta.env
+
 const showUserModal = ref(false)
 const showThemeModal = ref(false)
 
@@ -535,7 +537,7 @@ onMounted(() => {
             </div>
           </div>
           <div
-            v-if="!isProduction"
+            v-if="!isProduction || isTauri"
             class="item"
           >
             <router-link
