@@ -793,7 +793,9 @@ class UploadViewSet(
         group_name = serializer.validated_data.get("import_reference") or str(
             datetime.datetime.date(datetime.datetime.now())
         )
-        upload_group, _ = models.UploadGroup.objects.get_or_create(name=group_name)
+        upload_group, _ = models.UploadGroup.objects.get_or_create(
+            name=group_name, owner=self.request.user.actor
+        )
         upload = serializer.save(upload_group=upload_group)
         if upload.import_status == "pending":
             common_utils.on_commit(tasks.process_upload.delay, upload_id=upload.pk)
@@ -937,5 +939,10 @@ class OembedView(views.APIView):
 class UploadGroupViewSet(viewsets.ModelViewSet):
     permission_classes = [oauth_permissions.ScopePermission]
     required_scope = "libraries"
-    queryset = models.UploadGroup.objects.all()
     serializer_class = serializers.UploadGroupSerializer
+
+    def get_queryset(self):
+        return models.UploadGroup.objects.filter(owner__user__id=self.request.user.id)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user.actor)
