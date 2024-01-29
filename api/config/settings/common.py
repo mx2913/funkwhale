@@ -942,12 +942,14 @@ CELERY_BEAT_SCHEDULE = {
         ),
         "options": {"expires": 60 * 60},
     },
-    "typesense.build_canonical_index": {
+}
+
+if env.str("TYPESENSE_API_KEY", default=None):
+    CELERY_BEAT_SCHEDULE["typesense.build_canonical_index"] = {
         "task": "typesense.build_canonical_index",
         "schedule": crontab(day_of_week="*/2", minute="0", hour="3"),
         "options": {"expires": 60 * 60 * 24},
-    },
-}
+    }
 
 if env.bool("ADD_ALBUM_TAGS_FROM_TRACKS", default=True):
     CELERY_BEAT_SCHEDULE["music.albums_set_tags_from_tracks"] = {
