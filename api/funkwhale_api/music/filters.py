@@ -1,6 +1,7 @@
 import django_filters
 from django.db.models import Q
 from django_filters import rest_framework as filters
+from django_filters import widgets
 
 from funkwhale_api.audio import filters as audio_filters
 from funkwhale_api.audio import models as audio_models
@@ -115,6 +116,11 @@ class ArtistFilter(
         )
     )
 
+    has_mbid = filters.BooleanFilter(
+        field_name="_",
+        method="filter_has_mbid",
+    )
+
     class Meta:
         model = models.Artist
         fields = {
@@ -131,6 +137,12 @@ class ArtistFilter(
 
     def filter_has_albums(self, queryset, name, value):
         return queryset.filter(albums__isnull=not value)
+
+    def filter_has_mbid(self, queryset, name, value):
+        return queryset.filter(mbid__isnull=(not value))
+
+
+quality_choices = ("low", "medium", "high", "very_high")
 
 
 class TrackFilter(
@@ -171,6 +183,20 @@ class TrackFilter(
             ("tag_matches", "related"),
         )
     )
+    format = filters.CharFilter(
+        field_name="_",
+        method="filter_format",
+    )
+
+    has_mbid = filters.BooleanFilter(
+        field_name="_",
+        method="filter_has_mbid",
+    )
+
+    quality = filters.ChoiceFilter(
+        choices=quality_choices,
+        method="filter_quality",
+    )
 
     class Meta:
         model = models.Track
@@ -192,6 +218,51 @@ class TrackFilter(
 
     def filter_artist(self, queryset, name, value):
         return queryset.filter(Q(artist=value) | Q(album__artist=value))
+
+    def filter_format(self, queryset, name, value):
+        mimetypes = [utils.get_type_from_ext(e) for e in value.split(",")]
+        return queryset.filter(uploads__mimetype__in=mimetypes)
+
+    def filter_has_mbid(self, queryset, name, value):
+        return queryset.filter(mbid__isnull=(not value))
+
+    def filter_quality(self, queryset, name, value):
+        extension_to_mimetypes = utils.get_extension_to_mimetype_dict()
+
+        if value == "low":
+            mp3_query = Q(
+                uploads__mimetype=extension_to_mimetypes["mp3"],
+                uploads__bitrate__lte=192,
+            )
+            OpusAACOGG_mimetypes = (
+                extension_to_mimetypes["mp3"]
+                .extend(extension_to_mimetypes["ogg"])
+                .extend(extension_to_mimetypes["aac"])
+            )
+
+            OpusAACOGG_query = Q(
+                uploads__mimetype__in=OpusAACOGG_mimetypes, uploads__bitrate__lte=96
+            )
+
+            queryset.filter(mp3_query | OpusAACOGG_query)
+
+        if value == "medium":
+            mp3_query = Q(
+                uploads__mimetype=extension_to_mimetypes["mp3"],
+                uploads__bitrate__lte=256,
+            )
+            ogg_query = Q(
+                uploads__mimetype=extension_to_mimetypes["ogg"],
+                uploads__bitrate__lte=192,
+            )
+
+            aacopus_query = Q(
+                uploads__mimetype=extension_to_mimetypes["aac"].extend(
+                    extension_to_mimetypes["opus"]
+                ),
+                uploads__bitrate__lte=128,
+            )
+            queryset.filter(mp3_query | ogg_query | aacopus_query)
 
 
 class UploadFilter(audio_filters.IncludeChannelsFilterSet):
@@ -270,6 +341,25 @@ class AlbumFilter(
             ("tag_matches", "related"),
         )
     )
+    has_tags = filters.BooleanFilter(
+        field_name="_",
+        method="filter_has_tags",
+    )
+
+    has_mbid = filters.BooleanFilter(
+        field_name="_",
+        method="filter_has_mbid",
+    )
+
+    has_cover = filters.BooleanFilter(
+        field_name="_",
+        method="filter_has_cover",
+    )
+
+    has_release_date = filters.BooleanFilter(
+        field_name="_",
+        method="filter_has_release_date",
+    )
 
     class Meta:
         model = models.Album
@@ -282,6 +372,18 @@ class AlbumFilter(
     def filter_playable(self, queryset, name, value):
         actor = utils.get_actor_from_request(self.request)
         return queryset.playable_by(actor, value)
+
+    def filter_has_tags(self, queryset, name, value):
+        return queryset.filter(tagged_items__isnull=(not value))
+
+    def filter_has_mbid(self, queryset, name, value):
+        return queryset.filter(mbid__isnull=(not value))
+
+    def filter_has_cover(self, queryset, name, value):
+        return queryset.filter(attachment_cover__isnull=(not value))
+
+    def filter_has_release_date(self, queryset, name, value):
+        return queryset.filter(release_date__isnull=(not value))
 
 
 class LibraryFilter(filters.FilterSet):

@@ -1,6 +1,9 @@
+import os
 import pytest
 
 from funkwhale_api.music import filters, models
+
+DATA_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def test_artist_filter_ordering(factories, mocker):
@@ -263,3 +266,124 @@ def test_filter_tag_related(
         queryset=obj.__class__.objects.all(),
     )
     assert filterset.qs == matches
+
+
+@pytest.mark.parametrize(
+    "extension, mimetype", [("ogg", "audio/ogg"), ("mp3", "audio/mpeg")]
+)
+def test_track_filter_format(extension, mimetype, factories, mocker, anonymous_user):
+    track_expected = factories["music.Track"]()
+    name = ".".join(["test", extension])
+    path = os.path.join(DATA_DIR, name)
+    factories["music.Upload"](
+        audio_file__from_path=path, track=track_expected, mimetype=mimetype
+    )
+
+    track_unexpected = factories["music.Track"]()
+    path_wrong_ext = os.path.join(DATA_DIR, "test.m4a")
+    factories["music.Upload"](
+        audio_file__from_path=path_wrong_ext,
+        track=track_unexpected,
+        mimetype="audio/x-m4a",
+    )
+
+    qs = models.Track.objects.all()
+    filterset = filters.TrackFilter(
+        {"format": "ogg,mp3"},
+        request=mocker.Mock(user=anonymous_user),
+        queryset=qs,
+    )
+
+    assert filterset.qs[0] == track_expected
+
+
+def test_album_filter_has_tags(factories, anonymous_user, mocker):
+    album_expected = factories["music.Album"]()
+    factories["music.Album"]()
+
+    factories["tags.TaggedItem"](content_object=album_expected)
+
+    qs = models.Album.objects.all()
+    filterset = filters.AlbumFilter(
+        {"has_tags": True},
+        request=mocker.Mock(user=anonymous_user),
+        queryset=qs,
+    )
+
+    assert filterset.qs[0] == album_expected
+
+
+@pytest.mark.parametrize("fwobj", ["Album", "Track", "Artist"])
+def test_filter_has_mbid(fwobj, factories, anonymous_user, mocker):
+    obj_expected = factories[f"music.{fwobj}"](
+        mbid="e9b9d574-537d-4d2d-a4c7-6f6c91eaf4e0"
+    )
+
+    factories[f"music.{fwobj}"](mbid=None)
+    model_class = getattr(models, fwobj)
+    qs = model_class.objects.all()
+
+    filter_class = getattr(filters, f"{fwobj}Filter")
+    filterset = filter_class(
+        data={"has_mbid": True},
+        request=mocker.Mock(user=anonymous_user),
+        queryset=qs,
+    )
+
+    assert filterset.qs[0] == obj_expected
+
+
+@pytest.mark.parametrize("quality", ["low", "medium", "high", "very_high"])
+def test_track_quality_filter(factories, quality, mocker, anonymous_user):
+    track_low = factories["music.Track"]()
+    factories["music.Upload"](track=track_low, mimetype="audio/mp3", bitrate="20")
+
+    track_low_aac = factories["music.Track"]()
+    factories["music.Upload"](track=track_low_aac, mimetype="audio/x-m4a", bitrate="20")
+
+    track_medium = factories["music.Track"]()
+    factories["music.Upload"](track=track_medium, mimetype="audio/mp3", bitrate=194)
+
+    qs = models.Track.objects.all()
+    filterset = filters.TrackFilter(
+        {"quality": quality},
+        request=mocker.Mock(user=anonymous_user),
+        queryset=qs,
+    )
+
+    if quality == "low":
+        assert track_low in filterset.qs
+        assert track_low_aac in filterset.qs
+
+    if quality == "medium":
+        assert filterset.qs[0] == track_medium
+
+    if quality == "hight":
+        assert filterset.qs[0] == track_medium
+
+
+def test_album_has_cover(factories, mocker, anonymous_user):
+    attachment_cover = factories["common.Attachment"]()
+    album = factories["music.Album"](attachment_cover=attachment_cover)
+    factories["music.Album"].create_batch(5)
+    qs = models.Album.objects.all()
+    filterset = filters.AlbumFilter(
+        {"has_cover": True},
+        request=mocker.Mock(user=anonymous_user),
+        queryset=qs,
+    )
+
+    assert filterset.qs[0] == album
+
+
+def test_album_has_release_date(factories, mocker, anonymous_user):
+    album = factories["music.Album"]()
+    factories["music.Album"](release_date=None)
+    qs = models.Album.objects.all()
+    filterset = filters.AlbumFilter(
+        {"has_release_date": True},
+        request=mocker.Mock(user=anonymous_user),
+        queryset=qs,
+    )
+
+    assert filterset.qs[0] == album

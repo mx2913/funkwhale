@@ -70,6 +70,17 @@ MIMETYPE_TO_EXTENSION = {mt: ext for ext, mt in AUDIO_EXTENSIONS_AND_MIMETYPE}
 SUPPORTED_EXTENSIONS = list(sorted({ext for ext, _ in AUDIO_EXTENSIONS_AND_MIMETYPE}))
 
 
+def get_extension_to_mimetype_dict():
+    extension_dict = {}
+
+    for ext, mimetype in AUDIO_EXTENSIONS_AND_MIMETYPE:
+        if ext not in extension_dict:
+            extension_dict[ext] = []
+        extension_dict[ext].append(mimetype)
+
+    return extension_dict
+
+
 def get_ext_from_type(mimetype):
     return MIMETYPE_TO_EXTENSION.get(mimetype)
 
