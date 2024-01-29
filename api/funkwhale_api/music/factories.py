@@ -167,6 +167,7 @@ class TrackFactory(
 @registry.register
 class UploadGroupFactory(NoUpdateOnCreate, factory.django.DjangoModelFactory):
     name = factory.Faker("name")
+    owner = factory.SubFactory(federation_factories.ActorFactory)
 
     class Meta:
         model = "music.UploadGroup"
