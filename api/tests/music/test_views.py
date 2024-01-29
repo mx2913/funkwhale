@@ -1643,6 +1643,7 @@ def test_fs_import_cancel_already_running(
 
 
 def test_can_create_upload_group_without_name(logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     count = models.UploadGroup.objects.count()
 
     url = reverse("api:v2:upload-groups-list")
@@ -1658,6 +1659,7 @@ def test_can_create_upload_group_without_name(logged_in_api_client):
 
 
 def test_can_create_upload_group_with_name(logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     count = models.UploadGroup.objects.count()
 
     url = reverse("api:v2:upload-groups-list")

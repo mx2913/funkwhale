@@ -855,10 +855,11 @@ class SearchResultSerializer(serializers.Serializer):
 class UploadGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UploadGroup
-        fields = "__all__"
+        fields = ["guid", "name", "createdAt", "uploadUrl"]
 
     name = serializers.CharField(required=False)
     uploadUrl = serializers.SerializerMethodField(read_only=True)
+    createdAt = serializers.DateTimeField(read_only=True, source="created_at")
 
     def get_uploadUrl(self, value):
         return f"{settings.FUNKWHALE_URL}/api/v2/upload-groups/{value.guid}/uploads"

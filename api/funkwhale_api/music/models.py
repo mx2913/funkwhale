@@ -1449,6 +1449,10 @@ class UploadGroup(models.Model):
 
     name = models.CharField(max_length=255, default=datetime.datetime.now)
     guid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    owner = models.ForeignKey(
+        "federation.Actor", on_delete=models.CASCADE, related_name="upload_groups"
+    )
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
