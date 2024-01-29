@@ -1456,3 +1456,7 @@ class UploadGroup(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def upload_url(self):
+        return f"{settings.FUNKWHALE_URL}/api/v2/upload-groups/{self.guid}/uploads"
