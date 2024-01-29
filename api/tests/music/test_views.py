@@ -1672,3 +1672,58 @@ def test_can_create_upload_group_with_name(logged_in_api_client):
     assert "https://test.federation/api/v2/upload-groups/" in response.data.get(
         "uploadUrl"
     )
+
+
+def test_user_can_create_upload_v2(logged_in_api_client, factories, mocker, audio_file):
+    library = factories["music.Library"](actor__user=logged_in_api_client.user)
+    logged_in_api_client.user.create_actor()
+
+    upload_group = factories["music.UploadGroup"](owner=logged_in_api_client.user.actor)
+    upload_url = upload_group.upload_url
+
+    m = mocker.patch("funkwhale_api.common.utils.on_commit")
+
+    response = logged_in_api_client.post(
+        upload_url,
+        {
+            "audioFile": audio_file,
+            "metadata": '{"title": "foo"}',
+            "target": f'{{"library": "{ library.uuid }"}}',
+        },
+    )
+
+    print(response.data)
+
+    assert response.status_code == 200
+
+    upload = library.uploads.latest("id")
+
+    audio_file.seek(0)
+    assert upload.audio_file.read() == audio_file.read()
+    assert upload.source == "upload://test"
+    assert upload.import_status == "pending"
+    assert upload.import_metadata == {"title": "foo"}
+    assert upload.track is None
+    assert upload.upload_group == upload_group
+    m.assert_called_once_with(tasks.process_upload.delay, upload_id=upload.pk)
+
+
+def test_user_cannot_create_upload_for_foreign_group(
+    logged_in_api_client, factories, mocker, audio_file
+):
+    library = factories["music.Library"](actor__user=logged_in_api_client.user)
+    logged_in_api_client.user.create_actor()
+
+    upload_group = factories["music.UploadGroup"]()
+    upload_url = upload_group.upload_url
+
+    response = logged_in_api_client.post(
+        upload_url,
+        {
+            "audioFile": audio_file,
+            "metadata": '{"title": "foo"}',
+            "target": f'{{"library": "{ library.uuid }"}}',
+        },
+    )
+
+    assert response.status_code == 403

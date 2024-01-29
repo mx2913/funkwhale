@@ -858,8 +858,99 @@ class UploadGroupSerializer(serializers.ModelSerializer):
         fields = ["guid", "name", "createdAt", "uploadUrl"]
 
     name = serializers.CharField(required=False)
-    uploadUrl = serializers.SerializerMethodField(read_only=True)
+    uploadUrl = serializers.URLField(read_only=True, source="upload_url")
     createdAt = serializers.DateTimeField(read_only=True, source="created_at")
 
-    def get_uploadUrl(self, value):
-        return f"{settings.FUNKWHALE_URL}/api/v2/upload-groups/{value.guid}/uploads"
+
+class UploadGroupUploadMetadataReleaseSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    artist = serializers.CharField()
+    mbid = serializers.UUIDField(required=False)
+
+
+class UploadGroupUploadMetadataArtistSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    mbid = serializers.UUIDField(required=False)
+
+
+class UploadGroupUploadMetadataSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    mbid = serializers.UUIDField(required=False)
+    tags = serializers.ListField(child=serializers.CharField(), required=False)
+    position = serializers.IntegerField(required=False)
+    entryNumber = serializers.IntegerField(required=False)
+    releaseDate = serializers.DateField(required=False)
+    license = serializers.URLField(required=False)
+    release = UploadGroupUploadMetadataReleaseSerializer(required=False)
+    artist = UploadGroupUploadMetadataArtistSerializer(required=False)
+
+
+class TargetSerializer(serializers.Serializer):
+    library = serializers.UUIDField(required=False)
+    collections = serializers.ListField(child=serializers.UUIDField(), required=False)
+    channels = serializers.ListField(child=serializers.UUIDField(), required=False)
+
+    def validate(self, data):
+        # At the moment we allow to set exactly one target, it can be either a library or a channel.
+        # The structure already allows setting multiple targets in the future, however this is disabled for now.
+        if "channels" in data and "library" in data:
+            raise serializers.ValidationError
+        if "channels" not in data and "library" not in data:
+            raise serializers.ValidationError
+        if "collections" in data:
+            raise serializers.ValidationError("Not yet implemented")
+        try:
+            if len(data.channels) > 1:
+                raise serializers.ValidationError
+        except AttributeError:
+            pass
+        return data
+
+
+class UploadGroupUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Upload
+        fields = [
+            "audioFile",
+            "target",
+            "metadata",
+        ]  # , "cover"] TODO we need to process the cover
+
+    metadata = serializers.JSONField(source="import_metadata")
+    target = serializers.JSONField()
+    audioFile = serializers.FileField(source="audio_file")
+    # cover = serializers.FileField(required=False)
+
+    def validate_target(self, value):
+        serializer = TargetSerializer(data=value)
+        if serializer.is_valid():
+            return serializer.validated_data
+        else:
+            print(serializer.errors)
+            raise serializers.ValidationError
+
+    def validate_metadata(self, value):
+        serializer = UploadGroupUploadMetadataSerializer(data=value)
+        if serializer.is_valid():
+            return serializer.validated_data
+        else:
+            print(serializer.errors)
+            raise serializers.ValidationError
+
+    def create(self, validated_data):
+        library = models.Library.objects.get(uuid=validated_data["target"]["library"])
+        del validated_data["target"]
+        return models.Upload.objects.create(
+            library=library, source="upload://test", **validated_data
+        )
+
+
+class BaseUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Upload
+        fields = ["guid", "createdDate", "uploadGroup", "status"]
+
+    guid = serializers.UUIDField(source="uuid")
+    createdDate = serializers.DateTimeField(source="creation_date")
+    uploadGroup = serializers.UUIDField(source="upload_group.guid")
+    status = serializers.CharField(source="import_status")
