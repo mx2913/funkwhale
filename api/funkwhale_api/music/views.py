@@ -15,6 +15,7 @@ from rest_framework import mixins, renderers
 from rest_framework import settings as rest_settings
 from rest_framework import views, viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 
 from funkwhale_api.common import decorators as common_decorators
@@ -946,3 +947,26 @@ class UploadGroupViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user.actor)
+
+    @action(
+        detail=True,
+        methods=["post"],
+        parser_classes=(MultiPartParser, FormParser),
+        serializer_class=serializers.UploadGroupUploadSerializer,
+    )
+    def uploads(self, request, pk=None):
+        print(request.data)
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            upload_group = models.UploadGroup.objects.get(guid=pk)
+            if upload_group.owner == request.user.actor:
+                upload = serializer.save(upload_group=upload_group)
+                common_utils.on_commit(tasks.process_upload.delay, upload_id=upload.pk)
+                response = serializers.BaseUploadSerializer(upload).data
+                return Response(response, status=200)
+            else:
+                return Response("You don't own this Upload Group", status=403)
+        else:
+            print(serializer.errors)
+
+        return Response("Fehler", status=202)
