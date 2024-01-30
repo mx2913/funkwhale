@@ -1,4 +1,5 @@
-from django.conf.urls import include, url
+from django.conf.urls import include
+from django.urls import re_path
 
 from funkwhale_api.activity import views as activity_views
 from funkwhale_api.audio import views as audio_views
@@ -28,61 +29,61 @@ router.register(r"attachments", common_views.AttachmentViewSet, "attachments")
 v1_patterns = router.urls
 
 v1_patterns += [
-    url(r"^oembed/$", views.OembedView.as_view(), name="oembed"),
-    url(
+    re_path(r"^oembed/$", views.OembedView.as_view(), name="oembed"),
+    re_path(
         r"^instance/",
         include(("funkwhale_api.instance.urls", "instance"), namespace="instance"),
     ),
-    url(
+    re_path(
         r"^manage/",
         include(("funkwhale_api.manage.urls", "manage"), namespace="manage"),
     ),
-    url(
+    re_path(
         r"^moderation/",
         include(
             ("funkwhale_api.moderation.urls", "moderation"), namespace="moderation"
         ),
     ),
-    url(
+    re_path(
         r"^federation/",
         include(
             ("funkwhale_api.federation.api_urls", "federation"), namespace="federation"
         ),
     ),
-    url(
+    re_path(
         r"^providers/",
         include(("funkwhale_api.providers.urls", "providers"), namespace="providers"),
     ),
-    url(
+    re_path(
         r"^favorites/",
         include(("funkwhale_api.favorites.urls", "favorites"), namespace="favorites"),
     ),
-    url(r"^search$", views.Search.as_view(), name="search"),
-    url(
+    re_path(r"^search$", views.Search.as_view(), name="search"),
+    re_path(
         r"^radios/",
         include(("funkwhale_api.radios.urls", "radios"), namespace="radios"),
     ),
-    url(
+    re_path(
         r"^history/",
         include(("funkwhale_api.history.urls", "history"), namespace="history"),
     ),
-    url(
+    re_path(
         r"^",
         include(("funkwhale_api.users.api_urls", "users"), namespace="users"),
     ),
     # XXX: remove if Funkwhale 1.1
-    url(
+    re_path(
         r"^users/",
         include(("funkwhale_api.users.api_urls", "users"), namespace="users-nested"),
     ),
-    url(
+    re_path(
         r"^oauth/",
         include(("funkwhale_api.users.oauth.urls", "oauth"), namespace="oauth"),
     ),
-    url(r"^rate-limit/?$", common_views.RateLimitView.as_view(), name="rate-limit"),
-    url(
+    re_path(r"^rate-limit/?$", common_views.RateLimitView.as_view(), name="rate-limit"),
+    re_path(
         r"^text-preview/?$", common_views.TextPreviewView.as_view(), name="text-preview"
     ),
 ]
 
-urlpatterns = [url("", include((v1_patterns, "v1"), namespace="v1"))]
+urlpatterns = [re_path("", include((v1_patterns, "v1"), namespace="v1"))]

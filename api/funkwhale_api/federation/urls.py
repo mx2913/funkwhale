@@ -1,4 +1,5 @@
-from django.conf.urls import include, url
+from django.conf.urls import include
+from django.urls import re_path
 from rest_framework import routers
 
 from . import views
@@ -23,6 +24,8 @@ music_router.register(r"tracks", views.MusicTrackViewSet, "tracks")
 index_router.register(r"index", views.IndexViewSet, "index")
 
 urlpatterns = router.urls + [
-    url("federation/music/", include((music_router.urls, "music"), namespace="music")),
-    url("federation/", include((index_router.urls, "index"), namespace="index")),
+    re_path(
+        "federation/music/", include((music_router.urls, "music"), namespace="music")
+    ),
+    re_path("federation/", include((index_router.urls, "index"), namespace="index")),
 ]

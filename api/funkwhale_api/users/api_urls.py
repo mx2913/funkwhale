@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import re_path
 
 from funkwhale_api.common import routers
 
@@ -8,6 +8,6 @@ router = routers.OptionalSlashRouter()
 router.register(r"users", views.UserViewSet, "users")
 
 urlpatterns = [
-    url(r"^users/login/?$", views.login, name="login"),
-    url(r"^users/logout/?$", views.logout, name="logout"),
+    re_path(r"^users/login/?$", views.login, name="login"),
+    re_path(r"^users/logout/?$", views.logout, name="logout"),
 ] + router.urls
