@@ -69,7 +69,7 @@ uvicorn = { version = "==0.20.0", extras = ["standard"] }
 aiohttp = "3.9.1"
 arrow = "==1.2.3"
 backports-zoneinfo = { version = "==0.2.1", python = "<3.9" }
-bleach = "==5.0.1"
+bleach = "==6.1.0"
 boto3 = "==1.26.161"
 click = "==8.1.7"
 cryptography = "==38.0.4"
