@@ -2,7 +2,7 @@ import json
 
 from django import forms
 from django.conf import settings
-from django.contrib.postgres.forms import JSONField
+from django.forms import JSONField
 from dynamic_preferences import serializers, types
 from dynamic_preferences.registries import global_preferences_registry
 
