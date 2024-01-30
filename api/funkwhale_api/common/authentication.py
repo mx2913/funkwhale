@@ -1,6 +1,6 @@
 from allauth.account.models import EmailAddress
 from django.core.cache import cache
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from oauth2_provider.contrib.rest_framework.authentication import (
     OAuth2Authentication as BaseOAuth2Authentication,
 )
