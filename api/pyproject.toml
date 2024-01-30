@@ -29,7 +29,7 @@ python = "^3.8,<3.13"
 
 # Django
 dj-rest-auth = "5.0.2"
-django = "==3.2.23"
+django = "4.2.9"
 django-allauth = "0.55.2"
 django-cache-memoize = "0.1.10"
 django-cacheops = "==7.0.2"
