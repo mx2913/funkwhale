@@ -39,7 +39,7 @@ RUN set -eux; \
   zlib-dev \
   py3-cryptography=41.0.7-r0 \
   py3-lxml=4.9.3-r1 \
-  py3-pillow=10.1.0-r1 \
+  py3-pillow=10.2.0-r0 \
   py3-psycopg2=2.9.9-r0 \
   py3-watchfiles=0.19.0-r1 \
   python3-dev
@@ -63,7 +63,7 @@ RUN --mount=type=cache,target=~/.cache/pip; \
   | pip3 install -r /dev/stdin \
   cryptography==41.0.7 \
   lxml==4.9.3 \
-  pillow==10.1.0 \
+  pillow==10.2.0 \
   psycopg2==2.9.9 \
   watchfiles==0.19.0
 
@@ -73,9 +73,9 @@ RUN --mount=type=cache,target=~/.cache/pip; \
   if [ "$install_dev_deps" = "1" ] ; then \
     grep -Ev 'cryptography|lxml|pillow|psycopg2|watchfiles' /dev-requirements.txt \
     | pip3 install -r /dev/stdin \
-    cryptography==38.0.3 \
+    cryptography==41.0.7 \
     lxml==4.9.3 \
-    pillow==9.3.0 \
+    pillow==10.2.0 \
     psycopg2==2.9.9 \
     watchfiles==0.19.0; \
   fi
@@ -99,7 +99,7 @@ RUN set -eux; \
   libxslt \
   py3-cryptography=41.0.7-r0 \
   py3-lxml=4.9.3-r1 \
-  py3-pillow=10.1.0-r1 \
+  py3-pillow=10.2.0-r0 \
   py3-psycopg2=2.9.9-r0 \
   py3-watchfiles=0.19.0-r1 \
   python3 \
