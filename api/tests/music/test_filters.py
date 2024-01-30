@@ -333,16 +333,25 @@ def test_filter_has_mbid(fwobj, factories, anonymous_user, mocker):
     assert filterset.qs[0] == obj_expected
 
 
-@pytest.mark.parametrize("quality", ["low", "medium", "high", "very_high"])
-def test_track_quality_filter(factories, quality, mocker, anonymous_user):
-    track_low = factories["music.Track"]()
-    factories["music.Upload"](track=track_low, mimetype="audio/mp3", bitrate="20")
-
-    track_low_aac = factories["music.Track"]()
-    factories["music.Upload"](track=track_low_aac, mimetype="audio/x-m4a", bitrate="20")
-
-    track_medium = factories["music.Track"]()
-    factories["music.Upload"](track=track_medium, mimetype="audio/mp3", bitrate=194)
+@pytest.mark.parametrize(
+    "mimetype, bitrate, quality",
+    [
+        ("audio/mpeg", "20", "low"),
+        ("audio/ogg", "180", "medium"),
+        ("audio/x-m4a", "280", "high"),
+        ("audio/opus", "130", "high"),
+        ("audio/opus", "513", "very-high"),
+        ("audio/aiff", "1312", "very-high"),
+        ("audio/aiff", "1312", "low"),
+        ("audio/ogg", "180", "low"),
+    ],
+)
+def test_track_quality_filter(
+    factories, quality, mimetype, bitrate, mocker, anonymous_user
+):
+    track = factories["music.Track"]()
+    factories["music.Upload"](track=track, mimetype=mimetype, bitrate=bitrate)
+    factories["music.Track"]()
 
     qs = models.Track.objects.all()
     filterset = filters.TrackFilter(
@@ -350,16 +359,7 @@ def test_track_quality_filter(factories, quality, mocker, anonymous_user):
         request=mocker.Mock(user=anonymous_user),
         queryset=qs,
     )
-
-    if quality == "low":
-        assert track_low in filterset.qs
-        assert track_low_aac in filterset.qs
-
-    if quality == "medium":
-        assert filterset.qs[0] == track_medium
-
-    if quality == "hight":
-        assert filterset.qs[0] == track_medium
+    assert track in filterset.qs
 
 
 def test_album_has_cover(factories, mocker, anonymous_user):

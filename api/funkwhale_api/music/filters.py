@@ -142,9 +142,6 @@ class ArtistFilter(
         return queryset.filter(mbid__isnull=(not value))
 
 
-quality_choices = ("low", "medium", "high", "very_high")
-
-
 class TrackFilter(
     RelatedFilterSet,
     ChannelFilterSet,
@@ -193,6 +190,7 @@ class TrackFilter(
         method="filter_has_mbid",
     )
 
+    quality_choices = [(0, "low"), (1, "medium"), (2, "high"), (3, "very_high")]
     quality = filters.ChoiceFilter(
         choices=quality_choices,
         method="filter_quality",
@@ -227,42 +225,14 @@ class TrackFilter(
         return queryset.filter(mbid__isnull=(not value))
 
     def filter_quality(self, queryset, name, value):
-        extension_to_mimetypes = utils.get_extension_to_mimetype_dict()
-
         if value == "low":
-            mp3_query = Q(
-                uploads__mimetype=extension_to_mimetypes["mp3"],
-                uploads__bitrate__lte=192,
-            )
-            OpusAACOGG_mimetypes = (
-                extension_to_mimetypes["mp3"]
-                .extend(extension_to_mimetypes["ogg"])
-                .extend(extension_to_mimetypes["aac"])
-            )
-
-            OpusAACOGG_query = Q(
-                uploads__mimetype__in=OpusAACOGG_mimetypes, uploads__bitrate__lte=96
-            )
-
-            queryset.filter(mp3_query | OpusAACOGG_query)
-
+            return queryset.filter(upload__quality__gte=0)
         if value == "medium":
-            mp3_query = Q(
-                uploads__mimetype=extension_to_mimetypes["mp3"],
-                uploads__bitrate__lte=256,
-            )
-            ogg_query = Q(
-                uploads__mimetype=extension_to_mimetypes["ogg"],
-                uploads__bitrate__lte=192,
-            )
-
-            aacopus_query = Q(
-                uploads__mimetype=extension_to_mimetypes["aac"].extend(
-                    extension_to_mimetypes["opus"]
-                ),
-                uploads__bitrate__lte=128,
-            )
-            queryset.filter(mp3_query | ogg_query | aacopus_query)
+            return queryset.filter(upload__quality__gte=1)
+        if value == "high":
+            return queryset.filter(upload__quality__gte=2)
+        if value == "very-high":
+            return queryset.filter(upload__quality=3)
 
 
 class UploadFilter(audio_filters.IncludeChannelsFilterSet):

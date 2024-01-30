@@ -177,6 +177,7 @@ class UploadFactory(NoUpdateOnCreate, factory.django.DjangoModelFactory):
     size = None
     duration = None
     mimetype = "audio/ogg"
+    quality = 1
 
     class Meta:
         model = "music.Upload"

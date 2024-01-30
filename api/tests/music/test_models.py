@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from funkwhale_api.common import utils as common_utils
 from funkwhale_api.federation import utils as federation_utils
-from funkwhale_api.music import importers, models, tasks
+from funkwhale_api.music import importers, models, tasks, migrations
 
 DATA_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -702,3 +702,27 @@ def test_update_library_privacy_level_create_entries(
         actor = actors[actor_name]
         expected_tracks = [tracks[i] for i in expected]
         assert list(models.Track.objects.playable_by(actor)) == expected_tracks
+
+
+@pytest.mark.parametrize(
+    "mimetype, bitrate, quality",
+    [
+        ("audio/mpeg", "20", 0),
+        ("audio/ogg", "180", 1),
+        ("audio/x-m4a", "280", 2),
+        ("audio/opus", "130", 2),
+        ("audio/opus", "161", 3),
+        ("audio/flac", "1312", 3),
+    ],
+)
+def test_save_upload_quality(factories, mimetype, bitrate, quality):
+    upload = factories["music.Upload"](mimetype=mimetype, bitrate=bitrate)
+    assert upload.quality == quality
+
+
+# def test_set_quality_upload(factories, mocker):
+#     class apps:
+#         def get_model():
+#             return models.Upload
+
+#     migrations.0058_upload_quality.set_quality_upload(apps, "schema_editor")
