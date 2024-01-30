@@ -38,14 +38,12 @@ def validate(config):
     return True
 
 
-def build_radio_queryset(patch, config, radio_qs):
-    """Take a troi patch and its arg, match the missing mbid and then build a radio queryset"""
-
-    logger.info("Config used for troi radio generation is " + str(config))
+def build_radio_queryset(patch, radio_qs):
+    """Take a troi patch, match the missing mbid and then build a radio queryset"""
 
     start_time = time.time()
     try:
-        recommendations = troi.core.generate_playlist(patch, config)
+        recommendations = patch.generate_playlist()
     except ConnectTimeout:
         raise ValueError(
             "Timed out while connecting to ListenBrainz. No candidates could be retrieved for the radio."
@@ -145,4 +143,4 @@ class TroiPatch:
     def get_queryset(self, config, qs):
         patch_string = config.pop("patch")
         patch = patches[patch_string]
-        return build_radio_queryset(patch(), config, qs)
+        return build_radio_queryset(patch(config), qs)

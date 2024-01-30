@@ -1,7 +1,9 @@
+import liblistenbrainz
+from django.utils import timezone
+
 import funkwhale_api
 from config import plugins
 
-from .client import ListenBrainzClient, Track
 from .funkwhale_startup import PLUGIN
 
 
@@ -13,15 +15,14 @@ def submit_listen(listening, conf, **kwargs):
 
     logger = PLUGIN["logger"]
     logger.info("Submitting listen to ListenBrainz")
-    client = ListenBrainzClient(user_token=user_token, logger=logger)
-    track = get_track(listening.track)
-    client.listen(int(listening.creation_date.timestamp()), track)
+    client = liblistenbrainz.ListenBrainz()
+    client.set_auth_token(user_token)
+    listen = get_listen(listening.track)
+
+    client.submit_single_listen(listen)
 
 
-def get_track(track):
-    artist = track.artist.name
-    title = track.title
-    album = None
+def get_listen(track):
     additional_info = {
         "media_player": "Funkwhale",
         "media_player_version": funkwhale_api.__version__,
@@ -36,7 +37,7 @@ def get_track(track):
 
     if track.album:
         if track.album.title:
-            album = track.album.title
+            release_name = track.album.title
         if track.album.mbid:
             additional_info["release_mbid"] = str(track.album.mbid)
 
@@ -47,4 +48,10 @@ def get_track(track):
     if upload:
         additional_info["duration"] = upload.duration
 
-    return Track(artist, title, album, additional_info)
+    return liblistenbrainz.Listen(
+        track_name=track.title,
+        artist_name=track.artist.name,
+        listened_at=int(timezone.now()),
+        release_name=release_name,
+        additional_info=additional_info,
+    )

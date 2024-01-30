@@ -24,7 +24,7 @@ def test_can_build_radio_queryset_with_fw_db(factories, mocker):
     mocker.patch("funkwhale_api.typesense.utils.resolve_recordings_to_fw_track")
 
     radio_qs = lb_recommendations.build_radio_queryset(
-        custom_factories.DummyPatch(), {"min_recordings": 1}, qs
+        custom_factories.DummyPatch({"min_recordings": 1}), qs
     )
     recommended_recording_mbids = [
         "87dfa566-21c3-45ed-bc42-1d345b8563fa",
@@ -46,7 +46,7 @@ def test_build_radio_queryset_without_fw_db(mocker):
 
     with pytest.raises(ValueError):
         lb_recommendations.build_radio_queryset(
-            custom_factories.DummyPatch(), {"min_recordings": 1}, qs
+            custom_factories.DummyPatch({"min_recordings": 1}), qs
         )
 
         assert resolve_recordings_to_fw_track.called_once_with(
@@ -67,7 +67,7 @@ def test_build_radio_queryset_with_redis_and_fw_db(factories, mocker):
 
     assert list(
         lb_recommendations.build_radio_queryset(
-            custom_factories.DummyPatch(), {"min_recordings": 1}, qs
+            custom_factories.DummyPatch({"min_recordings": 1}), qs
         )
     ) == list(Track.objects.all().filter(pk__in=[1, 2]))
 
@@ -84,14 +84,14 @@ def test_build_radio_queryset_with_redis_and_without_fw_db(factories, mocker):
 
     assert list(
         lb_recommendations.build_radio_queryset(
-            custom_factories.DummyPatch(), {"min_recordings": 1}, qs
+            custom_factories.DummyPatch({"min_recordings": 1}), qs
         )
     ) == list(Track.objects.all().filter(pk=1))
 
 
 def test_build_radio_queryset_catch_troi_ConnectTimeout(mocker):
     mocker.patch.object(
-        troi.core,
+        troi.core.Patch,
         "generate_playlist",
         side_effect=ConnectTimeout,
     )
@@ -99,18 +99,18 @@ def test_build_radio_queryset_catch_troi_ConnectTimeout(mocker):
 
     with pytest.raises(ValueError):
         lb_recommendations.build_radio_queryset(
-            custom_factories.DummyPatch(), {"min_recordings": 1}, qs
+            custom_factories.DummyPatch({"min_recordings": 1}), qs
         )
 
 
 def test_build_radio_queryset_catch_troi_no_candidates(mocker):
     mocker.patch.object(
-        troi.core,
+        troi.core.Patch,
         "generate_playlist",
     )
     qs = Track.objects.all()
 
     with pytest.raises(ValueError):
         lb_recommendations.build_radio_queryset(
-            custom_factories.DummyPatch(), {"min_recordings": 1}, qs
+            custom_factories.DummyPatch({"min_recordings": 1}), qs
         )
