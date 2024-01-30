@@ -60,12 +60,12 @@ class NullsLastSQLCompiler(SQLCompiler):
 class NullsLastQuery(models.sql.query.Query):
     """Use a custom compiler to inject 'NULLS LAST' (for PostgreSQL)."""
 
-    def get_compiler(self, using=None, connection=None):
+    def get_compiler(self, using=None, connection=None, elide_empty=True):
         if using is None and connection is None:
             raise ValueError("Need either using or connection")
         if using:
             connection = connections[using]
-        return NullsLastSQLCompiler(self, connection, using)
+        return NullsLastSQLCompiler(self, connection, using, elide_empty)
 
 
 class NullsLastQuerySet(models.QuerySet):
