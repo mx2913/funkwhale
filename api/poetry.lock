@@ -1273,13 +1273,13 @@ Django = ">=3.2"
 
 [[package]]
 name = "django-filter"
-version = "22.1"
+version = "23.5"
 description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "django-filter-22.1.tar.gz", hash = "sha256:ed473b76e84f7e83b2511bb2050c3efb36d135207d0128dfe3ae4b36e3594ba5"},
-    {file = "django_filter-22.1-py3-none-any.whl", hash = "sha256:ed429e34760127e3520a67f415bec4c905d4649fbe45d0d6da37e6ff5e0287eb"},
+    {file = "django-filter-23.5.tar.gz", hash = "sha256:67583aa43b91fe8c49f74a832d95f4d8442be628fd4c6d65e9f811f5153a4e5c"},
+    {file = "django_filter-23.5-py3-none-any.whl", hash = "sha256:99122a201d83860aef4fe77758b69dda913e874cc5e0eaa50a86b0b18d708400"},
 ]
 
 [package.dependencies]
@@ -4679,4 +4679,4 @@ typesense = ["typesense"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8,<3.13"
-content-hash = "ba33262cfd3d56c71c2fd3173ee277c87479235113af726001dadbb4b3dfa665"
+content-hash = "c4bea4a0d93aea07910fb93594dce5a901da6d6fcde9ec9b3ce2408091ec2f64"
