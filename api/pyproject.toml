@@ -62,7 +62,7 @@ kombu = "5.3.4"
 celery = "5.3.6"
 
 # Deployment
-gunicorn = "==20.1.0"
+gunicorn = "==21.2.0"
 uvicorn = { version = "==0.20.0", extras = ["standard"] }
 
 # Libs
