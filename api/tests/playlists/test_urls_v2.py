@@ -1,13 +1,9 @@
 import json
-import tempfile
-from io import BytesIO
 
 from defusedxml import ElementTree as etree
 
 from django.urls import reverse
 from django.shortcuts import resolve_url
-
-from funkwhale_api.playlists import models, utils
 
 
 def test_can_get_playlists_list(factories, logged_in_api_client):
@@ -23,6 +19,10 @@ def test_can_get_playlists_list(factories, logged_in_api_client):
 
 def test_can_get_playlists_octet_stream(factories, logged_in_api_client):
     pl = factories["playlists.Playlist"]()
+    factories["playlists.PlaylistTrack"](playlist=pl)
+    factories["playlists.PlaylistTrack"](playlist=pl)
+    factories["playlists.PlaylistTrack"](playlist=pl)
+
     url = reverse("api:v2:playlists:playlists-detail", kwargs={"pk": pl.pk})
     headers = {"Content-Type": "application/octet-stream"}
     response = logged_in_api_client.get(url, headers=headers)
@@ -58,7 +58,7 @@ def test_can_post_user_playlists(factories, logged_in_api_client):
 def test_can_post_playlists_octet_stream(factories, logged_in_api_client):
     artist = factories["music.Artist"](name="Davinhor")
     album = factories["music.Album"](title="Racisme en pls", artist=artist)
-    track = factories["music.Track"](title="Opinel 12", artist=artist, album=album)
+    factories["music.Track"](title="Opinel 12", artist=artist, album=album)
     url = reverse("api:v2:playlists:playlists-list")
     data = open("./tests/playlists/test.xspf", "rb").read()
     response = logged_in_api_client.post(url, data=data, format="xspf")
@@ -84,7 +84,9 @@ def test_can_patch_playlists_octet_stream(factories, logged_in_api_client):
 def test_can_get_playlists_id(factories, logged_in_api_client):
     pl = factories["playlists.Playlist"]()
     url = reverse("api:v2:playlists:playlists-detail", kwargs={"pk": pl.pk})
-    response = logged_in_api_client.get(url, format="json")
+    headers = {"Content-Type": "application/json"}
+
+    response = logged_in_api_client.get(url, headers=headers, format="json")
     assert response.status_code == 200
     assert (
         etree.fromstring(response.content.decode("utf-8")).findtext("title") == pl.name

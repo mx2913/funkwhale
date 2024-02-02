@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <playlist version="1" xmlns="http://xspf.org/ns/0/">
   <title>Test</title>
-  <date>01.08.2023</date>
+  <date>1312-01-08T17:10:47-05:00</date>
   <trackList>
     <track>
       <location>https://maldonado-boyd.com/api/v1/listen/c5a0f3b9-1866-4258-98bc-1c6867d0b125/</location>

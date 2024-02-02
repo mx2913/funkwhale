@@ -7,7 +7,6 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import exceptions, mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser, FormParser, MultiPartParser
 
 from funkwhale_api.common import fields, permissions
@@ -18,7 +17,7 @@ from funkwhale_api.music import serializers as music_serializers
 
 from funkwhale_api.users.oauth import permissions as oauth_permissions
 
-from . import filters, models, serializers, utils, renderers, parsers
+from . import filters, models, serializers, renderers, parsers
 
 
 class PlaylistViewSet(
@@ -47,64 +46,62 @@ class PlaylistViewSet(
     filterset_class = filters.PlaylistFilter
     ordering_fields = ("id", "name", "creation_date", "modification_date")
     parser_classes = [parsers.XspfParser, JSONParser, FormParser, MultiPartParser]
-
     # https://docs.djangoproject.com/en/5.0/topics/class-based-views/generic-editing/#content-negotiation-example
     # https://docs.djangoproject.com/en/5.0/ref/request-response/#django.http.HttpRequest.__iter__
 
     def create(self, request, *args, **kwargs):
         content_type = request.headers.get("Content-Type")
-        if content_type and "application/octet-stream" in request.headers.get(
-            "Content-Type"
-        ):
-            tracks, plt_name = utils.get_tracks_from_xspf(request.data)
-            plt = models.Playlist.objects.create(
-                name=plt_name, privacy_level="private", user=self.request.user
-            )
-            plt.insert_many(tracks)
-            plt = serializers.PlaylistSerializer(plt)
-            return Response(plt.data, status=201)
+        if content_type and "application/octet-stream" in content_type:
+            for track_data in request.data.get("tracks", []):
+                track_serializer = serializers.XspfTrackSerializer(data=track_data)
+                if not track_serializer.is_valid():
+                    request.data["tracks"].remove(track_data)
+
+            serializer = serializers.XspfSerializer(data=request.data)
+            serializer.is_valid()
+            pl = serializer.save(request=request)
+            return Response(serializers.PlaylistSerializer(pl).data, status=201)
         response = super().create(request, *args, **kwargs)
         return response
 
     def retrieve(self, request, pk, *args, **kwargs):
         content_type = request.headers.get("Content-Type")
-        if content_type and "application/octet-stream" in request.headers.get(
-            "Content-Type"
-        ):
-            playlist = self.get_object()
-            xspf = utils.generate_xspf_from_playlist(pk)
+        if content_type and "application/octet-stream" in content_type:
+            request.accepted_renderer = renderers.PlaylistXspfRenderer()
             # https://docs.djangoproject.com/en/5.0/ref/request-response/#telling-the-browser-to-treat-the-response-as-a-file-attachment
             # shoud we use https://docs.djangoproject.com/en/5.0/ref/request-response/#fileresponse-objects ?
             # eg FileResponse(xspf, as_attachment=True, filename=f"{playlist.name}.xspf")
-            response = HttpResponse(
-                xspf,
+            # return Response(playlist, content_type="xspf")
+            pl = self.get_object()
+            return Response(
+                serializers.PlaylistSerializer(pl).data,
                 headers={
                     "Content-Type": "application/octet-stream",
-                    "Content-Disposition": f'attachment; filename="{playlist.name}.xspf"',
+                    "Content-Disposition": f'attachment; filename="{self.get_object().name}.xspf"',
                 },
             )
-            return response
 
         return super().retrieve(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
         playlist = self.get_object()
         content_type = request.headers.get("Content-Type")
-        if content_type and "application/octet-stream" in request.headers.get(
-            "Content-Type"
-        ):
-            tracks, plt_name = utils.get_tracks_from_xspf(request.data)
+        if content_type and "application/octet-stream" in content_type:
+            tracks = []
+            for track_data in request.data.get("tracks", []):
+                track_serializer = serializers.XspfTrackSerializer(data=track_data)
+                if track_serializer.is_valid():
+                    tracks.append(track_serializer.validated_data)
+                else:
+                    request.data["tracks"].remove(track_data)
+
             playlist.playlist_tracks.all().delete()
             playlist.insert_many(tracks)
-            models.Playlist.objects.filter(pk=self.kwargs["pk"]).update(
-                name=plt_name,
-                user_id=playlist.user.id,
-                privacy_level=playlist.privacy_level,
-            )
-            playlist.refresh_from_db()
-            serializer = serializers.PlaylistSerializer(playlist)
-            return Response(serializer.data, status=201)
 
+            serializer = serializers.XspfSerializer(playlist, data=request.data)
+            serializer.is_valid()
+            pl = serializer.save(request=request)
+            return Response(serializers.PlaylistSerializer(pl).data, status=201)
         else:
             return super().retrieve(request, *args, **kwargs)
 

@@ -1,6 +1,4 @@
-import datetime
-import decimal
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ElementTree
 
 from defusedxml import ElementTree as etree
 from defusedxml.ElementTree import parse
@@ -17,23 +15,43 @@ from django.conf import settings
 
 class XspfParser(BaseParser):
     """
-    Takes a xspf sting, validated it, and return an xspf string
+    Takes a xspf sting, validated it, and return an xspf json
     """
 
     media_type = "application/octet-stream"
 
     def parse(self, stream, media_type=None, parser_context=None):
-        # Avoid namespace prefixes, to do doesn't seems to work
-        ET.register_namespace("", "http://xspf.org/ns/0/")
+        playlist = {"tracks": []}
 
-        try:
-            tree = parse(stream, forbid_dtd=True)
+        tree = parse(stream, forbid_dtd=True)
+        root = tree.getroot()
 
-        except (etree.ParseError, ValueError) as exc:
-            raise ParseError("XML parse error - %s" % str(exc))
-        if not tree.findtext("{http://xspf.org/ns/0/}title"):
-            raise ParseError("Xspf must containt a Playlist tiltle")
-        if not tree.findall(".//{http://xspf.org/ns/0/}track")[0]:
-            raise ParseError("Xspf must containt a Playlist track")
-        # to do check a title and a track list
-        return ET.tostring(tree.getroot())
+        # Extract playlist information
+        playlist_info = root.find(".")
+        if playlist_info is not None:
+            playlist["title"] = playlist_info.findtext(
+                "{http://xspf.org/ns/0/}title", default=""
+            )
+            playlist["creator"] = playlist_info.findtext(
+                "{http://xspf.org/ns/0/}creator", default=""
+            )
+            playlist["creation_date"] = playlist_info.findtext(
+                "{http://xspf.org/ns/0/}date", default=""
+            )
+            playlist["version"] = playlist_info.attrib.get("version", "")
+
+        # Extract track information
+        for track in root.findall(".//{http://xspf.org/ns/0/}track"):
+            track_info = {
+                "location": track.findtext(
+                    "{http://xspf.org/ns/0/}location", default=""
+                ),
+                "title": track.findtext("{http://xspf.org/ns/0/}title", default=""),
+                "creator": track.findtext("{http://xspf.org/ns/0/}creator", default=""),
+                "album": track.findtext("{http://xspf.org/ns/0/}album", default=""),
+                "duration": track.findtext(
+                    "{http://xspf.org/ns/0/}duration", default=""
+                ),
+            }
+            playlist["tracks"].append(track_info)
+        return playlist

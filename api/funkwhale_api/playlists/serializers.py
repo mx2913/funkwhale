@@ -1,13 +1,18 @@
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from funkwhale_api.federation import serializers as federation_serializers
-from funkwhale_api.music.models import Track
+from funkwhale_api.music.models import Album, Artist, Track
+
 from funkwhale_api.music.serializers import TrackSerializer
 from funkwhale_api.users.serializers import UserBasicSerializer
-
 from . import models
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class PlaylistTrackSerializer(serializers.ModelSerializer):
@@ -120,3 +125,57 @@ class PlaylistAddManySerializer(serializers.Serializer):
 
     class Meta:
         fields = "allow_duplicates"
+
+
+class XspfTrackSerializer(serializers.Serializer):
+    location = serializers.CharField(allow_blank=True, required=False)
+    title = serializers.CharField()
+    creator = serializers.CharField()
+    album = serializers.CharField(allow_blank=True, required=False)
+    duration = serializers.CharField(allow_blank=True, required=False)
+
+    def validate(self, data):
+        artist = data["creator"]
+        title = data["title"]
+        album = data.get("album", None)
+        try:
+            artist_id = Artist.objects.get(name=artist)
+        except ObjectDoesNotExist:
+            raise ValidationError("Couldn't find artist in the database")
+        if album:
+            try:
+                album_id = Album.objects.get(title=album)
+                fw_track = Track.objects.get(
+                    title=title, artist=artist_id.id, album=album_id
+                )
+            except ObjectDoesNotExist:
+                pass
+        try:
+            fw_track = Track.objects.get(title=title, artist=artist_id.id)
+        except ObjectDoesNotExist as e:
+            raise ValidationError(f"Couldn't find track in the database : {e!r}")
+
+        return fw_track
+
+
+class XspfSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    creator = serializers.CharField(allow_blank=True, required=False)
+    creation_date = serializers.DateTimeField(required=False)
+    version = serializers.IntegerField(required=False)
+    tracks = XspfTrackSerializer(many=True, required=False)
+
+    def create(self, validated_data):
+        pl = models.Playlist.objects.create(
+            name=validated_data["title"],
+            privacy_level="private",
+            user=validated_data["request"].user,
+        )
+        pl.insert_many(validated_data["tracks"])
+
+        return pl
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data["title"]
+        instance.save()
+        return instance
