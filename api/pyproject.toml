@@ -47,7 +47,7 @@ drf-spectacular = "==0.26.5"
 markdown = "==3.4.4"
 persisting-theory = "==1.0"
 psycopg2 = "==2.9.9"
-redis = "==4.5.5"
+redis = "==5.0.1"
 
 # Django LDAP
 django-auth-ldap = "==4.1.0"
