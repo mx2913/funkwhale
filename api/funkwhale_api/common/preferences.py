@@ -93,7 +93,6 @@ class SerializedPreference(types.BasePreferenceType):
     serializer
     """
 
-    serializer = JSONSerializer
     data_serializer_class = None
     field_class = JSONField
     widget = forms.Textarea

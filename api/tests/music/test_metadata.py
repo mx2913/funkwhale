@@ -198,8 +198,8 @@ def test_can_get_pictures(name):
     cover_data = data.get_picture("cover_front", "other")
     assert cover_data["mimetype"].startswith("image/")
     assert len(cover_data["content"]) > 0
-    assert type(cover_data["content"]) == bytes
-    assert type(cover_data["description"]) == str
+    assert type(cover_data["content"]) is bytes
+    assert type(cover_data["description"]) is str
 
 
 @pytest.mark.parametrize(

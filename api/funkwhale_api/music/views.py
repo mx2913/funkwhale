@@ -297,8 +297,6 @@ class LibraryViewSet(
         )
         instance.delete()
 
-    follows = action
-
     @extend_schema(
         responses=federation_api_serializers.LibraryFollowSerializer(many=True)
     )

@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
         self.help = "Helper to generate randomized testdata"
         self.type_choices = {"notifications": self.handle_notifications}
-        self.missing_args_message = f"Please specify one of the following sub-commands: { *self.type_choices.keys(), }"
+        self.missing_args_message = f"Please specify one of the following sub-commands: {*self.type_choices.keys(), }"
 
     def add_arguments(self, parser):
         subparsers = parser.add_subparsers(dest="subcommand")
