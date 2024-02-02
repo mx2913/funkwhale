@@ -2,7 +2,8 @@ import logging.config
 import sys
 import warnings
 from collections import OrderedDict
-from urllib.parse import urlparse, urlsplit
+from urllib.parse import urlsplit
+from . import testing
 
 import environ
 from celery.schedules import crontab
@@ -1031,14 +1032,9 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
     ),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
-    "TEST_REQUEST_RENDERER_CLASSES": [
-        "rest_framework.renderers.MultiPartRenderer",
-        "rest_framework.renderers.JSONRenderer",
-        "rest_framework.renderers.TemplateHTMLRenderer",
-        "funkwhale_api.playlists.renderers.PlaylistXspfRenderer",
-    ],
     "NUM_PROXIES": env.int("NUM_PROXIES", default=1),
 }
+REST_FRAMEWORK.update(testing.REST_FRAMEWORK)
 THROTTLING_ENABLED = env.bool("THROTTLING_ENABLED", default=True)
 """
 Whether to enable throttling (also known as rate-limiting).
