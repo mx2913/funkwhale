@@ -430,6 +430,22 @@ build_api:
     paths:
       - api
 
+build_desktop:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /(stable|develop)/
+    - changes: [front/**/*]
+
+  image: $CI_REGISTRY/funkwhale/ci/node-tauri:18
+  variables:
+    <<: *keep_git_files_permissions
+  script:
+    - yarn tauri build
+  artifacts:
+    name: desktop_${CI_COMMIT_REF_NAME}
+    paths:
+      - front/tauri/target/release/bundle
+
 deploy_docs:
   interruptible: false
   extends: .ssh-agent
