@@ -96,7 +96,7 @@ typesense = { version = "==0.15.1", optional = true }
 # Dependencies pinning
 ipython = "==8.12.3"
 pluralizer = "==1.2.0"
-service-identity = "==21.1.0"
+service-identity = "==24.1.0"
 unicode-slugify = "==0.1.5"
 
 [tool.poetry.group.dev.dependencies]
