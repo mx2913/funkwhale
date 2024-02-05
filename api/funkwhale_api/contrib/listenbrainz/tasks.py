@@ -1,7 +1,9 @@
 import datetime
+
 import liblistenbrainz
 
 from django.utils import timezone
+
 from config import plugins
 from funkwhale_api.favorites import models as favorites_models
 from funkwhale_api.history import models as history_models

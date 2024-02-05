@@ -1,14 +1,14 @@
-import funkwhale_api
 import liblistenbrainz
 
-from config import plugins
 from django.utils import timezone
 
-from funkwhale_api.history import models as history_models
+import funkwhale_api
+from config import plugins
 from funkwhale_api.favorites import models as favorites_models
+from funkwhale_api.history import models as history_models
 
-from .funkwhale_startup import PLUGIN
 from . import tasks
+from .funkwhale_startup import PLUGIN
 
 
 @plugins.register_hook(plugins.LISTENING_CREATED, PLUGIN)
@@ -73,7 +73,7 @@ def submit_favorite_creation(track_favorite, conf, **kwargs):
     track = track_favorite.track
     if not track.mbid:
         logger.warning(
-            "This tracks doesn't have a mbid. Feedback will not be submited to Listenbrainz"
+            "This tracks doesn't have a mbid. Feedback will not be submitted to Listenbrainz"
         )
         return
     client.submit_user_feedback(1, track.mbid)
@@ -90,7 +90,7 @@ def submit_favorite_deletion(track_favorite, conf, **kwargs):
     track = track_favorite.track
     if not track.mbid:
         logger.warning(
-            "This tracks doesn't have a mbid. Feedback will not be submited to Listenbrainz"
+            "This tracks doesn't have a mbid. Feedback will not be submitted to Listenbrainz"
         )
         return
     client.submit_user_feedback(0, track.mbid)
