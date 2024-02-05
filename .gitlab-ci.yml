@@ -439,6 +439,8 @@ build_desktop:
   image: $CI_REGISTRY/funkwhale/ci/node-tauri:18
   variables:
     <<: *keep_git_files_permissions
+  before_script:
+    - yarn install
   script:
     - yarn tauri build
   artifacts:
