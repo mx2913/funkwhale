@@ -950,6 +950,16 @@ CELERY_BEAT_SCHEDULE = {
         ),
         "options": {"expires": 60 * 60},
     },
+    "listenbrainz.trigger_listening_sync_with_listenbrainz": {
+        "task": "listenbrainz.trigger_listening_sync_with_listenbrainz",
+        "schedule": crontab(day_of_week="*", minute="0", hour="3"),
+        "options": {"expires": 60 * 60 * 24},
+    },
+    "listenbrainz.trigger_favorite_sync_with_listenbrainz": {
+        "task": "listenbrainz.trigger_favorite_sync_with_listenbrainz",
+        "schedule": crontab(day_of_week="*", minute="0", hour="3"),
+        "options": {"expires": 60 * 60 * 24},
+    },
 }
 
 if env.str("TYPESENSE_API_KEY", default=None):

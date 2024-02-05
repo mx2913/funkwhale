@@ -1,5 +1,5 @@
 import datetime
-import pylistenbrainz
+import liblistenbrainz
 
 from django.utils import timezone
 from config import plugins
@@ -47,27 +47,20 @@ def trigger_favorite_sync_with_listenbrainz():
 
 
 @celery.app.task(name="listenbrainz.import_listenbrainz_listenings")
-def import_listenbrainz_listenings(user, user_name, ts):
-    client = pylistenbrainz.ListenBrainz()
-    listens = client.get_listens(username=user_name, min_ts=ts, count=100)
-    add_lb_listenings_to_db(listens, user)
-    new_ts = 13
-    last_ts = 12
-    while new_ts != last_ts:
-        last_ts = max(
-            listens,
-            key=lambda obj: datetime.datetime.fromtimestamp(
-                obj.listened_at, timezone.utc
-            ),
-        )
-        listens = client.get_listens(username=user_name, min_ts=new_ts, count=100)
+def import_listenbrainz_listenings(user, user_name, since):
+    client = liblistenbrainz.ListenBrainz()
+    response = client.get_listens(username=user_name, min_ts=since, count=100)
+    listens = response["payload"]["listens"]
+    while listens:
+        add_lb_listenings_to_db(listens, user)
         new_ts = max(
             listens,
             key=lambda obj: datetime.datetime.fromtimestamp(
                 obj.listened_at, timezone.utc
             ),
         )
-        add_lb_listenings_to_db(listens, user)
+        response = client.get_listens(username=user_name, min_ts=new_ts, count=100)
+        listens = response["payload"]["listens"]
 
 
 def add_lb_listenings_to_db(listens, user):
@@ -119,46 +112,51 @@ def add_lb_listenings_to_db(listens, user):
 
 
 @celery.app.task(name="listenbrainz.import_listenbrainz_favorites")
-def import_listenbrainz_favorites(user, user_name, last_sync):
-    client = pylistenbrainz.ListenBrainz()
-    last_ts = int(datetime.datetime.now(timezone.utc).timestamp())
+def import_listenbrainz_favorites(user, user_name, since):
+    client = liblistenbrainz.ListenBrainz()
+    response = client.get_user_feedback(username=user_name)
     offset = 0
-    while last_ts >= last_sync:
-        feedbacks = client.get_user_feedback(username=user_name, offset=offset)
-        add_lb_feedback_to_db(feedbacks, user)
-        offset = feedbacks.count
-        last_ts = max(
-            feedbacks.feedback,
-            key=lambda obj: datetime.datetime.fromtimestamp(obj.created, timezone.utc),
-        )
-        # to do implement offset in pylb
+    while response["feedback"]:
+        count = response["count"]
+        offset = offset + count
+        last_sync = min(
+            response["feedback"],
+            key=lambda obj: datetime.datetime.fromtimestamp(
+                obj["created"], timezone.utc
+            ),
+        )["created"]
+        add_lb_feedback_to_db(response["feedback"], user)
+        if last_sync <= since or count == 0:
+            return
+        response = client.get_user_feedback(username=user_name, offset=offset)
 
 
 def add_lb_feedback_to_db(feedbacks, user):
     logger = PLUGIN["logger"]
-    fw_listens = []
-    for feedback in feedbacks.feedback:
+    for feedback in feedbacks:
         try:
-            track = music_models.Track.objects.get(mbid=feedback.recording_mbid)
+            track = music_models.Track.objects.get(mbid=feedback["recording_mbid"])
         except music_models.Track.DoesNotExist:
             logger.info(
                 "Received feedback track doesn't exist in fw database. Skipping..."
             )
             continue
 
-        if feedback.score == 1:
+        if feedback["score"] == 1:
             favorites_models.TrackFavorite.objects.get_or_create(
                 user=user,
                 creation_date=datetime.datetime.fromtimestamp(
-                    feedback.created, timezone.utc
+                    feedback["created"], timezone.utc
                 ),
                 track=track,
                 source="Listenbrainz",
             )
-        elif feedback.score == 0:
+        elif feedback["score"] == 0:
             try:
-                favorites_models.TrackFavorite.objects.delete(user=user, track=track)
+                favorites_models.TrackFavorite.objects.get(
+                    user=user, track=track
+                ).delete()
             except favorites_models.TrackFavorite.DoesNotExist:
                 continue
-        elif feedback.score == -1:
+        elif feedback["score"] == -1:
             logger.info("Funkwhale doesn't support hate yet <3")
