@@ -10,7 +10,6 @@ from funkwhale_api.users.factories import UserFactory
 class TrackFavorite(NoUpdateOnCreate, factory.django.DjangoModelFactory):
     track = factory.SubFactory(TrackFactory)
     user = factory.SubFactory(UserFactory)
-    creation_date = factory.Faker("date_time_this_decade", tzinfo=timezone.utc)
 
     class Meta:
         model = "favorites.TrackFavorite"
