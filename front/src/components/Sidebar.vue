@@ -17,6 +17,7 @@ import Logo from '~/components/Logo.vue'
 
 import useThemeList from '~/composables/useThemeList'
 import useTheme from '~/composables/useTheme'
+import { isTauri as checkTauri } from '~/composables/tauri'
 
 interface Props {
   width: number
@@ -103,7 +104,7 @@ watch(locale, (locale) => {
 })
 
 const isProduction = import.meta.env.PROD
-const isTauri = 'TAURI_ENV_PLATFORM' in import.meta.env
+const isTauri = checkTauri()
 
 const showUserModal = ref(false)
 const showThemeModal = ref(false)
