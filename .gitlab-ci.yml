@@ -440,6 +440,7 @@ build_desktop:
   variables:
     <<: *keep_git_files_permissions
   before_script:
+    - source /root/.cargo/env
     - yarn install
   script:
     - yarn tauri build
