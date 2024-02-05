@@ -1,9 +1,9 @@
 import datetime
 import logging
 
-import pytest
 import liblistenbrainz
 
+import pytest
 from django.urls import reverse
 from django.utils import timezone
 
