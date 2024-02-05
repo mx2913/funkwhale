@@ -5,9 +5,11 @@ import pytest
 from funkwhale_api.common import utils as common_utils
 from funkwhale_api.music.management.commands import (
     check_inplace_files,
+    create_playlist_from_folder_structure,
     fix_uploads,
     prune_library,
 )
+from funkwhale_api.playlists import models as playlist_models
 
 DATA_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -204,3 +206,23 @@ def test_check_inplace_files_no_dry_run(factories, tmpfile):
 
     for u in not_prunable:
         u.refresh_from_db()
+
+
+def test_create_playlist_from_folder_structure(factories, tmp_path):
+    user = factories["users.User"]()
+    c = create_playlist_from_folder_structure.Command()
+    options = {
+        "dir_name": DATA_DIR,
+        "user_name": user.username,
+        "privacy_level": "me",
+        "yes": True,
+        "no_dry_run": True,
+        "only_mbid": False,
+    }
+    c.handle(**options)
+
+    assert (
+        playlist_models.Playlist.objects.all()
+        .filter(name="test_directory_playlist")
+        .exists()
+    )
