@@ -47,5 +47,7 @@ def get_activity(user, limit=20):
             "track", "user", "track__artist", "track__album__artist"
         ),
     ]
+    breakpoint()
     records = combined_recent(limit=limit, querysets=querysets)
+
     return [r["object"] for r in records]
