@@ -1,4 +1,4 @@
-# Delete funkwhale objects that don't have a Musicbrainz id 
+# Delete funkwhale objects that don't have a Musicbrainz id
 
 If you enable the option to [only allow MusicBrainz content](../configuration/instance-settings.md) on your pod after you've uploaded content,you can to use this command to prune content that doesn't have a MusicBrainz ID to make your database more consistent.
 
@@ -9,7 +9,6 @@ This action **does not** send a notification to your users before content is rem
 ```{warning}
 Running `prune_non_mbid_content` with the `--no-dry-run` flag is irreversible. Make sure you [back up your data](../upgrade/backup.md).
 ```
-
 
 ::::{tab-set}
 
