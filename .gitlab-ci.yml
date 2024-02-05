@@ -447,7 +447,7 @@ build_desktop:
   artifacts:
     name: desktop_${CI_COMMIT_REF_NAME}
     paths:
-      - front/tauri/target/release/bundle
+      - front/tauri/target/release/bundle/appimage/*.AppImage
 
 deploy_docs:
   interruptible: false
