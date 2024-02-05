@@ -277,16 +277,6 @@ def disabled_musicbrainz(mocker):
     )
 
 
-# @pytest.fixture()
-# def disabled_listenbrainz(mocker):
-#     # we ensure no listenbrainz requests gets out
-#     yield mocker.patch.object(
-#         listenbrainz.client.ListenBrainzClient,
-#         "_submit",
-#         return_value=None,
-#     )
-
-
 @pytest.fixture(autouse=True)
 def r_mock(requests_mock):
     """

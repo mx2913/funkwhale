@@ -1,13 +1,14 @@
-import liblistenbrainz
-from django.utils import timezone
-
 import funkwhale_api
-import pylistenbrainz
+import liblistenbrainz
 
-from .funkwhale_startup import PLUGIN
+from config import plugins
+from django.utils import timezone
 
 from funkwhale_api.history import models as history_models
 from funkwhale_api.favorites import models as favorites_models
+
+from .funkwhale_startup import PLUGIN
+from . import tasks
 
 
 @plugins.register_hook(plugins.LISTENING_CREATED, PLUGIN)
@@ -20,12 +21,12 @@ def submit_listen(listening, conf, **kwargs):
     logger.info("Submitting listen to ListenBrainz")
     client = liblistenbrainz.ListenBrainz()
     client.set_auth_token(user_token)
-    listen = get_listen(listening.track)
+    listen = get_lb_listen(listening)
 
     client.submit_single_listen(listen)
 
 
-def get_listen(listening):
+def get_lb_listen(listening):
     track = listening.track
     additional_info = {
         "media_player": "Funkwhale",
@@ -68,11 +69,11 @@ def submit_favorite_creation(track_favorite, conf, **kwargs):
         return
     logger = PLUGIN["logger"]
     logger.info("Submitting favorite to ListenBrainz")
-    client = pylistenbrainz.ListenBrainz()
-    track = get_listen(track_favorite.track)
+    client = liblistenbrainz.ListenBrainz()
+    track = track_favorite.track
     if not track.mbid:
         logger.warning(
-            "This tracks doesn't have a mbid. Feedback will not be sublited to Listenbrainz"
+            "This tracks doesn't have a mbid. Feedback will not be submited to Listenbrainz"
         )
         return
     client.submit_user_feedback(1, track.mbid)
@@ -85,8 +86,8 @@ def submit_favorite_deletion(track_favorite, conf, **kwargs):
         return
     logger = PLUGIN["logger"]
     logger.info("Submitting favorite deletion to ListenBrainz")
-    client = pylistenbrainz.ListenBrainz()
-    track = get_listen(track_favorite.track)
+    client = liblistenbrainz.ListenBrainz()
+    track = track_favorite.track
     if not track.mbid:
         logger.warning(
             "This tracks doesn't have a mbid. Feedback will not be submited to Listenbrainz"
@@ -109,13 +110,12 @@ def sync_listenings_from_listenbrainz(user, conf):
             .filter(source="Listenbrainz")
             .latest("creation_date")
             .values_list("creation_date", flat=True)
-        )
-        last_ts.timestamp()
-    except history_models.Listening.DoesNotExist:
-        tasks.import_listenbrainz_listenings(user, user_name, ts=0)
+        ).timestamp()
+    except funkwhale_api.history.models.Listening.DoesNotExist:
+        tasks.import_listenbrainz_listenings(user, user_name, 0)
         return
 
-    tasks.import_listenbrainz_listenings(user, user_name, ts=last_ts)
+    tasks.import_listenbrainz_listenings(user, user_name, last_ts)
 
 
 @plugins.register_hook(plugins.FAVORITE_SYNC, PLUGIN)
@@ -129,11 +129,10 @@ def sync_favorites_from_listenbrainz(user, conf):
             favorites_models.TrackFavorite.objects.filter(user=user)
             .filter(source="Listenbrainz")
             .latest("creation_date")
-            .values_list("creation_date", flat=True)
+            .creation_date.timestamp()
         )
-        last_ts.timestamp()
-    except history_models.Listening.DoesNotExist:
-        tasks.import_listenbrainz_favorites(user, user_name, ts=0)
+    except favorites_models.TrackFavorite.DoesNotExist:
+        tasks.import_listenbrainz_favorites(user, user_name, 0)
         return
 
-    tasks.import_listenbrainz_favorites(user, user_name, ts=last_ts)
+    tasks.import_listenbrainz_favorites(user, user_name, last_ts)
