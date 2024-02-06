@@ -200,7 +200,7 @@ class AuthorizeView(views.APIView, oauth_views.AuthorizationView):
             return self.json_payload({"non_field_errors": ["Invalid application"]}, 400)
 
     def redirect(self, redirect_to, application):
-        if self.request.is_ajax():
+        if self.request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
             # Web client need this to be able to redirect the user
             query = urllib.parse.urlparse(redirect_to).query
             code = urllib.parse.parse_qs(query)["code"][0]
