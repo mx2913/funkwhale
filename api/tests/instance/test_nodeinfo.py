@@ -153,10 +153,10 @@ def test_nodeinfo_21(api_client):
                     ),
                     ("topMusicCategories", []),
                     ("topPodcastCategories", []),
-                    ("onlyMbidTaggedContent", False),
                 ]
             ),
             "codeOfConduct": "",
+            "onlyMbidTaggedContent": False,
         },
     }
 
