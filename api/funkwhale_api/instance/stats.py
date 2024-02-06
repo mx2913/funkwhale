@@ -3,6 +3,7 @@ import datetime
 from django.db.models import Count, F, Sum
 from django.utils import timezone
 
+from funkwhale_api.common import preferences
 from funkwhale_api.favorites.models import TrackFavorite
 from funkwhale_api.history.models import Listening
 from funkwhale_api.music import models
@@ -32,6 +33,7 @@ def get_content():
         },
         "topMusicCategories": get_top_music_categories(),
         "topPodcastCategories": get_top_podcast_categories(),
+        "onlyMbidTaggedContent": get_only_mbid_tagged__ontent(),
     }
 
 
@@ -97,3 +99,7 @@ def get_music_duration():
     if seconds:
         return seconds / 3600
     return 0
+
+
+def get_only_mbid_tagged__ontent():
+    return preferences.get("music__only_allow_musicbrainz_tagged_files")
