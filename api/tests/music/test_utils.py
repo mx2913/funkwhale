@@ -135,9 +135,8 @@ def test_transcode_file(name, expected):
 
 def test_custom_s3_domain(factories, settings):
     """See #2220"""
-    settings.DEFAULT_FILE_STORAGE = "funkwhale_api.common.storage.ASCIIS3Boto3Storage"
     settings.AWS_S3_CUSTOM_DOMAIN = "my.custom.domain.tld"
+    settings.DEFAULT_FILE_STORAGE = "funkwhale_api.common.storage.ASCIIS3Boto3Storage"
     f = factories["music.Upload"].build(audio_file__filename="test.mp3")
-    print(f.audio_file.url)
 
     assert f.audio_file.url.startswith("https://")
