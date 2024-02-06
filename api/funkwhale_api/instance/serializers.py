@@ -1,6 +1,7 @@
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from funkwhale_api.common import preferences
 from funkwhale_api.federation.utils import full_url
 
 
@@ -206,6 +207,7 @@ class Metadata21Serializer(MetadataSerializer):
     content = MetadataContentSerializer()
     features = serializers.ListField(child=serializers.CharField())
     codeOfConduct = serializers.SerializerMethodField()
+    onlyMbidTaggedContent = serializers.SerializerMethodField()
 
     def get_codeOfConduct(self, obj) -> str:
         return (
@@ -213,6 +215,9 @@ class Metadata21Serializer(MetadataSerializer):
             if obj["preferences"].get("instance__rules")
             else ""
         )
+
+    def get_onlyMbidTaggedContent(self, obj):
+        return preferences.get("music__only_allow_musicbrainz_tagged_files")
 
 
 class NodeInfo20Serializer(serializers.Serializer):
