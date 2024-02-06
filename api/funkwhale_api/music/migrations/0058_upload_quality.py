@@ -12,80 +12,56 @@ def set_quality_upload(apps, schema_editor):
     extension_to_mimetypes = utils.get_extension_to_mimetype_dict()
 
     # Low quality
-    mp3_query = Q(
-        mimetype=extension_to_mimetypes["mp3"],
-        bitrate__lte=192,
-    )
+    mp3_query = Q(mimetype__in=extension_to_mimetypes["mp3"]) & Q(bitrate__lte=192)
 
     OpusAACOGG_query = Q(
         mimetype__in=list(
             itertools.chain(
-                extension_to_mimetypes["mp3"],
+                extension_to_mimetypes["opus"],
                 extension_to_mimetypes["ogg"],
                 extension_to_mimetypes["aac"],
             )
-        ),
-        bitrate__lte=96,
-    )
+        )
+    ) & Q(bitrate__lte=96)
 
-    Upload.objects.filter(mp3_query | OpusAACOGG_query).update(quality=0)
+    low = Upload.objects.filter((mp3_query) | (OpusAACOGG_query))
+    low.update(quality=0)
 
     # medium
-    mp3_query = Q(
-        mimetype=extension_to_mimetypes["mp3"],
-        bitrate__lte=256,
-    )
-    ogg_query = Q(
-        mimetype=extension_to_mimetypes["ogg"],
-        bitrate__lte=192,
-    )
+    mp3_query = Q(mimetype__in=extension_to_mimetypes["mp3"]) & Q(bitrate__lte=256)
+    ogg_query = Q(mimetype__in=extension_to_mimetypes["ogg"]) & Q(bitrate__lte=192)
 
     aacopus_query = Q(
-        mimetype=list(
+        mimetype__in=list(
             itertools.chain(
                 extension_to_mimetypes["aac"], extension_to_mimetypes["opus"]
             )
-        ),
-        bitrate__lte=128,
-    )
+        )
+    ) & Q(bitrate__lte=128)
 
-    Upload.objects.filter(mp3_query | ogg_query | aacopus_query).update(quality=1)
+    medium = Upload.objects.filter((mp3_query) | (ogg_query) | (aacopus_query)).exclude(
+        pk__in=low.values_list("pk", flat=True)
+    )
+    medium.update(quality=1)
 
     # high
-    mp3_query = Q(
-        mimetype=extension_to_mimetypes["mp3"],
-        bitrate__lte=320,
-    )
-    ogg_query = Q(
-        mimetype=extension_to_mimetypes["ogg"],
-        bitrate__lte=256,
-    )
-    aac_query = Q(
-        mimetype=extension_to_mimetypes["aac"],
-        bitrate__lte=288,
-    )
+    mp3_query = Q(mimetype__in=extension_to_mimetypes["mp3"]) & Q(bitrate__lte=320)
+    ogg_query = Q(mimetype__in=extension_to_mimetypes["ogg"]) & Q(bitrate__lte=256)
+    aac_query = Q(mimetype__in=extension_to_mimetypes["aac"]) & Q(bitrate__lte=288)
+    opus_query = Q(mimetype__in=extension_to_mimetypes["opus"]) & Q(bitrate__lte=160)
 
-    flacaifaiff_query = Q(
-        mimetype=list(
-            itertools.chain(
-                extension_to_mimetypes["flac"],
-                extension_to_mimetypes["aif"],
-                extension_to_mimetypes["aiff"],
-            )
-        )
+    high = (
+        Upload.objects.filter((mp3_query) | (ogg_query) | (aac_query) | (opus_query))
+        .exclude(pk__in=low.values_list("pk", flat=True))
+        .exclude(pk__in=medium.values_list("pk", flat=True))
     )
-
-    Upload.objects.filter(mp3_query | ogg_query | aac_query | flacaifaiff_query).update(
-        quality=2
-    )
+    high.update(quality=2)
 
     # veryhigh
-    opus_query = Q(
-        mimetype=extension_to_mimetypes["opus"],
-        bitrate__gte=510,
-    )
+    opus_query = Q(mimetype__in=extension_to_mimetypes["opus"]) & Q(bitrate__gte=510)
+
     flacaifaiff_query = Q(
-        mimetype=list(
+        mimetype__in=list(
             itertools.chain(
                 extension_to_mimetypes["flac"],
                 extension_to_mimetypes["aif"],
@@ -93,7 +69,17 @@ def set_quality_upload(apps, schema_editor):
             )
         )
     )
-    Upload.objects.filter(opus_query | flacaifaiff_query).update(quality=3)
+    Upload.objects.filter((opus_query) | (flacaifaiff_query)).exclude(
+        pk__in=low.values_list("pk", flat=True)
+    ).exclude(pk__in=medium.values_list("pk", flat=True)).exclude(
+        pk__in=high.values_list("pk", flat=True)
+    ).update(
+        quality=3
+    )
+
+
+def skip(apps, schema_editor):
+    pass
 
 
 class Migration(migrations.Migration):
@@ -110,5 +96,5 @@ class Migration(migrations.Migration):
                 default=1,
             ),
         ),
-        migrations.RunPython(set_quality_upload),
+        migrations.RunPython(set_quality_upload, skip),
     ]
