@@ -163,6 +163,9 @@ class NodeInfo21(NodeInfo20):
                 "channels",
                 "podcasts",
             ],
+            "onlyMbidTaggedContent": preferences.get(
+                "music__only_allow_musicbrainz_tagged_files"
+            ),
         }
 
         if not pref.get("common__api_authentication_required"):
