@@ -96,8 +96,6 @@ CELERY_TASK_ALWAYS_EAGER = False
 
 # Your local stuff: Below this line define 3rd party library settings
 
-CSRF_TRUSTED_ORIGINS = [o for o in ALLOWED_HOSTS]
-
 REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "funkwhale_api.schema.CustomAutoSchema"
 SPECTACULAR_SETTINGS = {
     "TITLE": "Funkwhale API",
