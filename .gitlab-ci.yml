@@ -443,7 +443,7 @@ build_desktop:
     - source /root/.cargo/env
     - yarn install
   script:
-    - yarn tauri build
+    - yarn tauri build --verbose
   artifacts:
     name: desktop_${CI_COMMIT_REF_NAME}
     paths:
