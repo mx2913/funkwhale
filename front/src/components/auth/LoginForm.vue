@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { BackendError } from '~/types'
-import type { RouteLocationRaw } from 'vue-router'
+import { onBeforeRouteLeave, type RouteLocationRaw } from 'vue-router'
 
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
+import { useEventListener } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useStore } from '~/store'
@@ -25,6 +26,15 @@ const domain = location.hostname
 const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
+
+// TODO (wvffle): Move to store logic when migrated to pinia
+useEventListener(window, 'beforeunload', () => {
+  store.dispatch('auth/tryFinishOAuthFlow')
+})
+
+onBeforeRouteLeave(() => {
+  store.dispatch('auth/tryFinishOAuthFlow')
+})
 
 const credentials = reactive({
   username: '',
@@ -56,10 +66,11 @@ const submit = async () => {
   } catch (error) {
     const backendError = error as BackendError
 
+    console.error(error)
     if (backendError.response?.status === 400) {
       errors.value = ['invalid_credentials']
     } else {
-      errors.value = backendError.backendErrors
+      errors.value = backendError.backendErrors ?? [error.message ?? error]
     }
   }
 

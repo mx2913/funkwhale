@@ -1,0 +1,8 @@
+{
+  "identifier": "oauth2",
+  "description": "permissions that required for OAuth2 login window",
+  "context": "local",
+  "windows": ["main"],
+  "permissions": ["webview:allow-create-webview-window", "window:allow-close"],
+  "platforms": ["linux", "macOS", "windows", "android", "iOS"]
+}

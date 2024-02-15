@@ -10,11 +10,12 @@
     },
     "windows": [
       {
+        "label": "main",
         "fullscreen": false,
         "height": 600,
+        "width": 800,
         "resizable": true,
-        "title": "Funkwhale",
-        "width": 800
+        "title": "Funkwhale"
       }
     ]
   },
