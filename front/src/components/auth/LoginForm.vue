@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { BackendError } from '~/types'
-import type { RouteLocationRaw } from 'vue-router'
+import { onBeforeRouteLeave, type RouteLocationRaw, useRouter } from 'vue-router'
 
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { useEventListener } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 import { useStore } from '~/store'
 
@@ -25,6 +25,15 @@ const domain = location.hostname
 const { t } = useI18n()
 const store = useStore()
 const router = useRouter()
+
+// TODO (wvffle): Move to store logic when migrated to pinia
+useEventListener(window, 'beforeunload', () => {
+  store.dispatch('auth/tryFinishOAuthFlow')
+})
+
+onBeforeRouteLeave(() => {
+  store.dispatch('auth/tryFinishOAuthFlow')
+})
 
 const credentials = reactive({
   username: '',
@@ -53,13 +62,13 @@ const submit = async () => {
     } else {
       await store.dispatch('auth/oauthLogin', props.next)
     }
-  } catch (error) {
+  } catch (error: any) {
     const backendError = error as BackendError
 
     if (backendError.response?.status === 400) {
       errors.value = ['invalid_credentials']
     } else {
-      errors.value = backendError.backendErrors
+      errors.value = backendError.backendErrors ?? error.message ?? error
     }
   }
 
@@ -68,20 +77,14 @@ const submit = async () => {
 </script>
 
 <template>
-  <form
-    class="ui form"
-    @submit.prevent="submit()"
-  >
-    <div
-      v-if="errors.length > 0"
-      role="alert"
-      class="ui negative message"
-    >
+  <form class="ui form" @submit.prevent="submit()">
+    <div v-if="errors.length > 0" role="alert" class="ui negative message">
       <h4 class="header">
         {{ $t('components.auth.LoginForm.header.loginFailure') }}
       </h4>
       <ul class="list">
-        <li v-if="errors[0] == 'invalid_credentials' && $store.state.instance.settings.moderation.signup_approval_enabled.value">
+        <li
+          v-if="errors[0] == 'invalid_credentials' && $store.state.instance.settings.moderation.signup_approval_enabled.value">
           {{ $t('components.auth.LoginForm.help.approvalRequired') }}
         </li>
         <li v-else-if="errors[0] == 'invalid_credentials'">
@@ -98,38 +101,23 @@ const submit = async () => {
           {{ $t('components.auth.LoginForm.label.username') }}
           <template v-if="showSignup">
             <span class="middle pipe symbol" />
-            <router-link :to="{path: '/signup'}">
+            <router-link :to="{ path: '/signup' }">
               {{ $t('components.auth.LoginForm.link.createAccount') }}
             </router-link>
           </template>
         </label>
-        <input
-          id="username-field"
-          ref="username"
-          v-model="credentials.username"
-          required
-          name="username"
-          type="text"
-          autofocus
-          :placeholder="labels.usernamePlaceholder"
-        >
+        <input id="username-field" ref="username" v-model="credentials.username" required name="username" type="text"
+          autofocus :placeholder="labels.usernamePlaceholder">
       </div>
       <div class="field">
         <label for="password-field">
           {{ $t('components.auth.LoginForm.label.password') }}
           <span class="middle pipe symbol" />
-          <router-link
-            tabindex="1"
-            :to="{name: 'auth.password-reset', query: {email: credentials.username}}"
-          >
+          <router-link tabindex="1" :to="{ name: 'auth.password-reset', query: { email: credentials.username } }">
             {{ $t('components.auth.LoginForm.link.resetPassword') }}
           </router-link>
         </label>
-        <password-input
-          v-model="credentials.password"
-          field-id="password-field"
-          required
-        />
+        <password-input v-model="credentials.password" field-id="password-field" required />
       </div>
     </template>
     <template v-else>
@@ -137,10 +125,7 @@ const submit = async () => {
         {{ $t('components.auth.LoginForm.message.redirect', { domain: $store.getters['instance/domain'] }) }}
       </p>
     </template>
-    <button
-      :class="['ui', {'loading': isLoading}, 'right', 'floated', buttonClasses, 'button']"
-      type="submit"
-    >
+    <button :class="['ui', { 'loading': isLoading }, 'right', 'floated', buttonClasses, 'button']" type="submit">
       {{ $t('components.auth.LoginForm.button.login') }}
     </button>
   </form>
