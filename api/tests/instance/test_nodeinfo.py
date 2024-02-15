@@ -156,7 +156,6 @@ def test_nodeinfo_21(api_client):
                 ]
             ),
             "codeOfConduct": "",
-            "onlyMbidTaggedContent": False,
         },
     }
 

@@ -112,9 +112,6 @@ The NodeInfo endpoint must contain all mandatory elements listed in the specific
 `features` (Array\<String\>)
 : A list of enabled features
 
-`onlyMbidTaggedContent` (Boolean)
-: If the pod only allow upload of files tagged with a MusicBrainz Id
-
 ### Backend
 
 A new NodeInfo endpoint will be created that sits alongside the existing `v1` endpoint for backwards-compatibility.

@@ -163,9 +163,6 @@ class NodeInfo21(NodeInfo20):
                 "channels",
                 "podcasts",
             ],
-            "onlyMbidTaggedContent": preferences.get(
-                "music__only_allow_musicbrainz_tagged_files"
-            ),
         }
 
         if not pref.get("common__api_authentication_required"):
@@ -173,6 +170,9 @@ class NodeInfo21(NodeInfo20):
 
         if pref.get("federation__enabled"):
             data["features"].append("federation")
+
+        if preferences.get("music__only_allow_musicbrainz_tagged_files"):
+            data["features"].append("onlyMbidTaggedContent")
 
         serializer = self.serializer_class(data)
         return Response(
