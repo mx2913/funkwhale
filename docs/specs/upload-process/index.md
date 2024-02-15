@@ -126,9 +126,7 @@ The user may optionally send a group `name` in the body of the request to give t
 ```console
 $ curl -X POST "/api/v2/upload-groups" \
   -H "Content-type: application/json" \
-  -d '{
-  "name": "My cool group"
-}'
+  -d '{"name": "My cool group"}'
 ```
 
 :::{note}
@@ -144,7 +142,6 @@ The API should respond with the following information:
 
 ```json
 {
-  "status": "201",
   "name": "My cool group",
   "guid": "18c697b6-f0b0-4000-84cd-30e3e4b1a201",
   "uploadUrl": "/api/v2/upload-groups/18c697b6-f0b0-4000-84cd-30e3e4b1a201/uploads"
@@ -156,16 +153,13 @@ Clients should also be able to send a PATCH request to alter the `name` of an up
 ```console
 $ curl -X PATCH "/api/v2/upload-groups/18c697b6-f0b0-4000-84cd-30e3e4b1a201"" \
   -H "Content-type: application/json" \
-  -d '{
-  "name": "My cool group"
-}'
+  -d '{"name": "My cool group"}'
 ```
 
 The server should respond with a `200: OK` response to reflect that the request updated the resource.
 
 ```json
 {
-  "status": "200",
   "name": "My cool group",
   "guid": "18c697b6-f0b0-4000-84cd-30e3e4b1a201",
   "uploadUrl": "/api/v2/upload-groups/18c697b6-f0b0-4000-84cd-30e3e4b1a201/uploads"
@@ -207,9 +201,8 @@ $ curl -X 'POST' \
   "tags": ["Rock"], \
   "position": 1, \
   "entryNumber": 1, \
-  "releaseDate": "2023-12-14", \
   "license": "string", \
-  "release": {"title": "Juggernaut", "artist": "Autoheart", "mbid": "3fa85f64-5717-4562-b3fc-2c963f66afa6"}, \
+  "release": {"title": "Juggernaut", "artist": "Autoheart", "date": "2023-12-14", "mbid": "3fa85f64-5717-4562-b3fc-2c963f66afa6"}, \
   "artist": {"name": "Autoheart","mbid": "3fa85f64-5717-4562-b3fc-2c963f66afa6"} \
 }' \
   -F 'target={"collections": ["18cda279-b570-4000-800d-580fc7ecb401"]}' \
@@ -236,7 +229,6 @@ $ curl -X 'POST'\
 
 ```json
 {
-  "status": "202",
   "guid": "18c697b6-f0b0-4000-84cd-30e3e4b1a201"
 }
 ```
@@ -250,23 +242,21 @@ If the upload succeeds, the API should respond with a `200: Success` message and
 - The upload `guid`
 - The `title` of the uploaded file
 - The `createdDate` of the upload
-- The `fileType` of the upload
-- The `target` of the upload
+- The `mimeType` of the upload
 - The associated `recording`
 - The associated `release`
 - The `owner` (actor) of the upload
+- The `collections` and/or `channels` the upload is contained in
 
 ```json
 {
   "guid": "18cda279-b5a0-4000-89fc-811321642380",
   "title": "string",
   "createdDate": "1970-01-01T00:00:00.000Z",
-  "fileType": "flac",
+  "mimeType": "flac",
   "uploadGroup": "18cda279-b5a0-4000-8f5b-fa6702365101",
   "status": "Succeeded",
-  "target": {
-    "collections": ["18cda279-b5a0-4000-8d96-e9c3c9045c01"]
-  },
+  "collections": ["18cda279-b5a0-4000-8d96-e9c3c9045c01"],
   "recording": {
     "guid": "18cda279-b5a0-4000-889e-8f6a6a54f401",
     "fid": "http://example.com",
