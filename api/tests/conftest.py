@@ -27,6 +27,7 @@ from funkwhale_api.activity import record
 from funkwhale_api.federation import actors
 from funkwhale_api.moderation import mrf
 from funkwhale_api.music import licenses
+
 from . import utils as test_utils
 
 pytest_plugins = "aiohttp.pytest_plugin"

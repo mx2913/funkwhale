@@ -36,7 +36,7 @@ PLUGIN = plugins.get_plugin_config(
             "label": "Enable listenings sync",
             "help": "If enable, your listening from Listenbrainz will be imported into Funkwhale. This means they \
                 will be used has any other funkwhale listenings to filter out recently listened content or \
-                generate recomendations",
+                generate recommendations",
         },
         {
             "name": "sync_facorites",
@@ -50,7 +50,7 @@ PLUGIN = plugins.get_plugin_config(
             "name": "submit_favorites",
             "type": "boolean",
             "default": False,
-            "label": "Enable favorite submition to Listenbrainz services",
+            "label": "Enable favorite submission to Listenbrainz services",
             "help": "If enable, your favorites from Funkwhale will be submit to Listenbrainz",
         },
     ],

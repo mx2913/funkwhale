@@ -1,5 +1,4 @@
 import factory
-from django.utils import timezone
 
 from funkwhale_api.factories import NoUpdateOnCreate, registry
 from funkwhale_api.music.factories import TrackFactory
