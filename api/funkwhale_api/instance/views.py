@@ -175,7 +175,6 @@ class NodeInfo21(NodeInfo20):
             data["features"].append("federation")
 
         serializer = self.serializer_class(data)
-        breakpoint()
         return Response(
             serializer.data, status=200, content_type=NODEINFO_2_CONTENT_TYPE
         )
