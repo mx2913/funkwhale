@@ -1,7 +1,6 @@
 import datetime
 
 import liblistenbrainz
-
 from django.utils import timezone
 
 from config import plugins
