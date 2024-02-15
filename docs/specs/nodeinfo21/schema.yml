@@ -581,7 +581,7 @@ components:
                 - "federation"
                 - "anonymousCanListen"
           onlyMbidTaggedContent:
-            type : boolean
+            type: boolean
 
     Error:
       type: object
