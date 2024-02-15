@@ -582,7 +582,7 @@ components:
                 - "anonymousCanListen"
           onlyMbidTaggedContent:
             type : boolean
-            
+
     Error:
       type: object
       properties:

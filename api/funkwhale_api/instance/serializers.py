@@ -206,6 +206,7 @@ class Metadata21Serializer(MetadataSerializer):
     content = MetadataContentSerializer()
     features = serializers.ListField(child=serializers.CharField())
     codeOfConduct = serializers.SerializerMethodField()
+    onlyMbidTaggedContent = serializers.BooleanField()
 
     def get_codeOfConduct(self, obj) -> str:
         return (
