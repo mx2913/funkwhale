@@ -171,6 +171,9 @@ class NodeInfo21(NodeInfo20):
         if pref.get("federation__enabled"):
             data["features"].append("federation")
 
+        if pref.get("music__only_allow_musicbrainz_tagged_files"):
+            data["features"].append("onlyMbidTaggedContent")
+
         serializer = self.serializer_class(data)
         return Response(
             serializer.data, status=200, content_type=NODEINFO_2_CONTENT_TYPE

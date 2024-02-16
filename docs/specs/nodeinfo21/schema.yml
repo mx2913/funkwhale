@@ -580,6 +580,8 @@ components:
                 - "audiobooks"
                 - "federation"
                 - "anonymousCanListen"
+                - "onlyMbidTaggedContent"
+
     Error:
       type: object
       properties:
