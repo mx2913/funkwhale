@@ -77,14 +77,22 @@ const submit = async () => {
 </script>
 
 <template>
-  <form class="ui form" @submit.prevent="submit()">
-    <div v-if="errors.length > 0" role="alert" class="ui negative message">
+  <form
+    class="ui form"
+    @submit.prevent="submit()"
+  >
+    <div
+      v-if="errors.length > 0"
+      role="alert"
+      class="ui negative message"
+    >
       <h4 class="header">
         {{ $t('components.auth.LoginForm.header.loginFailure') }}
       </h4>
       <ul class="list">
         <li
-          v-if="errors[0] == 'invalid_credentials' && $store.state.instance.settings.moderation.signup_approval_enabled.value">
+          v-if="errors[0] == 'invalid_credentials' && $store.state.instance.settings.moderation.signup_approval_enabled.value"
+        >
           {{ $t('components.auth.LoginForm.help.approvalRequired') }}
         </li>
         <li v-else-if="errors[0] == 'invalid_credentials'">
@@ -106,18 +114,33 @@ const submit = async () => {
             </router-link>
           </template>
         </label>
-        <input id="username-field" ref="username" v-model="credentials.username" required name="username" type="text"
-          autofocus :placeholder="labels.usernamePlaceholder">
+        <input
+          id="username-field"
+          ref="username"
+          v-model="credentials.username"
+          required
+          name="username"
+          type="text"
+          autofocus
+          :placeholder="labels.usernamePlaceholder"
+        >
       </div>
       <div class="field">
         <label for="password-field">
           {{ $t('components.auth.LoginForm.label.password') }}
           <span class="middle pipe symbol" />
-          <router-link tabindex="1" :to="{ name: 'auth.password-reset', query: { email: credentials.username } }">
+          <router-link
+            tabindex="1"
+            :to="{ name: 'auth.password-reset', query: { email: credentials.username } }"
+          >
             {{ $t('components.auth.LoginForm.link.resetPassword') }}
           </router-link>
         </label>
-        <password-input v-model="credentials.password" field-id="password-field" required />
+        <password-input
+          v-model="credentials.password"
+          field-id="password-field"
+          required
+        />
       </div>
     </template>
     <template v-else>
@@ -125,7 +148,10 @@ const submit = async () => {
         {{ $t('components.auth.LoginForm.message.redirect', { domain: $store.getters['instance/domain'] }) }}
       </p>
     </template>
-    <button :class="['ui', { 'loading': isLoading }, 'right', 'floated', buttonClasses, 'button']" type="submit">
+    <button
+      :class="['ui', { 'loading': isLoading }, 'right', 'floated', buttonClasses, 'button']"
+      type="submit"
+    >
       {{ $t('components.auth.LoginForm.button.login') }}
     </button>
   </form>

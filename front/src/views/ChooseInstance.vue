@@ -57,7 +57,14 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
 
 <template>
   <div class="instance-chooser">
-    <img src="../assets/logo/logo-full-500.png">
+    <img
+      class="light-logo"
+      src="../assets/logo/logo-full-500.png"
+    >
+    <img
+      class="dark-logo"
+      src="../assets/logo/logo-full-500-white.png"
+    >
 
     <div class="card">
       <h3 class="header">
@@ -100,7 +107,7 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
                 <i class="external icon" />
               </a>
             </i18n-t>
-            {{ t('', {url: store.state.instance.instanceUrl, hostname: store.getters['instance/domain']}) }}
+            {{ t('', { url: store.state.instance.instanceUrl, hostname: store.getters['instance/domain'] }) }}
           </p>
           <p
             v-else
@@ -120,7 +127,7 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
               >
               <button
                 type="submit"
-                :class="['ui', 'icon', {loading: isLoading}, 'button']"
+                :class="['ui', 'icon', { loading: isLoading }, 'button']"
               >
                 {{ t('views.ChooseInstance.button.submit') }}
               </button>
@@ -172,7 +179,7 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
   align-items: center;
   justify-content: center;
 
-  > .card {
+  >.card {
     margin-top: 2rem;
     max-width: 30rem;
     width: 100%;
@@ -188,5 +195,17 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
       padding: 0 6px 6px;
     }
   }
+}
+
+.theme-dark .instance-chooser>.card {
+  background: var(--sidebar-background);
+}
+
+.theme-dark .instance-chooser>.light-logo {
+  display: none;
+}
+
+.theme-light .instance-chooser>.dark-logo {
+  display: none;
 }
 </style>
