@@ -144,7 +144,6 @@ find_broken_links:
       --cache
       --no-progress
       --exclude-all-private
-      --exclude-mail
       --exclude 'demo\.funkwhale\.audio'
       --exclude 'nginx\.com'
       --exclude-path 'docs/_templates/'
