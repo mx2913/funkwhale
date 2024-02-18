@@ -57,7 +57,8 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
 
 <template>
   <div class="instance-chooser">
-    <img src="../assets/logo/logo-full-500.png">
+    <img class="light-logo" src="../assets/logo/logo-full-500.png">
+    <img class="dark-logo" src="../assets/logo/logo-full-500-white.png">
 
     <div class="card">
       <h3 class="header">
@@ -65,11 +66,7 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
       </h3>
 
       <div class="scrolling content">
-        <div
-          v-if="isError"
-          role="alert"
-          class="ui negative message"
-        >
+        <div v-if="isError" role="alert" class="ui negative message">
           <h4 class="header">
             {{ t('views.ChooseInstance.header.failure') }}
           </h4>
@@ -83,45 +80,25 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
           </ul>
         </div>
 
-        <form
-          class="ui form"
-          @submit.prevent="checkAndSwitch(instanceUrl)"
-        >
-          <p
-            v-if="store.state.instance.instanceUrl && !isTauriInstance"
-            class="description"
-          >
+        <form class="ui form" @submit.prevent="checkAndSwitch(instanceUrl)">
+          <p v-if="store.state.instance.instanceUrl && !isTauriInstance" class="description">
             <i18n-t keypath="views.ChooseInstance.message.currentConnection">
-              <a
-                :href="store.state.instance.instanceUrl"
-                target="_blank"
-              >
+              <a :href="store.state.instance.instanceUrl" target="_blank">
                 {{ store.getters['instance/domain'] }}
                 <i class="external icon" />
               </a>
             </i18n-t>
-            {{ t('', {url: store.state.instance.instanceUrl, hostname: store.getters['instance/domain']}) }}
+            {{ t('', { url: store.state.instance.instanceUrl, hostname: store.getters['instance/domain'] }) }}
           </p>
-          <p
-            v-else
-            class="description"
-          >
+          <p v-else class="description">
             {{ t('views.ChooseInstance.help.selectPod') }}
           </p>
 
           <div class="field">
             <label for="instance-picker">{{ t('views.ChooseInstance.label.url') }}</label>
             <div class="ui action input">
-              <input
-                id="instance-picker"
-                v-model="instanceUrl"
-                type="text"
-                placeholder="https://funkwhale.server"
-              >
-              <button
-                type="submit"
-                :class="['ui', 'icon', {loading: isLoading}, 'button']"
-              >
+              <input id="instance-picker" v-model="instanceUrl" type="text" placeholder="https://funkwhale.server">
+              <button type="submit" :class="['ui', 'icon', { loading: isLoading }, 'button']">
                 {{ t('views.ChooseInstance.button.submit') }}
               </button>
             </div>
@@ -130,22 +107,14 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
 
         <div class="ui hidden divider" />
 
-        <form
-          v-if="suggestedInstances.length > 0"
-          class="ui form"
-          @submit.prevent=""
-        >
+        <form v-if="suggestedInstances.length > 0" class="ui form" @submit.prevent="">
           <div class="field">
             <h4>
               {{ t('views.ChooseInstance.header.suggestions') }}
             </h4>
             <div class="h-scroll">
-              <button
-                v-for="(url, key) in suggestedInstances"
-                :key="key"
-                class="ui basic button"
-                @click="checkAndSwitch(url)"
-              >
+              <button v-for="(url, key) in suggestedInstances" :key="key" class="ui basic button"
+                @click="checkAndSwitch(url)">
                 {{ url }}
               </button>
             </div>
@@ -172,7 +141,7 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
   align-items: center;
   justify-content: center;
 
-  > .card {
+  >.card {
     margin-top: 2rem;
     max-width: 30rem;
     width: 100%;
@@ -188,5 +157,17 @@ const isTauriInstance = computed(() => store.getters['instance/url'].href === TA
       padding: 0 6px 6px;
     }
   }
+}
+
+.theme-dark .instance-chooser>.card {
+  background: var(--sidebar-background);
+}
+
+.theme-dark .instance-chooser>.light-logo {
+  display: none;
+}
+
+.theme-light .instance-chooser>.dark-logo {
+  display: none;
 }
 </style>
