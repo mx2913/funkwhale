@@ -66,7 +66,7 @@ const tabs = computed(() => [
     <RouterLink
       v-for="tab in tabs"
       :key="tab.key"
-      :to="`/ui/upload/${tab.key}`"
+      :to="`/upload/${tab.key}`"
       custom
       #="{ navigate, isExactActive }"
     >

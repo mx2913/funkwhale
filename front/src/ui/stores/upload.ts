@@ -8,6 +8,7 @@ import FileMetadataParserWorker from '~/ui/workers/file-metadata-parser.ts?worke
 import type { MetadataParsingResult } from '~/ui/workers/file-metadata-parser'
 
 import type { Tags } from '~/ui/composables/metadata'
+import useLogger from '~/composables/useLogger'
 
 export type UploadGroupType = 'music-library' | 'music-channel' | 'podcast-channel'
 export type FailReason = 'missing-tags' | 'upload-failed' | 'upload-cancelled'
@@ -34,6 +35,7 @@ export class UploadGroupEntry {
     const body = new FormData()
     body.append('file', this.file)
 
+    const logger = useLogger()
     await axios.post(this.uploadGroup.uploadUrl, body, {
       headers: { 'Content-Type': 'multipart/form-data' },
       signal: this.abortController.signal,
@@ -43,12 +45,12 @@ export class UploadGroupEntry {
         this.progress = Math.floor(e.loaded / (e.total ?? this.file.size) * 100)
 
         if (this.progress === 100) {
-          console.log(`[${this.id}] upload complete!`)
+          logger.info(`[${this.id}] upload complete!`)
         }
       }
     })
 
-    console.log(`[${this.id}] import complete!`)
+    logger.info(`[${this.id}] import complete!`)
     this.importedAt = new Date()
   }
 
@@ -89,7 +91,7 @@ export class UploadGroup {
     public guid: string,
     public type: UploadGroupType,
     public uploadUrl: string
-  ) {}
+  ) { }
 
   get progress () {
     return this.queue.reduce((total, entry) => total + entry.progress, 0) / this.queue.length
@@ -113,7 +115,8 @@ export class UploadGroup {
 
     const { id, metadata } = entry
     if (!metadata) {
-      console.log('sending message to worker', id)
+      const logger = useLogger()
+      logger.log('sending message to worker', id)
       retrieveMetadata({ id, file })
     }
 
@@ -154,7 +157,6 @@ const { post: retrieveMetadata, data: workerMetadata } = useWebWorker<MetadataPa
 whenever(workerMetadata, (reactiveData) => {
   const data = toRaw(unref(reactiveData))
   const entry = UploadGroup.entries[data.id]
-  console.log(data, entry)
   if (!entry) return
 
   if (data.status === 'success') {
@@ -164,11 +166,14 @@ whenever(workerMetadata, (reactiveData) => {
     }
   } else {
     entry.cancel('missing-tags', data.error)
-    console.warn(`Failed to parse metadata for file ${entry.file.name}:`, data.error)
+    const logger = useLogger()
+    logger.warn(`Failed to parse metadata for file ${entry.file.name}:`, data.error)
   }
 })
 
 export const useUploadsStore = defineStore('uploads', () => {
+  const logger = useLogger()
+
   const createUploadGroup = async (type: UploadGroupType) => {
     // TODO: API call
     const uploadGroup = new UploadGroup('guid:' + nanoid(), type, 'https://httpbin.org/post')
@@ -187,7 +192,7 @@ export const useUploadsStore = defineStore('uploads', () => {
     }
 
     entry.fail('upload-failed', error)
-    console.error(error)
+    logger.error(error)
   }).finally(() => {
     // Move to the next upload despite failing
     currentIndex.value += 1

@@ -44,14 +44,14 @@ const cancel = () => {
   uploads.currentUploadGroup = undefined
 
   if (uploads.queue.length > 0) {
-    return router.push('/ui/upload/running')
+    return router.push('/upload/running')
   }
 }
 
 const continueInBackground = () => {
   libraryOpen.value = false
   uploads.currentUploadGroup = undefined
-  return router.push('/ui/upload/running')
+  return router.push('/upload/running')
 }
 
 // Sorting

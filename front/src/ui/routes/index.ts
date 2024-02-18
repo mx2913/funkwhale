@@ -8,6 +8,7 @@ import auth from './auth'
 import user from './user'
 import store from '~/store'
 import { requireLoggedIn } from '~/router/guards'
+import { useUploadsStore } from '~/ui/stores/upload'
 
 export default [
   {
@@ -49,7 +50,7 @@ export default [
             beforeEnter: (_to, _from, next) => {
               const uploads = useUploadsStore()
               if (uploads.uploadGroups.length === 0) {
-                next('/ui/upload')
+                next('/upload')
               } else {
                 next()
               }

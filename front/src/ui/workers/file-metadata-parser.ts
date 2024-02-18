@@ -19,9 +19,7 @@ export type MetadataParsingResult = MetadataParsingSuccess | MetadataParsingFail
 
 const parse = async (id: string, file: File) => {
   try {
-    console.log(`[${id}] parsing...`)
     const tags = await getTags(file)
-    console.log(`[${id}] tags:`, tags)
     const coverUrl = await getCoverUrl(tags)
 
     postMessage({ id, status: 'success', tags, coverUrl })
