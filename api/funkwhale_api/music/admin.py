@@ -57,6 +57,7 @@ class UploadAdmin(admin.ModelAdmin):
         "size",
         "bitrate",
         "import_status",
+        "upload_group",
     ]
     list_select_related = ["track"]
     search_fields = [
@@ -67,6 +68,11 @@ class UploadAdmin(admin.ModelAdmin):
         "track__artist__name",
     ]
     list_filter = ["mimetype", "import_status", "library__privacy_level"]
+
+
+@admin.register(models.UploadGroup)
+class UploadGroupAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(models.UploadVersion)

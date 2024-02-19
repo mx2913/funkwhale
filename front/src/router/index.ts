@@ -1,5 +1,11 @@
+import { useLocalStorage } from '@vueuse/core'
 import { createRouter, createWebHistory } from 'vue-router'
-import routes from './routes'
+
+import routesV1 from './routes'
+import routesV2 from '~/ui/routes'
+
+const isUIv2 = useLocalStorage('ui-v2', false)
+const routes = isUIv2.value ? routesV2 : routesV1
 
 export default createRouter({
   history: createWebHistory(import.meta.env.VUE_APP_ROUTER_BASE_URL as string ?? '/'),

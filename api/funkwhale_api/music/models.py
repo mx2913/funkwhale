@@ -738,6 +738,9 @@ class Upload(models.Model):
         related_name="uploads",
         on_delete=models.CASCADE,
     )
+    upload_group = models.ForeignKey(
+        "UploadGroup", related_name="uploads", on_delete=models.CASCADE, null=True
+    )
 
     # metadata from federation
     metadata = JSONField(
@@ -754,6 +757,7 @@ class Upload(models.Model):
     )
     # a short reference provided by the client to group multiple files
     # in the same import
+    # TODO DEPRECATED This can be removed when APIv1 gets removed or fully replace by import_group.name
     import_reference = models.CharField(max_length=50, default=get_import_reference)
 
     # optional metadata about import results (error messages, etc.)
@@ -1431,3 +1435,28 @@ def update_request_status(sender, instance, created, **kwargs):
         # let's mark the request as imported since the import is over
         instance.import_request.status = "imported"
         return instance.import_request.save(update_fields=["status"])
+
+
+class UploadGroup(models.Model):
+    """
+    Upload groups are supposed to bundle uploads in order to make it easier to keep an overview
+
+    Attributes
+    ----------
+    name A name that can be selected by the user
+    guid A globally unique identifier to reference the group
+    """
+
+    name = models.CharField(max_length=255, default=datetime.datetime.now)
+    guid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    owner = models.ForeignKey(
+        "federation.Actor", on_delete=models.CASCADE, related_name="upload_groups"
+    )
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def upload_url(self):
+        return f"{settings.FUNKWHALE_URL}/api/v2/upload-groups/{self.guid}/uploads"
