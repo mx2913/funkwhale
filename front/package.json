@@ -35,7 +35,7 @@
     "fomantic-ui-css": "2.9.3",
     "idb-keyval": "6.2.1",
     "lodash-es": "4.17.21",
-    "lru-cache": "7.14.1",
+    "lru-cache": "10.2.0",
     "moment": "2.29.4",
     "showdown": "2.1.0",
     "stacktrace-js": "2.0.2",
