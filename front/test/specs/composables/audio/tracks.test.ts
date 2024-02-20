@@ -20,12 +20,10 @@ const createTrack = <CreateTrackFn>(() => {
   return { id: createTrack.id++, uploads: [] } as any as Track
 })
 
-
 beforeAll(() => {
   const { initialize } = useTracks()
   initialize()
 })
-
 
 describe('cache', () => {
   beforeEach(async () => {
@@ -37,7 +35,7 @@ describe('cache', () => {
       createTrack(),
       createTrack(),
       createTrack(),
-      createTrack(),
+      createTrack()
     )
   })
 

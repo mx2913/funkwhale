@@ -46,7 +46,8 @@ const FILETYPE_COLOR: Record<string, string> = {
 
 // NOTE: We're pushing all logs to the end of the event loop
 const createLoggerFn = (level: LogLevel) => {
-  // @ts-expect-error Use console in test environment
+  // NOTE: Use console in test environment
+  // eslint-disable-next-line no-console
   if (import.meta.env.VITEST) return console[level]
 
   // NOTE: Don't log time and debug in production environment
