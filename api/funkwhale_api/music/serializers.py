@@ -226,17 +226,19 @@ class TrackAlbumSerializer(serializers.ModelSerializer):
         )
 
 
-def serialize_upload(upload) -> object:
-    return {
-        "uuid": str(upload.uuid),
-        "listen_url": upload.listen_url,
-        "size": upload.size,
-        "duration": upload.duration,
-        "bitrate": upload.bitrate,
-        "mimetype": upload.mimetype,
-        "extension": upload.extension,
-        "is_local": federation_utils.is_local(upload.fid),
-    }
+class UploadSerializer(serializers.Serializer):
+    uuid = serializers.UUIDField()
+    listen_url = serializers.URLField()
+    size = serializers.IntegerField()
+    duration = serializers.IntegerField()
+    bitrate = serializers.IntegerField()
+    mimetype = serializers.CharField()
+    extension = serializers.CharField()
+    is_local = serializers.SerializerMethodField()
+
+    @extend_schema_field(serializers.BooleanField())
+    def get_is_local(self, upload):
+        return federation_utils.is_local(upload.fid)
 
 
 def sort_uploads_for_listen(uploads):
@@ -281,11 +283,12 @@ class TrackSerializer(OptionalDescriptionMixin, serializers.Serializer):
     def get_listen_url(self, obj):
         return obj.listen_url
 
-    @extend_schema_field({"type": "array", "items": {"type": "object"}})
+    #  @extend_schema_field({"type": "array", "items": {"type": "object"}})
+    @extend_schema_field(UploadSerializer(many=True))
     def get_uploads(self, obj):
         uploads = getattr(obj, "playable_uploads", [])
         # we put local uploads first
-        uploads = [serialize_upload(u) for u in sort_uploads_for_listen(uploads)]
+        uploads = [UploadSerializer(u).data for u in sort_uploads_for_listen(uploads)]
         uploads = sorted(uploads, key=lambda u: u["is_local"], reverse=True)
         return list(uploads)
 
