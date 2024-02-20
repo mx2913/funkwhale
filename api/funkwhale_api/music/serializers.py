@@ -226,7 +226,7 @@ class TrackAlbumSerializer(serializers.ModelSerializer):
         )
 
 
-class UploadSerializer(serializers.Serializer):
+class TrackUploadSerializer(serializers.Serializer):
     uuid = serializers.UUIDField()
     listen_url = serializers.URLField()
     size = serializers.IntegerField()
@@ -284,11 +284,11 @@ class TrackSerializer(OptionalDescriptionMixin, serializers.Serializer):
         return obj.listen_url
 
     #  @extend_schema_field({"type": "array", "items": {"type": "object"}})
-    @extend_schema_field(UploadSerializer(many=True))
+    @extend_schema_field(TrackUploadSerializer(many=True))
     def get_uploads(self, obj):
         uploads = getattr(obj, "playable_uploads", [])
         # we put local uploads first
-        uploads = [UploadSerializer(u).data for u in sort_uploads_for_listen(uploads)]
+        uploads = [TrackUploadSerializer(u).data for u in sort_uploads_for_listen(uploads)]
         uploads = sorted(uploads, key=lambda u: u["is_local"], reverse=True)
         return list(uploads)
 

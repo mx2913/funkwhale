@@ -245,7 +245,7 @@ def test_track_serializer(factories, to_api_date):
         "title": track.title,
         "position": track.position,
         "disc_number": track.disc_number,
-        "uploads": [serializers.serialize_upload(upload)],
+        "uploads": [serializers.TrackUploadSerializer(upload).data],
         "creation_date": to_api_date(track.creation_date),
         "listen_url": track.listen_url,
         "license": upload.track.license.code,
@@ -373,7 +373,7 @@ def test_manage_upload_action_publish(factories, mocker):
     m.assert_any_call(tasks.process_upload.delay, upload_id=draft.pk)
 
 
-def test_serialize_upload(factories):
+def test_track_upload_serializer(factories):
     upload = factories["music.Upload"]()
 
     expected = {
@@ -387,7 +387,7 @@ def test_serialize_upload(factories):
         "is_local": False,
     }
 
-    data = serializers.serialize_upload(upload)
+    data = serializers.TrackUploadSerializer(upload).data
     assert data == expected
 
 
