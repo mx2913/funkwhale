@@ -288,7 +288,9 @@ class TrackSerializer(OptionalDescriptionMixin, serializers.Serializer):
     def get_uploads(self, obj):
         uploads = getattr(obj, "playable_uploads", [])
         # we put local uploads first
-        uploads = [TrackUploadSerializer(u).data for u in sort_uploads_for_listen(uploads)]
+        uploads = [
+            TrackUploadSerializer(u).data for u in sort_uploads_for_listen(uploads)
+        ]
         uploads = sorted(uploads, key=lambda u: u["is_local"], reverse=True)
         return list(uploads)
 
