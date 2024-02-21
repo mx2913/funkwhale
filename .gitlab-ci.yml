@@ -430,7 +430,7 @@ build_api:
     paths:
       - api
 
-build_desktop:
+build_tauri:
   stage: build
   rules:
     - if: $CI_COMMIT_BRANCH =~ /(stable|develop)/
@@ -537,6 +537,8 @@ package:
     - job: build_api
       artifacts: true
     - job: build_front
+      artifacts: true
+    - job: build_tauri
       artifacts: true
   rules:
     - if: $CI_COMMIT_BRANCH =~ /(stable|develop)/

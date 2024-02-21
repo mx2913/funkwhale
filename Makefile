@@ -51,4 +51,7 @@ package:
 	zip -q 'funkwhale-front.zip' -r front && \
 	rm -Rf front
 
+	cd '$(BUILD_DIR)' && \
+	cp ../front/tauri/target/release/bundle/appimage/funkwhale_*.AppImage FunkwhaleDesktop.AppImage
+
 	cd '$(BUILD_DIR)' && sha256sum * > SHA256SUMS
