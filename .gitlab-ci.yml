@@ -287,6 +287,7 @@ test_front:
       coverage_report:
         coverage_format: cobertura
         path: front/coverage/cobertura-coverage.xml
+  coverage: '/All files\s+\|\s+\d+\.\d+\s+\|\s+\d+\.\d+\s+\|\s+\d+\.\d+\s+\|\s+(\d+\.\d+)\s+.*/'
 
 build_metadata:
   stage: build
