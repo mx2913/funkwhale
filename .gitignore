@@ -111,5 +111,8 @@ tsconfig.tsbuildinfo
 # Vscode
 .vscode/
 
-# Direnv
+# Nix
 .direnv/
+.envrc
+flake.nix
+flake.lock
