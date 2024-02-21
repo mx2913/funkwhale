@@ -4,9 +4,9 @@
 use color_eyre::Result;
 
 fn main() -> Result<()> {
-  color_eyre::install()?;
+    color_eyre::install()?;
 
-  funkwhale_lib::run();
+    funkwhale_lib::run();
 
-  Ok(())
+    Ok(())
 }
