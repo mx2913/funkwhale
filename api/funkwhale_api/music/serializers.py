@@ -236,8 +236,7 @@ class TrackUploadSerializer(serializers.Serializer):
     extension = serializers.CharField()
     is_local = serializers.SerializerMethodField()
 
-    @extend_schema_field(serializers.BooleanField())
-    def get_is_local(self, upload):
+    def get_is_local(self, upload) -> bool:
         return federation_utils.is_local(upload.fid)
 
 
