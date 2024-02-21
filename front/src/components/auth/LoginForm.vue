@@ -68,7 +68,7 @@ const submit = async () => {
     if (backendError.response?.status === 400) {
       errors.value = ['invalid_credentials']
     } else {
-      errors.value = backendError.backendErrors ?? error.message ?? error
+      errors.value = backendError.backendErrors ?? [error.message ?? error]
     }
   }
 

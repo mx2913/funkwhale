@@ -2,7 +2,7 @@ import type { BackendError, User } from '~/types'
 import type { Module } from 'vuex'
 import type { RootState } from '~/store/index'
 import type { RouteLocationRaw } from 'vue-router'
-import type { WebviewWindow } from '@tauri-apps/api/webview'
+import type { WebviewWindow } from '@tauri-apps/api/webviewWindow'
 
 import axios from 'axios'
 import useLogger from '~/composables/useLogger'
@@ -251,7 +251,7 @@ const store: Module<State, RootState> = {
     },
     async tryFinishOAuthFlow ({ state }) {
       if (isTauri()) {
-        return state.oauthWindow?.close().catch(() => {
+        return state.oauthWindow?.close?.().catch(() => {
           // Ignore the error in case of window being already closed
         })
       }
@@ -264,7 +264,7 @@ const store: Module<State, RootState> = {
       const authorizeUrl = `${rootState.instance.instanceUrl}authorize?${params}`
 
       if (isTauri()) {
-        const { WebviewWindow } = await import('@tauri-apps/api/webview')
+        const { WebviewWindow, getCurrent } = await import('@tauri-apps/api/webviewWindow')
 
         state.oauthWindow = new WebviewWindow('oauth', {
           title: `Login to ${rootState.instance.settings.instance.name}`,
@@ -273,9 +273,21 @@ const store: Module<State, RootState> = {
         })
 
         const token = await new Promise((resolve, reject) => {
-          state.oauthWindow?.once('tauri://error', reject)
-          state.oauthWindow?.once('tauri://destroyed', () => reject(new Error('Aborted by user')))
-          state.oauthWindow?.once('oauthToken', async (event) => resolve(event.payload))
+          if (!state.oauthWindow) return
+
+          const stop = getCurrent().once<string>('oauthToken', async (event) => {
+            resolve(event.payload)
+          })
+
+          state.oauthWindow.once('tauri://error', async (error) => {
+            (await stop)()
+            reject(error)
+          })
+
+          state.oauthWindow.once('tauri://destroyed', async () => {
+            (await stop)()
+            reject(new Error('Aborted by user'))
+          })
         }).finally(() => dispatch('tryFinishOAuthFlow'))
 
         commit('oauthToken', token)
@@ -301,12 +313,12 @@ const store: Module<State, RootState> = {
       )
 
       if (isTauri()) {
-        const { getCurrent } = await import('@tauri-apps/api/window')
+        const { getCurrent } = await import('@tauri-apps/api/webviewWindow')
         const currentWindow = getCurrent()
 
         // If the current window is the oauth window, pass the event to the main window
         if (currentWindow.label === 'oauth') {
-          await currentWindow.emit('oauthToken', response.data)
+          await currentWindow.emitTo('main', 'oauthToken', response.data)
           return
         }
       }
