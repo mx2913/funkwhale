@@ -2,9 +2,9 @@
 name = "funkwhale"
 version = "0.1.0"
 description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+authors = ["Funkwhale Collective"]
+license = "AGPLv3"
+repository = "https://dev.funkwhale.audio/funkwhale/funkwhale/"
 default-run = "funkwhale"
 edition = "2021"
 rust-version = "1.60"
