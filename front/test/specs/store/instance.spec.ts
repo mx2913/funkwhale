@@ -7,7 +7,6 @@ import { findDefaultInstanceUrl, TAURI_DEFAULT_INSTANCE_URL } from '~/store/inst
 
 afterEach(() => {
   vi.unstubAllEnvs()
-  vi.unstubAllGlobals()
 })
 
 describe('findDefaultInstanceUrl', () => {
@@ -22,7 +21,6 @@ describe('findDefaultInstanceUrl', () => {
   })
 
   test('location origin', () => {
-    vi.stubGlobal('location', new URL('https://example.com'))
-    expect(findDefaultInstanceUrl()).toBe('https://example.com/')
+    expect(findDefaultInstanceUrl()).toBe('http://localhost:3000/')
   })
 })
