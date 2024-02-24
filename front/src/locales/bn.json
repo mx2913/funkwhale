@@ -1,6 +1,6 @@
 {
   "App": {
-    "loading": ""
+    "loading": "প্রকরিয়ারত…"
   },
   "components": {
     "About": {
@@ -36,43 +36,43 @@
         "activeUsers": "",
         "hoursOfMusic": ""
       },
-      "title": ""
+      "title": "সম্পর্কে"
     },
     "AboutPod": {
       "feature": {
-        "allowList": "",
+        "allowList": "অনুমোদন-তালিকা",
         "anonymousAccess": "",
-        "federation": "",
+        "federation": "ফেডারেশন",
         "quota": "",
-        "registrations": "",
+        "registrations": "নিবন্ধন",
         "status": {
-          "closed": "",
-          "disabled": "",
-          "enabled": "",
-          "open": ""
+          "closed": "বন্ধ",
+          "disabled": "নিষ্ক্রিয়",
+          "enabled": "সক্রিয়",
+          "open": "খোলা"
         },
         "version": ""
       },
       "header": {
         "about": "",
-        "contact": "",
-        "features": "",
-        "rules": "",
-        "statistics": "",
+        "contact": "যোগাযোগ",
+        "features": "বৈশিষ্ট্যসমূহ",
+        "rules": "নিয়ম",
+        "statistics": "পরিসংখ্যান",
         "terms": ""
       },
       "link": {
         "about": "",
-        "features": "",
-        "introduction": "",
-        "rules": "",
-        "statistics": "",
+        "features": "বৈশিষ্ট্যসমূহ",
+        "introduction": "ভূমিকা",
+        "rules": "নিয়ম",
+        "statistics": "পরিসংখ্যান",
         "terms": ""
       },
       "message": {
         "contact": ""
       },
-      "notApplicable": "",
+      "notApplicable": "অপ্রযোজ্য",
       "placeholder": {
         "noDescription": "",
         "noRules": "",
@@ -86,7 +86,7 @@
         "listeningsCount": "",
         "tracksCount": ""
       },
-      "title": ""
+      "title": "সম্পর্কে"
     },
     "Home": {
       "description": {
@@ -100,13 +100,13 @@
       "header": {
         "about": "",
         "aboutFunkwhale": "",
-        "contact": "",
+        "contact": "যোগাযোগ",
         "links": "",
         "login": "",
         "newAlbums": "",
         "newChannels": "",
         "signup": "",
-        "statistics": "",
+        "statistics": "পরিসংখ্যান",
         "welcome": ""
       },
       "help": {
@@ -138,7 +138,7 @@
         "activeUsers": "",
         "hoursOfMusic": ""
       },
-      "title": ""
+      "title": "মূলপাতা"
     },
     "PageNotFound": {
       "header": {
@@ -154,8 +154,8 @@
     },
     "Queue": {
       "button": {
-        "clear": "",
-        "close": "",
+        "clear": "পরিষ্কার",
+        "close": "বন্ধ",
         "stopRadio": ""
       },
       "header": {
@@ -165,17 +165,17 @@
       },
       "label": {
         "addArtistContentFilter": "",
-        "duration": "",
+        "duration": "সময়কাল",
         "enterFullscreen": "",
         "exitFullscreen": "",
         "favorite": "",
         "next": "",
-        "pause": "",
-        "play": "",
+        "pause": "থামো",
+        "play": "চালু",
         "populatingRadio": "",
         "previous": "",
         "queue": "",
-        "remove": "",
+        "remove": "সরাও",
         "restart": "",
         "selectTrack": "",
         "showCoverArt": "",
@@ -187,9 +187,9 @@
         "webglUnsupported": ""
       },
       "meta": {
-        "end": "",
+        "end": "শেষ",
         "queuePosition": "",
-        "startTime": "",
+        "startTime": "০০:০০",
         "unknownAlbum": "",
         "unknownArtist": ""
       },
@@ -199,9 +199,9 @@
     },
     "RemoteSearchForm": {
       "button": {
-        "fediverse": "",
-        "rss": "",
-        "search": ""
+        "fediverse": "ফেডিভার্স",
+        "rss": "আরএসএস",
+        "search": "অনুসন্ধান"
       },
       "description": {
         "fediverse": "",
