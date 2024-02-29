@@ -718,11 +718,3 @@ def test_update_library_privacy_level_create_entries(
 def test_save_upload_quality(factories, mimetype, bitrate, quality):
     upload = factories["music.Upload"](mimetype=mimetype, bitrate=bitrate)
     assert upload.quality == quality
-
-
-# def test_set_quality_upload(factories, mocker):
-#     class apps:
-#         def get_model():
-#             return models.Upload
-
-#     migrations.0058_upload_quality.set_quality_upload(apps, "schema_editor")
