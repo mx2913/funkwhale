@@ -31,6 +31,14 @@ def test_can_get_playlists_octet_stream(factories, logged_in_api_client):
     assert el.findtext("./title") == pl.name
 
 
+def test_can_get_playlists_json(factories, logged_in_api_client):
+    pl = factories["playlists.Playlist"]()
+    url = reverse("api:v2:playlists:playlists-detail", kwargs={"pk": pl.pk})
+    response = logged_in_api_client.get(url, format="json")
+    assert response.status_code == 200
+    assert response.data["name"] == pl.name
+
+
 def test_can_get_user_playlists_list(factories, logged_in_api_client):
     user = factories["users.User"]()
     factories["playlists.Playlist"](user=user)
@@ -79,18 +87,6 @@ def test_can_patch_playlists_octet_stream(factories, logged_in_api_client):
     assert response.status_code == 201
     assert pl.name == "Test"
     assert pl.playlist_tracks.all()[0].track.title == track.title
-
-
-def test_can_get_playlists_id(factories, logged_in_api_client):
-    pl = factories["playlists.Playlist"]()
-    url = reverse("api:v2:playlists:playlists-detail", kwargs={"pk": pl.pk})
-    headers = {"Content-Type": "application/json"}
-
-    response = logged_in_api_client.get(url, headers=headers, format="json")
-    assert response.status_code == 200
-    assert (
-        etree.fromstring(response.content.decode("utf-8")).findtext("title") == pl.name
-    )
 
 
 def test_can_get_playlists_track(factories, logged_in_api_client):

@@ -2,7 +2,7 @@ import logging.config
 import sys
 import warnings
 from collections import OrderedDict
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, urlparse
 from . import testing
 
 import environ
