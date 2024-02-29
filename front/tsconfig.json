@@ -5,7 +5,7 @@
     "sourceMap": true,
     "noUnusedLocals": true,
     "experimentalDecorators": true,
-    "typeRoots": ["node_modules/@types"],
+    "typeRoots": ["node_modules", "node_modules/@types"],
     "types": [
       "vitest/globals",
       "vite/client",
@@ -19,13 +19,7 @@
       "~/*": ["src/*"]
     }
   },
-  "include": [
-    "src/**/*.d.ts",
-    "src/**/*.ts",
-    "src/**/*.vue",
-    "vite.config.ts",
-    "test/**/*.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.vue", "vite.config.ts", "test/**/*.ts"],
   "vueCompilerOptions": {
     "plugins": [
       "@vue-macros/volar/define-options",

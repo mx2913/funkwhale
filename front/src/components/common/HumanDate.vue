@@ -13,13 +13,14 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const date = computed(() => new Date(props.date))
+
 // TODO (wvffle): Translate useTimeAgo
 const realDate = useTimeAgo(date)
 </script>
 
 <template>
   <time
-    :datetime="date"
+    :datetime="date.toString()"
     :title="momentFormat(date)"
   >
     <i

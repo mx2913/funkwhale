@@ -95,6 +95,7 @@
     "jsonc-eslint-parser": "2.4.0",
     "msw": "2.2.1",
     "msw-auto-mock": "0.18.0",
+    "patch-package": "8.0.0",
     "rollup-plugin-visualizer": "5.9.0",
     "sass": "1.57.1",
     "sinon": "15.0.2",
