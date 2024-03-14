@@ -15,7 +15,7 @@
     "lint": "eslint --cache --cache-strategy content --ext .ts,.js,.vue,.json,.html src test cypress public/embed.html",
     "lint:tsc": "vue-tsc --noEmit --incremental && tsc --noEmit --incremental -p cypress",
     "fix-fomantic-css": "scripts/fix-fomantic-css.sh",
-    "postinstall": "yarn run fix-fomantic-css"
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@funkwhale/ui": "0.2.2",
@@ -92,6 +92,8 @@
     "jsonc-eslint-parser": "2.4.0",
     "msw": "2.2.1",
     "msw-auto-mock": "0.18.0",
+    "patch-package": "8.0.0",
+    "postinstall-postinstall": "2.1.0",
     "rollup-plugin-visualizer": "5.9.0",
     "sass": "1.57.1",
     "standardized-audio-context-mock": "9.6.32",
