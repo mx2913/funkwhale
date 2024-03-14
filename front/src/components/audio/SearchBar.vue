@@ -64,6 +64,7 @@ const el = useCurrentElement()
 const query = ref()
 
 const enter = () => {
+  if (!(el.value instanceof HTMLElement)) return
   jQuery(el.value).search('cancel query')
 
   // Cancel any API search request to backend…
@@ -113,7 +114,7 @@ const categories = computed(() => [
     name: labels.value.tag,
     getId: (obj: Tag) => obj.name,
     getTitle: (obj: Tag) => `#${obj.name}`,
-    getDescription: (obj: Tag) => ''
+    getDescription: (_: Tag) => ''
   },
   {
     code: 'more',
@@ -132,6 +133,7 @@ const objectId = computed(() => {
 })
 
 onMounted(() => {
+  if (!(el.value instanceof HTMLElement)) return
   jQuery(el.value).search({
     type: 'category',
     minCharacters: 3,
@@ -142,13 +144,14 @@ onMounted(() => {
       noResults: t('components.audio.SearchBar.empty.noResults')
     },
 
-    onSelect (result, response) {
+    onSelect (result, _response) {
+      if (!(el.value instanceof HTMLElement)) return
       jQuery(el.value).search('set value', query.value)
       router.push(result.routerUrl)
       jQuery(el.value).search('hide results')
       return false
     },
-    onSearchQuery (value) {
+    onSearchQuery (_value) {
       // query.value = value
       emit('search')
     },

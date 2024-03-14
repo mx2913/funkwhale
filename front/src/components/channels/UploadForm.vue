@@ -306,6 +306,7 @@ fetchQuota()
 //
 const el = useCurrentElement()
 watch(() => availableChannels.channels, () => {
+  if (!(el.value instanceof HTMLElement)) return
   $(el.value).find('#channel-dropdown').dropdown({
     onChange (value) {
       values.channel = value
@@ -496,7 +497,7 @@ defineExpose({
       <template v-else>
         <div
           v-if="step === 2 && draftUploads?.length > 0 && includeDraftUploads === undefined"
-          class="ui visible info message"
+          class="visible ui info message"
         >
           <p>
             <i class="redo icon" />
@@ -544,7 +545,7 @@ defineExpose({
               </div>
               <div
                 v-else-if="file.active && !file.response"
-                class="ui active slow inline loader"
+                class="inline ui slow loader active"
               />
             </div>
             <h4 class="ui header">
@@ -619,12 +620,12 @@ defineExpose({
             <i class="upload icon" />&nbsp;
             {{ $t('components.channels.UploadForm.message.dragAndDrop') }}
           </div>
-          <div class="ui very small divider" />
+          <div class="ui very divider small" />
           <div>
             {{ $t('components.channels.UploadForm.label.openBrowser') }}
           </div>
         </file-upload-widget>
-        <div class="ui hidden divider" />
+        <div class="hidden ui divider" />
       </template>
     </template>
   </form>

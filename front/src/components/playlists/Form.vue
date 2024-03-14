@@ -64,6 +64,7 @@ const privacyLevelChoices = computed(() => [
 const el = useCurrentElement()
 onMounted(async () => {
   await nextTick()
+  if (!(el.value instanceof HTMLElement)) return
   $(el.value).find('.dropdown').dropdown()
 })
 

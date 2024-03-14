@@ -100,6 +100,7 @@ fetchData()
 const el = useCurrentElement()
 watch(object, async () => {
   await nextTick()
+  if (!(el.value instanceof HTMLElement)) return
   $(el.value).find('select.dropdown').dropdown()
 })
 
@@ -156,7 +157,7 @@ const updatePolicy = (newPolicy: InstancePolicy) => {
         v-title="object.full_username"
         :class="['ui', 'head', 'vertical', 'stripe', 'segment']"
       >
-        <div class="ui stackable two column grid">
+        <div class="grid ui stackable two column">
           <div class="ui column">
             <div class="segment-content">
               <h2 class="ui header">
@@ -281,7 +282,7 @@ const updatePolicy = (newPolicy: InstancePolicy) => {
         </div>
       </section>
       <div class="ui vertical stripe segment">
-        <div class="ui stackable three column grid">
+        <div class="grid ui stackable three column">
           <div class="column">
             <section>
               <h3 class="ui header">
@@ -290,7 +291,7 @@ const updatePolicy = (newPolicy: InstancePolicy) => {
                   {{ $t('views.admin.moderation.AccountsDetail.header.accountData') }}
                 </div>
               </h3>
-              <table class="ui very basic table">
+              <table class="table ui very basic">
                 <tbody>
                   <tr>
                     <td>
@@ -448,7 +449,7 @@ const updatePolicy = (newPolicy: InstancePolicy) => {
               </div>
               <table
                 v-else
-                class="ui very basic table"
+                class="table ui very basic"
               >
                 <tbody>
                   <tr v-if="!object.user">
@@ -527,7 +528,7 @@ const updatePolicy = (newPolicy: InstancePolicy) => {
               </div>
               <table
                 v-else
-                class="ui very basic table"
+                class="table ui very basic"
               >
                 <tbody>
                   <tr v-if="!object.user">

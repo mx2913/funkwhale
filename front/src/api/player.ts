@@ -38,9 +38,9 @@ export interface Sound {
   onSoundEnd: EventHookOn<Sound>
 }
 
-export const soundImplementations = reactive(new Set<Constructor<Sound>>())
+export const soundImplementations: Set<Constructor<Sound>> = reactive(new Set<Constructor<Sound>>())
 
-export const registerSoundImplementation = <T extends Constructor<Sound>>(implementation: T) => {
+export const registerSoundImplementation = <T extends Sound>(implementation: Constructor<T>): Constructor<T> => {
   soundImplementations.add(implementation)
   return implementation
 }
@@ -49,8 +49,8 @@ export const registerSoundImplementation = <T extends Constructor<Sound>>(implem
 @registerSoundImplementation
 export class HTMLSound implements Sound {
   #audio = new Audio()
-  #soundLoopEventHook = createEventHook<HTMLSound>()
-  #soundEndEventHook = createEventHook<HTMLSound>()
+  #soundLoopEventHook = createEventHook<Sound>()
+  #soundEndEventHook = createEventHook<Sound>()
   #ignoreError = false
   #scope = effectScope()
 
@@ -59,8 +59,8 @@ export class HTMLSound implements Sound {
   readonly isDisposed = ref(false)
 
   audioNode = createAudioSource(this.#audio)
-  onSoundLoop: EventHookOn<HTMLSound>
-  onSoundEnd: EventHookOn<HTMLSound>
+  onSoundLoop: EventHookOn<Sound>
+  onSoundEnd: EventHookOn<Sound>
 
   constructor (sources: SoundSource[]) {
     this.onSoundLoop = this.#soundLoopEventHook.on

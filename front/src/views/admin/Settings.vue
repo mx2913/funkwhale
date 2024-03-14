@@ -140,11 +140,13 @@ if (route.hash) {
 const el = useCurrentElement()
 onMounted(async () => {
   await nextTick()
+  if (!(el.value instanceof HTMLElement)) return
   $(el.value).find('select.dropdown').dropdown()
 })
 
 watch(settingsData, async () => {
   await nextTick()
+  if (!(el.value instanceof HTMLElement)) return
   $(el.value).find('.sticky').sticky({ context: '#settings-grid' })
 })
 
@@ -172,12 +174,12 @@ await nextTick()
     class="main pusher"
   >
     <div class="ui vertical stripe segment">
-      <div class="ui text container">
+      <div class="container ui text">
         <div :class="['ui', {'loading': isLoading}, 'form']" />
         <div
           v-if="settingsData"
           id="settings-grid"
-          class="ui grid"
+          class="grid ui"
         >
           <div class="twelve wide stretched column">
             <settings-group
@@ -188,7 +190,7 @@ await nextTick()
             />
           </div>
           <div class="four wide column">
-            <div class="ui sticky vertical secondary menu">
+            <div class="sticky ui vertical secondary menu">
               <div class="header item">
                 {{ $t('views.admin.Settings.header.sections') }}
               </div>
