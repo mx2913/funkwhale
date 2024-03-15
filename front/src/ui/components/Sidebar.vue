@@ -32,12 +32,13 @@ const uploads = useUploadsStore()
           variant="ghost"
         />
 
-        <RouterLink to="/upload">
+        <RouterLink to="/upload" custom v-slot="{ navigate, isExactActive }">
           <FwButton
             icon="bi:upload"
             color="secondary"
             variant="ghost"
-            :class="[{ active: route.name === 'ui.upload' }, 'icon-only']"
+            :class="[{ active: isExactActive }, 'icon-only']"
+            @click="navigate"
           >
             <Transition>
               <div
@@ -190,7 +191,7 @@ aside {
       padding: 12px;
       font-size: 1.3rem;
 
-      .active {
+      button.active {
         box-shadow: inset 0 0 0 2px var(--fw-blue-500);
         position: relative;
         overflow: hidden;
@@ -257,6 +258,7 @@ aside {
         text-decoration: none !important;
         color: var(--fw-gray-700);
 
+        > img,
         > i {
           width: 100%;
           height: 100%;
@@ -265,6 +267,7 @@ aside {
           justify-content: center;
           align-items: center;
           margin: 0 !important;
+          border-radius: 100vh;
         }
       }
     }
