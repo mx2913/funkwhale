@@ -9,14 +9,16 @@ import type { MetadataParsingResult } from '~/ui/workers/file-metadata-parser'
 
 import type { Tags } from '~/ui/composables/metadata'
 import useLogger from '~/composables/useLogger'
+import useWebSocketHandler from '~/composables/useWebSocketHandler'
 
 export type UploadGroupType = 'music-library' | 'music-channel' | 'podcast-channel'
-export type FailReason = 'missing-tags' | 'upload-failed' | 'upload-cancelled'
+export type FailReason = 'missing-tags' | 'upload-failed' | 'upload-cancelled' | 'import-failed'
 
 export class UploadGroupEntry {
   id = nanoid()
   abortController = new AbortController()
   progress = 0
+  guid?: string
 
   error?: Error
   failReason?: FailReason
@@ -32,26 +34,34 @@ export class UploadGroupEntry {
   }
 
   async upload () {
+    if (!this.metadata) return
+
     const body = new FormData()
-    body.append('file', this.file)
+    body.append('metadata', JSON.stringify({
+      title: this.metadata.tags.title,
+      album: { name: this.metadata.tags.album },
+      artist: { name: this.metadata.tags.artist },
+    }))
+
+    body.append('target', JSON.stringify({
+      library: this.uploadGroup.targetGUID
+    }))
+
+    body.append('audioFile', this.file)
 
     const logger = useLogger()
-    await axios.post(this.uploadGroup.uploadUrl, body, {
+    const { data } = await axios.post(this.uploadGroup.uploadUrl, body, {
       headers: { 'Content-Type': 'multipart/form-data' },
       signal: this.abortController.signal,
       onUploadProgress: (e) => {
         // NOTE: If e.total is absent, we use the file size instead. This is only an approximation, as e.total is the total size of the request, not just the file.
         // see: https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent/total
         this.progress = Math.floor(e.loaded / (e.total ?? this.file.size) * 100)
-
-        if (this.progress === 100) {
-          logger.info(`[${this.id}] upload complete!`)
-        }
       }
     })
 
-    logger.info(`[${this.id}] import complete!`)
-    this.importedAt = new Date()
+    logger.info(`[${this.id}] upload complete!`)
+    this.guid = data.guid
   }
 
   fail (reason: FailReason, error: Error) {
@@ -82,7 +92,7 @@ export class UploadGroupEntry {
 }
 
 export class UploadGroup {
-  static entries = Object.create(null)
+  static entries = reactive(Object.create(null))
 
   queue: UploadGroupEntry[] = []
   createdAt = new Date()
@@ -90,6 +100,7 @@ export class UploadGroup {
   constructor (
     public guid: string,
     public type: UploadGroupType,
+    public targetGUID: string,
     public uploadUrl: string
   ) { }
 
@@ -174,18 +185,33 @@ whenever(workerMetadata, (reactiveData) => {
 export const useUploadsStore = defineStore('uploads', () => {
   const logger = useLogger()
 
-  const createUploadGroup = async (type: UploadGroupType) => {
-    // TODO: API call
-    const uploadGroup = new UploadGroup('guid:' + nanoid(), type, 'https://httpbin.org/post')
+  useWebSocketHandler('import.status_updated', (event) => {
+    for (const group of uploadGroups) {
+      const upload = group.queue.find(entry => entry.guid === event.upload.uuid)
+      if (!upload) continue
+
+      if (event.new_status !== 'failed') {
+        upload.importedAt = event.upload.import_date
+      } else {
+        upload.fail('import-failed')
+      }
+      break
+    }
+  })
+
+  const createUploadGroup = async (type: UploadGroupType, targetGUID: string) => {
+    const { data } = await axios.post('/api/v2/upload-groups', { baseUrl: '/' })
+    const uploadGroup = new UploadGroup(data.guid, type, targetGUID, data.uploadUrl)
     uploadGroups.push(uploadGroup)
     currentUploadGroup.value = uploadGroup
   }
 
   const currentUpload = computed(() => uploadQueue[currentIndex.value])
   const isUploading = computed(() => !!currentUpload.value)
+  const currentUploadWithMetadata = computed(() => currentUpload.value?.metadata ? currentUpload.value : undefined)
 
   // Upload the file whenever it is available
-  whenever(currentUpload, (entry) => entry.upload().catch((error) => {
+  whenever(currentUploadWithMetadata, (entry) => entry.upload().catch((error) => {
     // The tags were missing, so we have cancelled the upload
     if (error.code === 'ERR_CANCELED') {
       return

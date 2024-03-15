@@ -2,6 +2,8 @@
 import { Icon } from '@iconify/vue'
 import { useUploadsStore, type UploadGroupType } from '~/ui/stores/upload'
 import { ref } from 'vue'
+import axios from 'axios'
+import { useAsyncState } from '@vueuse/core'
 
 interface Tab {
   label: string
@@ -35,8 +37,15 @@ const currentTab = ref(tabs[0])
 
 const uploads = useUploadsStore()
 const openLibrary = () => {
-  uploads.createUploadGroup(currentTab.value.key)
+  uploads.createUploadGroup(currentTab.value.key, target.value?.uuid)
 }
+
+const target = ref()
+const { state: items } = useAsyncState(
+  axios.get('/libraries/?scope=me')
+    .then(t => t.data.results),
+  []
+)
 </script>
 
 <template>
@@ -61,13 +70,34 @@ const openLibrary = () => {
       </FwCard>
     </div>
 
-    <FwButton @click="openLibrary">
+    <FwSelect :items="items" v-model="target" id-key="uuid">
+      <template #item="{ item }">
+        <div class="library-item">
+          <div class="box" />
+          <div>
+            <div>{{ item.name }}</div>
+            <div>
+              Shared with <fw-pill color="blue">{{ item.privacy_level }}</fw-pill>
+              <div>{{ item.uploads_count }} uploads</div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </FwSelect>
+
+
+
+    <FwButton :disabled="!target" @click="openLibrary">
       Open library
     </FwButton>
   </div>
 </template>
 
 <style scoped lang="scss">
+:deep(.funkwhale.select) {
+  margin-bottom: 1rem;
+}
+
 .funkwhale.card {
   --fw-card-width: 12.5rem;
   --fw-border-radius: 1rem;
@@ -124,4 +154,37 @@ const openLibrary = () => {
 .upload > .funkwhale.button {
   margin-left: 0;
 }
+
+.library-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  > .box {
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-shrink: 0;
+    background: var(--fw-pastel-blue-1);
+    border-radius: 8px;
+    margin-right:8px;
+
+    + div {
+      width: 100%;
+
+      > :last-child {
+        display: flex;
+        width: 100%;
+
+        > div {
+          margin-left: auto;
+        }
+      }
+    }
+  }
+
+  .selected {
+    font-size: 1rem;
+  }
+}
+
 </style>
