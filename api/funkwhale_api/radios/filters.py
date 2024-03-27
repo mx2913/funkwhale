@@ -158,7 +158,7 @@ class ArtistFilter(RadioFilter):
         return filter_config
 
     def get_query(self, candidates, ids, **kwargs):
-        return Q(artist__pk__in=ids)
+        return Q(artist_credit__artist__pk__in=ids)
 
     def validate(self, config):
         super().validate(config)
@@ -199,8 +199,8 @@ class TagFilter(RadioFilter):
     def get_query(self, candidates, names, **kwargs):
         return (
             Q(tagged_items__tag__name__in=names)
-            | Q(artist__tagged_items__tag__name__in=names)
-            | Q(album__tagged_items__tag__name__in=names)
+            | Q(artist_credit__artist__tagged_items__tag__name__in=names)
+            | Q(artist_credit__albums__tagged_items__tag__name__in=names)
         )
 
     def clean_config(self, filter_config):

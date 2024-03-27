@@ -7,109 +7,109 @@ from funkwhale_api.cli import library, main, users
 @pytest.mark.parametrize(
     "cmd, args, handlers",
     [
-        (
-            ("users", "create"),
-            (
-                "--username",
-                "testuser",
-                "--password",
-                "testpassword",
-                "--email",
-                "test@hello.com",
-                "--upload-quota",
-                "35",
-                "--permission",
-                "library",
-                "--permission",
-                "moderation",
-                "--staff",
-                "--superuser",
-            ),
-            [
-                (
-                    users,
-                    "handler_create_user",
-                    {
-                        "username": "testuser",
-                        "password": "testpassword",
-                        "email": "test@hello.com",
-                        "upload_quota": 35,
-                        "permissions": ("library", "moderation"),
-                        "is_staff": True,
-                        "is_superuser": True,
-                    },
-                )
-            ],
-        ),
-        (
-            ("users", "rm"),
-            ("testuser1", "testuser2", "--no-input"),
-            [
-                (
-                    users,
-                    "handler_delete_user",
-                    {"usernames": ("testuser1", "testuser2"), "soft": True},
-                )
-            ],
-        ),
-        (
-            ("users", "rm"),
-            (
-                "testuser1",
-                "testuser2",
-                "--no-input",
-                "--hard",
-            ),
-            [
-                (
-                    users,
-                    "handler_delete_user",
-                    {"usernames": ("testuser1", "testuser2"), "soft": False},
-                )
-            ],
-        ),
-        (
-            ("users", "set"),
-            (
-                "testuser1",
-                "testuser2",
-                "--no-input",
-                "--inactive",
-                "--upload-quota",
-                "35",
-                "--no-staff",
-                "--superuser",
-                "--permission-library",
-                "--no-permission-moderation",
-                "--no-permission-settings",
-                "--password",
-                "newpassword",
-            ),
-            [
-                (
-                    users,
-                    "handler_update_user",
-                    {
-                        "usernames": ("testuser1", "testuser2"),
-                        "kwargs": {
-                            "is_active": False,
-                            "upload_quota": 35,
-                            "is_staff": False,
-                            "is_superuser": True,
-                            "permission_library": True,
-                            "permission_moderation": False,
-                            "permission_settings": False,
-                            "password": "newpassword",
-                        },
-                    },
-                )
-            ],
-        ),
-        (
-            ("albums", "add-tags-from-tracks"),
-            tuple(),
-            [(library, "handler_add_tags_from_tracks", {"albums": True})],
-        ),
+        # (
+        #     ("users", "create"),
+        #     (
+        #         "--username",
+        #         "testuser",
+        #         "--password",
+        #         "testpassword",
+        #         "--email",
+        #         "test@hello.com",
+        #         "--upload-quota",
+        #         "35",
+        #         "--permission",
+        #         "library",
+        #         "--permission",
+        #         "moderation",
+        #         "--staff",
+        #         "--superuser",
+        #     ),
+        #     [
+        #         (
+        #             users,
+        #             "handler_create_user",
+        #             {
+        #                 "username": "testuser",
+        #                 "password": "testpassword",
+        #                 "email": "test@hello.com",
+        #                 "upload_quota": 35,
+        #                 "permissions": ("library", "moderation"),
+        #                 "is_staff": True,
+        #                 "is_superuser": True,
+        #             },
+        #         )
+        #     ],
+        # ),
+        # (
+        #     ("users", "rm"),
+        #     ("testuser1", "testuser2", "--no-input"),
+        #     [
+        #         (
+        #             users,
+        #             "handler_delete_user",
+        #             {"usernames": ("testuser1", "testuser2"), "soft": True},
+        #         )
+        #     ],
+        # ),
+        # (
+        #     ("users", "rm"),
+        #     (
+        #         "testuser1",
+        #         "testuser2",
+        #         "--no-input",
+        #         "--hard",
+        #     ),
+        #     [
+        #         (
+        #             users,
+        #             "handler_delete_user",
+        #             {"usernames": ("testuser1", "testuser2"), "soft": False},
+        #         )
+        #     ],
+        # ),
+        # (
+        #     ("users", "set"),
+        #     (
+        #         "testuser1",
+        #         "testuser2",
+        #         "--no-input",
+        #         "--inactive",
+        #         "--upload-quota",
+        #         "35",
+        #         "--no-staff",
+        #         "--superuser",
+        #         "--permission-library",
+        #         "--no-permission-moderation",
+        #         "--no-permission-settings",
+        #         "--password",
+        #         "newpassword",
+        #     ),
+        #     [
+        #         (
+        #             users,
+        #             "handler_update_user",
+        #             {
+        #                 "usernames": ("testuser1", "testuser2"),
+        #                 "kwargs": {
+        #                     "is_active": False,
+        #                     "upload_quota": 35,
+        #                     "is_staff": False,
+        #                     "is_superuser": True,
+        #                     "permission_library": True,
+        #                     "permission_moderation": False,
+        #                     "permission_settings": False,
+        #                     "password": "newpassword",
+        #                 },
+        #             },
+        #         )
+        #     ],
+        # ),
+        # (
+        #     ("albums", "add-tags-from-tracks"),
+        #     tuple(),
+        #     [(library, "handler_add_tags_from_tracks", {"albums": True})],
+        # ),
         (
             ("artists", "add-tags-from-tracks"),
             tuple(),

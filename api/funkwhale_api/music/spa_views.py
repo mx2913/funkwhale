@@ -24,7 +24,9 @@ def get_twitter_card_metas(type, id):
 
 
 def library_track(request, pk, redirect_to_ap):
-    queryset = models.Track.objects.filter(pk=pk).select_related("album", "artist")
+    queryset = models.Track.objects.filter(pk=pk).prefetch_related(
+        "album", "artist_credit__artist"
+    )
     try:
         obj = queryset.get()
     except models.Track.DoesNotExist:
@@ -47,15 +49,19 @@ def library_track(request, pk, redirect_to_ap):
         {"tag": "meta", "property": "og:type", "content": "music.song"},
         {"tag": "meta", "property": "music:album:disc", "content": obj.disc_number},
         {"tag": "meta", "property": "music:album:track", "content": obj.position},
-        {
-            "tag": "meta",
-            "property": "music:musician",
-            "content": utils.join_url(
-                settings.FUNKWHALE_URL,
-                utils.spa_reverse("library_artist", kwargs={"pk": obj.artist.pk}),
-            ),
-        },
     ]
+    # following https://ogp.me/#array
+    for ac in obj.artist_credit.all():
+        metas.append(
+            {
+                "tag": "meta",
+                "property": "music:musician",
+                "content": utils.join_url(
+                    settings.FUNKWHALE_URL,
+                    utils.spa_reverse("library_artist", kwargs={"pk": ac.artist.pk}),
+                ),
+            }
+        )
 
     if obj.album:
         metas.append(
@@ -119,7 +125,7 @@ def library_track(request, pk, redirect_to_ap):
 
 
 def library_album(request, pk, redirect_to_ap):
-    queryset = models.Album.objects.filter(pk=pk).select_related("artist")
+    queryset = models.Album.objects.filter(pk=pk).prefetch_related("artist_credit")
     try:
         obj = queryset.get()
     except models.Album.DoesNotExist:
@@ -136,16 +142,20 @@ def library_album(request, pk, redirect_to_ap):
         {"tag": "meta", "property": "og:url", "content": album_url},
         {"tag": "meta", "property": "og:title", "content": obj.title},
         {"tag": "meta", "property": "og:type", "content": "music.album"},
-        {
-            "tag": "meta",
-            "property": "music:musician",
-            "content": utils.join_url(
-                settings.FUNKWHALE_URL,
-                utils.spa_reverse("library_artist", kwargs={"pk": obj.artist.pk}),
-            ),
-        },
     ]
 
+    # following https://ogp.me/#array
+    for ac in obj.artist_credit.all():
+        metas.append(
+            {
+                "tag": "meta",
+                "property": "music:musician",
+                "content": utils.join_url(
+                    settings.FUNKWHALE_URL,
+                    utils.spa_reverse("library_artist", kwargs={"pk": ac.artist.pk}),
+                ),
+            }
+        )
     if obj.release_date:
         metas.append(
             {
@@ -206,7 +216,10 @@ def library_artist(request, pk, redirect_to_ap):
     )
     # we use latest album's cover as artist image
     latest_album = (
-        obj.albums.exclude(attachment_cover=None).order_by("release_date").last()
+        obj.artist_credit.albums()
+        .exclude(attachment_cover=None)
+        .order_by("release_date")
+        .last()
     )
     metas = [
         {"tag": "meta", "property": "og:url", "content": artist_url},
@@ -234,7 +247,10 @@ def library_artist(request, pk, redirect_to_ap):
         )
 
     if (
-        models.Upload.objects.filter(Q(track__artist=obj) | Q(track__album__artist=obj))
+        models.Upload.objects.filter(
+            Q(track__artist_credit__artist=obj)
+            | Q(track__album__artist_credit__artist=obj)
+        )
         .playable_by(None)
         .exists()
     ):

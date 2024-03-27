@@ -702,8 +702,8 @@ def handle_modified(event, stdout, library, in_place, **kwargs):
             .filter(source=source)
             .select_related(
                 "track__attributed_to",
-                "track__artist",
-                "track__album__artist",
+                "track__artist_credit__artist",
+                "track__album__artist_credit__artist",
             )
             .first()
         )
@@ -839,9 +839,9 @@ def check_upload(stdout, upload):
                 "  Cannot update track metadata, track belongs to someone else"
             )
         else:
-            track = models.Track.objects.select_related("artist", "album__artist").get(
-                pk=upload.track_id
-            )
+            track = models.Track.objects.select_related(
+                "artist_credit__artist", "album__artist_credit__artist"
+            ).get(pk=upload.track_id)
             try:
                 tasks.update_track_metadata(upload.get_metadata(), track)
             except serializers.ValidationError as e:

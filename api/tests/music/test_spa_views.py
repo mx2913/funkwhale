@@ -41,7 +41,10 @@ def test_library_track(spa_html, no_api_auth, client, factories, settings):
             "property": "music:musician",
             "content": utils.join_url(
                 settings.FUNKWHALE_URL,
-                utils.spa_reverse("library_artist", kwargs={"pk": track.artist.pk}),
+                utils.spa_reverse(
+                    "library_artist",
+                    kwargs={"pk": track.artist_credit.all()[0].artist.pk},
+                ),
             ),
         },
         {
@@ -117,7 +120,10 @@ def test_library_album(spa_html, no_api_auth, client, factories, settings):
             "property": "music:musician",
             "content": utils.join_url(
                 settings.FUNKWHALE_URL,
-                utils.spa_reverse("library_artist", kwargs={"pk": album.artist.pk}),
+                utils.spa_reverse(
+                    "library_artist",
+                    kwargs={"pk": album.artist_credit.all()[0].artist.pk},
+                ),
             ),
         },
         {
@@ -166,7 +172,7 @@ def test_library_album(spa_html, no_api_auth, client, factories, settings):
 def test_library_artist(spa_html, no_api_auth, client, factories, settings):
     album = factories["music.Album"](with_cover=True)
     factories["music.Upload"](playable=True, track__album=album)
-    artist = album.artist
+    artist = album.artist_credit.all()[0].artist
     url = f"/library/artists/{artist.pk}"
 
     response = client.get(url)

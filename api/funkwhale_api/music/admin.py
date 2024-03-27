@@ -3,6 +3,17 @@ from funkwhale_api.common import admin
 from . import models
 
 
+@admin.register(models.ArtistCredit)
+class ArtistCreditAdmin(admin.ModelAdmin):
+    list_display = [
+        "artist",
+        "credit",
+        "joinphrase",
+        "creation_date",
+    ]
+    search_fields = ["artist__name", "credit"]
+
+
 @admin.register(models.Artist)
 class ArtistAdmin(admin.ModelAdmin):
     list_display = ["name", "mbid", "creation_date", "modification_date"]
@@ -11,15 +22,15 @@ class ArtistAdmin(admin.ModelAdmin):
 
 @admin.register(models.Album)
 class AlbumAdmin(admin.ModelAdmin):
-    list_display = ["title", "artist", "mbid", "release_date", "creation_date"]
-    search_fields = ["title", "artist__name", "mbid"]
+    list_display = ["title", "mbid", "release_date", "creation_date"]
+    search_fields = ["title", "mbid"]
     list_select_related = True
 
 
 @admin.register(models.Track)
 class TrackAdmin(admin.ModelAdmin):
-    list_display = ["title", "artist", "album", "mbid"]
-    search_fields = ["title", "artist__name", "album__title", "mbid"]
+    list_display = ["title", "album", "mbid"]
+    search_fields = ["title", "album__title", "mbid"]
     list_select_related = ["album__artist", "artist"]
 
 

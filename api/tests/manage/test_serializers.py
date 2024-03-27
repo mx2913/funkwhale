@@ -385,7 +385,13 @@ def test_manage_album_serializer(factories, now, to_api_date):
         "creation_date": to_api_date(album.creation_date),
         "release_date": album.release_date.isoformat(),
         "cover": common_serializers.AttachmentSerializer(album.attachment_cover).data,
-        "artist": serializers.ManageNestedArtistSerializer(album.artist).data,
+        "artist_credit": [
+            {
+                "artist": serializers.ManageNestedArtistSerializer(
+                    album.artist_credit.all()[0].artist
+                ).data
+            }
+        ],
         "attributed_to": serializers.ManageBaseActorSerializer(
             album.attributed_to
         ).data,
@@ -412,7 +418,13 @@ def test_manage_track_serializer(factories, now, to_api_date):
         "copyright": track.copyright,
         "license": track.license,
         "creation_date": to_api_date(track.creation_date),
-        "artist": serializers.ManageNestedArtistSerializer(track.artist).data,
+        "artist_credit": [
+            {
+                "artist": serializers.ManageNestedArtistSerializer(
+                    track.artist_credit.all()[0].artist
+                ).data
+            }
+        ],
         "album": serializers.ManageTrackAlbumSerializer(track.album).data,
         "attributed_to": serializers.ManageBaseActorSerializer(
             track.attributed_to

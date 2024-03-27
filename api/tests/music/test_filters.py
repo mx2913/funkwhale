@@ -29,7 +29,7 @@ def test_album_filter_hidden(factories, mocker, queryset_equal_list):
     factories["music.Album"]()
     cf = factories["moderation.UserFilter"](for_artist=True)
 
-    hidden_album = factories["music.Album"](artist=cf.target_artist)
+    hidden_album = factories["music.Album"](artist_credit__artist=cf.target_artist)
 
     qs = models.Album.objects.all()
     filterset = filters.AlbumFilter(
@@ -55,7 +55,7 @@ def test_artist_filter_hidden(factories, mocker, queryset_equal_list):
 def test_artist_filter_track_artist(factories, mocker, queryset_equal_list):
     factories["music.Track"]()
     cf = factories["moderation.UserFilter"](for_artist=True)
-    hidden_track = factories["music.Track"](artist=cf.target_artist)
+    hidden_track = factories["music.Track"](artist_credit__artist=cf.target_artist)
 
     qs = models.Track.objects.all()
     filterset = filters.TrackFilter(
@@ -68,7 +68,9 @@ def test_artist_filter_track_artist(factories, mocker, queryset_equal_list):
 def test_artist_filter_track_album_artist(factories, mocker, queryset_equal_list):
     factories["music.Track"]()
     cf = factories["moderation.UserFilter"](for_artist=True)
-    hidden_track = factories["music.Track"](album__artist=cf.target_artist)
+    hidden_track = factories["music.Track"](
+        album__artist_credit__artist=cf.target_artist
+    )
 
     qs = models.Track.objects.all()
     filterset = filters.TrackFilter(
@@ -137,7 +139,9 @@ def test_track_filter_tag_multiple(
 def test_channel_filter_track(factories, queryset_equal_list, mocker, anonymous_user):
     channel = factories["audio.Channel"](library__privacy_level="everyone")
     upload = factories["music.Upload"](
-        library=channel.library, playable=True, track__artist=channel.artist
+        library=channel.library,
+        playable=True,
+        track__artist_credit__artist=channel.artist,
     )
     factories["music.Track"]()
     qs = upload.track.__class__.objects.all()
@@ -153,7 +157,9 @@ def test_channel_filter_track(factories, queryset_equal_list, mocker, anonymous_
 def test_channel_filter_album(factories, queryset_equal_list, mocker, anonymous_user):
     channel = factories["audio.Channel"](library__privacy_level="everyone")
     upload = factories["music.Upload"](
-        library=channel.library, playable=True, track__artist=channel.artist
+        library=channel.library,
+        playable=True,
+        track__artist_credit__artist=channel.artist,
     )
     factories["music.Album"]()
     qs = upload.track.album.__class__.objects.all()
@@ -198,14 +204,14 @@ def test_library_filter_artist(factories, queryset_equal_list, mocker, anonymous
     library = factories["music.Library"](privacy_level="everyone")
     upload = factories["music.Upload"](library=library, playable=True)
     factories["music.Artist"]()
-    qs = upload.track.artist.__class__.objects.all()
+
+    qs = models.Artist.objects.all()
     filterset = filters.ArtistFilter(
         {"library": library.uuid},
         request=mocker.Mock(user=anonymous_user, actor=None),
         queryset=qs,
     )
-
-    assert filterset.qs == [upload.track.artist]
+    assert filterset.qs == [upload.track.artist_credit.all()[0].artist]
 
 
 def test_track_filter_artist_includes_album_artist(
@@ -214,12 +220,13 @@ def test_track_filter_artist_includes_album_artist(
     factories["music.Track"]()
     track1 = factories["music.Track"]()
     track2 = factories["music.Track"](
-        album__artist=track1.artist, artist=factories["music.Artist"]()
+        album__artist_credit__artist=track1.artist_credit.all()[0].artist,
+        artist_credit__artist=factories["music.Artist"](),
     )
 
     qs = models.Track.objects.all()
     filterset = filters.TrackFilter(
-        {"artist": track1.artist.pk},
+        {"artist": track1.artist_credit.all()[0].artist.pk},
         request=mocker.Mock(user=anonymous_user),
         queryset=qs,
     )
@@ -263,3 +270,28 @@ def test_filter_tag_related(
         queryset=obj.__class__.objects.all(),
     )
     assert filterset.qs == matches
+
+
+# def test_artist_credit_filter(factories, mocker, queryset_equal_list, anonymous_user):
+#     ac = factories["music.ArtistCredit"]()
+#     factories["music.Track"]()
+#     track1 = factories["music.Track"](artist_credit=ac)
+#     track2 = factories["music.Track"](album__artist_credit__artist=ac.artist)
+
+#     # qs = models.ArtistCredit.objects.all()
+#     # filterset = filters.ArtistCreditFilter(
+#     #     {"q": ac.credit},
+#     #     request=mocker.Mock(user=anonymous_user),
+#     #     queryset=qs,
+#     # )
+
+#     # for acf in filterset.qs:
+#     #     assert acf.credit == ac.credit
+
+#     qs = models.Artist.objects.all()
+#     filterset = filters.TrackFilter(
+#         {"artist": ac.artist.pk},
+#         # {"playable": True},
+#         request=mocker.Mock(user=anonymous_user, actor=None),
+#     )
+#     assert filterset.qs == [track1, track2]

@@ -495,55 +495,61 @@ class ArtistField(serializers.Field):
         return final
 
     def to_internal_value(self, data):
-        # we have multiple values that can be separated by various separators
-        separators = [";", ","]
+        from . import tasks
+
+        # we have multiple mbid values that can be separated by various separators
+        separators = [";", ",", "/"]
+        artists_credits_tuples = None
         # we get a list like that if tagged via musicbrainz
         # ae29aae4-abfb-4609-8f54-417b1f4d64cc; 3237b5a8-ae44-400c-aa6d-cea51f0b9074;
         raw_mbids = data["mbids"]
-        used_separator = None
         mbids = [raw_mbids]
-        if raw_mbids:
-            if "/" in raw_mbids:
-                # it's a featuring, we can't handle this now
-                mbids = []
-            else:
-                for separator in separators:
-                    if separator in raw_mbids:
-                        used_separator = separator
-                        mbids = [m.strip() for m in raw_mbids.split(separator)]
-                        break
-
-        # now, we split on artist names, using the same separator as the one used
-        # by mbids, if any
         names = []
-
-        if data.get("artists", None):
+        if raw_mbids:
             for separator in separators:
-                if separator in data["artists"]:
-                    names = [n.strip() for n in data["artists"].split(separator)]
+                if separator in raw_mbids:
+                    mbids = [m.strip() for m in raw_mbids.split(separator)]
                     break
-            # corner case: 'album artist' field with only one artist but multiple names in 'artits' field
-            if (
-                not names
-                and data.get("names", None)
-                and any(separator in data["names"] for separator in separators)
-            ):
-                names = [n.strip() for n in data["names"].split(separators[0])]
-            elif not names:
-                names = [data["artists"]]
-        elif used_separator and mbids:
-            names = [n.strip() for n in data["names"].split(used_separator)]
+
+        # now, we split on artist names
+
+        names_artists_credits_tuples = (
+            tasks.parse_credits(data["names"], None, None)
+            if data.get("names", False)
+            else []
+        )
+        artist_artists_credits_tuples = (
+            tasks.parse_credits(data["artists"], None, None)
+            if data.get("artists", False)
+            else []
+        )
+        if (
+            raw_mbids
+            and len(names_artists_credits_tuples) != len(mbids)
+            and len(artist_artists_credits_tuples) != len(mbids)
+        ):
+            logger.info(
+                f"Error parsing artist data, not the same amount of mbids and parsed artists. Trying to proceed anyway"
+            )
+
+        if len(names_artists_credits_tuples) > len(artist_artists_credits_tuples):
+            artists_credits_tuples = names_artists_credits_tuples
         else:
-            names = [data["names"]]
+            artists_credits_tuples = artist_artists_credits_tuples
 
         final = []
-        for i, name in enumerate(names):
-            try:
-                mbid = mbids[i]
-            except IndexError:
-                mbid = None
-            artist = {"name": name, "mbid": mbid}
+        for i, ac in enumerate(artists_credits_tuples):
+            artist = {
+                "name": ac[0],
+                "mbid": (mbids[i] if 0 <= i < len(mbids) else None),
+                "joinphrase": ac[1],
+                "index": i,
+            }
             final.append(artist)
+
+        if len(artists_credits_tuples) == 0:
+            final = []
+
         field = serializers.ListField(
             child=ArtistSerializer(strict=self.context.get("strict", True)),
             min_length=1,
@@ -682,6 +688,9 @@ class MBIDField(serializers.UUIDField):
 class ArtistSerializer(serializers.Serializer):
     name = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     mbid = MBIDField()
+    joinphrase = serializers.CharField(
+        trim_whitespace=False, required=False, allow_null=True, allow_blank=True
+    )
 
     def __init__(self, *args, **kwargs):
         self.strict = kwargs.pop("strict", True)

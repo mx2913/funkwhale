@@ -43,9 +43,9 @@ def get_lb_listen(listening):
             release_name = track.album.title
         if track.album.mbid:
             additional_info["release_mbid"] = str(track.album.mbid)
-
-    if track.artist.mbid:
-        additional_info["artist_mbids"] = [str(track.artist.mbid)]
+    mbids = [ac.artist.mbid for ac in track.artist_credit.all() if ac.artist.mbid]
+    if mbids:
+        additional_info["artist_mbids"] = mbids
 
     upload = track.uploads.filter(duration__gte=0).first()
     if upload:
@@ -53,8 +53,8 @@ def get_lb_listen(listening):
 
     return liblistenbrainz.Listen(
         track_name=track.title,
-        artist_name=track.artist.name,
         listened_at=listening.creation_date.timestamp(),
+        artist_name=track.get_artist_credit_string,
         release_name=release_name,
         additional_info=additional_info,
     )

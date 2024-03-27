@@ -38,7 +38,7 @@ def test_artist_album_serializer(factories, to_api_date):
         "fid": album.fid,
         "mbid": str(album.mbid),
         "title": album.title,
-        "artist": album.artist.id,
+        "artist_credit": [ac.id for ac in album.artist_credit.all()],
         "creation_date": to_api_date(album.creation_date),
         "tracks_count": 1,
         "is_playable": None,
@@ -53,12 +53,14 @@ def test_artist_album_serializer(factories, to_api_date):
 
 def test_artist_with_albums_serializer(factories, to_api_date):
     actor = factories["federation.Actor"]()
-    track = factories["music.Track"](
-        album__artist__attributed_to=actor, album__artist__with_cover=True
+    artist_credit = factories["music.ArtistCredit"](
+        artist__attributed_to=actor, artist__with_cover=True
     )
-    artist = track.artist
-    artist = artist.__class__.objects.with_albums().get(pk=artist.pk)
-    album = list(artist.albums.all())[0]
+
+    track = factories["music.Track"](album__artist_credit=artist_credit)
+    artist = track.artist_credit.all()[0].artist
+    # artist = artist.__class__.objects.with_albums().get(pk=artist.pk)
+    album = artist.artist_credit.all()[0].albums.all()[0]
     setattr(artist, "_prefetched_tracks", range(42))
     expected = {
         "id": artist.id,
@@ -82,10 +84,11 @@ def test_artist_with_albums_serializer(factories, to_api_date):
 def test_artist_with_albums_serializer_channel(factories, to_api_date):
     actor = factories["federation.Actor"]()
     channel = factories["audio.Channel"](attributed_to=actor, artist__with_cover=True)
-    track = factories["music.Track"](album__artist=channel.artist)
-    artist = track.artist
+    artist_credit = factories["music.ArtistCredit"](artist=channel.artist)
+    track = factories["music.Track"](album__artist_credit=artist_credit)
+    artist = track.artist_credit.all()[0].artist
     artist = artist.__class__.objects.with_albums().get(pk=artist.pk)
-    album = list(artist.albums.all())[0]
+    album = list(artist.artist_credit.all()[0].albums.all())[0]
     setattr(artist, "_prefetched_tracks", range(42))
     expected = {
         "id": artist.id,
@@ -177,7 +180,9 @@ def test_album_serializer(factories, to_api_date):
         "fid": album.fid,
         "mbid": str(album.mbid),
         "title": album.title,
-        "artist": serializers.SimpleArtistSerializer(album.artist).data,
+        "artist_credit": serializers.ArtistCreditSerializer(
+            album.artist_credit.all(), many=True
+        ).data,
         "creation_date": to_api_date(album.creation_date),
         "is_playable": False,
         "duration": 0,
@@ -207,7 +212,9 @@ def test_track_album_serializer(factories, to_api_date):
         "fid": album.fid,
         "mbid": str(album.mbid),
         "title": album.title,
-        "artist": serializers.SimpleArtistSerializer(album.artist).data,
+        "artist_credit": serializers.ArtistCreditSerializer(
+            album.artist_credit.all(), many=True
+        ).data,
         "creation_date": to_api_date(album.creation_date),
         "is_playable": False,
         "cover": common_serializers.AttachmentSerializer(album.attachment_cover).data,
@@ -239,7 +246,9 @@ def test_track_serializer(factories, to_api_date):
     expected = {
         "id": track.id,
         "fid": track.fid,
-        "artist": serializers.SimpleArtistSerializer(track.artist).data,
+        "artist_credit": serializers.ArtistCreditSerializer(
+            track.artist_credit.all(), many=True
+        ).data,
         "album": serializers.TrackAlbumSerializer(track.album).data,
         "mbid": str(track.mbid),
         "title": track.title,

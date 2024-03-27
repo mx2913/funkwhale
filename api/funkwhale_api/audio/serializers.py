@@ -27,6 +27,8 @@ from funkwhale_api.federation import utils as federation_utils
 from funkwhale_api.moderation import mrf
 from funkwhale_api.music import models as music_models
 from funkwhale_api.music.serializers import COVER_WRITE_FIELD, CoverField
+from funkwhale_api.music import tasks
+
 from funkwhale_api.tags import models as tags_models
 from funkwhale_api.tags import serializers as tags_serializers
 from funkwhale_api.users import serializers as users_serializers
@@ -246,7 +248,9 @@ class SimpleChannelArtistSerializer(serializers.Serializer):
     description = common_serializers.ContentSerializer(allow_null=True, required=False)
     cover = CoverField(allow_null=True, required=False)
     channel = serializers.UUIDField(allow_null=True, required=False)
-    tracks_count = serializers.IntegerField(source="_tracks_count", required=False)
+    tracks_count = serializers.IntegerField(
+        source="_artist_credit__tracks_count", required=False
+    )
     tags = serializers.ListField(
         child=serializers.CharField(), source="_prefetched_tagged_items", required=False
     )
@@ -749,7 +753,7 @@ class RssFeedItemSerializer(serializers.Serializer):
         else:
             existing_track = (
                 music_models.Track.objects.filter(
-                    uuid=expected_uuid, artist__channel=channel
+                    uuid=expected_uuid, artist_credit__artist__channel=channel
                 )
                 .select_related("description", "attachment_cover")
                 .first()
@@ -765,7 +769,6 @@ class RssFeedItemSerializer(serializers.Serializer):
                 "disc_number": validated_data.get("itunes_season", 1) or 1,
                 "position": validated_data.get("itunes_episode", 1) or 1,
                 "title": validated_data["title"],
-                "artist": channel.artist,
             }
         )
         if "rights" in validated_data:
@@ -801,6 +804,21 @@ class RssFeedItemSerializer(serializers.Serializer):
             **track_kwargs,
             defaults=track_defaults,
         )
+
+        # channel only have one artist so we can safely update artist_credit
+        defaults = {
+            "artist": channel.artist,
+            "credit": channel.artist.name,
+            "joinphrase": "",
+        }
+        query = (
+            Q(artist=channel.artist) & Q(credit=channel.artist.name) & Q(joinphrase="")
+        )
+        artist_credit = tasks.get_best_candidate_or_create(
+            music_models.ArtistCredit, query, defaults, ["artist", "joinphrase"]
+        )
+        track.artist_credit.set([artist_credit[0]])
+
         # optimisation for reducing SQL queries, because we cannot use select_related with
         # update or create, so we restore the cache by hand
         if existing_track:

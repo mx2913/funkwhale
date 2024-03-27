@@ -27,7 +27,7 @@ ARTIST_PREFETCH_QS = (
         "attachment_cover",
     )
     .prefetch_related(music_views.TAG_PREFETCH)
-    .annotate(_tracks_count=Count("tracks"))
+    .annotate(__count=Count("artist_credit__tracks"))
 )
 
 
@@ -103,7 +103,7 @@ class ChannelViewSet(
         queryset = super().get_queryset()
         if self.action == "retrieve":
             queryset = queryset.annotate(
-                _downloads_count=Sum("artist__tracks__downloads_count")
+                _downloads_count=Sum("artist__artist_credit__tracks__downloads_count")
             )
         return queryset
 
@@ -192,7 +192,6 @@ class ChannelViewSet(
         if object.attributed_to == actors.get_service_actor():
             # external feed, we redirect to the canonical one
             return http.HttpResponseRedirect(object.rss_url)
-
         uploads = (
             object.library.uploads.playable_by(None)
             .prefetch_related(

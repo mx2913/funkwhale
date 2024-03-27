@@ -37,7 +37,7 @@ def test_get_valid_filepart(input, expected):
     [
         (
             {
-                "artist__name": "Hello",
+                "artist_credit__artist__name": "Hello",
                 "album__title": "World",
                 "title": "foo",
                 "position": None,
@@ -47,7 +47,7 @@ def test_get_valid_filepart(input, expected):
         ),
         (
             {
-                "artist__name": "AC/DC",
+                "artist_credit__artist__name": "AC/DC",
                 "album__title": "escape/my",
                 "title": "sla/sh",
                 "position": 12,
@@ -76,8 +76,8 @@ def test_get_artists_serializer(factories):
         name="", with_cover=False
     )  # Shouldn't be serialised
 
-    factories["music.Album"].create_batch(size=3, artist=artist1)
-    factories["music.Album"].create_batch(size=2, artist=artist2)
+    factories["music.Album"].create_batch(size=3, artist_credit__artist=artist1)
+    factories["music.Album"].create_batch(size=2, artist_credit__artist=artist2)
 
     expected = {
         "ignoredArticles": "",
@@ -125,7 +125,7 @@ def test_get_artists_serializer(factories):
 
 def test_get_artist_serializer(factories):
     artist = factories["music.Artist"](with_cover=True)
-    album = factories["music.Album"](artist=artist, with_cover=True)
+    album = factories["music.Album"](artist_credit__artist=artist, with_cover=True)
     tracks = factories["music.Track"].create_batch(size=3, album=album)
 
     expected = {
@@ -191,7 +191,7 @@ def test_get_track_data_content_type(mimetype, extension, expected, factories):
 
 def test_get_album_serializer(factories):
     artist = factories["music.Artist"]()
-    album = factories["music.Album"](artist=artist, with_cover=True)
+    album = factories["music.Album"](artist_credit__artist=artist, with_cover=True)
     track = factories["music.Track"](album=album, disc_number=42)
     upload = factories["music.Upload"](track=track, bitrate=42000, duration=43, size=44)
     tagged_item = factories["tags.TaggedItem"](content_object=album, tag__name="foo")
@@ -243,8 +243,8 @@ def test_get_album_serializer(factories):
 
 
 def test_starred_tracks2_serializer(factories):
-    artist = factories["music.Artist"]()
-    album = factories["music.Album"](artist=artist)
+    artist_credit = factories["music.ArtistCredit"]()
+    album = factories["music.Album"](artist_credit=artist_credit)
     track = factories["music.Track"](album=album)
     upload = factories["music.Upload"](track=track)
     favorite = factories["favorites.TrackFavorite"](track=track)
@@ -347,7 +347,7 @@ def test_channel_episode_serializer(factories):
     description = factories["common.Content"]()
     channel = factories["audio.Channel"]()
     track = factories["music.Track"](
-        description=description, artist=channel.artist, with_cover=True
+        description=description, artist_credit__artist=channel.artist, with_cover=True
     )
     upload = factories["music.Upload"](
         playable=True, track=track, bitrate=128000, duration=42

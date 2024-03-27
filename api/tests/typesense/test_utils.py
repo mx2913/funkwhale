@@ -11,13 +11,13 @@ def test_resolve_recordings_to_fw_track(mocker, factories):
     factories["music.Track"](
         pk=1,
         title="I Want It That Way",
-        artist=artist,
+        artist_credit__artist=artist,
         mbid="87dfa566-21c3-45ed-bc42-1d345b8563fa",
     )
     factories["music.Track"](
         pk=2,
         title="I Want It That Way",
-        artist=artist,
+        artist_credit__artist=artist,
     )
 
     client = typesense.Client(

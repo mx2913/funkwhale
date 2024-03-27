@@ -353,7 +353,7 @@ def test_inbox_create_audio(factories, mocker):
 def test_inbox_create_audio_channel(factories, mocker):
     activity = factories["federation.Activity"]()
     channel = factories["audio.Channel"]()
-    album = factories["music.Album"](artist=channel.artist)
+    album = factories["music.Album"](artist_credit__artist=channel.artist)
     upload = factories["music.Upload"](
         track__album=album,
         library=channel.library,
@@ -423,7 +423,7 @@ def test_inbox_delete_album(factories):
 
 def test_inbox_delete_album_channel(factories):
     channel = factories["audio.Channel"]()
-    album = factories["music.Album"](artist=channel.artist)
+    album = factories["music.Album"](artist_credit__artist=channel.artist)
     payload = {
         "type": "Delete",
         "actor": channel.actor.fid,
@@ -454,7 +454,7 @@ def test_outbox_delete_album(factories):
 
 def test_outbox_delete_album_channel(factories):
     channel = factories["audio.Channel"]()
-    album = factories["music.Album"](artist=channel.artist)
+    album = factories["music.Album"](artist_credit__artist=channel.artist)
     a = list(routes.outbox_delete_album({"album": album}))[0]
     expected = serializers.ActivitySerializer(
         {"type": "Delete", "object": {"type": "Album", "id": album.fid}}
@@ -570,7 +570,7 @@ def test_inbox_delete_audio(factories):
 def test_inbox_delete_audio_channel(factories):
     activity = factories["federation.Activity"]()
     channel = factories["audio.Channel"]()
-    upload = factories["music.Upload"](track__artist=channel.artist)
+    upload = factories["music.Upload"](track__artist_credit__artist=channel.artist)
     payload = {
         "type": "Delete",
         "actor": channel.actor.fid,
@@ -816,7 +816,7 @@ def test_inbox_update_audio(factories, mocker, r_mock):
     channel = factories["audio.Channel"]()
     upload = factories["music.Upload"](
         library=channel.library,
-        track__artist=channel.artist,
+        track__artist_credit__artist=channel.artist,
         track__attributed_to=channel.actor,
     )
     upload.track.fid = upload.fid

@@ -1,5 +1,6 @@
 from dynamic_preferences import types
 from dynamic_preferences.registries import global_preferences_registry
+from django.forms import widgets
 
 music = types.Section("music")
 
@@ -47,3 +48,44 @@ class MbidTaggedContent(types.BooleanPreference):
         "or enable quality filtering to hide untagged content from API calls. "
     )
     default = False
+
+
+@global_preferences_registry.register
+class JoinPhrases(types.StringPreference):
+    show_in_api = True
+    section = music
+    name = "join_phrases"
+    verbose_name = "Join Phrases"
+    help_text = (
+        "Used by the artist parser to create multiples artists in case the metadata "
+        "is a single string. BE WARNED, changing this can break the parser in unexpected ways. "
+        "It's MANDATORY to escape dots and to put doted variation before because the first match is used "
+        "(example : `|feat\.|ft\.|feat|` and not `feat|feat\.|ft\.|feat`.). ORDER is really important "
+        "(says an anarchist). To avoid artist duplication and wrongly parsed artist data "
+        "it's recommended to tag files with Musicbrainz Picard."
+    )
+    default = (
+        "featuring | feat\. | ft\. | feat | with | and | & | &|& |&| vs\. | \| | \||\| |\|| , | ,|, |,|"
+        " ; | ;|; |;| versus | vs | \( | \(|\( |\(| Remix\) |Remix\) | Remix\)| \) | \)|\) |\)| x |"
+        "accompanied by | alongside | together with | collaboration with | featuring special guest |"
+        "joined by | joined with | featuring guest | introducing | accompanied by | performed by | performed with |"
+        "performed by and | and | featuring | with | presenting | accompanied by | and special guest |"
+        "featuring special guests | featuring and | featuring & | and featuring "
+    )
+    widget = widgets.Textarea
+    field_kwargs = {"required": False}
+
+
+@global_preferences_registry.register
+class DefaultJoinPhrases(types.StringPreference):
+    show_in_api = True
+    section = music
+    name = "default_join_phrase"
+    verbose_name = "Default Join Phrase"
+    help_text = (
+        "The default join phrase used by artist parser"
+        "For exemple: `artists = [artist1, Artist2]` will be displayed has : artist1.name;artis2.name"
+    )
+    default = ";"
+    widget = widgets.Textarea
+    field_kwargs = {"required": False}

@@ -43,7 +43,7 @@ def test_import_album_stores_release_group(factories):
     album = importers.load(models.Album, cleaned_data, album_data, import_hooks=[])
 
     assert album.release_group_id == album_data["release-group"]["id"]
-    assert album.artist == artist
+    assert album.artist_credit.all()[0].artist == artist
 
 
 def test_import_track_from_release(factories, mocker):
@@ -91,8 +91,72 @@ def test_import_track_from_release(factories, mocker):
     mocked_get.assert_called_once_with(album.mbid, includes=models.Album.api_includes)
     assert track.title == track_data["recording"]["title"]
     assert track.mbid == track_data["recording"]["id"]
-    assert track.album == album
-    assert track.artist == artist
+    assert track.artist_credit.all()[0].albums.all()[0] == album
+    assert track.artist_credit.all()[0].artist == artist
+    assert track.position == int(track_data["position"])
+
+
+def test_import_track_from_multi_artist_credit_release(factories, mocker):
+    album = factories["music.Album"](mbid="430347cb-0879-3113-9fde-c75b658c298e")
+    artist = factories["music.Artist"](mbid="a5211c65-2465-406b-93ec-213588869dc1")
+    artist2 = factories["music.Artist"](mbid="a5211c65-2465-406b-93ec-21358ee69dc1")
+    album_data = {
+        "release": {
+            "id": album.mbid,
+            "title": "Daydream Nation",
+            "status": "Official",
+            "medium-count": 1,
+            "medium-list": [
+                {
+                    "position": "1",
+                    "format": "CD",
+                    "track-list": [
+                        {
+                            "id": "03baca8b-855a-3c05-8f3d-d3235287d84d",
+                            "position": "4",
+                            "number": "4",
+                            "length": "417973",
+                            "recording": {
+                                "id": "2109e376-132b-40ad-b993-2bb6812e19d4",
+                                "title": "Teen Age Riot",
+                                "length": "417973",
+                                "artist-credit": [
+                                    {
+                                        "joinphrase": "feat",
+                                        "artist": {
+                                            "id": artist.mbid,
+                                            "name": artist.name,
+                                        },
+                                    },
+                                    {
+                                        "joinphrase": "",
+                                        "artist": {
+                                            "id": artist2.mbid,
+                                            "name": artist2.name,
+                                        },
+                                    },
+                                ],
+                            },
+                            "track_or_recording_length": "417973",
+                        }
+                    ],
+                    "track-count": 1,
+                }
+            ],
+        }
+    }
+    mocked_get = mocker.patch(
+        "funkwhale_api.musicbrainz.api.releases.get", return_value=album_data
+    )
+    track_data = album_data["release"]["medium-list"][0]["track-list"][0]
+    track = models.Track.get_or_create_from_release(
+        "430347cb-0879-3113-9fde-c75b658c298e", track_data["recording"]["id"]
+    )[0]
+    mocked_get.assert_called_once_with(album.mbid, includes=models.Album.api_includes)
+    assert track.title == track_data["recording"]["title"]
+    assert track.mbid == track_data["recording"]["id"]
+    assert track.artist_credit.all()[0].albums.all()[0] == album
+    assert [ac.artist for ac in track.artist_credit.all()] == [artist, artist2]
     assert track.position == int(track_data["position"])
 
 
@@ -144,12 +208,11 @@ def test_import_track_with_different_artist_than_release(factories, mocker):
     mocker.patch(
         "funkwhale_api.musicbrainz.api.recordings.get", return_value=recording_data
     )
-
     track = models.Track.get_or_create_from_api(recording_data["recording"]["id"])[0]
     assert track.title == recording_data["recording"]["title"]
     assert track.mbid == recording_data["recording"]["id"]
     assert track.album == album
-    assert track.artist == artist
+    assert track.artist_credit.all()[0].artist == artist
 
 
 @pytest.mark.parametrize(
@@ -391,7 +454,7 @@ def test_artist_playable_by_correct_actor(privacy_level, expected, factories):
     queryset = models.Artist.objects.playable_by(
         upload.library.actor
     ).annotate_playable_by_actor(upload.library.actor)
-    match = upload.track.artist in list(queryset)
+    match = [ac.artist for ac in upload.track.artist_credit.all()][0] == queryset.get()
     assert match is expected
     if expected:
         assert bool(queryset.first().is_playable_by_actor) is expected
@@ -410,7 +473,7 @@ def test_artist_playable_by_instance_actor(privacy_level, expected, factories):
     queryset = models.Artist.objects.playable_by(
         instance_actor
     ).annotate_playable_by_actor(instance_actor)
-    match = upload.track.artist in list(queryset)
+    match = [ac.artist for ac in upload.track.artist_credit.all()][0] in queryset
     assert match is expected
     if expected:
         assert bool(queryset.first().is_playable_by_actor) is expected
@@ -426,7 +489,7 @@ def test_artist_playable_by_anonymous(privacy_level, expected, factories):
         library__local=True,
     )
     queryset = models.Artist.objects.playable_by(None).annotate_playable_by_actor(None)
-    match = upload.track.artist in list(queryset)
+    match = [ac.artist for ac in upload.track.artist_credit.all()][0] in queryset
     assert match is expected
     if expected:
         assert bool(queryset.first().is_playable_by_actor) is expected

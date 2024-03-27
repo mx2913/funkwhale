@@ -152,7 +152,9 @@ def test_get_artist(
     url = reverse("api:subsonic:subsonic-get_artist")
     assert url.endswith("getArtist") is True
     artist = factories["music.Artist"](playable=True)
-    factories["music.Album"].create_batch(size=3, artist=artist, playable=True)
+    factories["music.Album"].create_batch(
+        size=3, artist_credit__artist=artist, playable=True
+    )
     playable_by = mocker.spy(music_models.ArtistQuerySet, "playable_by")
 
     expected = {"artist": serializers.GetArtistSerializer(artist).data}
@@ -202,9 +204,9 @@ def test_get_album(
 ):
     url = reverse("api:subsonic:subsonic-get_album")
     assert url.endswith("getAlbum") is True
-    artist = factories["music.Artist"]()
+    artist_credit = factories["music.ArtistCredit"]()
     album = (
-        factories["music.Album"](artist=artist)
+        factories["music.Album"](artist_credit=artist_credit)
         .__class__.objects.with_duration()
         .first()
     )
@@ -217,7 +219,10 @@ def test_get_album(
     assert response.data == expected
 
     playable_by.assert_called_once_with(
-        music_models.Album.objects.with_duration().select_related("artist"), None
+        music_models.Album.objects.with_duration().prefetch_related(
+            "artist_credit__artist"
+        ),
+        None,
     )
 
 
@@ -227,8 +232,8 @@ def test_get_song(
 ):
     url = reverse("api:subsonic:subsonic-get_song")
     assert url.endswith("getSong") is True
-    artist = factories["music.Artist"]()
-    album = factories["music.Album"](artist=artist)
+    artist_credit = factories["music.ArtistCredit"]()
+    album = factories["music.Album"](artist_credit=artist_credit)
     track = factories["music.Track"](album=album, playable=True)
     upload = factories["music.Upload"](track=track)
     playable_by = mocker.spy(music_models.TrackQuerySet, "playable_by")
@@ -508,10 +513,12 @@ def test_get_album_list2_by_genre(f, db, logged_in_api_client, factories):
     url = reverse("api:subsonic:subsonic-get_album_list2")
     assert url.endswith("getAlbumList2") is True
     album1 = factories["music.Album"](
-        artist__name="Artist1", playable=True, set_tags=["Rock"]
+        artist_credit__artist__name="Artist1", playable=True, set_tags=["Rock"]
     ).__class__.objects.with_duration()[0]
     album2 = factories["music.Album"](
-        artist__name="Artist2", playable=True, artist__set_tags=["Rock"]
+        artist_credit__artist__name="Artist2",
+        playable=True,
+        artist_credit__artist__set_tags=["Rock"],
     ).__class__.objects.with_duration()[1]
     factories["music.Album"](playable=True, set_tags=["Pop"])
     response = logged_in_api_client.get(
@@ -556,7 +563,12 @@ def test_get_album_list2_by_year(params, expected, db, logged_in_api_client, fac
 @pytest.mark.parametrize("f", ["json"])
 @pytest.mark.parametrize(
     "tags_field",
-    ["set_tags", "artist__set_tags", "album__set_tags", "album__artist__set_tags"],
+    [
+        "set_tags",
+        "artist_credit__artist__set_tags",
+        "album__set_tags",
+        "album__artist_credit__artist__set_tags",
+    ],
 )
 def test_get_songs_by_genre(f, tags_field, db, logged_in_api_client, factories):
     url = reverse("api:subsonic:subsonic-get_songs_by_genre")
@@ -916,20 +928,22 @@ def test_get_podcasts(logged_in_api_client, factories, mocker):
     )
     upload1 = factories["music.Upload"](
         playable=True,
-        track__artist=channel.artist,
+        track__artist_credit__artist=channel.artist,
         library=channel.library,
         bitrate=128000,
         duration=42,
     )
     upload2 = factories["music.Upload"](
         playable=True,
-        track__artist=channel.artist,
+        track__artist_credit__artist=channel.artist,
         library=channel.library,
         bitrate=256000,
         duration=43,
     )
     factories["federation.Follow"](actor=actor, target=channel.actor, approved=True)
-    factories["music.Upload"](import_status="pending", track__artist=channel.artist)
+    factories["music.Upload"](
+        import_status="pending", track__artist_credit__artist=channel.artist
+    )
     factories["audio.Channel"](external=True)
     factories["federation.Follow"]()
     url = reverse("api:subsonic:subsonic-get_podcasts")
@@ -953,14 +967,14 @@ def test_get_podcasts_by_id(logged_in_api_client, factories, mocker):
     )
     upload1 = factories["music.Upload"](
         playable=True,
-        track__artist=channel1.artist,
+        track__artist_credit__artist=channel1.artist,
         library=channel1.library,
         bitrate=128000,
         duration=42,
     )
     factories["music.Upload"](
         playable=True,
-        track__artist=channel2.artist,
+        track__artist_credit__artist=channel2.artist,
         library=channel2.library,
         bitrate=256000,
         duration=43,
@@ -983,14 +997,14 @@ def test_get_newest_podcasts(logged_in_api_client, factories, mocker):
     )
     upload1 = factories["music.Upload"](
         playable=True,
-        track__artist=channel.artist,
+        track__artist_credit__artist=channel.artist,
         library=channel.library,
         bitrate=128000,
         duration=42,
     )
     upload2 = factories["music.Upload"](
         playable=True,
-        track__artist=channel.artist,
+        track__artist_credit__artist=channel.artist,
         library=channel.library,
         bitrate=256000,
         duration=43,
