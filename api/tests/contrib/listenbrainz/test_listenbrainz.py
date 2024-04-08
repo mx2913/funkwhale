@@ -25,7 +25,7 @@ def test_listenbrainz_submit_listen(logged_in_client, mocker, factories):
         "listenbrainz",
         {
             "sync_listenings": True,
-            "sync_facorites": True,
+            "sync_favorites": True,
             "submit_favorites": True,
             "sync_favorites": True,
             "user_token": "blablabla",

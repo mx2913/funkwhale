@@ -90,12 +90,12 @@ def add_lb_listenings_to_db(listens, user):
         )
 
         if not mbid:
-            logger.info("Received listening doesn't have a mbid. Skipping...")
+            logger.info("Received listening that doesn't have a mbid. Skipping...")
 
         try:
             track = music_models.Track.objects.get(mbid=mbid)
         except music_models.Track.DoesNotExist:
-            logger.info("Received listening doesn't exist in fw database. Skipping...")
+            logger.info("Received listening that doesn't exist in fw database. Skipping...")
             continue
 
         user = user
@@ -139,7 +139,7 @@ def add_lb_feedback_to_db(feedbacks, user):
             track = music_models.Track.objects.get(mbid=feedback["recording_mbid"])
         except music_models.Track.DoesNotExist:
             logger.info(
-                "Received feedback track doesn't exist in fw database. Skipping..."
+                "Received feedback track that doesn't exist in fw database. Skipping..."
             )
             continue
 
@@ -160,4 +160,4 @@ def add_lb_feedback_to_db(feedbacks, user):
             except favorites_models.TrackFavorite.DoesNotExist:
                 continue
         elif feedback["score"] == -1:
-            logger.info("Funkwhale doesn't support hate yet <3")
+            logger.info("Funkwhale doesn't support disliked tracks")

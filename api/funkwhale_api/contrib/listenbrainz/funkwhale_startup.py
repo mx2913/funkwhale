@@ -34,24 +34,24 @@ PLUGIN = plugins.get_plugin_config(
             "type": "boolean",
             "default": False,
             "label": "Enable listenings sync",
-            "help": "If enable, your listening from Listenbrainz will be imported into Funkwhale. This means they \
-                will be used has any other funkwhale listenings to filter out recently listened content or \
+            "help": "If enabled, your listening from ListenBrainz will be imported into Funkwhale. This means they \
+                will be used along with Funkwhale listenings to filter out recently listened content or \
                 generate recommendations",
         },
         {
-            "name": "sync_facorites",
+            "name": "sync_favorites",
             "type": "boolean",
             "default": False,
             "label": "Enable favorite sync",
-            "help": "If enable, your favorites from Listenbrainz will be imported into Funkwhale. This means they \
-                will be used has any other funkwhale favorites (Ui display, federatipon activity)",
+            "help": "If enabled, your favorites from ListenBrainz will be imported into Funkwhale. This means they \
+                will be used along with Funkwhale favorites (UI display, federation activity)",
         },
         {
             "name": "submit_favorites",
             "type": "boolean",
             "default": False,
-            "label": "Enable favorite submission to Listenbrainz services",
-            "help": "If enable, your favorites from Funkwhale will be submit to Listenbrainz",
+            "label": "Enable favorite submission to ListenBrainz services",
+            "help": "If enabled, your favorites from Funkwhale will be submitted to ListenBrainz",
         },
     ],
 )
