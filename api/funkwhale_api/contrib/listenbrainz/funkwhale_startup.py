@@ -27,7 +27,7 @@ PLUGIN = plugins.get_plugin_config(
             "type": "boolean",
             "default": True,
             "label": "Enable listening submission to ListenBrainz",
-            "help": "If enable, your listening from Funkwhale will be imported into ListenBrainz.",
+            "help": "If enabled, your listenings from Funkwhale will be imported into ListenBrainz.",
         },
         {
             "name": "sync_listenings",
