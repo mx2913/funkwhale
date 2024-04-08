@@ -19,7 +19,7 @@ PLUGIN = plugins.get_plugin_config(
             "type": "text",
             "required": False,
             "label": "Your ListenBrainz user name.",
-            "help": "It's needed for synchronisation with Listenbrainz (import listenings and favorites) \
+            "help": "Required for importing listenings and favorites with ListenBrainz \
                 but not to send activities",
         },
         {
