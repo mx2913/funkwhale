@@ -95,7 +95,9 @@ def add_lb_listenings_to_db(listens, user):
         try:
             track = music_models.Track.objects.get(mbid=mbid)
         except music_models.Track.DoesNotExist:
-            logger.info("Received listening that doesn't exist in fw database. Skipping...")
+            logger.info(
+                "Received listening that doesn't exist in fw database. Skipping..."
+            )
             continue
 
         user = user
