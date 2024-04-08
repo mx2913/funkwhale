@@ -15,6 +15,11 @@ v2_patterns += [
         r"^radios/",
         include(("funkwhale_api.radios.urls_v2", "radios"), namespace="radios"),
     ),
+    # to do : to delete
+    # re_path(
+    #     r"^users/",
+    #     include(("funkwhale_api.users.api_urls_v2", "users"), namespace="users"),
+    # ),
 ]
 
 urlpatterns = [re_path("", include((v2_patterns, "v2"), namespace="v2"))]

@@ -49,10 +49,10 @@ def test_can_pick_by_weight():
 
 def test_session_radio_excludes_previous_picks(factories):
     tracks = factories["music.Track"].create_batch(5)
-    user = factories["users.User"]()
+    user = factories["users.User"](with_actor=True)
     previous_choices = []
     for i in range(5):
-        TrackFavorite.add(track=random.choice(tracks), user=user)
+        TrackFavorite.add(track=random.choice(tracks), actor=user.actor)
 
     radio = radios.SessionRadio()
     radio.radio_type = "favorites"
@@ -72,16 +72,16 @@ def test_session_radio_excludes_previous_picks(factories):
 def test_can_get_choices_for_favorites_radio(factories):
     files = factories["music.Upload"].create_batch(10)
     tracks = [f.track for f in files]
-    user = factories["users.User"]()
+    user = factories["users.User"](with_actor=True)
     for i in range(5):
-        TrackFavorite.add(track=random.choice(tracks), user=user)
+        TrackFavorite.add(track=random.choice(tracks), actor=user.actor)
 
     radio = radios.FavoritesRadio()
     choices = radio.get_choices(user=user)
 
-    assert choices.count() == user.track_favorites.all().count()
+    assert choices.count() == user.actor.track_favorites.all().count()
 
-    for favorite in user.track_favorites.all():
+    for favorite in user.actor.track_favorites.all():
         assert favorite.track in choices
 
     for i in range(5):
@@ -324,10 +324,10 @@ def test_can_start_artist_radio_from_api(logged_in_api_client, preferences, fact
 
 
 def test_can_start_less_listened_radio(factories):
-    user = factories["users.User"]()
+    user = factories["users.User"](with_actor=True)
     wrong_files = factories["music.Upload"].create_batch(5)
     for f in wrong_files:
-        factories["history.Listening"](track=f.track, user=user)
+        factories["history.Listening"](track=f.track, actor=user.actor)
     good_files = factories["music.Upload"].create_batch(5)
     good_tracks = [f.track for f in good_files]
     radio = radios.LessListenedRadio()
@@ -346,10 +346,11 @@ def test_similar_radio_track(factories):
     factories["music.Track"].create_batch(5)
 
     # one user listened to this track
-    l1 = factories["history.Listening"](track=seed)
+    l1user = factories["users.User"](with_actor=True)
+    l1 = factories["history.Listening"](track=seed, actor=l1user.actor)
 
     expected_next = factories["music.Track"]()
-    factories["history.Listening"](track=expected_next, user=l1.user)
+    factories["history.Listening"](track=expected_next, actor=l1.actor)
 
     assert radio.pick(filter_playable=False) == expected_next
 

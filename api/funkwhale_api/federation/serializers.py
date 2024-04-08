@@ -12,6 +12,7 @@ from rest_framework import serializers
 
 from funkwhale_api.common import models as common_models
 from funkwhale_api.common import utils as common_utils
+from funkwhale_api.favorites import models as favorites_models
 from funkwhale_api.moderation import models as moderation_models
 from funkwhale_api.moderation import serializers as moderation_serializers
 from funkwhale_api.moderation import signals as moderation_signals
@@ -20,7 +21,7 @@ from funkwhale_api.music import models as music_models
 from funkwhale_api.music import tasks as music_tasks
 from funkwhale_api.tags import models as tags_models
 
-from . import activity, actors, contexts, jsonld, models, utils
+from funkwhale_api.federation import activity, actors, contexts, jsonld, models, utils
 
 logger = logging.getLogger(__name__)
 
@@ -644,9 +645,14 @@ class FollowSerializer(serializers.Serializer):
 
     def save(self, **kwargs):
         target = self.validated_data["object"]
-
         if target._meta.label == "music.Library":
             follow_class = models.LibraryFollow
+        elif (
+            target._meta.label == "federation.Actor"
+            and target.type == "Person"
+            and not target.get_channel()
+        ):
+            follow_class = models.UserFollow
         else:
             follow_class = models.Follow
         defaults = kwargs
@@ -723,6 +729,10 @@ class FollowActionSerializer(serializers.Serializer):
         if target._meta.label == "music.Library":
             expected = target.actor
             follow_class = models.LibraryFollow
+        # to do : what if the follow is an AP follow of an non fw object ?
+        elif target._meta.label == "federation.Actor" and not target.get_channel():
+            expected = target
+            follow_class = models.UserFollow
         else:
             expected = target
             follow_class = models.Follow
@@ -804,6 +814,8 @@ class UndoFollowSerializer(serializers.Serializer):
 
         if target._meta.label == "music.Library":
             follow_class = models.LibraryFollow
+        elif target._meta.label == "federation.Actor" and not target.get_channel():
+            follow_class = models.UserFollow
         else:
             follow_class = models.Follow
 
@@ -812,7 +824,9 @@ class UndoFollowSerializer(serializers.Serializer):
                 actor=validated_data["actor"], target=target
             ).get()
         except follow_class.DoesNotExist:
-            raise serializers.ValidationError("No follow to remove")
+            raise serializers.ValidationError(
+                f"No follow to remove follow_class = {follow_class}"
+            )
         return validated_data
 
     def to_representation(self, instance):
@@ -879,7 +893,6 @@ class ActivitySerializer(serializers.Serializer):
             object_serializer = OBJECT_SERIALIZERS[type]
         except KeyError:
             raise serializers.ValidationError(f"Unsupported type {type}")
-
         serializer = object_serializer(data=value)
         serializer.is_valid(raise_exception=True)
         return serializer.data
@@ -2076,3 +2089,47 @@ class IndexSerializer(jsonld.JsonLdSerializer):
         if self.context.get("include_ap_context", True):
             d["@context"] = jsonld.get_default_context()
         return d
+
+
+class TrackFavoriteSerializer(jsonld.JsonLdSerializer):
+    type = serializers.ChoiceField(choices=[contexts.AS.Like])
+    id = serializers.URLField(max_length=500)
+    # to do : should thi be target like followserializer ?
+    track = TrackSerializer(required=True)
+    actor = serializers.URLField(max_length=500)
+
+    class Meta:
+        jsonld_mapping = {
+            "track": jsonld.first_obj(contexts.FW.track),
+            "actor": jsonld.first_id(contexts.AS.actor),
+        }
+
+    def to_representation(self, favorite):
+        payload = {
+            "type": "Favorite",
+            "id": favorite.fid,
+            "actor": favorite.actor.fid,
+            "track": TrackSerializer(
+                favorite.track, context={"include_ap_context": False}
+            ).data,
+        }
+        if self.context.get("include_ap_context", True):
+            payload["@context"] = jsonld.get_default_context()
+        return payload
+
+    def create(self, validated_data):
+        actor = actors.get_actor(validated_data["actor"])
+
+        track = utils.retrieve_ap_object(
+            validated_data["track"]["id"],
+            actor=actors.get_service_actor(),
+            serializer_class=TrackSerializer,
+        )
+
+        return favorites_models.TrackFavorite.objects.create(
+            fid=validated_data.get("id"),
+            uuid=uuid.uuid4(),
+            actor=actor,
+            track=track,
+            user=None,
+        )

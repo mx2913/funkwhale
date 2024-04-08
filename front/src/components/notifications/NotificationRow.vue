@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Notification, LibraryFollow } from '~/types'
+import type { Notification, LibraryFollow, UserFollow } from '~/types'
 
 import { computed, ref, watchEffect, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -61,6 +61,38 @@ const notificationData = computed(() => {
         message: t('components.notifications.NotificationRow.message.libraryReject', { username: username.value, library: activity.object.name })
       }
     }
+    if (activity.object && activity.object.type === 'federation.Actor') {
+      const detailUrl = { name: 'profile.full', params: { username: activity.actor.preferred_username, domain: activity.actor.domain } }
+
+      if (activity.related_object?.approved === null) {
+        return {
+          detailUrl,
+          message: t('components.notifications.NotificationRow.message.userPendingFollow', { username: username.value, user: activity.object.full_username }),
+          acceptFollow: {
+            buttonClass: 'success',
+            icon: 'check',
+            label: t('components.notifications.NotificationRow.button.approve'),
+            handler: () => approveUserFollow(activity.related_object)
+          },
+          rejectFollow: {
+            buttonClass: 'danger',
+            icon: 'x',
+            label: t('components.notifications.NotificationRow.button.reject'),
+            handler: () => rejectUserFollow(activity.related_object)
+          }
+        }
+      } else if (activity.related_object?.approved) {
+        return {
+          detailUrl,
+          message: t('components.notifications.NotificationRow.message.userFollow', { username: username.value, user: activity.actor.full_username })
+        }
+      }
+
+      return {
+        detailUrl,
+        message: t('components.notifications.NotificationRow.message.userReject', { username: username.value, user: activity.actor.full_username })
+      }
+    }
   }
 
   if (activity.type === 'Accept') {
@@ -68,6 +100,12 @@ const notificationData = computed(() => {
       return {
         detailUrl: { name: 'content.remote.index' },
         message: t('components.notifications.NotificationRow.message.libraryAcceptFollow', { username: username.value, library: activity.related_object.name })
+      }
+    }
+    if (activity.object?.type === 'federation.Actor') {
+      return {
+        detailUrl: { name: 'content.remote.index' },
+        message: t('components.notifications.NotificationRow.message.userAcceptFollow', { username: username.value, user: activity.actor.full_username })
       }
     }
   }
@@ -97,6 +135,18 @@ const approveLibraryFollow = async (follow: LibraryFollow) => {
 
 const rejectLibraryFollow = async (follow: LibraryFollow) => {
   await axios.post(`federation/follows/library/${follow.uuid}/reject/`)
+  follow.approved = false
+  item.value.is_read = true
+}
+
+const approveUserFollow = async (follow: UserFollow) => {
+  await axios.post(`federation/follows/user/${follow.uuid}/accept/`)
+  follow.approved = true
+  item.value.is_read = true
+}
+
+const rejectUserFollow = async (follow: UserFollow) => {
+  await axios.post(`federation/follows/user/${follow.uuid}/reject/`)
   follow.approved = false
   item.value.is_read = true
 }

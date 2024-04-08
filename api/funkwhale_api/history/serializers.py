@@ -12,15 +12,12 @@ from . import models
 class ListeningActivitySerializer(activity_serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     object = TrackActivitySerializer(source="track")
-    actor = UserActivitySerializer(source="user")
+    actor = federation_serializers.APIActorSerializer()
     published = serializers.DateTimeField(source="creation_date")
 
     class Meta:
         model = models.Listening
         fields = ["id", "local_id", "object", "type", "actor", "published"]
-
-    def get_actor(self, obj):
-        return UserActivitySerializer(obj.user).data
 
     def get_type(self, obj):
         return "Listen"
@@ -28,31 +25,24 @@ class ListeningActivitySerializer(activity_serializers.ModelSerializer):
 
 class ListeningSerializer(serializers.ModelSerializer):
     track = TrackSerializer(read_only=True)
-    user = UserBasicSerializer(read_only=True)
-    actor = serializers.SerializerMethodField()
+    actor = federation_serializers.APIActorSerializer(read_only=True)
 
     class Meta:
         model = models.Listening
-        fields = ("id", "user", "track", "creation_date", "actor")
+        fields = ("id", "actor", "track", "creation_date", "actor")
 
     def create(self, validated_data):
-        validated_data["user"] = self.context["user"]
+        validated_data["actor"] = self.context["user"].actor
 
         return super().create(validated_data)
-
-    @extend_schema_field(federation_serializers.APIActorSerializer)
-    def get_actor(self, obj):
-        actor = obj.user.actor
-        if actor:
-            return federation_serializers.APIActorSerializer(actor).data
 
 
 class ListeningWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Listening
-        fields = ("id", "user", "track", "creation_date")
+        fields = ("id", "actor", "track", "creation_date")
 
     def create(self, validated_data):
-        validated_data["user"] = self.context["user"]
+        validated_data["actor"] = self.context["user"].actor
 
         return super().create(validated_data)

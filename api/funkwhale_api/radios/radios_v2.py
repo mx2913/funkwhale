@@ -188,7 +188,9 @@ class FavoritesRadio(SessionRadio):
 
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
-        track_ids = kwargs["user"].track_favorites.all().values_list("track", flat=True)
+        track_ids = (
+            kwargs["user"].actor.track_favorites.all().values_list("track", flat=True)
+        )
         return qs.filter(pk__in=track_ids, artist__content_category="music")
 
 
@@ -374,7 +376,9 @@ class LessListenedRadio(SessionRadio):
 
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
-        listened = self.session.user.listenings.all().values_list("track", flat=True)
+        listened = self.session.user.actor.listenings.all().values_list(
+            "track", flat=True
+        )
         return (
             qs.filter(artist__content_category="music")
             .exclude(pk__in=listened)
@@ -390,7 +394,9 @@ class LessListenedLibraryRadio(SessionRadio):
 
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
-        listened = self.session.user.listenings.all().values_list("track", flat=True)
+        listened = self.session.user.actor.listenings.all().values_list(
+            "track", flat=True
+        )
         tracks_ids = self.session.user.actor.attributed_tracks.all().values_list(
             "id", flat=True
         )

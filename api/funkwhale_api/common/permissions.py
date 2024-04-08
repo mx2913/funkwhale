@@ -56,3 +56,40 @@ class OwnerPermission(BasePermission):
         if not owner or not request.user.is_authenticated or owner != request.user:
             raise owner_exception
         return True
+
+
+class PrivacyLevelPermission(BasePermission):
+    """
+    Ensure the request user have acces to the object considering the privacylevel configuration
+    of the user. Could be expanded to other objects type.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        if not hasattr(obj, "user"):
+            # to do : it's a remote actor. We could trigger an update of the remote actor data
+            # to avoid leaking data
+            return True
+        if obj.user.privacy_level == "everyone":
+            return True
+        # user is anonymous
+        elif not hasattr(request.user, "actor"):
+            return False
+        elif obj.user.privacy_level == "instance":
+            # user is local
+            if hasattr(request.user, "actor"):
+                return True
+            elif request.actor.is_local():
+                return True
+            else:
+                return False
+
+        elif obj.user.privacy_level == "me" and obj.user.actor == request.user.actor:
+            return True
+
+        elif (
+            obj.user.privacy_level == "followers"
+            and request.user.actor in obj.user.actor.get_followers()
+        ):
+            return True
+        else:
+            return False

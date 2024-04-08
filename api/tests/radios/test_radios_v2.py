@@ -77,9 +77,9 @@ def test_session_radio_excludes_previous_picks_v2(factories, logged_in_api_clien
 def test_can_get_choices_for_favorites_radio_v2(factories):
     files = factories["music.Upload"].create_batch(10)
     tracks = [f.track for f in files]
-    user = factories["users.User"]()
+    user = factories["users.User"](with_actor=True)
     for i in range(5):
-        TrackFavorite.add(track=random.choice(tracks), user=user)
+        TrackFavorite.add(track=random.choice(tracks), actor=user.actor)
 
     radio = radios_v2.FavoritesRadio()
     session = radio.start_session(user=user)
@@ -87,9 +87,9 @@ def test_can_get_choices_for_favorites_radio_v2(factories):
         quantity=100, filter_playable=False
     )
 
-    assert len(choices) == user.track_favorites.all().count()
+    assert len(choices) == user.actor.track_favorites.all().count()
 
-    for favorite in user.track_favorites.all():
+    for favorite in user.actor.track_favorites.all():
         assert favorite.track in choices
 
 

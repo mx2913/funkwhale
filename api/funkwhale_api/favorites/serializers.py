@@ -9,18 +9,16 @@ from funkwhale_api.users.serializers import UserActivitySerializer, UserBasicSer
 from . import models
 
 
+# to do : to deprecate ? this is only a local activity, the federated activities serializers are in `/federation`
 class TrackFavoriteActivitySerializer(activity_serializers.ModelSerializer):
     type = serializers.SerializerMethodField()
     object = TrackActivitySerializer(source="track")
-    actor = UserActivitySerializer(source="user")
+    actor = federation_serializers.APIActorSerializer(read_only=True)
     published = serializers.DateTimeField(source="creation_date")
 
     class Meta:
         model = models.TrackFavorite
         fields = ["id", "local_id", "object", "type", "actor", "published"]
-
-    def get_actor(self, obj):
-        return UserActivitySerializer(obj.user).data
 
     def get_type(self, obj):
         return "Like"
@@ -28,19 +26,11 @@ class TrackFavoriteActivitySerializer(activity_serializers.ModelSerializer):
 
 class UserTrackFavoriteSerializer(serializers.ModelSerializer):
     track = TrackSerializer(read_only=True)
-    user = UserBasicSerializer(read_only=True)
-    actor = serializers.SerializerMethodField()
+    actor = federation_serializers.APIActorSerializer(read_only=True)
 
     class Meta:
         model = models.TrackFavorite
-        fields = ("id", "user", "track", "creation_date", "actor")
-        actor = serializers.SerializerMethodField()
-
-    @extend_schema_field(federation_serializers.APIActorSerializer)
-    def get_actor(self, obj):
-        actor = obj.user.actor
-        if actor:
-            return federation_serializers.APIActorSerializer(actor).data
+        fields = ("id", "actor", "track", "creation_date", "actor")
 
 
 class UserTrackFavoriteWriteSerializer(serializers.ModelSerializer):

@@ -139,6 +139,8 @@ services:
       - "./front:/frontend:ro"
       - "./data/staticfiles:/staticfiles:ro"
       - "./data/media:/protected/media:ro"
+      - "./data/media:/data/media:ro"
+
     networks:
       - federation
       - internal

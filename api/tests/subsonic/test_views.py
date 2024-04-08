@@ -339,6 +339,7 @@ def test_stream_transcode(
 
 @pytest.mark.parametrize("f", ["json"])
 def test_star(f, db, logged_in_api_client, factories):
+    logged_in_api_client.user.create_actor()
     url = reverse("api:subsonic:subsonic-star")
     assert url.endswith("star") is True
     track = factories["music.Track"]()
@@ -347,30 +348,34 @@ def test_star(f, db, logged_in_api_client, factories):
     assert response.status_code == 200
     assert response.data == {"status": "ok"}
 
-    favorite = logged_in_api_client.user.track_favorites.latest("id")
+    favorite = logged_in_api_client.user.actor.track_favorites.latest("id")
     assert favorite.track == track
 
 
 @pytest.mark.parametrize("f", ["json"])
 def test_unstar(f, db, logged_in_api_client, factories):
+    logged_in_api_client.user.create_actor()
     url = reverse("api:subsonic:subsonic-unstar")
     assert url.endswith("unstar") is True
     track = factories["music.Track"]()
-    factories["favorites.TrackFavorite"](track=track, user=logged_in_api_client.user)
+    factories["favorites.TrackFavorite"](
+        track=track, actor=logged_in_api_client.user.actor
+    )
     response = logged_in_api_client.get(url, {"f": f, "id": track.pk})
 
     assert response.status_code == 200
     assert response.data == {"status": "ok"}
-    assert logged_in_api_client.user.track_favorites.count() == 0
+    assert logged_in_api_client.user.actor.track_favorites.count() == 0
 
 
 @pytest.mark.parametrize("f", ["json"])
 def test_get_starred2(f, db, logged_in_api_client, factories):
+    logged_in_api_client.user.create_actor()
     url = reverse("api:subsonic:subsonic-get_starred2")
     assert url.endswith("getStarred2") is True
     track = factories["music.Track"]()
     favorite = factories["favorites.TrackFavorite"](
-        track=track, user=logged_in_api_client.user
+        track=track, actor=logged_in_api_client.user.actor
     )
     response = logged_in_api_client.get(url, {"f": f, "id": track.pk})
 
@@ -427,11 +432,12 @@ def test_get_genres(f, db, logged_in_api_client, factories, mocker):
 
 @pytest.mark.parametrize("f", ["json"])
 def test_get_starred(f, db, logged_in_api_client, factories):
+    logged_in_api_client.user.create_actor()
     url = reverse("api:subsonic:subsonic-get_starred")
     assert url.endswith("getStarred") is True
     track = factories["music.Track"]()
     favorite = factories["favorites.TrackFavorite"](
-        track=track, user=logged_in_api_client.user
+        track=track, actor=logged_in_api_client.user.actor
     )
     response = logged_in_api_client.get(url, {"f": f, "id": track.pk})
 
@@ -832,6 +838,7 @@ def test_get_avatar(factories, logged_in_api_client):
 
 
 def test_scrobble(factories, logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     upload = factories["music.Upload"]()
     track = upload.track
     url = reverse("api:subsonic:subsonic-scrobble")
@@ -840,7 +847,7 @@ def test_scrobble(factories, logged_in_api_client):
 
     assert response.status_code == 200
 
-    listening = logged_in_api_client.user.listenings.latest("id")
+    listening = logged_in_api_client.user.actor.listenings.latest("id")
     assert listening.track == track
 
 

@@ -6,7 +6,7 @@ from funkwhale_api.history import models
 def test_can_create_listening(factories):
     track = factories["music.Track"]()
     user = factories["users.User"]()
-    models.Listening.objects.create(user=user, track=track)
+    models.Listening.objects.create(actor=user.actor, track=track)
 
 
 def test_logged_in_user_can_create_listening_via_api(
@@ -20,7 +20,7 @@ def test_logged_in_user_can_create_listening_via_api(
     listening = models.Listening.objects.latest("id")
 
     assert listening.track == track
-    assert listening.user == logged_in_client.user
+    assert listening.actor.user == logged_in_client.user
 
 
 def test_adding_listening_calls_activity_record(

@@ -97,6 +97,30 @@ class LibraryFollowSerializer(serializers.ModelSerializer):
         return federation_serializers.APIActorSerializer(o.actor).data
 
 
+class UserFollowSerializer(serializers.ModelSerializer):
+    target = common_serializers.RelatedField(
+        "fid", federation_serializers.APIActorSerializer(), required=True
+    )
+    actor = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.UserFollow
+        fields = ["creation_date", "actor", "uuid", "target", "approved"]
+        read_only_fields = ["uuid", "actor", "approved", "creation_date"]
+
+    def validate_target(self, v):
+        request_actor = self.context["actor"]
+        if v == request_actor:
+            raise serializers.ValidationError("You cannot follow yourself")
+        if v.received_user_follows.filter(actor=request_actor).exists():
+            raise serializers.ValidationError("You are already following this user")
+        return v
+
+    @extend_schema_field(federation_serializers.APIActorSerializer)
+    def get_actor(self, o):
+        return federation_serializers.APIActorSerializer(o.actor).data
+
+
 def serialize_generic_relation(activity, obj):
     data = {"type": obj._meta.label}
     if data["type"] == "federation.Actor":
@@ -106,9 +130,11 @@ def serialize_generic_relation(activity, obj):
 
     if data["type"] == "music.Library":
         data["name"] = obj.name
-    if data["type"] == "federation.LibraryFollow":
+    if (
+        data["type"] == "federation.LibraryFollow"
+        or data["type"] == "federation.UserFollow"
+    ):
         data["approved"] = obj.approved
-
     return data
 
 

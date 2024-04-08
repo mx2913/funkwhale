@@ -245,6 +245,15 @@ class LibraryFollowFactory(NoUpdateOnCreate, factory.django.DjangoModelFactory):
         model = "federation.LibraryFollow"
 
 
+@registry.register
+class UserFollowFactory(NoUpdateOnCreate, factory.django.DjangoModelFactory):
+    target = factory.SubFactory(ActorFactory)
+    actor = factory.SubFactory(ActorFactory)
+
+    class Meta:
+        model = "federation.UserFollow"
+
+
 class ArtistMetadataFactory(factory.Factory):
     name = factory.Faker("name")
 

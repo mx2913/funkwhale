@@ -29,7 +29,7 @@ def forward_to_scrobblers(listening, conf, **kwargs):
                 (username + " " + password).encode("utf-8")
             ).hexdigest()
             cache_key = "lastfm:sessionkey:{}".format(
-                ":".join([str(listening.user.pk), hashed_auth])
+                ":".join([str(listening.actor.pk), hashed_auth])
             )
             PLUGIN["logger"].info("Forwarding scrobble to %s", LASTFM_SCROBBLER_URL)
             session_key = PLUGIN["cache"].get(cache_key)

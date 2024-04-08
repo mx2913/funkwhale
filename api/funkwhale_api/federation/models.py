@@ -254,6 +254,8 @@ class Actor(models.Model):
     def should_autoapprove_follow(self, actor):
         if self.get_channel():
             return True
+        if self.user.privacy_level == "public":
+            return True
         return False
 
     def get_user(self):
@@ -400,6 +402,8 @@ class Fetch(models.Model):
                 serializers.ChannelUploadSerializer,
             ],
             contexts.FW.Library: [serializers.LibrarySerializer],
+            # to do : don't need to fetch a favorite since we can fetch the track and actor already ?
+            # contexts.FW.Favorite: [serializers.TrackFavoriteSerializer],
             contexts.AS.Group: [serializers.ActorSerializer],
             contexts.AS.Person: [serializers.ActorSerializer],
             contexts.AS.Organization: [serializers.ActorSerializer],
@@ -638,3 +642,15 @@ def update_denormalization_follow_deleted(sender, instance, **kwargs):
         music_models.TrackActor.objects.filter(
             actor=instance.actor, upload__in=instance.target.uploads.all()
         ).delete()
+
+
+class UserFollow(AbstractFollow):
+    actor = models.ForeignKey(
+        Actor, related_name="user_follows", on_delete=models.CASCADE
+    )
+    target = models.ForeignKey(
+        Actor, related_name="received_user_follows", on_delete=models.CASCADE
+    )
+
+    class Meta:
+        unique_together = ["actor", "target"]

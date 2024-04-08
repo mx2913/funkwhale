@@ -9,11 +9,11 @@ from funkwhale_api.favorites.models import TrackFavorite
 
 def test_user_can_add_favorite(factories):
     track = factories["music.Track"]()
-    user = factories["users.User"]()
-    f = TrackFavorite.add(track, user)
+    user = factories["users.User"](with_actor=True)
+    f = TrackFavorite.add(track, user.actor)
 
     assert f.track == track
-    assert f.user == user
+    assert f.actor.user == user
 
 
 def test_user_can_get_his_favorites(
@@ -21,7 +21,9 @@ def test_user_can_get_his_favorites(
 ):
     request = api_request.get("/")
     logged_in_api_client.user.create_actor()
-    favorite = factories["favorites.TrackFavorite"](user=logged_in_api_client.user)
+    favorite = factories["favorites.TrackFavorite"](
+        actor=logged_in_api_client.user.actor
+    )
     factories["favorites.TrackFavorite"]()
     url = reverse("api:v1:favorites:tracks-list")
     response = logged_in_api_client.get(url, {"scope": "me"})
@@ -38,7 +40,10 @@ def test_user_can_get_his_favorites(
 def test_user_can_retrieve_all_favorites_at_once(
     api_request, factories, logged_in_api_client, client
 ):
-    favorite = factories["favorites.TrackFavorite"](user=logged_in_api_client.user)
+    logged_in_api_client.user.create_actor()
+    favorite = factories["favorites.TrackFavorite"](
+        actor=logged_in_api_client.user.actor
+    )
     factories["favorites.TrackFavorite"]()
     url = reverse("api:v1:favorites:tracks-all")
     response = logged_in_api_client.get(url, {"user": logged_in_api_client.user.pk})
@@ -49,6 +54,8 @@ def test_user_can_retrieve_all_favorites_at_once(
 
 def test_user_can_add_favorite_via_api(factories, logged_in_api_client, activity_muted):
     track = factories["music.Track"]()
+    logged_in_api_client.user.create_actor()
+
     url = reverse("api:v1:favorites:tracks-list")
     response = logged_in_api_client.post(url, {"track": track.pk})
 
@@ -62,12 +69,13 @@ def test_user_can_add_favorite_via_api(factories, logged_in_api_client, activity
 
     assert expected == parsed_json
     assert favorite.track == track
-    assert favorite.user == logged_in_api_client.user
+    assert favorite.actor.user == logged_in_api_client.user
 
 
 def test_adding_favorites_calls_activity_record(
     factories, logged_in_api_client, activity_muted
 ):
+    logged_in_api_client.user.create_actor()
     track = factories["music.Track"]()
     url = reverse("api:v1:favorites:tracks-list")
     response = logged_in_api_client.post(url, {"track": track.pk})
@@ -82,13 +90,16 @@ def test_adding_favorites_calls_activity_record(
 
     assert expected == parsed_json
     assert favorite.track == track
-    assert favorite.user == logged_in_api_client.user
+    assert favorite.actor.user == logged_in_api_client.user
 
     activity_muted.assert_called_once_with(favorite)
 
 
 def test_user_can_remove_favorite_via_api(logged_in_api_client, factories):
-    favorite = factories["favorites.TrackFavorite"](user=logged_in_api_client.user)
+    logged_in_api_client.user.create_actor()
+    favorite = factories["favorites.TrackFavorite"](
+        actor=logged_in_api_client.user.actor
+    )
     url = reverse("api:v1:favorites:tracks-detail", kwargs={"pk": favorite.pk})
     response = logged_in_api_client.delete(url, {"track": favorite.track.pk})
     assert response.status_code == 204
@@ -99,7 +110,10 @@ def test_user_can_remove_favorite_via_api(logged_in_api_client, factories):
 def test_user_can_remove_favorite_via_api_using_track_id(
     method, factories, logged_in_api_client
 ):
-    favorite = factories["favorites.TrackFavorite"](user=logged_in_api_client.user)
+    logged_in_api_client.user.create_actor()
+    favorite = factories["favorites.TrackFavorite"](
+        actor=logged_in_api_client.user.actor
+    )
 
     url = reverse("api:v1:favorites:tracks-remove")
     response = getattr(logged_in_api_client, method)(
@@ -119,7 +133,9 @@ def test_url_require_auth(url, method, db, preferences, client):
 
 
 def test_can_filter_tracks_by_favorites(factories, logged_in_api_client):
-    favorite = factories["favorites.TrackFavorite"](user=logged_in_api_client.user)
+    favorite = factories["favorites.TrackFavorite"](
+        actor=logged_in_api_client.user.actor
+    )
 
     url = reverse("api:v1:tracks-list")
     response = logged_in_api_client.get(url, data={"favorites": True})

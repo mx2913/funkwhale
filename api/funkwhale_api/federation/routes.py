@@ -5,6 +5,8 @@ from django.db.models import Q
 
 from funkwhale_api.music import models as music_models
 
+from funkwhale_api.favorites import models as favorites_models
+
 from . import activity, actors, models, serializers
 
 logger = logging.getLogger(__name__)
@@ -608,3 +610,81 @@ def outbox_delete_album(context):
             to=[activity.PUBLIC_ADDRESS, {"type": "instances_with_followers"}],
         ),
     }
+
+
+@outbox.register({"type": "Create", "object.type": "Favorite"})
+def outbox_create_favorite(context):
+    from funkwhale_api.favorites import serializers as favorites_serializers
+
+    favorite = context["favorite"]
+    actor = favorite.actor
+
+    serializer = serializers.ActivitySerializer(
+        {
+            "type": "Create",
+            "object": serializers.TrackFavoriteSerializer(favorite).data,
+            "actor": actor.fid,
+        }
+    )
+
+    yield {
+        "type": "Create",
+        "actor": actor,
+        "payload": with_recipients(
+            serializer.data,
+            to=[{"type": "followers", "target": actor}],
+        ),
+        "object": favorite,
+        "target": actor,
+    }
+
+
+@outbox.register({"type": "Delete", "object.type": "Favorite"})
+def outbox_delete_favorite(context):
+    favorite = context["favorite"]
+    actor = favorite.actor
+
+    serializer = serializers.ActivitySerializer(
+        {
+            "type": "Delete",
+            "object": serializers.TrackFavoriteSerializer(favorite).data,
+            "actor": actor.fid,
+        }
+    )
+
+    yield {
+        "type": "Delete",
+        "actor": actor,
+        "payload": with_recipients(
+            serializer.data,
+            to=[{"type": "followers", "target": actor}],
+        ),
+        "object": favorite,
+        "target": actor,
+    }
+
+
+@inbox.register({"type": "Create", "object.type": "Favorite"})
+def inbox_create_favorite(payload, context):
+    from funkwhale_api.favorites import serializers as favorites_serializers
+
+    actor = context["actor"]
+    favorite = payload["object"]
+    serializer = serializers.TrackFavoriteSerializer(data=favorite)
+    serializer.is_valid(raise_exception=True)
+    instance = serializer.save()
+    return {"object": instance}
+
+
+@inbox.register({"type": "Delete", "object.type": "Favorite"})
+def inbox_delete_favorite(payload, context):
+    actor = context["actor"]
+    favorite_id = payload["object"].get("id")
+
+    query = Q(fid=favorite_id) & Q(actor=actor)
+    try:
+        favorite = favorites_models.TrackFavorite.objects.get(query)
+    except favorites_models.TrackFavorite.DoesNotExist:
+        logger.debug("Discarding deletion of unkwnown favorite %s", favorite_id)
+        return
+    favorite.delete()

@@ -77,6 +77,14 @@ class LibraryFollowAdmin(admin.ModelAdmin):
     list_select_related = True
 
 
+@admin.register(models.UserFollow)
+class UserFollowAdmin(admin.ModelAdmin):
+    list_display = ["actor", "target", "approved", "creation_date"]
+    list_filter = ["approved"]
+    search_fields = ["actor__fid", "target__fid"]
+    list_select_related = True
+
+
 @admin.register(models.InboxItem)
 class InboxItemAdmin(admin.ModelAdmin):
     list_display = ["actor", "activity", "type", "is_read"]

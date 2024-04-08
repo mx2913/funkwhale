@@ -5,7 +5,8 @@ from funkwhale_api.activity import serializers, utils
 
 def test_activity_view(factories, api_client, preferences, anonymous_user):
     preferences["common__api_authentication_required"] = False
-    factories["favorites.TrackFavorite"](user__privacy_level="everyone")
+    user = factories["users.User"](privacy_level="everyone")
+    factories["favorites.TrackFavorite"](actor=user.actor)
     factories["history.Listening"]()
     url = reverse("api:v1:activity-list")
     objects = utils.get_activity(anonymous_user)

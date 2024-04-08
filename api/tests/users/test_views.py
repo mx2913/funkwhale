@@ -540,3 +540,18 @@ def test_user_change_email(logged_in_api_client, mocker, mailoutbox):
     assert address.verified is False
     assert response.status_code == 204
     assert len(mailoutbox) == 1
+
+
+# to do :
+# def test_user_changing_privacy_level_dispatch_delete_activity(
+#     logged_in_api_client, mocker
+# ):
+#     user = logged_in_api_client.user
+#     payload = {"privacy_level": "me"}
+#     url = reverse("api:v1:users:users-detail", kwargs={"username": user.username})
+#     # mocker.patch("funkwhale_api.users.views.")
+#     response = logged_in_api_client.patch(url, payload)
+
+#     assert response.status_code == 200
+#     user.refresh_from_db()
+#     assert user.privacy_level == "me"

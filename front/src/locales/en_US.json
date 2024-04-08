@@ -2781,7 +2781,11 @@
           "libraryAcceptFollow": "{username} accepted your follow on library \"{library}\"",
           "libraryFollow": "{username} followed your library \"{library}\"",
           "libraryPendingFollow": "{username} wants to follow your library \"{library}\"",
-          "libraryReject": "You rejected {username}'s request to follow \"{library}\""
+          "libraryReject": "You rejected {username}'s request to follow \"{library}\"",
+          "userAcceptFollow": "{username} accepted your follow",
+          "userFollow": "{username} followed you",
+          "userPendingFollow": "{username} wants to follow you",
+          "userReject": "You rejected {username}'s request to follow you"
         }
       }
     },

@@ -294,6 +294,8 @@ CONTEXTS = [
                 "Track": "fw:Track",
                 "Artist": "fw:Artist",
                 "Library": "fw:Library",
+                # might be possible to do "Favorite": "as:Like" ?
+                "Favorite": "fw:Favorite",
                 "bitrate": {"@id": "fw:bitrate", "@type": "xsd:nonNegativeInteger"},
                 "size": {"@id": "fw:size", "@type": "xsd:nonNegativeInteger"},
                 "position": {"@id": "fw:position", "@type": "xsd:nonNegativeInteger"},

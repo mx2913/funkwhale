@@ -308,7 +308,7 @@ def test_playlist_detail_serializer(factories):
 def test_scrobble_serializer(factories):
     upload = factories["music.Upload"]()
     track = upload.track
-    user = factories["users.User"]()
+    user = factories["users.User"](with_actor=True)
     payload = {"id": track.pk, "submission": True}
     serializer = serializers.ScrobbleSerializer(data=payload, context={"user": user})
 
@@ -316,7 +316,7 @@ def test_scrobble_serializer(factories):
 
     listening = serializer.save()
 
-    assert listening.user == user
+    assert listening.actor.user == user
     assert listening.track == track
 
 

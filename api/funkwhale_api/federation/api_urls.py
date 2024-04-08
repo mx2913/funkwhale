@@ -5,6 +5,7 @@ from . import api_views
 router = routers.OptionalSlashRouter()
 router.register(r"fetches", api_views.FetchViewSet, "fetches")
 router.register(r"follows/library", api_views.LibraryFollowViewSet, "library-follows")
+router.register(r"follows/user", api_views.UserFollowViewSet, "user-follows")
 router.register(r"inbox", api_views.InboxItemViewSet, "inbox")
 router.register(r"libraries", api_views.LibraryViewSet, "libraries")
 router.register(r"domains", api_views.DomainViewSet, "domains")

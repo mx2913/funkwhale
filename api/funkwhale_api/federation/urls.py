@@ -19,6 +19,8 @@ music_router.register(r"uploads", views.MusicUploadViewSet, "uploads")
 music_router.register(r"artists", views.MusicArtistViewSet, "artists")
 music_router.register(r"albums", views.MusicAlbumViewSet, "albums")
 music_router.register(r"tracks", views.MusicTrackViewSet, "tracks")
+music_router.register(r"likes", views.TrackFavoriteViewSet, "likes")
+music_router.register(r"listenings", views.ListeningsViewSet, "listenings")
 
 
 index_router.register(r"index", views.IndexViewSet, "index")

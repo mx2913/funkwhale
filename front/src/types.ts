@@ -164,6 +164,16 @@ export interface LibraryFollow {
   target: Library
 }
 
+// to do : can't get Activity typescript to accept library follow and user follow
+export interface UserFollow {
+  uuid: string
+  approved: boolean
+
+  name: string
+  type?: 'federation.Actor' | 'federation.UserFollow'
+  target?: Actor
+}
+
 export interface Cover {
   uuid: string
   urls: {
@@ -474,10 +484,17 @@ export interface UserRequest {
 export type Activity = {
   actor: Actor
   creation_date: string
-  related_object: LibraryFollow
+  related_object: UserFollow
   type: 'Follow' | 'Accept'
-  object: LibraryFollow
+  object: UserFollow
 }
+export type UserFollowActivity = {
+    actor: Actor
+    creation_date: string
+    related_object: UserFollow
+    type: 'Follow' | 'Accept'
+    object: UserFollow
+  }
 
 export interface Notification {
   id: number
