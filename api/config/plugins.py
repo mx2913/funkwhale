@@ -309,11 +309,11 @@ Called by the task manager to trigger listening sync
 """
 FAVORITE_CREATED = "favorite_created"
 """
-Called when a track is being liked
+Called when a track is being favorited
 """
 FAVORITE_DELETED = "favorite_deleted"
 """
-Called when a favorite track is being unliked
+Called when a favorited track is being unfavorited
 """
 FAVORITE_SYNC = "favorite_sync"
 """
