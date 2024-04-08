@@ -110,7 +110,7 @@ def test_sync_listenings_from_listenbrainz(factories, mocker, caplog):
     ).exists()
 
     assert "Listen with ts 1871 skipped because already in db" in caplog.text
-    assert "Received listening doesn't have a mbid" in caplog.text
+    assert "Received listening that doesn't have a mbid. Skipping..." in caplog.text
 
 
 def test_sync_favorites_from_listenbrainz(factories, mocker, caplog):
