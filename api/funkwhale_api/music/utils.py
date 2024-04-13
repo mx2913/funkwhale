@@ -108,7 +108,10 @@ def transcode_file(input, output, input_format=None, output_format="mp3", **kwar
     return transcode_audio(audio, output, output_format, **kwargs)
 
 
-def transcode_audio(audio, output, output_format, **kwargs):
+def transcode_audio(audio, output, output_format, time_offset=None, **kwargs):
+    if time_offset is not None:
+        audio = audio[time_offset:]
+
     with output.open("wb"):
         return audio.export(output, format=output_format, **kwargs)
 

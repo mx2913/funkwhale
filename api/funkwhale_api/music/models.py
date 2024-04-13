@@ -916,14 +916,14 @@ class Upload(models.Model):
         # Not using reverse because this is slow
         return self.listen_url + "&download=false"
 
-    def get_transcoded_version(self, format, max_bitrate=None):
+    def get_transcoded_version(self, format, max_bitrate=None, time_offset=None):
         if format:
             mimetype = utils.EXTENSION_TO_MIMETYPE[format]
         else:
             mimetype = self.mimetype or "audio/mpeg"
             format = utils.MIMETYPE_TO_EXTENSION[mimetype]
 
-        existing_versions = self.versions.filter(mimetype=mimetype)
+        existing_versions = self.versions.filter(mimetype=mimetype, time_offset=time_offset)
         if max_bitrate is not None:
             # we don't want to transcode if a 320kbps version is available
             # and we're requestiong 300kbps
@@ -936,18 +936,24 @@ class Upload(models.Model):
             # we found an existing version, no need to transcode again
             return existing_versions[0]
 
-        return self.create_transcoded_version(mimetype, format, bitrate=max_bitrate)
+        return self.create_transcoded_version(mimetype, format, bitrate=max_bitrate, time_offset=time_offset)
 
     @transaction.atomic
-    def create_transcoded_version(self, mimetype, format, bitrate):
+    def create_transcoded_version(self, mimetype, format, bitrate, time_offset):
         # we create the version with an empty file, then
         # we'll write to it
         f = ContentFile(b"")
         bitrate = min(bitrate or 320000, self.bitrate or 320000)
-        version = self.versions.create(mimetype=mimetype, bitrate=bitrate, size=0)
+        version = self.versions.create(mimetype=mimetype, bitrate=bitrate, time_offset=time_offset, size=0)
+
+        if time_offset is not None:
+            time_offset_filename = "-" + str(time_offset)
+        else:
+            time_offset_filename = ""
+
         # we keep the same name, but we update the extension
         new_name = (
-            os.path.splitext(os.path.basename(self.audio_file.name))[0] + f".{format}"
+            os.path.splitext(os.path.basename(self.audio_file.name))[0] + time_offset_filename + f".{format}"
         )
         version.audio_file.save(new_name, f)
         utils.transcode_audio(
@@ -955,6 +961,7 @@ class Upload(models.Model):
             output=version.audio_file,
             output_format=utils.MIMETYPE_TO_EXTENSION[mimetype],
             bitrate=str(bitrate),
+            time_offset=time_offset,
         )
         version.size = version.audio_file.size
         version.save(update_fields=["size"])
@@ -1002,10 +1009,11 @@ class UploadVersion(models.Model):
     accessed_date = models.DateTimeField(null=True, blank=True)
     audio_file = models.FileField(upload_to=get_file_path, max_length=255)
     bitrate = models.PositiveIntegerField()
+    time_offset = models.IntegerField(null=True, blank=True)
     size = models.IntegerField()
 
     class Meta:
-        unique_together = ("upload", "mimetype", "bitrate")
+        unique_together = ("upload", "mimetype", "bitrate", "time_offset")
 
     @property
     def filename(self) -> str:
