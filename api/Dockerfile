@@ -39,7 +39,7 @@ RUN set -eux; \
   zlib-dev \
   py3-cryptography=41.0.7-r0 \
   py3-lxml=4.9.3-r1 \
-  py3-pillow=10.2.0-r0 \
+  py3-pillow=10.3.0-r0 \
   py3-psycopg2=2.9.9-r0 \
   py3-watchfiles=0.19.0-r1 \
   python3-dev
@@ -99,7 +99,7 @@ RUN set -eux; \
   libxslt \
   py3-cryptography=41.0.7-r0 \
   py3-lxml=4.9.3-r1 \
-  py3-pillow=10.2.0-r0 \
+  py3-pillow=10.3.0-r0 \
   py3-psycopg2=2.9.9-r0 \
   py3-watchfiles=0.19.0-r1 \
   python3 \
