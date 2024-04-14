@@ -2092,19 +2092,6 @@
         }
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Avbryt",
-        "submit": "Send inn"
-      },
-      "header": {
-        "chooseInstance": "Velg din instans",
-        "suggestions": "Anbefalte valg"
-      },
-      "label": {
-        "url": "Instansradiostasjoner"
-      }
-    },
     "Queue": {
       "button": {
         "clear": "Tøm",
@@ -3296,6 +3283,18 @@
       "title": "Merknader",
       "label": {
         "showRead": "Vis lesningsmerkander"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "submit": "Send inn"
+      },
+      "header": {
+        "chooseInstance": "Velg din instans",
+        "suggestions": "Anbefalte valg"
+      },
+      "label": {
+        "url": "Instansradiostasjoner"
       }
     }
   },

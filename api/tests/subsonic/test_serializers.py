@@ -4,7 +4,7 @@ import pytest
 from django.db.models.aggregates import Count
 
 from funkwhale_api.music import models as music_models
-from funkwhale_api.subsonic import serializers
+from funkwhale_api.subsonic import renderers, serializers
 
 
 @pytest.mark.parametrize(
@@ -90,12 +90,14 @@ def test_get_artists_serializer(factories):
                         "name": artist1.name,
                         "albumCount": 3,
                         "coverArt": f"ar-{artist1.id}",
+                        "musicBrainzId": artist1.mbid,
                     },
                     {
                         "id": artist2.pk,
                         "name": artist2.name,
                         "albumCount": 2,
                         "coverArt": f"ar-{artist2.id}",
+                        "musicBrainzId": artist2.mbid,
                     },
                 ],
             },
@@ -107,6 +109,7 @@ def test_get_artists_serializer(factories):
                         "name": artist3.name,
                         "albumCount": 0,
                         "coverArt": f"ar-{artist3.id}",
+                        "musicBrainzId": artist3.mbid,
                     }
                 ],
             },
@@ -147,6 +150,24 @@ def test_get_artist_serializer(factories):
     assert serializers.GetArtistSerializer(artist).data == expected
 
 
+def test_get_artist_info_2_serializer(factories):
+    content = factories["common.Content"]()
+    artist = factories["music.Artist"](with_cover=True, description=content)
+
+    expected = {
+        "musicBrainzId": artist.mbid,
+        "mediumImageUrl": renderers.TagValue(
+            artist.attachment_cover.download_url_medium_square_crop
+        ),
+        "largeImageUrl": renderers.TagValue(
+            artist.attachment_cover.download_url_large_square_crop
+        ),
+        "biography": renderers.TagValue(artist.description.rendered),
+    }
+
+    assert serializers.GetArtistInfo2Serializer(artist).data == expected
+
+
 @pytest.mark.parametrize(
     "mimetype, extension, expected",
     [
@@ -184,6 +205,9 @@ def test_get_album_serializer(factories):
         "year": album.release_date.year,
         "coverArt": f"al-{album.id}",
         "genre": tagged_item.tag.name,
+        "genres": [{"name": tagged_item.tag.name}],
+        "mediaType": "album",
+        "musicBrainzId": album.mbid,
         "duration": 43,
         "playCount": album.tracks.aggregate(l=Count("listenings"))["l"] or 0,
         "song": [
@@ -200,13 +224,15 @@ def test_get_album_serializer(factories):
                 "contentType": upload.mimetype,
                 "suffix": upload.extension or "",
                 "path": serializers.get_track_path(track, upload.extension),
-                "bitrate": 42,
+                "bitRate": 42,
                 "duration": 43,
                 "size": 44,
                 "created": serializers.to_subsonic_date(track.creation_date),
                 "albumId": album.pk,
                 "artistId": artist.pk,
                 "type": "music",
+                "mediaType": "song",
+                "musicBrainzId": track.mbid,
             }
         ],
     }
@@ -341,7 +367,7 @@ def test_channel_episode_serializer(factories):
         "genre": "Podcast",
         "size": upload.size,
         "duration": upload.duration,
-        "bitrate": upload.bitrate / 1000,
+        "bitRate": upload.bitrate / 1000,
         "contentType": upload.mimetype,
         "suffix": upload.extension,
         "status": "completed",

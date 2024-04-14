@@ -6,7 +6,7 @@ import type { RootState } from '~/store'
 
 // eslint-disable-next-line
 import type { ComponentPublicInstance } from '@vue/runtime-core'
-import type { QueueTrack } from './composables/audio/queue'
+import type { QueueTrack } from '~/composables/audio/queue'
 
 export type FunctionRef = Element | ComponentPublicInstance | null
 

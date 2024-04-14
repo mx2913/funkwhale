@@ -5,6 +5,7 @@ import axios from 'axios'
 import { merge } from 'lodash-es'
 import useLogger from '~/composables/useLogger'
 import { useQueue } from '~/composables/audio/queue'
+import { isTauri } from '~/composables/tauri'
 
 export interface State {
   frontSettings: FrontendSettings
@@ -122,16 +123,29 @@ interface Settings {
 
 const logger = useLogger()
 
+// Use some arbitrary url that will trigger the instance chooser, this needs to be a valid url
+export const TAURI_DEFAULT_INSTANCE_URL = 'http://localhost/force-instance-chooser/'
+
 // We have several way to guess the API server url. By order of precedence:
-// 1. use the url provided in settings.json, if any
+// 0. use the url provided in settings.json, if any. That's a lazy operation done by already initialized store.
+// 1. force instance chooser, if in tauri app
 // 2. use the url specified when building via VUE_APP_INSTANCE_URL
 // 3. use the current url
-let DEFAULT_INSTANCE_URL = `${location.origin}/`
-try {
-  DEFAULT_INSTANCE_URL = new URL(import.meta.env.VUE_APP_INSTANCE_URL as string).href
-} catch (e) {
-  logger.warn('Invalid VUE_APP_INSTANCE_URL, falling back to current url', e)
+export const findDefaultInstanceUrl = () => {
+  if (isTauri()) {
+    return TAURI_DEFAULT_INSTANCE_URL
+  }
+
+  try {
+    return new URL(import.meta.env.VUE_APP_INSTANCE_URL as string).href
+  } catch (e) {
+    logger.warn('Invalid VUE_APP_INSTANCE_URL, falling back to current url', e)
+  }
+
+  return `${location.origin}/`
 }
+
+const DEFAULT_INSTANCE_URL = findDefaultInstanceUrl()
 
 const store: Module<State, RootState> = {
   namespaced: true,

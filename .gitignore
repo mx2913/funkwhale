@@ -1,3 +1,5 @@
+/dist
+
 ### OSX ###
 .DS_Store
 .AppleDouble
@@ -83,8 +85,12 @@ front/yarn-debug.log*
 front/yarn-error.log*
 front/tests/unit/coverage
 front/tests/e2e/reports
+front/test_results.xml
+front/coverage/
 front/selenium-debug.log
 docs/_build
+#Tauri
+front/tauri/gen
 
 /data/
 .env
@@ -104,3 +110,9 @@ tsconfig.tsbuildinfo
 
 # Vscode
 .vscode/
+
+# Nix
+.direnv/
+.envrc
+flake.nix
+flake.lock

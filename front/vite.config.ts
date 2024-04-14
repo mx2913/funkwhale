@@ -13,13 +13,13 @@ const port = +(process.env.VUE_PORT ?? 8080)
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  envPrefix: ['VUE_', 'FUNKWHALE_SENTRY_'],
+  envPrefix: ['VUE_', 'TAURI_', 'FUNKWHALE_SENTRY_'],
   plugins: [
     // https://vue-macros.sxzz.moe/
     VueMacros({
       plugins: {
         // https://github.com/vitejs/vite/tree/main/packages/plugin-vue
-        vue: Vue(),
+        vue: Vue()
       }
     }),
 
@@ -61,14 +61,14 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          'axios': ['axios', 'axios-auth-refresh'],
-          'dompurify': ['dompurify'],
-          'jquery': ['jquery'],
-          'lodash': ['lodash-es'],
-          'moment': ['moment'],
-          'sentry': ['@sentry/vue', '@sentry/tracing'],
+          axios: ['axios', 'axios-auth-refresh'],
+          dompurify: ['dompurify'],
+          jquery: ['jquery'],
+          lodash: ['lodash-es'],
+          moment: ['moment'],
+          sentry: ['@sentry/vue', '@sentry/tracing'],
           'standardized-audio-context': ['standardized-audio-context'],
-          'vue-router': ['vue-router'],
+          'vue-router': ['vue-router']
         }
       }
     }
@@ -77,15 +77,17 @@ export default defineConfig(({ mode }) => ({
     environment: 'jsdom',
     globals: true,
     reporters: ['default', 'junit'],
-    outputFile: "./test_results.xml",
+    outputFile: './test_results.xml',
     coverage: {
       src: './src',
       all: true,
       reporter: ['text', 'cobertura']
     },
     setupFiles: [
+      './test/setup/mock-server.ts',
       './test/setup/mock-audio-context.ts',
-      './test/setup/mock-vue-i18n.ts'
+      './test/setup/mock-vue-i18n.ts',
+      './test/setup/mock-lru-cache.ts'
     ]
   }
 }))

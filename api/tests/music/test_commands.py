@@ -7,6 +7,7 @@ from funkwhale_api.music.management.commands import (
     check_inplace_files,
     fix_uploads,
     prune_library,
+    prune_non_mbid_content,
 )
 
 DATA_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -204,3 +205,45 @@ def test_check_inplace_files_no_dry_run(factories, tmpfile):
 
     for u in not_prunable:
         u.refresh_from_db()
+
+
+def test_prune_non_mbid_content(factories):
+    prunable = factories["music.Track"](mbid=None)
+
+    track = factories["music.Track"](mbid=None)
+    factories["playlists.PlaylistTrack"](track=track)
+    not_prunable = [factories["music.Track"](), track]
+    c = prune_non_mbid_content.Command()
+    options = {
+        "include_playlist_content": False,
+        "include_listened_content": False,
+        "include_favorited_content": True,
+        "no_dry_run": True,
+    }
+    c.handle(**options)
+
+    with pytest.raises(prunable.DoesNotExist):
+        prunable.refresh_from_db()
+
+    for t in not_prunable:
+        t.refresh_from_db()
+
+    track = factories["music.Track"](mbid=None)
+    factories["playlists.PlaylistTrack"](track=track)
+    prunable = [factories["music.Track"](mbid=None), track]
+
+    not_prunable = [factories["music.Track"]()]
+    options = {
+        "include_playlist_content": True,
+        "include_listened_content": False,
+        "include_favorited_content": False,
+        "no_dry_run": True,
+    }
+    c.handle(**options)
+
+    for t in prunable:
+        with pytest.raises(t.DoesNotExist):
+            t.refresh_from_db()
+
+    for t in not_prunable:
+        t.refresh_from_db()

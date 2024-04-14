@@ -14,5 +14,6 @@ API explorer<https://docs.funkwhale.audio/swagger/>
 authentication
 rate-limit
 subsonic
+v2-overview
 
 ```

@@ -118,21 +118,16 @@ review_docs:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes: [docs/**/*]
 
-  image: $CI_REGISTRY/funkwhale/ci/python-funkwhale-api:3.11
-  variables:
-    BUILD_PATH: "../docs-review"
+  image: $CI_REGISTRY/funkwhale/ci/python-funkwhale-docs:3.11
   environment:
     name: review/docs/$CI_COMMIT_REF_NAME
     url: http://$CI_PROJECT_NAMESPACE.pages.funkwhale.audio/-/$CI_PROJECT_NAME/-/jobs/$CI_JOB_ID/artifacts/docs-review/index.html
   cache: *docs_cache
   before_script:
-    - mkdir docs-review
     - cd docs
-    - apt-get update
-    - apt-get install -y graphviz
-    - poetry install
+    - make install
   script:
-    - poetry run python3 -m sphinx . $BUILD_PATH
+    - make build BUILD_DIR=../docs-review
   artifacts:
     expire_in: 2 weeks
     paths:
@@ -149,7 +144,6 @@ find_broken_links:
       --cache
       --no-progress
       --exclude-all-private
-      --exclude-mail
       --exclude 'demo\.funkwhale\.audio'
       --exclude 'nginx\.com'
       --exclude-path 'docs/_templates/'
@@ -236,7 +230,7 @@ test_api:
   image: $CI_REGISTRY/funkwhale/ci/python-funkwhale-api:$PYTHON_VERSION
   parallel:
     matrix:
-      - PYTHON_VERSION: ["3.8", "3.9", "3.10", "3.11"]
+      - PYTHON_VERSION: ["3.8", "3.9", "3.10", "3.11", "3.12"]
   services:
     - name: postgres:15-alpine
       command:
@@ -253,7 +247,7 @@ test_api:
     CACHE_URL: "redis://redis:6379/0"
   before_script:
     - cd api
-    - poetry install --all-extras
+    - make install
   script:
     - >
       poetry run pytest
@@ -293,6 +287,7 @@ test_front:
       coverage_report:
         coverage_format: cobertura
         path: front/coverage/cobertura-coverage.xml
+  coverage: '/All files\s+(?:\|\s+((?:\d+\.)?\d+)\s+){4}.*/'
 
 build_metadata:
   stage: build
@@ -317,7 +312,9 @@ test_integration:
     - if: $RUN_CYPRESS
   interruptible: true
 
-  image: cypress/base:18.12.1
+  image:
+    name: cypress/included:13.6.4
+    entrypoint: [""]
   cache:
     - *front_cache
     - key:
@@ -354,7 +351,7 @@ build_api_schema:
     API_TYPE: "v1"
   before_script:
     - cd api
-    - poetry install --all-extras
+    - make install
     - poetry run funkwhale-manage migrate
   script:
     - poetry run funkwhale-manage spectacular --file ../docs/schema.yml
@@ -372,19 +369,13 @@ build_docs:
     - if: $CI_COMMIT_BRANCH =~ /(stable|develop)/
     - changes: [docs/**/*]
 
-  image: $CI_REGISTRY/funkwhale/ci/python-funkwhale-api:3.11
-  variables:
-    BUILD_PATH: "../public"
-    GIT_STRATEGY: clone
-    GIT_DEPTH: 0
+  image: $CI_REGISTRY/funkwhale/ci/python-funkwhale-docs:3.11
   cache: *docs_cache
   before_script:
     - cd docs
-    - apt-get update
-    - apt-get install -y graphviz
-    - poetry install
+    - make install
   script:
-    - ./build_docs.sh
+    - make build-all BUILD_DIR=../public
   artifacts:
     expire_in: 2 weeks
     paths:
@@ -439,6 +430,25 @@ build_api:
     paths:
       - api
 
+build_tauri:
+  stage: build
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /(stable|develop)/
+    - changes: [front/**/*]
+
+  image: $CI_REGISTRY/funkwhale/ci/node-tauri:18
+  variables:
+    <<: *keep_git_files_permissions
+  before_script:
+    - source /root/.cargo/env
+    - yarn install
+  script:
+    - yarn tauri build --verbose
+  artifacts:
+    name: desktop_${CI_COMMIT_REF_NAME}
+    paths:
+      - front/tauri/target/release/bundle/appimage/*.AppImage
+
 deploy_docs:
   interruptible: false
   extends: .ssh-agent
@@ -471,22 +481,23 @@ docker:
       variables:
         BUILD_ARGS: >
           --set *.platform=linux/amd64,linux/arm64,linux/arm/v7
-          --set *.no-cache
+          --no-cache
           --push
 
     - if: $CI_COMMIT_BRANCH =~ /(stable|develop)/
       variables:
         BUILD_ARGS: >
           --set *.platform=linux/amd64,linux/arm64,linux/arm/v7
-          --set *.cache-from=type=registry,ref=$DOCKER_CACHE_IMAGE:$CI_COMMIT_BRANCH
-          --set *.cache-to=type=registry,ref=$DOCKER_CACHE_IMAGE:$CI_COMMIT_BRANCH,mode=max
+          --set *.cache-from=type=registry,ref=$DOCKER_CACHE_IMAGE:$CI_COMMIT_BRANCH,oci-mediatypes=false
+          --set *.cache-to=type=registry,ref=$DOCKER_CACHE_IMAGE:$CI_COMMIT_BRANCH,mode=max,oci-mediatypes=false
           --push
 
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_PROJECT_NAMESPACE == "funkwhale"
+      # We don't provide priviledged runners to everyone, so we can only build docker images in the funkwhale group
       variables:
         BUILD_ARGS: >
           --set *.platform=linux/amd64
-          --set *.cache-from=type=registry,ref=$DOCKER_CACHE_IMAGE:$CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+          --set *.cache-from=type=registry,ref=$DOCKER_CACHE_IMAGE:$CI_MERGE_REQUEST_TARGET_BRANCH_NAME,oci-mediatypes=false
 
   image: $CI_REGISTRY/funkwhale/ci/docker:20
   services:
@@ -517,3 +528,24 @@ docker:
     name: docker_metadata_${CI_COMMIT_REF_NAME}
     paths:
       - metadata.json
+
+package:
+  stage: publish
+  needs:
+    - job: build_metadata
+      artifacts: true
+    - job: build_api
+      artifacts: true
+    - job: build_front
+      artifacts: true
+    - job: build_tauri
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /(stable|develop)/
+
+  image: $CI_REGISTRY/funkwhale/ci/python:3.11
+  variables:
+    <<: *keep_git_files_permissions
+  script:
+    - make package
+    - scripts/ci-upload-packages.sh

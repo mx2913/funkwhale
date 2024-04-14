@@ -1,6 +1,6 @@
-from allauth.account.utils import send_email_confirmation
+from allauth.account.models import EmailAddress
 from django.core.cache import cache
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from oauth2_provider.contrib.rest_framework.authentication import (
     OAuth2Authentication as BaseOAuth2Authentication,
 )
@@ -20,9 +20,13 @@ def resend_confirmation_email(request, user):
     if cache.get(cache_key):
         return False
 
-    done = send_email_confirmation(request, user)
+    # We do the sending of the conformation by hand because we don't want to pass the request down
+    # to the email rendering, which would cause another UnverifiedEmail Exception and restarts the sending
+    # again and again
+    email = EmailAddress.objects.get_for_user(user, user.email)
+    email.send_confirmation()
     cache.set(cache_key, True, THROTTLE_DELAY)
-    return done
+    return True
 
 
 class OAuth2Authentication(BaseOAuth2Authentication):

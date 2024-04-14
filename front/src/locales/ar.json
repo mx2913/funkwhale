@@ -2297,22 +2297,6 @@
         "modal": "اختصارات لوحة المفاتيح"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "إلغاء",
-        "submit": "إرسال"
-      },
-      "header": {
-        "chooseInstance": "اختر خادومك",
-        "suggestions": "الخيارات المتاحة"
-      },
-      "label": {
-        "url": "بيانات مثيل الخادم"
-      },
-      "message": {
-        "newUrl": "إنك الآن تستخدم خادم Funkwhale على { url }"
-      }
-    },
     "Queue": {
       "button": {
         "clear": "امسح",
@@ -3592,6 +3576,21 @@
         "header": {
           "tracks": "المَقاطِع"
         }
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "submit": "إرسال"
+      },
+      "header": {
+        "chooseInstance": "اختر خادومك",
+        "suggestions": "الخيارات المتاحة"
+      },
+      "label": {
+        "url": "بيانات مثيل الخادم"
+      },
+      "message": {
+        "newUrl": "إنك الآن تستخدم خادم Funkwhale على { url }"
       }
     }
   },

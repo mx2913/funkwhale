@@ -4,13 +4,13 @@ import type { Sound } from '~/api/player'
 
 import { createGlobalState, syncRef, useTimeoutFn, whenever } from '@vueuse/core'
 import { computed, ref, watchEffect } from 'vue'
+import { LRUCache } from 'lru-cache'
 
 import { connectAudioSource } from '~/composables/audio/audio-api'
 import { usePlayer } from '~/composables/audio/player'
 import { useQueue } from '~/composables/audio/queue'
 import { soundImplementation } from '~/api/player'
 
-import useLRUCache from '~/composables/data/useLRUCache'
 import useLogger from '~/composables/useLogger'
 import store from '~/store'
 
@@ -22,10 +22,12 @@ const AUDIO_ELEMENT = document.createElement('audio')
 const logger = useLogger()
 
 const soundPromises = new Map<number, Promise<Sound>>()
-const soundCache = useLRUCache<number, Sound>({
+const soundCache = new LRUCache<number, Sound>({
   max: 3,
   dispose: (sound) => sound.dispose()
 })
+
+const currentTrack = ref<QueueTrack>()
 
 export const fetchTrackSources = async (id: number): Promise<QueueTrackSource[]> => {
   const { uploads } = await axios.get(`tracks/${id}/`)
@@ -130,7 +132,7 @@ export const useTracks = createGlobalState(() => {
       //
       //       This means that the currently playing track (B) is never removed from the cache (and isn't disposed prematurely) during its playback.
       //       However, we end up in a situation where previous track isn't cached anymore but two next tracks are.
-      //       That implies that when user changes to the previous track ( onlybefore track B ends), a new sound instance would be created,
+      //       That implies that when user changes to the previous track (only before track B ends), a new sound instance would be created,
       //       which means that there might be some network requests before playback.
       if (currentTrack.value) {
         soundCache.get(currentTrack.value.id)
@@ -195,8 +197,6 @@ export const useTracks = createGlobalState(() => {
     }
   }
 
-  const currentTrack = ref<QueueTrack>()
-
   // NOTE: We want to have it called only once, hence we're using createGlobalState
   const initialize = createGlobalState(() => {
     const { currentIndex, currentTrack: track, queue, hasNext } = useQueue()
@@ -226,10 +226,15 @@ export const useTracks = createGlobalState(() => {
 
   const currentSound = computed(() => soundCache.get(currentTrack.value?.id ?? -1))
 
+  const clearCache = () => {
+    return soundCache.clear()
+  }
+
   return {
     initialize,
     createSound,
     createTrack,
+    clearCache,
     currentSound
   }
 })

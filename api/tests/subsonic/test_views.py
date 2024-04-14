@@ -97,6 +97,23 @@ def test_ping(f, db, api_client):
     assert response.data == expected
 
 
+@pytest.mark.parametrize("f", ["xml", "json"])
+def test_get_open_subsonic_extensions(f, db, api_client):
+    url = reverse("api:subsonic:subsonic-get_open_subsonic_extensions")
+    response = api_client.get(url, {"f": f})
+
+    expected = {
+        "openSubsonicExtensions": [
+            {
+                "name": "formPost",
+                "versions": [1],
+            }
+        ],
+    }
+    assert response.status_code == 200
+    assert response.data == expected
+
+
 @pytest.mark.parametrize("f", ["json"])
 def test_get_artists(
     f, db, logged_in_api_client, factories, mocker, queryset_equal_queries
@@ -166,7 +183,11 @@ def test_get_artist_info2(
     artist = factories["music.Artist"](playable=True)
     playable_by = mocker.spy(music_models.ArtistQuerySet, "playable_by")
 
-    expected = {"artist-info2": {}}
+    expected = {
+        "artistInfo2": {
+            "musicBrainzId": artist.mbid,
+        }
+    }
     response = logged_in_api_client.get(url, {"id": artist.pk})
 
     assert response.status_code == 200
@@ -592,7 +613,7 @@ def test_search3(f, db, logged_in_api_client, factories):
     artist_qs = (
         music_models.Artist.objects.with_albums_count()
         .filter(pk=artist.pk)
-        .values("_albums_count", "id", "name")
+        .values("_albums_count", "id", "name", "mbid")
     )
     assert response.status_code == 200
     assert response.data == {

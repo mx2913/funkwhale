@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import re_path
 
 from funkwhale_api.common import routers
 
@@ -8,7 +8,7 @@ admin_router = routers.OptionalSlashRouter()
 admin_router.register(r"admin/settings", views.AdminSettings, "admin-settings")
 
 urlpatterns = [
-    url(r"^nodeinfo/2.0/?$", views.NodeInfo.as_view(), name="nodeinfo-2.0"),
-    url(r"^settings/?$", views.InstanceSettings.as_view(), name="settings"),
-    url(r"^spa-manifest.json", views.SpaManifest.as_view(), name="spa-manifest"),
+    re_path(r"^nodeinfo/2.0/?$", views.NodeInfo20.as_view(), name="nodeinfo-2.0"),
+    re_path(r"^settings/?$", views.InstanceSettings.as_view(), name="settings"),
+    re_path(r"^spa-manifest.json", views.SpaManifest.as_view(), name="spa-manifest"),
 ] + admin_router.urls

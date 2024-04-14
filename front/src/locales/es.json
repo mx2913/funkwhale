@@ -2533,20 +2533,6 @@
         "modal": "Atajos de teclado"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Cancelar",
-        "submit": "Enviar"
-      },
-      "header": {
-        "chooseInstance": "Elige tu instancia",
-        "failure": "No es posible conectarse a la URL indicada",
-        "suggestions": "Sugerencias"
-      },
-      "label": {
-        "url": "Datos de Instancia"
-      }
-    },
     "Queue": {
       "button": {
         "clear": "Borrar",
@@ -3950,6 +3936,19 @@
         "header": {
           "tracks": "Canciones"
         }
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "submit": "Enviar"
+      },
+      "header": {
+        "chooseInstance": "Elige tu instancia",
+        "failure": "No es posible conectarse a la URL indicada",
+        "suggestions": "Sugerencias"
+      },
+      "label": {
+        "url": "Datos de Instancia"
       }
     }
   },

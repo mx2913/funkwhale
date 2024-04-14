@@ -183,6 +183,19 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     @action(
         detail=False,
         methods=["get", "post"],
+        url_name="get_open_subsonic_extensions",
+        permission_classes=[],
+        url_path="getOpenSubsonicExtensions",
+    )
+    def get_open_subsonic_extensions(self, request, *args, **kwargs):
+        data = {
+            "openSubsonicExtensions": [{"name": "formPost", "versions": [1]}],
+        }
+        return response.Response(data, status=200)
+
+    @action(
+        detail=False,
+        methods=["get", "post"],
         url_name="get_artists",
         url_path="getArtists",
     )
@@ -255,7 +268,9 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     )
     @find_object(music_models.Artist.objects.all(), filter_playable=True)
     def get_artist_info2(self, request, *args, **kwargs):
-        payload = {"artist-info2": {}}
+        artist = kwargs.pop("obj")
+        data = serializers.GetArtistInfo2Serializer(artist).data
+        payload = {"artistInfo2": data}
 
         return response.Response(payload, status=200)
 
@@ -523,7 +538,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
                 "search_fields": ["name"],
                 "queryset": (
                     music_models.Artist.objects.with_albums_count().values(
-                        "id", "_albums_count", "name"
+                        "id", "_albums_count", "name", "mbid"
                     )
                 ),
                 "serializer": lambda qs: [serializers.get_artist_data(a) for a in qs],

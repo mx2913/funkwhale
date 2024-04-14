@@ -23,7 +23,7 @@ The NodeInfo endpoint is used to communicate the features and capabilities of a 
 Read [the NodeInfo specification for more information](https://nodeinfo.diaspora.software/docson/index.html#/ns/schema/2.1#$$expand).
 :::
 
-The NodeInfo endpoint must contain all mandatory elements listed in the specification. In addition to this, Funkwhale's implementation should list additional details about the instance.
+The NodeInfo endpoint must contain all mandatory elements listed in the specification. In addition to this, Funkwhale's implementation should list additional details about the instance in the `metadata` object.
 
 `actorId` (URL)
 : The URL of the pod service actor
@@ -37,14 +37,8 @@ The NodeInfo endpoint must contain all mandatory elements listed in the specific
 `longDescription` (String)
 : A longer description of the pod
 
-`rules` (String)
-: A collection of rules users of the pod must abide by
-
 `contactEmail` (Email address)
 : The email address of the pod administrator
-
-`terms` (String)
-: The terms of use associated with the pod
 
 `nodeName`(String)
 : The name of the pod
@@ -54,12 +48,6 @@ The NodeInfo endpoint must contain all mandatory elements listed in the specific
 
 `defaultUploadQuota` (Number)
 : The default upload quota (in megabytes) allowed for new users
-
-`library.federationEnabled` (Boolean)
-: Whether federation is enabled
-
-`library.anonymousCanListen` (Boolean)
-: Whether public endpoints require authentication
 
 `supportedUploadExtensions` (Array\<String\>)
 : A list of file extensions enabled for upload
@@ -76,29 +64,50 @@ The NodeInfo endpoint must contain all mandatory elements listed in the specific
 `instanceSupportMessage` (String)
 : The support message associated with the instance
 
-`content.top_music_categories` (Array\<Object\>)
+`content.local` (Object)
+: An object containing a summary of local content
+
+`content.local.artists` (Number)
+: The number of artists associated with local uploads on the pod
+
+`content.local.releases` (Number)
+: The number of albums or series associated with local uploads on the pod
+
+`content.local.recordings` (Number)
+: The number of tracks or episodes associated with local uploads on the pod
+
+`content.local.hoursOfContent` (Number)
+: The total number of hours of content associated with local uploads on the pod
+
+`content.topMusicCategories` (Array\<{ `name`: String, `count`: Number}>)
 : The top three music genres and the number of uploads tagged with them
 
-`content.top_podcast_categories` (Array\<Object\>)
+`content.topPodcastCategories` (Array\<{ `name`: String, `count`: Number}>)
 : The top three podcast categories and the number of uploads tagged with them
 
-`instance_policy.moderation_policy` (String)
-: The moderation policy of the pod
-
-`instance_policy.terms_of_service` (String)
-: The terms of service of the pod
-
-`instance_policy.languages` (Array\<String\>)
+`languages` (Array\<String\>)
 : The languages spoken by the pod administrators
 
-`instance_policy.location` (String)
+`location` (String)
 : The country the pod is located in
 
-`federation.follows_instances` (Number)
+`codeOfConduct` (String \<Url\>)
+: If the server admin has populated the **Rules** setting on their pod, this value is populated with the URL to the pod's about page: `<server_domain>/about/pod#rules`.
+
+`federation.followsInstances` (Number)
 : The number of Funkwhale pods that the target pod follows
 
-`federation.following_instances` (Number)
+`federation.followingInstances` (Number)
 : The number of Funkwhale pods that publicly follow the target pod
+
+`usage.listenings` (Number)
+: The total number of listenings on the pod
+
+`usage.downloads` (Number)
+: The total number of downloads (streams) the pod has served
+
+`usage.favorites.tracks` (Number)
+: The total number of track favorites recorded on the pod.
 
 `features` (Array\<String\>)
 : A list of enabled features
@@ -141,19 +150,13 @@ Example response:
   },
   "metadata": {
     "actorId": "string",
-    "private": false,
+    "private": true,
     "shortDescription": "string",
     "longDescription": "string",
-    "rules": "string",
     "contactEmail": "user@example.com",
-    "terms": "string",
     "nodeName": "string",
     "banner": "string",
     "defaultUploadQuota": 0,
-    "library": {
-      "federationEnabled": true,
-      "anonymousCanListen": true
-    },
     "supportedUploadExtensions": ["string"],
     "allowList": {
       "enabled": true,
@@ -161,41 +164,64 @@ Example response:
     },
     "funkwhaleSupportMessageEnabled": true,
     "instanceSupportMessage": "string",
-    "instance_policy": {
-      "moderation_policy": "string",
-      "terms_of_service": "string",
-      "languages": ["string"],
-      "location": "string"
-    },
+    "languages": ["string"],
+    "location": "string",
+    "codeOfConduct": "string",
     "content": {
-      "top_music_categories": [
+      "local": {
+        "artists": 1000,
+        "releases": 10000,
+        "recordings": 150000,
+        "hoursOfContent": 7500
+      },
+      "topMusicCategories": [
         {
-          "rock": 1256
+          "name": "rock",
+          "count": 1256
         },
         {
-          "jazz": 604
+          "name": "jazz",
+          "count": 604
         },
         {
-          "classical": 308
+          "name": "classical",
+          "count": 308
         }
       ],
-      "top_podcast_categories": [
+      "topPodcastCategories": [
         {
-          "comedy": 12
+          "name": "comedy",
+          "count": 12
         },
         {
-          "politics": 4
+          "name": "politics",
+          "count": 4
         },
         {
-          "nature": 1
+          "name": "nature",
+          "count": 1
         }
       ],
       "federation": {
-        "followed_instances": 0,
-        "following_instances": 0
+        "followedInstances": 0,
+        "followingInstances": 0
       }
     },
-    "features": ["channels", "podcasts", "collections", "audiobooks"]
+    "usage": {
+      "listenings": 0,
+      "downloads": 0,
+      "favorites": {
+        "tracks": 0
+      }
+    },
+    "features": [
+      "channels",
+      "podcasts",
+      "collections",
+      "audiobooks",
+      "federation",
+      "anonymousCanListen"
+    ]
   }
 }
 ```

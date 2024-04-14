@@ -1,6 +1,6 @@
 {
   "App": {
-    "loading": "Načítání..."
+    "loading": "Načítání…"
   },
   "components": {
     "About": {
@@ -22,7 +22,7 @@
         "closedRegistrations": "Registrace na tomto podu jsou uzavřené. Můžete se zaregistrovat na jiném skrz odkaz níže."
       },
       "link": {
-        "findOtherPod": "Hledat další pod",
+        "findOtherPod": "Najít jiný pod",
         "learnMore": "Dozvědět se více"
       },
       "message": {
@@ -113,7 +113,7 @@
         "registrationsClosed": "Registrace na tomto podu jsou uzavřené. Můžete se zaregistrovat na jiném skrz odkaz níže."
       },
       "link": {
-        "findOtherPod": "Hledat další pody",
+        "findOtherPod": "Najít jiný pod",
         "funkwhale": "Navštívit funkwhale.audio",
         "learnMore": "Dozvědět se více",
         "mobileApps": {
@@ -172,7 +172,7 @@
         "next": "Další skladba",
         "pause": "Pozastavit",
         "play": "Hrát",
-        "populatingRadio": "Načítání skladby rádia...",
+        "populatingRadio": "Načítání skladby rádia…",
         "previous": "Předchozí skladba",
         "queue": "Fronta",
         "remove": "Odstranit",
@@ -227,29 +227,6 @@
       },
       "warning": {
         "unsupported": "Tento druh objektu není prozatím podporován"
-      }
-    },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Zrušit",
-        "submit": "Odeslat"
-      },
-      "header": {
-        "chooseInstance": "Zvolte si instanci",
-        "failure": "Na zadanou adresu URL se nelze připojit",
-        "suggestions": "Navržené volby"
-      },
-      "help": {
-        "notFunkwhaleServer": "Na zadané adrese neběží žádný Funkwhale server",
-        "selectPod": "Pro pokračování prosím zvolte Funkwhale instanci, ke které se chcete připojit. Zadejte adresu přímo, nebo vyberte jednu z nabízených možností.",
-        "serverDown": "Server je možná nedostupný"
-      },
-      "label": {
-        "url": "URL instance"
-      },
-      "message": {
-        "currentConnection": "Aktuálně jste připojeni k { 0 }. Když budete pokračovat, budete odpojeni od vaší aktuální instance a vaše lokální data budou vymazána.",
-        "newUrl": "Právě používáte Funkwhale instanci na adrese { url }"
       }
     },
     "ShortcutsModal": {
@@ -1958,7 +1935,7 @@
           "suggest": "Navrhnout úpravu této skladby"
         },
         "message": {
-          "remote": " Tento objekt je spravován jiným serverem, nemůžete ho upravovat."
+          "remote": "Tento objekt je spravován jiným serverem, nemůžete ho upravovat."
         }
       },
       "radios": {
@@ -4610,6 +4587,28 @@
           }
         },
         "title": "Rádio"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "submit": "Odeslat"
+      },
+      "header": {
+        "chooseInstance": "Zvolte si instanci",
+        "failure": "Na zadanou adresu URL se nelze připojit",
+        "suggestions": "Navržené volby"
+      },
+      "help": {
+        "notFunkwhaleServer": "Na zadané adrese neběží žádný Funkwhale server",
+        "selectPod": "Pro pokračování prosím zvolte Funkwhale instanci, ke které se chcete připojit. Zadejte adresu přímo, nebo vyberte jednu z nabízených možností.",
+        "serverDown": "Server je možná nedostupný"
+      },
+      "label": {
+        "url": "URL instance"
+      },
+      "message": {
+        "currentConnection": "Aktuálně jste připojeni k { 0 }. Když budete pokračovat, budete odpojeni od vaší aktuální instance a vaše lokální data budou vymazána.",
+        "newUrl": "Právě používáte Funkwhale instanci na adrese { url }"
       }
     }
   }

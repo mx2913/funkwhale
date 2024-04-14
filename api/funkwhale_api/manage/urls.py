@@ -1,4 +1,5 @@
-from django.conf.urls import include, url
+from django.conf.urls import include
+from django.urls import re_path
 
 from funkwhale_api.common import routers
 
@@ -32,14 +33,16 @@ other_router.register(r"channels", views.ManageChannelViewSet, "channels")
 other_router.register(r"tags", views.ManageTagViewSet, "tags")
 
 urlpatterns = [
-    url(
+    re_path(
         r"^federation/",
         include((federation_router.urls, "federation"), namespace="federation"),
     ),
-    url(r"^library/", include((library_router.urls, "instance"), namespace="library")),
-    url(
+    re_path(
+        r"^library/", include((library_router.urls, "instance"), namespace="library")
+    ),
+    re_path(
         r"^moderation/",
         include((moderation_router.urls, "moderation"), namespace="moderation"),
     ),
-    url(r"^users/", include((users_router.urls, "instance"), namespace="users")),
+    re_path(r"^users/", include((users_router.urls, "instance"), namespace="users")),
 ] + other_router.urls

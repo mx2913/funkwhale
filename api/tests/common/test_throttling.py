@@ -17,7 +17,7 @@ def test_get_ident_anonymous(api_request):
 def test_get_ident_authenticated(api_request, factories):
     user = factories["users.User"]()
     request = api_request.get("/")
-    expected = {"id": user.pk, "type": "authenticated"}
+    expected = {"id": f"{user.pk}", "type": "authenticated"}
     assert throttling.get_ident(user, request) == expected
 
 
@@ -26,7 +26,7 @@ def test_get_ident_authenticated(api_request, factories):
     [
         (
             "create",
-            {"id": 42, "type": "authenticated"},
+            {"id": "42", "type": "authenticated"},
             "throttling:create:authenticated:42",
         ),
         (
@@ -269,6 +269,7 @@ def test_throttle_calls_attach_info(method, mocker):
 
 
 def test_allow_request(api_request, settings, mocker):
+    settings.THROTTLING_ENABLED = True
     settings.THROTTLING_RATES = {"test": {"rate": "2/s"}}
     ip = "92.92.92.92"
     request = api_request.get("/", HTTP_X_FORWARDED_FOR=ip)

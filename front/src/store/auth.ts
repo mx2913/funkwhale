@@ -2,6 +2,7 @@ import type { BackendError, User } from '~/types'
 import type { Module } from 'vuex'
 import type { RootState } from '~/store/index'
 import type { RouteLocationRaw } from 'vue-router'
+import type { WebviewWindow } from '@tauri-apps/api/webviewWindow'
 
 import axios from 'axios'
 import useLogger from '~/composables/useLogger'
@@ -9,6 +10,7 @@ import useFormData from '~/composables/useFormData'
 
 import { clear as clearIDB } from 'idb-keyval'
 import { useQueue } from '~/composables/audio/queue'
+import { isTauri } from '~/composables/tauri'
 
 export type Permission = 'settings' | 'library' | 'moderation'
 export interface State {
@@ -21,6 +23,8 @@ export interface State {
   scopedTokens: ScopedTokens
 
   applicationSecret: string | undefined
+
+  oauthWindow: WebviewWindow | undefined
 }
 
 interface ScopedTokens {
@@ -55,7 +59,7 @@ function getDefaultOauth (): OAuthTokens {
 
 async function createOauthApp () {
   const payload = {
-    name: `Funkwhale web client at ${window.location.hostname}`,
+    name: `Funkwhale web client at ${location.hostname}`,
     website: location.origin,
     scopes: NEEDED_SCOPES,
     redirect_uris: `${location.origin}/auth/callback`
@@ -78,7 +82,9 @@ const store: Module<State, RootState> = {
     oauth: getDefaultOauth(),
     scopedTokens: getDefaultScopedTokens(),
 
-    applicationSecret: undefined
+    applicationSecret: undefined,
+
+    oauthWindow: undefined
   },
   getters: {
     header: state => {
@@ -243,14 +249,53 @@ const store: Module<State, RootState> = {
         commit('permission', { key: permission, status: hasPermission })
       }
     },
-    async oauthLogin ({ state, rootState, commit }, next: RouteLocationRaw) {
+    async tryFinishOAuthFlow ({ state }) {
+      if (isTauri()) {
+        return state.oauthWindow?.close?.().catch(() => {
+          // Ignore the error in case of window being already closed
+        })
+      }
+    },
+    async oauthLogin ({ state, rootState, commit, dispatch }, next: RouteLocationRaw) {
       const app = await createOauthApp()
       commit('oauthApp', app)
-      const redirectUri = encodeURIComponent(`${location.origin}/auth/callback`)
-      const params = `response_type=code&scope=${encodeURIComponent(NEEDED_SCOPES)}&redirect_uri=${redirectUri}&state=${next}&client_id=${state.oauth.clientId}`
+      const redirectUrl = encodeURIComponent(`${location.origin}/auth/callback`)
+      const params = `response_type=code&scope=${encodeURIComponent(NEEDED_SCOPES)}&redirect_uri=${redirectUrl}&state=${next}&client_id=${state.oauth.clientId}`
       const authorizeUrl = `${rootState.instance.instanceUrl}authorize?${params}`
-      logger.log('Redirecting user...', authorizeUrl)
-      window.location.href = authorizeUrl
+
+      if (isTauri()) {
+        const { WebviewWindow, getCurrent } = await import('@tauri-apps/api/webviewWindow')
+
+        state.oauthWindow = new WebviewWindow('oauth', {
+          title: `Login to ${rootState.instance.settings.instance.name}`,
+          parent: 'main',
+          url: authorizeUrl
+        })
+
+        const token = await new Promise((resolve, reject) => {
+          if (!state.oauthWindow) return
+
+          const stop = getCurrent().once<string>('oauthToken', async (event) => {
+            resolve(event.payload)
+          })
+
+          state.oauthWindow.once('tauri://error', async (error) => {
+            (await stop)()
+            reject(error)
+          })
+
+          state.oauthWindow.once('tauri://destroyed', async () => {
+            (await stop)()
+            reject(new Error('Aborted by user'))
+          })
+        }).finally(() => dispatch('tryFinishOAuthFlow'))
+
+        commit('oauthToken', token)
+        await dispatch('fetchUser')
+      } else {
+        logger.log('Redirecting user...', authorizeUrl)
+        location.href = authorizeUrl
+      }
     },
     async handleOauthCallback ({ state, commit, dispatch }, authorizationCode) {
       logger.log('Fetching token...')
@@ -266,6 +311,18 @@ const store: Module<State, RootState> = {
         useFormData(payload),
         { headers: { 'Content-Type': 'multipart/form-data' } }
       )
+
+      if (isTauri()) {
+        const { getCurrent } = await import('@tauri-apps/api/webviewWindow')
+        const currentWindow = getCurrent()
+
+        // If the current window is the oauth window, pass the event to the main window
+        if (currentWindow.label === 'oauth') {
+          await currentWindow.emitTo('main', 'oauthToken', response.data)
+          return
+        }
+      }
+
       commit('oauthToken', response.data)
       await dispatch('fetchUser')
     },

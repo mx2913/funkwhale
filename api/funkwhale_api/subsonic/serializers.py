@@ -7,6 +7,8 @@ from funkwhale_api.history import models as history_models
 from funkwhale_api.music import models as music_models
 from funkwhale_api.music import utils as music_utils
 
+from .renderers import TagValue
+
 
 def to_subsonic_date(date):
     """
@@ -50,6 +52,7 @@ def get_artist_data(artist_values):
         "name": artist_values["name"],
         "albumCount": artist_values["_albums_count"],
         "coverArt": "ar-{}".format(artist_values["id"]),
+        "musicBrainzId": str(artist_values.get("mbid", "")),
     }
 
 
@@ -58,7 +61,7 @@ class GetArtistsSerializer(serializers.Serializer):
         payload = {"ignoredArticles": "", "index": []}
         queryset = queryset.with_albums_count()
         queryset = queryset.order_by(functions.Lower("name"))
-        values = queryset.values("id", "_albums_count", "name")
+        values = queryset.values("id", "_albums_count", "name", "mbid")
 
         first_letter_mapping = collections.defaultdict(list)
         for artist in values:
@@ -102,6 +105,23 @@ class GetArtistSerializer(serializers.Serializer):
         return payload
 
 
+class GetArtistInfo2Serializer(serializers.Serializer):
+    def to_representation(self, artist):
+        payload = {}
+        if artist.mbid:
+            payload["musicBrainzId"] = TagValue(artist.mbid)
+        if artist.attachment_cover:
+            payload["mediumImageUrl"] = TagValue(
+                artist.attachment_cover.download_url_medium_square_crop
+            )
+            payload["largeImageUrl"] = TagValue(
+                artist.attachment_cover.download_url_large_square_crop
+            )
+        if artist.description:
+            payload["biography"] = TagValue(artist.description.rendered)
+        return payload
+
+
 def get_track_data(album, track, upload):
     data = {
         "id": track.pk,
@@ -126,11 +146,13 @@ def get_track_data(album, track, upload):
         "albumId": album.pk if album else "",
         "artistId": album.artist.pk if album else track.artist.pk,
         "type": "music",
+        "mediaType": "song",
+        "musicBrainzId": str(track.mbid or ""),
     }
     if album and album.attachment_cover_id:
         data["coverArt"] = f"al-{album.id}"
     if upload.bitrate:
-        data["bitrate"] = int(upload.bitrate / 1000)
+        data["bitRate"] = int(upload.bitrate / 1000)
     if upload.size:
         data["size"] = upload.size
     if album and album.release_date:
@@ -149,13 +171,17 @@ def get_album2_data(album):
         "created": to_subsonic_date(album.creation_date),
         "duration": album.duration,
         "playCount": album.tracks.aggregate(l=Count("listenings"))["l"] or 0,
+        "mediaType": "album",
+        "musicBrainzId": str(album.mbid or ""),
     }
     if album.attachment_cover_id:
         payload["coverArt"] = f"al-{album.id}"
     if album.tagged_items:
+        genres = [{"name": i.tag.name} for i in album.tagged_items.all()]
         # exposes only first genre since the specification uses singular noun
-        first_genre = album.tagged_items.first()
-        payload["genre"] = first_genre.tag.name if first_genre else ""
+        payload["genre"] = genres[0]["name"] if len(genres) > 0 else ""
+        # OpenSubsonic full genre list
+        payload["genres"] = genres
     if album.release_date:
         payload["year"] = album.release_date.year
     try:
@@ -343,7 +369,7 @@ def get_channel_episode_data(upload, channel_id):
         "genre": "Podcast",
         "size": upload.size if upload.size else "",
         "duration": upload.duration if upload.duration else "",
-        "bitrate": upload.bitrate / 1000 if upload.bitrate else "",
+        "bitRate": upload.bitrate / 1000 if upload.bitrate else "",
         "contentType": upload.mimetype or "audio/mpeg",
         "suffix": upload.extension or "mp3",
         "status": "completed",

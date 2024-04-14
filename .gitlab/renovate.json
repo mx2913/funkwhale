@@ -26,6 +26,16 @@
       "prConcurrentLimit": 0
     },
     {
+      "matchBaseBranches": ["develop"],
+      "matchUpdateTypes": ["major"],
+      "prPriority": 2
+    },
+    {
+      "matchBaseBranches": ["develop"],
+      "matchUpdateTypes": ["minor"],
+      "prPriority": 1
+    },
+    {
       "matchUpdateTypes": ["major", "minor"],
       "matchBaseBranches": ["stable"],
       "enabled": false
@@ -34,12 +44,6 @@
       "matchDepTypes": ["devDependencies"],
       "matchBaseBranches": ["stable"],
       "enabled": false
-    },
-    {
-      "matchUpdateTypes": ["patch", "pin", "digest"],
-      "matchBaseBranches": ["develop"],
-      "automerge": true,
-      "automergeType": "branch"
     },
     {
       "matchManagers": ["npm"],
@@ -70,6 +74,10 @@
         ],
         "fileFilters": ["changes/changelog.d/postgres.update"]
       }
+    },
+    {
+      "matchPackageNames": ["python"],
+      "rangeStrategy": "widen"
     }
   ]
 }

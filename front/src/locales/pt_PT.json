@@ -2266,19 +2266,6 @@
         "modal": "Atalhos do teclado"
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Cancelar",
-        "submit": "Enviar"
-      },
-      "header": {
-        "chooseInstance": "Escolha sua instância",
-        "suggestions": "Escolhas sugeridas"
-      },
-      "label": {
-        "url": "Dados da instância"
-      }
-    },
     "Queue": {
       "button": {
         "clear": "Claro",
@@ -3602,6 +3589,18 @@
       "title": "Notificações",
       "label": {
         "showRead": "Mostrar notificações antigas"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "submit": "Enviar"
+      },
+      "header": {
+        "chooseInstance": "Escolha sua instância",
+        "suggestions": "Escolhas sugeridas"
+      },
+      "label": {
+        "url": "Dados da instância"
       }
     }
   },

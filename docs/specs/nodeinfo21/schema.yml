@@ -456,27 +456,17 @@ components:
               type: string
             longDescription:
               type: string
-            rules:
-              type: string
             contactEmail:
               type: string
               format: email
-            terms:
-              type: string
             nodeName:
               type: string
             banner:
               type: string
               format: url
+              nullable: true
             defaultUploadQuota:
               type: integer
-            library:
-              type: object
-              properties:
-                federationEnabled:
-                  type: boolean
-                anonymousCanListen:
-                  type: boolean
             supportedUploadExtensions:
               type: array
               items:
@@ -488,57 +478,97 @@ components:
                   type: boolean
                 domains:
                   type: array
+                  nullable: true
                   items:
                     type: string
             funkwhaleSupportMessageEnabled:
               type: boolean
             instanceSupportMessage:
               type: string
-            instance_policy:
-              type: object
-              properties:
-                moderation_policy:
-                  type: string
-                  format: url
-                terms_of_service:
-                  type: string
-                  format: url
-                languages:
-                  type: array
-                  items:
-                    type: string
-                location:
-                  type: string
+            languages:
+              type: array
+              items:
+                type: string
+            location:
+              type: string
+            codeOfConduct:
+              type: string
+              format: url
             content:
               type: object
               properties:
-                top_music_categories:
+                local:
+                  type: object
+                  properties:
+                    artists:
+                      type: number
+                    releases:
+                      type: number
+                    recordings:
+                      type: number
+                    hoursOfContent:
+                      type: number
+                  example:
+                    artists: 1000
+                    releases: 10000
+                    recordings: 150000
+                    hoursOfContent: 7500
+                topMusicCategories:
                   type: array
                   items:
                     type: object
-                    additionalProperties:
-                      type: integer
+                    properties:
+                      name:
+                        type: string
+                      count:
+                        type: integer
+                        minimum: 0
                   example:
-                    - "rock": 1256
-                    - "jazz": 604
-                    - "classical": 308
-                top_podcast_categories:
+                    - name: "rock"
+                      count: 1256
+                    - name: "jazz"
+                      count: 604
+                    - name: "classical"
+                      count: 308
+                topPodcastCategories:
                   type: array
                   items:
                     type: object
-                    additionalProperties:
-                      type: integer
+                    properties:
+                      name:
+                        type: string
+                      count:
+                        type: integer
+                        minimum: 0
                   example:
-                    - "comedy": 12
-                    - "politics": 4
-                    - "nature": 1
+                    - name: "comedy"
+                      count: 12
+                    - name: "politics"
+                      count: 4
+                    - name: "nature"
+                      count: 1
                 federation:
                   type: object
                   properties:
-                    followed_instances:
+                    followedInstances:
                       type: integer
-                    following_instances:
+                    followingInstances:
                       type: integer
+            usage:
+              type: object
+              properties:
+                listenings:
+                  type: integer
+                  minimum: 0
+                downloads:
+                  type: integer
+                  minimum: 0
+                favorites:
+                  type: object
+                  properties:
+                    tracks:
+                      type: integer
+                      minimum: 0
             features:
               type: array
               items:
@@ -548,6 +578,10 @@ components:
                 - "podcasts"
                 - "collections"
                 - "audiobooks"
+                - "federation"
+                - "anonymousCanListen"
+                - "onlyMbidTaggedContent"
+
     Error:
       type: object
       properties:

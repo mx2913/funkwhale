@@ -8,7 +8,27 @@ from funkwhale_api.moderation import tasks as moderation_tasks
 from funkwhale_api.users.models import User
 
 
-def test_can_create_user_via_api(preferences, api_client, db):
+def test_can_create_user_via_api(settings, preferences, api_client, db):
+    url = reverse("rest_register")
+    data = {
+        "username": "test1",
+        "email": "test1@test.com",
+        "password1": "thisismypassword",
+        "password2": "thisismypassword",
+    }
+    preferences["users__registration_enabled"] = True
+    settings.ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+    response = api_client.post(url, data)
+    assert response.status_code == 201
+    assert response.data["detail"] == "Verification e-mail sent."
+
+    u = User.objects.get(email="test1@test.com")
+    assert u.username == "test1"
+
+
+def test_can_create_user_via_api_mail_verification_mandatory(
+    settings, preferences, api_client, db
+):
     url = reverse("rest_register")
     data = {
         "username": "test1",
@@ -18,7 +38,7 @@ def test_can_create_user_via_api(preferences, api_client, db):
     }
     preferences["users__registration_enabled"] = True
     response = api_client.post(url, data)
-    assert response.status_code == 201
+    assert response.status_code == 204
 
     u = User.objects.get(email="test1@test.com")
     assert u.username == "test1"
@@ -82,7 +102,7 @@ def test_can_signup_with_invitation(preferences, factories, api_client):
     }
     preferences["users__registration_enabled"] = False
     response = api_client.post(url, data)
-    assert response.status_code == 201
+    assert response.status_code == 204
     u = User.objects.get(email="test1@test.com")
     assert u.username == "test1"
     assert u.invitation == invitation
@@ -302,7 +322,7 @@ def test_creating_user_creates_actor_as_well(
     mocker.patch("funkwhale_api.users.models.create_actor", return_value=actor)
     response = api_client.post(url, data)
 
-    assert response.status_code == 201
+    assert response.status_code == 204
 
     user = User.objects.get(username="test1")
 
@@ -323,7 +343,7 @@ def test_creating_user_sends_confirmation_email(
     preferences["instance__name"] = "Hello world"
     response = api_client.post(url, data)
 
-    assert response.status_code == 201
+    assert response.status_code == 204
 
     confirmation_message = mailoutbox[-1]
     assert "Hello world" in confirmation_message.body
@@ -405,7 +425,7 @@ def test_signup_with_approval_enabled(
     }
     on_commit = mocker.patch("funkwhale_api.common.utils.on_commit")
     response = api_client.post(url, data, format="json")
-    assert response.status_code == 201
+    assert response.status_code == 204
     u = User.objects.get(email="test1@test.com")
     assert u.username == "test1"
     assert u.is_active is False

@@ -1,38 +1,38 @@
 from dj_rest_auth import views as rest_auth_views
-from django.conf.urls import url
+from django.urls import re_path
 from django.views.generic import TemplateView
 
 from . import views
 
 urlpatterns = [
     # URLs that do not require a session or valid token
-    url(
+    re_path(
         r"^password/reset/$",
         views.PasswordResetView.as_view(),
         name="rest_password_reset",
     ),
-    url(
+    re_path(
         r"^password/reset/confirm/$",
         views.PasswordResetConfirmView.as_view(),
         name="rest_password_reset_confirm",
     ),
     # URLs that require a user to be logged in with a valid session / token.
-    url(
+    re_path(
         r"^user/$", rest_auth_views.UserDetailsView.as_view(), name="rest_user_details"
     ),
-    url(
+    re_path(
         r"^password/change/$",
         views.PasswordChangeView.as_view(),
         name="rest_password_change",
     ),
     # Registration URLs
-    url(r"^registration/$", views.RegisterView.as_view(), name="rest_register"),
-    url(
+    re_path(r"^registration/$", views.RegisterView.as_view(), name="rest_register"),
+    re_path(
         r"^registration/verify-email/?$",
         views.VerifyEmailView.as_view(),
         name="rest_verify_email",
     ),
-    url(
+    re_path(
         r"^registration/change-password/?$",
         views.PasswordChangeView.as_view(),
         name="change_password",
@@ -47,7 +47,7 @@ urlpatterns = [
     # If you don't want to use API on that step, then just use ConfirmEmailView
     # view from:
     # https://github.com/pennersr/django-allauth/blob/a62a370681/allauth/account/views.py#L291
-    url(
+    re_path(
         r"^registration/account-confirm-email/(?P<key>\w+)/?$",
         TemplateView.as_view(),
         name="account_confirm_email",

@@ -101,7 +101,7 @@ export const currentTrack = computed(() => queue.value[currentIndex.value])
 
 // Use Queue
 export const useQueue = createGlobalState(() => {
-  const { currentSound } = useTracks()
+  const { currentSound, clearCache } = useTracks()
 
   const createQueueTrack = async (track: Track, skipFetch = false): Promise<QueueTrack> => {
     const { default: store } = await import('~/store')
@@ -341,6 +341,9 @@ export const useQueue = createGlobalState(() => {
     await delMany(lastTracks)
 
     currentIndex.value = 0
+
+    // Clear track cache
+    clearCache()
   }
 
   // Radio queue populating

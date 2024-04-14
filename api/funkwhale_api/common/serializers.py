@@ -5,8 +5,8 @@ import os
 import PIL
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext_lazy as _
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
@@ -52,7 +52,7 @@ class RelatedField(serializers.RelatedField):
             self.fail(
                 "does_not_exist",
                 related_field_name=self.related_field_name,
-                value=smart_text(data),
+                value=smart_str(data),
             )
         except (TypeError, ValueError):
             self.fail("invalid")
@@ -349,7 +349,7 @@ class ScopesSerializer(serializers.Serializer):
 
 class IdentSerializer(serializers.Serializer):
     type = serializers.CharField()
-    id = serializers.IntegerField()
+    id = serializers.CharField()
 
 
 class RateLimitSerializer(serializers.Serializer):

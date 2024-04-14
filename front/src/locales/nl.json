@@ -109,6 +109,9 @@
         "statistics": "Statistieken",
         "welcome": "Welkom bij { podName }!"
       },
+      "help": {
+        "registrationsClosed": "Registraties zijn gesloten in deze pod. Je kan je registreren in een andere pod via de link hieronder."
+      },
       "link": {
         "findOtherPod": "Zoek een andere pod",
         "funkwhale": "Bezoek funkwhale.audio",
@@ -165,9 +168,11 @@
         "duration": "Duur",
         "enterFullscreen": "Volledig scherm openen",
         "exitFullscreen": "Volledig scherm sluiten",
+        "favorite": "Favoriete nummer",
         "next": "Volgend nummer",
         "pause": "Pauseer",
         "play": "Afspelen",
+        "populatingRadio": "Een radionummer aan het ophalen…",
         "previous": "Vorig nummer",
         "queue": "Wachtrij",
         "remove": "Verwijderen",
@@ -178,10 +183,15 @@
       },
       "message": {
         "automaticPlay": "Het volgende nummer zal automatisch worden afgespeeld over een paar seconden…",
-        "radio": "Nieuwe nummers worden hier automatisch toegevoegd."
+        "radio": "Nieuwe nummers worden hier automatisch toegevoegd.",
+        "webglUnsupported": "Uw browser ondersteunt WebGL2 niet."
       },
       "meta": {
-        "queuePosition": "Nummer { index } van { length }"
+        "end": "Einde",
+        "queuePosition": "Nummer { index } van { length }",
+        "startTime": "00:00",
+        "unknownAlbum": "Onbekend Album",
+        "unknownArtist": "Onbekende artiest"
       },
       "warning": {
         "connectivity": "Je hebt wellicht een connectiviteitsprobleem."
@@ -206,6 +216,7 @@
       "label": {
         "fediverse": {
           "fieldLabel": "Fediverse object",
+          "fieldPlaceholder": "{'@'}gebruiker{'@'}voorbeeld.com",
           "title": "Abonneren op een podcast beheerd op de Fediverse"
         },
         "rss": {
@@ -216,28 +227,6 @@
       },
       "warning": {
         "unsupported": "Dit soort object wordt nog niet ondersteund"
-      }
-    },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Annuleren",
-        "submit": "Indienen"
-      },
-      "header": {
-        "chooseInstance": "Kies je server",
-        "failure": "Het is niet mogelijk om verbinding te maken met de opgegeven URL",
-        "suggestions": "Aanbevelingen"
-      },
-      "help": {
-        "notFunkwhaleServer": "Het opgegeven adres is geen Funkwhale-server",
-        "selectPod": "Selecteer met welke Funkwhale-server je wil verbinden. Voer zelf de URL in, of kies een van de suggesties.",
-        "serverDown": "De server is mogelijk niet beschikbaar"
-      },
-      "label": {
-        "url": "Server-URL"
-      },
-      "message": {
-        "newUrl": "Je gebruikt nu de Funkwhale-server op { url }"
       }
     },
     "ShortcutsModal": {
@@ -290,6 +279,7 @@
         "language": "Taal",
         "main": "Hoofdmenu",
         "play": "Speel dit nummer",
+        "reports": "In afwachting van beoordelingsrapporten",
         "theme": "Thema"
       },
       "link": {
@@ -309,6 +299,7 @@
         "radios": "Radio's",
         "search": "Zoeken",
         "settings": "Instellingen",
+        "switchInstance": "Verander van server",
         "users": "Gebruikers"
       }
     },
@@ -504,7 +495,17 @@
           "unmute": "Ontdempen"
         },
         "meta": {
-          "position": "{ index } van { length }"
+          "position": "{ index } van { length }",
+          "unknownAlbum": "Onbekend album",
+          "unknownArtist": "Onbekende artiest"
+        }
+      },
+      "PlayerControls": {
+        "labels": {
+          "next": "Volgend nummer",
+          "pause": "Pauze",
+          "play": "Afspelen",
+          "previous": "Vorig nummer"
         }
       },
       "Search": {
@@ -655,6 +656,7 @@
         },
         "header": {
           "appDetails": "Applicatie-details",
+          "appSecretWarning": "Bewaar een kopie van deze token op een veilige plek.",
           "editApp": "Bewerk applicatie"
         },
         "help": {
@@ -667,6 +669,9 @@
         },
         "link": {
           "settings": "Terug naar instellingen"
+        },
+        "message": {
+          "appSecretWarning": "Het is niet mogelijk om het opnieuw te zien nadat je dit scherm hebt gesloten."
         },
         "title": "Bewerk applicatie"
       },
@@ -686,6 +691,7 @@
           "redirectUri": "Redirect URI",
           "scopes": {
             "description": "Het aanvinken van de bovenliggende \"Lees\"- of \"Schrijf\"-scopes impliceert toegang tot alle corresponderende kindscopes.",
+            "label": "Reikwijdte",
             "read": {
               "description": "Alleen-lezen toegang tot gebruikersgegevens",
               "label": "Lezen"
@@ -744,6 +750,9 @@
         "link": {
           "createAccount": "Creëer een account",
           "resetPassword": "Wachtwoord opnieuw instellen"
+        },
+        "message": {
+          "redirect": "Je wordt geleid naar {domain} om je te authenticeren"
         },
         "placeholder": {
           "username": "Voer je gebruikersnaam of e-mailadres in"
@@ -916,6 +925,7 @@
         },
         "label": {
           "email": "E-mailadres",
+          "invitation": "Uitnodigingscode",
           "password": "Wachtwoord",
           "username": "Gebruikersnaam"
         },
@@ -1238,6 +1248,11 @@
           "failure": "Fout tijdens bijwerken van de beschrijving"
         }
       },
+      "UserLink": {
+        "link": {
+          "username": "{'@'}{username}"
+        }
+      },
       "UserMenu": {
         "label": {
           "language": "Taal",
@@ -1274,6 +1289,7 @@
         "link": {
           "about": "Over",
           "chat": "Chatruimte",
+          "docs": "Documentatie",
           "forum": "Forum",
           "git": "Issuetracker",
           "login": "Inloggen",
@@ -1393,7 +1409,8 @@
         "meta": {
           "episodes": "{ n } aflevering | { n } afleveringen",
           "tracks": "{ n } nummer | { n } nummers"
-        }
+        },
+        "title": "Album"
       },
       "AlbumDetail": {
         "description": {
@@ -1642,6 +1659,9 @@
           "import": "Resultaten van je import:",
           "previousImport": "Resultaten van je vorige import:"
         },
+        "empty": {
+          "noFiles": "0"
+        },
         "header": {
           "failure": "Fout bij het importeren",
           "local": "Upload muziek van je local storage",
@@ -1659,6 +1679,7 @@
           "uploading": "Bezig met uploaden"
         },
         "message": {
+          "listener": "De pagina vraagt je om te bevestigen dat je weg wilt gaan - data die je hebt ingevoerd wordt misschien niet behouden.",
           "local": {
             "copyright": "Je uploadt geen content waarop copyright berust. Anders overtreed je misschien de wet",
             "format": "De muziekbestanden die je uploadt, hebben het OGG, Flac, MP3 of AIFF formaat",
@@ -1674,6 +1695,7 @@
               "size": "Grootte",
               "status": "Status"
             },
+            "progress": "{percent}%",
             "status": {
               "pending": "In behandeling",
               "uploaded": "Geüpload",
@@ -1790,7 +1812,8 @@
       "Radios": {
         "button": {
           "add": "Maak een radiostation",
-          "create": "Maak je eigen radiostation"
+          "create": "Maak je eigen radiostation",
+          "search": "Zoek"
         },
         "empty": {
           "noResults": "Geen resultaten gevonden voor je zoekopdracht"
@@ -1863,6 +1886,10 @@
             "header": "Embed dit nummer op je website"
           }
         },
+        "subtitle": {
+          "with-uploader": "Opgeladen door {0} op {1}",
+          "without-uploader": "Opgeladen op {0}"
+        },
         "title": "Nummer"
       },
       "TrackDetail": {
@@ -1892,7 +1919,8 @@
           },
           "track": {
             "bitrate": {
-              "label": "Bitrate"
+              "label": "Bitrate",
+              "value": "{bitrate}/s"
             },
             "codec": "Codec",
             "downloads": "Downloads",
@@ -1954,6 +1982,7 @@
         "Filter": {
           "cancelButton": "Annuleren",
           "excludeLabel": "Uitsluiten",
+          "matchingTracks": "0 nummers komen overeen met de filter | {n} nummer komt overeen met de filter | {n} nummers komen overeen met de filter",
           "matchingTracksModalHeader": "Nummers volgens filter",
           "removeButton": "Verwijderen"
         }
@@ -2087,6 +2116,7 @@
         },
         "EditsCardList": {
           "label": {
+            "search": "Zoeken",
             "status": "Status"
           },
           "option": {
@@ -2432,7 +2462,7 @@
             }
           },
           "tooltip": {
-            "blockAll": "Alles van dit account of deze domeinnaam blokkeren. Dit voorkomt elke interactie en verwijdert alle gerelateerde gegevens (uploads, bibliotheken, gevolgde accounts, enz.)",
+            "blockAll": "Alles van dit account of deze domeinnaam blokkeren. Dit voorkomt elke interactie en verwijdert alle gerelateerde media (uploads, bibliotheken, gevolgde accounts, enz.)",
             "isActive": "Gebruik deze instelling om tijdelijk het beleid in en uit te schakelen zonder het helemaal te verwijderen.",
             "rejectMedia": "Geen mediabestanden (audio, albumhoes, profielfoto…) downloaden van dit account of domein. Hiermee wordt ook bestaande content verwijderd.",
             "silenceActivity": "Verberg account- of domeininhoud, behalve voor volgers.",
@@ -2559,6 +2589,7 @@
               "internalNotes": "Interne notities",
               "pending": "In behandeling",
               "refused": "Geweigerd",
+              "resolutionDate": "Beslissingsdatum",
               "status": "Status"
             }
           }
@@ -2620,12 +2651,16 @@
                 "creationDate": "Toegevoegd",
                 "expirationDate": "Vervaldatum",
                 "owner": "Eigenaar",
-                "status": "Status"
+                "status": "Status",
+                "user": "Gebruiker"
               }
             }
           }
         },
         "UsersTable": {
+          "label": {
+            "search": "Zoeken"
+          },
           "notApplicable": "N.B.",
           "ordering": {
             "direction": {
@@ -2716,6 +2751,9 @@
           "message": "Gebruik dit veld om extra context te geven aan de moderator die dit rapport zal behandelen.",
           "modal": "Gebruik dit formulier om een rapport in te dienen voor ons moderatieteam."
         },
+        "error": {
+          "nodeinfoFetch": "Kan Node Informatie niet ophalen: {error}"
+        },
         "header": {
           "disabled": "Anonieme meldingen zijn uitgeschakeld, gelieve je aan te melden om een melding in te dienen.",
           "modal": "Wil je dit object melden?",
@@ -2742,7 +2780,8 @@
         "message": {
           "libraryAcceptFollow": "{ username } heeft je volgverzoek voor de verzameling \"{ library }\" geaccepteerd",
           "libraryFollow": "{ username } volgt nu je verzameling \"{ library }\"",
-          "libraryPendingFollow": "{ username } wil je verzameling \"{ library }\" volgen"
+          "libraryPendingFollow": "{ username } wil je verzameling \"{ library }\" volgen",
+          "libraryReject": "Je hebt {username}'s verzoek om \"{library}\" te volgen afgewezen"
         }
       }
     },
@@ -2821,7 +2860,8 @@
           "addToPlaylist": "Toevoegen aan afspeellijst",
           "available": "Beschikbare afspeellijsten",
           "manage": "Afspeellijsten beheren",
-          "noResults": "Geen resultaten bij je filter"
+          "noResults": "Geen resultaten bij je filter",
+          "track": "{title}, door {artist}"
         },
         "label": {
           "filter": "Filter"
@@ -2860,8 +2900,14 @@
     },
     "radios": {
       "Button": {
+        "startArtistsRadio": "Start artist-radio",
+        "startPlaylistsRadio": "Start afspeellijst-radio",
         "startRadio": "Radio afspelen",
-        "stopRadio": "Radio stoppen"
+        "startTagsRadio": "Start label-radio",
+        "stopArtistsRadio": "Stop artist-radio",
+        "stopPlaylistsRadio": "Stop afspeellijst-radio",
+        "stopRadio": "Radio stoppen",
+        "stopTagsRadio": "stop label-radio"
       },
       "Card": {
         "button": {
@@ -2955,9 +3001,10 @@
           }
         },
         "filters": {
-          "accessedDate": "Benaderd op",
-          "albumTitle": "Albumnaam",
-          "artistName": "Artiestnaam",
+          "accessedDate": "Datum van raadplegen",
+          "albumTitle": "Naam van album",
+          "appliedDate": "Datum van toepassen",
+          "artistName": "Naam van artiest",
           "bitrate": "Bitrate",
           "creationDate": "Toegevoegd",
           "dateJoined": "Geregistreerd op",
@@ -2966,6 +3013,7 @@
           "expirationDate": "Vervaldatum",
           "firstSeen": "Eerst gezien-datum",
           "followers": "Volgers",
+          "handledDate": "Datum van aanpakken",
           "itemsCount": "Items",
           "lastActivity": "Laatste activiteit",
           "lastSeen": "Datum laatst gezien",
@@ -2985,6 +3033,7 @@
             "label": "Wijzigingen"
           },
           "favorites": {
+            "description": "Toegang tot favorieten",
             "label": "Favorieten"
           },
           "filters": {
@@ -3057,6 +3106,7 @@
       },
       "useReport": {
         "account": {
+          "label": "Rapporteer {'@'}{username}",
           "typeLabel": "Account"
         },
         "album": {
@@ -3065,7 +3115,8 @@
         },
         "artist": {
           "label": "Deze artiest rapporteren…",
-          "typeLabel": "Artiest"
+          "typeLabel": "Artiest",
+          "unknownLabel": "Onbekende artiest"
         },
         "channel": {
           "label": "Dit kanaal rapporteren…",
@@ -3131,7 +3182,14 @@
         }
       }
     },
+    "useErrorHandler": {
+      "errorReportMessage": "Om ons te helpen begrijpen wat er is gebeurd, voeg a.u.b. een gedetailleerde beschijving toe van wat je gedaan hebt dat de fout heeft veroorzaakt.",
+      "errorReportTitle": "Een onverwachte fout heeft zich voorgedaan.",
+      "leaveFeedback": "Laat feedback achter",
+      "unexpectedError": "Een onverwachte fout heeft zich voorgedaan."
+    },
     "useThemeList": {
+      "browserDefault": "Browser standaard",
       "darkTheme": "Donker",
       "lightTheme": "Licht"
     }
@@ -3140,6 +3198,13 @@
     "axios": {
       "rateLimitDelay": "Je hebt te veel verzoeken ingediend en wordt tijdelijk tegengehouden. Probeer het nog eens over { delay }",
       "rateLimitLater": "Je hebt te veel verzoeken ingediend en wordt tijdelijk tegengehouden. Probeer het later nog eens"
+    },
+    "sentry": {
+      "allow": "Toelaten",
+      "deny": "Afwijzen",
+      "funkwhaleInstance": "Officiële Glitchtip server van Funkwhale",
+      "message": "De stacksporen zullen gedeeld worden naar { 0 } om ons te helpen begrijpen waarom en hoe deze fout is gebeurd.",
+      "title": "Om de kwaliteit van onze diensten te verbeteren, zouden we informatie willen verzamelen van de crashes die gebeuren tijdens jouw sessie."
     },
     "serviceWorker": {
       "actions": {
@@ -3150,6 +3215,28 @@
     }
   },
   "views": {
+    "ChooseInstance": {
+      "button": {
+        "submit": "Indienen"
+      },
+      "header": {
+        "chooseInstance": "Kies je server",
+        "failure": "Het is niet mogelijk om verbinding te maken met de opgegeven URL",
+        "suggestions": "Aanbevelingen"
+      },
+      "help": {
+        "notFunkwhaleServer": "Het opgegeven adres is geen Funkwhale-server",
+        "selectPod": "Selecteer met welke Funkwhale-server je wil verbinden. Voer zelf de URL in, of kies een van de suggesties.",
+        "serverDown": "De server is mogelijk niet beschikbaar"
+      },
+      "label": {
+        "url": "Server-URL"
+      },
+      "message": {
+        "currentConnection": "U bent nu verbonden met { 0 }. Als je doorgaat wordt je verbinding verbroken met je huidige instance en je lokale data zal worden verwijderd.",
+        "newUrl": "Je gebruikt nu de Funkwhale-server op { url }"
+      }
+    },
     "Notifications": {
       "button": {
         "read": "Alles markeren als gelezen",
@@ -3601,7 +3688,8 @@
             },
             "audioContent": {
               "bitrate": {
-                "label": "Bitrate"
+                "label": "Bitrate",
+                "value": "{bitrate}/s"
               },
               "cachedSize": "Gecachete grootte",
               "duration": "Duur",
@@ -3753,7 +3841,8 @@
                 "value": "Fout bij het ophalen van serverinformatie"
               },
               "software": {
-                "label": "Software"
+                "label": "Software",
+                "value": "{name} ({version})"
               },
               "totalUsers": "Totaal aantal gebruikers"
             }
@@ -4241,6 +4330,7 @@
             "currentUsage": "{ current } in gebruik; maximaal { max } toegestaan",
             "errored": "Mislukte bestanden",
             "pending": "In behandeling zijnde bestanden",
+            "percentUsed": "{progress}%",
             "skipped": "Overgeslagen bestanden"
           },
           "link": {
@@ -4278,6 +4368,10 @@
             "follow": "Volgen",
             "pending": "Openstaande volgverzoeken",
             "unfollow": "Ontvolgen"
+          },
+          "error": {
+            "follow": "Kan externe bibliotheek niet volgen: {error}",
+            "unfollow": "Kan externe bibliotheek niet ontvolgen: {error}"
           },
           "label": {
             "scanFailure": "Probleem tijdens scannen",
@@ -4496,12 +4590,14 @@
       "Detail": {
         "button": {
           "confirm": "Radiostation verwijderen",
+          "delete": "Verwijderen",
           "edit": "Bewerken…"
         },
         "empty": {
           "noTracks": "Er zijn nog geen nummers aan deze radio toegevoegd"
         },
         "header": {
+          "radio": "Radio bevat {tracks} nummers, door ",
           "tracks": "Nummers"
         },
         "modal": {

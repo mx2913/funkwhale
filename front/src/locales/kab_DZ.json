@@ -1390,12 +1390,6 @@
         }
       }
     },
-    "SetInstanceModal": {
-      "button": {
-        "cancel": "Sefex",
-        "submit": "Envoyer"
-      }
-    },
     "Queue": {
       "button": {
         "clear": "Effacer",
@@ -2175,6 +2169,11 @@
       },
       "header": {
         "search": "Anadi"
+      }
+    },
+    "ChooseInstance": {
+      "button": {
+        "submit": "Envoyer"
       }
     }
   },

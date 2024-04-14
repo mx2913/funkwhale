@@ -2,7 +2,7 @@ import logging.config
 import sys
 import warnings
 from collections import OrderedDict
-from urllib.parse import urlsplit
+from urllib.parse import urlparse, urlsplit
 
 import environ
 from celery.schedules import crontab
@@ -13,7 +13,29 @@ APPS_DIR = ROOT_DIR.path("funkwhale_api")
 
 env = environ.Env()
 ENV = env
-LOGLEVEL = env("LOGLEVEL", default="info").upper()
+# If DEBUG is `true`, we automatically set the loglevel to "DEBUG"
+# If DEBUG is `false`, we try to read the level from LOGLEVEL environment and default to "INFO"
+LOGLEVEL = (
+    "DEBUG" if env.bool("DEBUG", False) else env("LOGLEVEL", default="info").upper()
+)
+"""
+Default logging level for the Funkwhale processes.
+
+.. note::
+    The `DEBUG` variable overrides the `LOGLEVEL` if it is set to `TRUE`.
+
+    The `LOGLEVEL` value only applies if `DEBUG` is `false` or not present.
+
+Available levels:
+
+- ``debug``
+- ``info``
+- ``warning``
+- ``error``
+- ``critical``
+
+"""
+
 IS_DOCKER_SETUP = env.bool("IS_DOCKER_SETUP", False)
 
 
@@ -34,19 +56,6 @@ if env("FUNKWHALE_SENTRY_DSN", default=None) is not None:
         release=version,
     )
     sentry_sdk.set_tag("instance", env("FUNKWHALE_HOSTNAME"))
-
-"""
-Default logging level for the Funkwhale processes
-
-Available levels:
-
-- ``debug``
-- ``info``
-- ``warning``
-- ``error``
-- ``critical``
-
-"""  # pylint: disable=W0105
 
 LOGGING_CONFIG = None
 logging.config.dictConfig(
@@ -187,9 +196,7 @@ request errors related to this.
 FUNKWHALE_SPA_HTML_CACHE_DURATION = env.int(
     "FUNKWHALE_SPA_HTML_CACHE_DURATION", default=60 * 15
 )
-FUNKWHALE_EMBED_URL = env(
-    "FUNKWHALE_EMBED_URL", default=FUNKWHALE_URL + "/front/embed.html"
-)
+FUNKWHALE_EMBED_URL = env("FUNKWHALE_EMBED_URL", default=FUNKWHALE_URL + "/embed.html")
 FUNKWHALE_SPA_REWRITE_MANIFEST = env.bool(
     "FUNKWHALE_SPA_REWRITE_MANIFEST", default=True
 )
@@ -215,6 +222,13 @@ More pages means more content will be loaded, but will require more resources.
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[]) + [FUNKWHALE_HOSTNAME]
 """
 List of allowed hostnames for which the Funkwhale server will answer.
+"""
+
+CSRF_TRUSTED_ORIGINS = [urlparse(o, FUNKWHALE_PROTOCOL).geturl() for o in ALLOWED_HOSTS]
+"""
+List of origins that are trusted for unsafe requests
+We simply consider all allowed hosts to be trusted origins
+See https://docs.djangoproject.com/en/4.2/ref/settings/#csrf-trusted-origins
 """
 
 # APP CONFIGURATION
@@ -823,7 +837,7 @@ If you're using password auth (the extra slash is important)
 .. note::
 
     If you want to use Redis over unix sockets, you also need to update
-    :attr:`CELERY_BROKER_URL`, because the scheme differ from the one used by
+    :attr:`CELERY_BROKER_URL`, because the scheme differs from the one used by
     :attr:`CACHE_URL`.
 
 """
@@ -874,7 +888,7 @@ to use a different server or use Redis sockets to connect.
 
 Example:
 
-- ``redis://127.0.0.1:6379/0``
+- ``unix://127.0.0.1:6379/0``
 - ``redis+socket:///run/redis/redis.sock?virtual_host=0``
 
 """
@@ -935,12 +949,14 @@ CELERY_BEAT_SCHEDULE = {
         ),
         "options": {"expires": 60 * 60},
     },
-    "typesense.build_canonical_index": {
+}
+
+if env.str("TYPESENSE_API_KEY", default=None):
+    CELERY_BEAT_SCHEDULE["typesense.build_canonical_index"] = {
         "task": "typesense.build_canonical_index",
         "schedule": crontab(day_of_week="*/2", minute="0", hour="3"),
         "options": {"expires": 60 * 60 * 24},
-    },
-}
+    }
 
 if env.bool("ADD_ALBUM_TAGS_FROM_TRACKS", default=True):
     CELERY_BEAT_SCHEDULE["music.albums_set_tags_from_tracks"] = {
@@ -1186,7 +1202,7 @@ if BROWSABLE_API_ENABLED:
         "rest_framework.renderers.BrowsableAPIRenderer",
     )
 
-REST_AUTH_SERIALIZERS = {
+REST_AUTH = {
     "PASSWORD_RESET_SERIALIZER": "funkwhale_api.users.serializers.PasswordResetSerializer",  # noqa
     "PASSWORD_RESET_CONFIRM_SERIALIZER": "funkwhale_api.users.serializers.PasswordResetConfirmSerializer",  # noqa
 }

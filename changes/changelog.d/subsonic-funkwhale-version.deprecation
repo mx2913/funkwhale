@@ -1,0 +1,3 @@
+The "funkwhaleVersion" field in Subsonic responses is deprecated. Clients
+should use the OpenSubsonic field "serverVersion" instead.
+The "funkwhaleVersion" field will get removed in Funkwhale 1.7.0.

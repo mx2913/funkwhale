@@ -101,9 +101,14 @@ caption: Specifications
 hidden: true
 ---
 
+specs/collections/index
 specs/nodeinfo21/index
 specs/offline-mode/index
 specs/quality-filter/index
+specs/multi-artist/index
+specs/user-follow/index
+specs/user-deletion/index
+specs/upload-process/index
 specs/genre-tags/index
 
 ```
@@ -127,6 +132,7 @@ hidden: true
 ---
 
 changelog
+0.x Changelog <changes/funkwhale-0-changelog>
 
 ```
 

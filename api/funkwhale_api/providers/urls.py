@@ -1,7 +1,8 @@
-from django.conf.urls import include, url
+from django.conf.urls import include
+from django.urls import re_path
 
 urlpatterns = [
-    url(
+    re_path(
         r"^musicbrainz/",
         include(
             ("funkwhale_api.musicbrainz.urls", "musicbrainz"), namespace="musicbrainz"
