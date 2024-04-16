@@ -16,14 +16,13 @@ Having these tags easily available also facilitates better tagging within Funkwh
 
 The `tags_tag` table contains the following fields:
 
-| Field            | Data type                | Description                                                                                                             | Relations                            | Constraints                            |
-| ---------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | -------------------------------------- |
-| `id`             | Integer                  | The randomly generated table ID                                                                                         | `tags_taggeditem.tag_id` foreign key | None                                   |
-| `musicbrainz_id` | UUID                     | The Musicbrainz genre tag `id`. Used to identify the tag in Musicbrainz fetches                                         | None                                 | None                                   |
-| `name`           | String                   | The name of the tag. Assigned by Funkwhale during creation for use in URLs. Uses Pascal casing for consistency          | None                                 | Must be unique                         |
-| `display_name`   | String                   | The name of the tag as the user entered it or as it was originally written by Musicbrainz. Lowercase, normalizes spaces | None                                 | None                                   |
-| `creation_date`  | Timestamp with time zone | The date on which the tag was created                                                                                   | None                                 | None                                   |
-| `from`           | Enum<String>             | The origin of the tag.                                                                                                  | None                                 | Must be either `None` or `MusicBrainz` |
+| Field            | Data type                | Description                                                                                                             | Relations                            | Constraints    |
+| ---------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | -------------- |
+| `id`             | Integer                  | The randomly generated table ID                                                                                         | `tags_taggeditem.tag_id` foreign key | None           |
+| `musicbrainz_id` | UUID                     | The Musicbrainz genre tag `id`. Used to identify the tag in Musicbrainz fetches                                         | None                                 | None           |
+| `name`           | String                   | The name of the tag. Assigned by Funkwhale during creation for use in URLs. Uses Pascal casing for consistency          | None                                 | Must be unique |
+| `display_name`   | String                   | The name of the tag as the user entered it or as it was originally written by Musicbrainz. Lowercase, normalizes spaces | None                                 | None           |
+| `creation_date`  | Timestamp with time zone | The date on which the tag was created                                                                                   | None                                 | None           |
 
 #### Musicbrainz fetch task
 
@@ -218,7 +217,7 @@ The `display_name` of the tag should be shown in pills against cards.
 If the admin of a server wants to **disable** MusicBrainz tagging, they should be able to toggle this in their instance settings. If the setting is **disabled**:
 
 - The sync task should stop running
-- Any tags with a `from` attribute of `MusicBrainz` should be excluded from API queries.
+- Any tags with an `musicbrainz_id` should be excluded from API queries.
 
 ## Availability
 
