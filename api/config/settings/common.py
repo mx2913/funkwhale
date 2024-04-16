@@ -2,7 +2,8 @@ import logging.config
 import sys
 import warnings
 from collections import OrderedDict
-from urllib.parse import urlparse, urlsplit
+from urllib.parse import urlsplit, urlparse
+from . import testing
 
 import environ
 from celery.schedules import crontab
@@ -1044,6 +1045,7 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "NUM_PROXIES": env.int("NUM_PROXIES", default=1),
 }
+REST_FRAMEWORK.update(testing.REST_FRAMEWORK)
 THROTTLING_ENABLED = env.bool("THROTTLING_ENABLED", default=True)
 """
 Whether to enable throttling (also known as rate-limiting).

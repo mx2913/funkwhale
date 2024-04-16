@@ -15,6 +15,12 @@ v2_patterns += [
         r"^radios/",
         include(("funkwhale_api.radios.urls_v2", "radios"), namespace="radios"),
     ),
+    re_path(
+        r"^",
+        include(
+            ("funkwhale_api.playlists.urls_v2", "playlists"), namespace="playlists"
+        ),
+    ),
 ]
 
 urlpatterns = [re_path("", include((v2_patterns, "v2"), namespace="v2"))]

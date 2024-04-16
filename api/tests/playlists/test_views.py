@@ -20,7 +20,7 @@ def test_serializer_includes_tracks_count(factories, logged_in_api_client):
     factories["playlists.PlaylistTrack"](playlist=playlist)
 
     url = reverse("api:v1:playlists-detail", kwargs={"pk": playlist.pk})
-    response = logged_in_api_client.get(url)
+    response = logged_in_api_client.get(url, content_type="application/json")
 
     assert response.data["tracks_count"] == 1
 
@@ -32,7 +32,7 @@ def test_serializer_includes_tracks_count_986(factories, logged_in_api_client):
         3, track=plt.track, library__privacy_level="everyone", import_status="finished"
     )
     url = reverse("api:v1:playlists-detail", kwargs={"pk": playlist.pk})
-    response = logged_in_api_client.get(url)
+    response = logged_in_api_client.get(url, content_type="application/json")
 
     assert response.data["tracks_count"] == 1
 
@@ -42,7 +42,7 @@ def test_serializer_includes_is_playable(factories, logged_in_api_client):
     factories["playlists.PlaylistTrack"](playlist=playlist)
 
     url = reverse("api:v1:playlists-detail", kwargs={"pk": playlist.pk})
-    response = logged_in_api_client.get(url)
+    response = logged_in_api_client.get(url, content_type="application/json")
 
     assert response.data["is_playable"] is False
 
@@ -78,7 +78,7 @@ def test_only_can_add_track_on_own_playlist_via_api(factories, logged_in_api_cli
     url = reverse("api:v1:playlists-add", kwargs={"pk": playlist.pk})
     data = {"tracks": [track.pk]}
 
-    response = logged_in_api_client.post(url, data, format="json")
+    response = logged_in_api_client.post(url, data, content_type="application/json")
     assert response.status_code == 404
     assert playlist.playlist_tracks.count() == 0
 
