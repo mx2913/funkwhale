@@ -1043,7 +1043,11 @@ def test_outbox_create_favorite(factories, mocker):
 
     activity = list(routes.outbox_create_favorite({"favorite": favorite}))[0]
     serializer = serializers.ActivitySerializer(
-        {"type": "Like", "object": {"type": "Like", "id": favorite.fid}}
+        {
+            "type": "Like",
+            "id": favorite.fid,
+            "object": {"type": "Track", "id": favorite.track.fid},
+        }
     )
     expected = serializer.data
     expected["to"] = [{"type": "followers", "target": favorite.actor}]

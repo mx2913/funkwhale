@@ -618,7 +618,11 @@ def outbox_create_favorite(context):
     actor = favorite.actor
 
     serializer = serializers.ActivitySerializer(
-        {"type": "Like", "object": {"type": "Like", "id": favorite.fid}}
+        {
+            "type": "Like",
+            "id": favorite.fid,
+            "object": {"type": "Track", "id": favorite.track.fid},
+        }
     )
     yield {
         "type": "Like",
