@@ -120,7 +120,6 @@ class User(AbstractUser):
 
     # updated on logout or password change, to invalidate JWT
     secret_key = models.UUIDField(default=uuid.uuid4, null=True)
-    privacy_level = fields.get_privacy_field()
 
     # Unfortunately, Subsonic API assumes a MD5/password authentication
     # scheme, which is weak in terms of security, and not achievable
@@ -214,6 +213,10 @@ class User(AbstractUser):
             u.settings[key] = value
         u.save(update_fields=["settings"])
         self.settings = u.settings
+        # to do : this is never called
+        if "privacy_level" in settings:
+            u.actor.privacy_level = settings["privacy_level"]
+            u.actor.save()
 
     def has_permissions(self, *perms, **kwargs):
         operator = kwargs.pop("operator", "and")

@@ -48,7 +48,9 @@ class ListeningViewSet(
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(
-            fields.privacy_level_query(self.request.user, "actor__user__privacy_level")
+            fields.privacy_level_query(
+                self.request.user, "actor__privacy_level", "actor__user"
+            )
         )
         tracks = Track.objects.with_playable_uploads(
             music_utils.get_actor_from_request(self.request)

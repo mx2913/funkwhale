@@ -633,6 +633,7 @@ def test_search3(f, db, logged_in_api_client, factories):
 
 @pytest.mark.parametrize("f", ["json"])
 def test_get_playlists(f, db, logged_in_api_client, factories):
+    logged_in_api_client.user.create_actor()
     url = reverse("api:subsonic:subsonic-get_playlists")
     assert url.endswith("getPlaylists") is True
     playlist1 = factories["playlists.PlaylistTrack"](
@@ -664,6 +665,7 @@ def test_get_playlists(f, db, logged_in_api_client, factories):
 
 @pytest.mark.parametrize("f", ["json"])
 def test_get_playlist(f, db, logged_in_api_client, factories):
+    logged_in_api_client.user.create_actor()
     url = reverse("api:subsonic:subsonic-get_playlist")
     assert url.endswith("getPlaylist") is True
     playlist = factories["playlists.PlaylistTrack"](

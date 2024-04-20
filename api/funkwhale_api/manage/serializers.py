@@ -43,7 +43,6 @@ class ManageUserSimpleSerializer(serializers.ModelSerializer):
             "is_superuser",
             "date_joined",
             "last_activity",
-            "privacy_level",
             "upload_quota",
         )
 
@@ -67,7 +66,6 @@ class ManageUserSerializer(serializers.ModelSerializer):
             "date_joined",
             "last_activity",
             "permissions",
-            "privacy_level",
             "upload_quota",
             "full_username",
         )
@@ -224,6 +222,7 @@ class ManageBaseActorSerializer(serializers.ModelSerializer):
             "shared_inbox_url",
             "manually_approves_followers",
             "is_local",
+            "privacy_level",
         ]
         read_only_fields = ["creation_date", "instance_policy"]
 

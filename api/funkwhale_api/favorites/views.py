@@ -54,7 +54,7 @@ class TrackFavoriteViewSet(
         )
         record.send(instance)
         routes.outbox.dispatch(
-            {"type": "Create", "object": {"type": "Favorite"}},
+            {"type": "Like", "object": {"type": "Track"}},
             context={"favorite": instance},
         )
         return Response(
@@ -65,7 +65,7 @@ class TrackFavoriteViewSet(
         queryset = super().get_queryset()
         queryset = queryset.filter(
             fields.privacy_level_query(
-                self.request.user, "actor__user__privacy_level", "actor__user"
+                self.request.user, "actor__privacy_level", "actor__user"
             )
         )
         tracks = Track.objects.with_playable_uploads(
@@ -90,7 +90,7 @@ class TrackFavoriteViewSet(
         except (AttributeError, ValueError, models.TrackFavorite.DoesNotExist):
             return Response({}, status=400)
         routes.outbox.dispatch(
-            {"type": "Delete", "object": {"type": "Favorite"}},
+            {"type": "Delete", "object": {"type": "Like"}},
             context={"favorite": favorite},
         )
         favorite.delete()

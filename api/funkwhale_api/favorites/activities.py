@@ -8,7 +8,7 @@ record.registry.register_serializer(serializers.TrackFavoriteActivitySerializer)
 
 @record.registry.register_consumer("favorites.TrackFavorite")
 def broadcast_track_favorite_to_instance_activity(data, obj):
-    if obj.actor.user.privacy_level not in ["instance", "everyone"]:
+    if obj.actor.privacy_level not in ["instance", "everyone"]:
         return
 
     channels.group_send(

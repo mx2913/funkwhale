@@ -40,7 +40,7 @@ from funkwhale_api.favorites import serializers as favorites_serializers
         ({"type": "Delete", "object": {"type": "Tombstone"}}, routes.inbox_delete),
         ({"type": "Flag"}, routes.inbox_flag),
         (
-            {"type": "Create", "object": {"type": "Favorite"}},
+            {"type": "Like", "object": {"type": "Track"}},
             routes.inbox_create_favorite,
         ),
     ],
@@ -90,7 +90,7 @@ def test_inbox_routes(route, handler):
             routes.outbox_delete_actor,
         ),
         (
-            {"type": "Create", "object": {"type": "Favorite"}},
+            {"type": "Like", "object": {"type": "Track"}},
             routes.outbox_create_favorite,
         ),
     ],
@@ -144,7 +144,7 @@ def test_inbox_follow_user_autoapprove(factories, mocker):
         "funkwhale_api.federation.activity.OutboxRouter.dispatch"
     )
 
-    local_actor = factories["users.User"](privacy_level="public").create_actor()
+    local_actor = factories["users.User"]().create_actor(privacy_level="public")
     remote_actor = factories["federation.Actor"]()
     ii = factories["federation.InboxItem"](actor=local_actor)
 
@@ -1039,43 +1039,29 @@ def test_outbox_flag(factory_name, factory_kwargs, factories, mocker):
 def test_outbox_create_favorite(factories, mocker):
     user = factories["users.User"](with_actor=True)
     favorite = factories["favorites.TrackFavorite"](actor=user.actor)
+    userfollow = factories["federation.UserFollow"](target=favorite.actor)
 
     activity = list(routes.outbox_create_favorite({"favorite": favorite}))[0]
     serializer = serializers.ActivitySerializer(
-        {
-            "type": "Create",
-            "object": serializers.TrackFavoriteSerializer(favorite).data,
-            "actor": favorite.actor.fid,
-        }
+        {"type": "Like", "object": {"type": "Like", "id": favorite.fid}}
     )
     expected = serializer.data
     expected["to"] = [{"type": "followers", "target": favorite.actor}]
     assert dict(activity["payload"]) == dict(expected)
     assert activity["actor"] == favorite.actor
-    assert activity["target"] == favorite.actor.received_user_follows.all()
-    assert activity["object"] == favorite
 
 
 def test_inbox_create_favorite(factories, mocker):
     actor = factories["federation.Actor"]()
     favorite = factories["favorites.TrackFavorite"](actor=actor)
-    follow = factories["federation.UserFollow"](target=actor)
-
-    data = serializers.TrackFavoriteSerializer(favorite).data
-    serializer = serializers.ActivitySerializer(
-        {
-            "type": "Create",
-            "object": data,
-            "actor": actor.fid,
-        }
-    )
+    serializer = serializers.TrackFavoriteSerializer(favorite)
 
     init = mocker.spy(serializers.TrackFavoriteSerializer, "__init__")
     save = mocker.spy(serializers.TrackFavoriteSerializer, "save")
-    track_data = serializers.TrackSerializer(favorite.track).data
     mocker.patch.object(utils, "retrieve_ap_object", return_value=favorite.track)
 
     favorite.delete()
+
     result = routes.inbox_create_favorite(
         serializer.data,
         context={

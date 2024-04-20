@@ -2094,24 +2094,21 @@ class IndexSerializer(jsonld.JsonLdSerializer):
 class TrackFavoriteSerializer(jsonld.JsonLdSerializer):
     type = serializers.ChoiceField(choices=[contexts.AS.Like])
     id = serializers.URLField(max_length=500)
-    # to do : should thi be target like followserializer ?
-    track = TrackSerializer(required=True)
+    object = serializers.URLField(max_length=500)
     actor = serializers.URLField(max_length=500)
 
     class Meta:
         jsonld_mapping = {
-            "track": jsonld.first_obj(contexts.FW.track),
+            "object": jsonld.first_id(contexts.AS.object),
             "actor": jsonld.first_id(contexts.AS.actor),
         }
 
     def to_representation(self, favorite):
         payload = {
-            "type": "Favorite",
+            "type": "Like",
             "id": favorite.fid,
             "actor": favorite.actor.fid,
-            "track": TrackSerializer(
-                favorite.track, context={"include_ap_context": False}
-            ).data,
+            "object": favorite.track.fid,
         }
         if self.context.get("include_ap_context", True):
             payload["@context"] = jsonld.get_default_context()
@@ -2119,9 +2116,8 @@ class TrackFavoriteSerializer(jsonld.JsonLdSerializer):
 
     def create(self, validated_data):
         actor = actors.get_actor(validated_data["actor"])
-
         track = utils.retrieve_ap_object(
-            validated_data["track"]["id"],
+            validated_data["object"],
             actor=actors.get_service_actor(),
             serializer_class=TrackSerializer,
         )
@@ -2131,5 +2127,4 @@ class TrackFavoriteSerializer(jsonld.JsonLdSerializer):
             uuid=uuid.uuid4(),
             actor=actor,
             track=track,
-            user=None,
         )

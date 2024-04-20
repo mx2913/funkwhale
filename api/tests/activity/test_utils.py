@@ -13,11 +13,16 @@ def test_get_activity(factories):
 
 
 def test_get_activity_honors_privacy_level(factories, anonymous_user):
-    user = factories["users.User"](privacy_level="me")
-    user2 = factories["users.User"](privacy_level="instance")
-    factories["history.Listening"](actor=user.actor)
+    user = factories["users.User"]()
+    user.create_actor(privacy_level="everyone")
+    user2 = factories["users.User"]()
+    user2.create_actor(privacy_level="instance")
+
+    listening1 = factories["history.Listening"](actor=user.actor)
     favorite1 = factories["favorites.TrackFavorite"](actor=user.actor)
+
     factories["favorites.TrackFavorite"](actor=user2.actor)
 
     objects = list(utils.get_activity(anonymous_user))
-    assert objects == [favorite1]
+    assert objects == [favorite1, listening1]
+    # to do : test others

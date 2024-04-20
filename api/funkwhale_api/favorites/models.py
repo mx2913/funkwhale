@@ -18,24 +18,24 @@ FAVORITE_PRIVACY_LEVEL_CHOICES = [
 class TrackFavoriteQuerySet(models.QuerySet, common_models.LocalFromFidQuerySet):
     def viewable_by(self, actor):
         if actor is None:
-            return self.filter(actor__user__privacy_level="everyone")
+            return self.filter(actor__privacy_level="everyone")
 
         if hasattr(actor, "user"):
-            me_query = models.Q(actor__user__privacy_level="me", actor=actor)
-        me_query = models.Q(actor__user__privacy_level="me", actor=actor)
+            me_query = models.Q(actor__privacy_level="me", actor=actor)
+        me_query = models.Q(actor__privacy_level="me", actor=actor)
 
         instance_query = models.Q(
-            actor__user__privacy_level="instance", actor__domain=actor.domain
+            actor__privacy_level="instance", actor__domain=actor.domain
         )
         instance_actor_query = models.Q(
-            actor__user__privacy_level="instance", actor__domain=actor.domain
+            actor__privacy_level="instance", actor__domain=actor.domain
         )
 
         return self.filter(
             me_query
             | instance_query
             | instance_actor_query
-            | models.Q(actor__user__privacy_level="everyone")
+            | models.Q(actor__privacy_level="everyone")
         )
 
 

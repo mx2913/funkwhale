@@ -10,7 +10,7 @@ from funkwhale_api.federation import utils as federation_utils
 from funkwhale_api.music.models import Track
 
 
-class TrackFavoriteQuerySet(models.QuerySet, common_models.LocalFromFidQuerySet):
+class ListeningQuerySet(models.QuerySet, common_models.LocalFromFidQuerySet):
     pass
 
 
@@ -33,7 +33,7 @@ class Listening(federation_models.FederationMixin):
     session_key = models.CharField(max_length=100, null=True, blank=True)
     source = models.CharField(max_length=100, null=True, blank=True)
     federation_namespace = "listenings"
-    objects = TrackFavoriteQuerySet.as_manager()
+    objects = ListeningQuerySet.as_manager()
 
     class Meta:
         ordering = ("-creation_date",)

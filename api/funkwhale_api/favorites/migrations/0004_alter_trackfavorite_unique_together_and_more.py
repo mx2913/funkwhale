@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ("federation", "0029_userfollow"),
         ("music", "0057_auto_20221118_2108"),
-        ("favorites", "0002_trackfavorite_actor_trackfavorite_fid_and_more"),
+        ("favorites", "0003_trackfavorite_actor_trackfavorite_fid_and_more"),
     ]
 
     operations = [

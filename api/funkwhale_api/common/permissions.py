@@ -69,12 +69,12 @@ class PrivacyLevelPermission(BasePermission):
             # to do : it's a remote actor. We could trigger an update of the remote actor data
             # to avoid leaking data
             return True
-        if obj.user.privacy_level == "everyone":
+        if obj.user.actor.privacy_level == "everyone":
             return True
         # user is anonymous
         elif not hasattr(request.user, "actor"):
             return False
-        elif obj.user.privacy_level == "instance":
+        elif obj.user.actor.privacy_level == "instance":
             # user is local
             if hasattr(request.user, "actor"):
                 return True
@@ -83,11 +83,14 @@ class PrivacyLevelPermission(BasePermission):
             else:
                 return False
 
-        elif obj.user.privacy_level == "me" and obj.user.actor == request.user.actor:
+        elif (
+            obj.user.actor.privacy_level == "me"
+            and obj.user.actor == request.user.actor
+        ):
             return True
 
         elif (
-            obj.user.privacy_level == "followers"
+            obj.user.actor.privacy_level == "followers"
             and request.user.actor in obj.user.actor.get_followers()
         ):
             return True

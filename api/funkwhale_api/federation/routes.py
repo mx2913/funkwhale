@@ -612,46 +612,31 @@ def outbox_delete_album(context):
     }
 
 
-@outbox.register({"type": "Create", "object.type": "Favorite"})
+@outbox.register({"type": "Like", "object.type": "Track"})
 def outbox_create_favorite(context):
-    from funkwhale_api.favorites import serializers as favorites_serializers
-
     favorite = context["favorite"]
     actor = favorite.actor
 
     serializer = serializers.ActivitySerializer(
-        {
-            "type": "Create",
-            "object": serializers.TrackFavoriteSerializer(favorite).data,
-            "actor": actor.fid,
-        }
+        {"type": "Like", "object": {"type": "Like", "id": favorite.fid}}
     )
-
     yield {
-        "type": "Create",
+        "type": "Like",
         "actor": actor,
         "payload": with_recipients(
             serializer.data,
             to=[{"type": "followers", "target": actor}],
         ),
-        "object": favorite,
-        "target": actor,
     }
 
 
-@outbox.register({"type": "Delete", "object.type": "Favorite"})
+@outbox.register({"type": "Delete", "object.type": "Like"})
 def outbox_delete_favorite(context):
     favorite = context["favorite"]
     actor = favorite.actor
-
     serializer = serializers.ActivitySerializer(
-        {
-            "type": "Delete",
-            "object": serializers.TrackFavoriteSerializer(favorite).data,
-            "actor": actor.fid,
-        }
+        {"type": "Delete", "object": {"type": "Like", "id": favorite.fid}}
     )
-
     yield {
         "type": "Delete",
         "actor": actor,
@@ -659,24 +644,18 @@ def outbox_delete_favorite(context):
             serializer.data,
             to=[{"type": "followers", "target": actor}],
         ),
-        "object": favorite,
-        "target": actor,
     }
 
 
-@inbox.register({"type": "Create", "object.type": "Favorite"})
+@inbox.register({"type": "Like", "object.type": "Track"})
 def inbox_create_favorite(payload, context):
-    from funkwhale_api.favorites import serializers as favorites_serializers
-
-    actor = context["actor"]
-    favorite = payload["object"]
-    serializer = serializers.TrackFavoriteSerializer(data=favorite)
+    serializer = serializers.TrackFavoriteSerializer(data=payload)
     serializer.is_valid(raise_exception=True)
     instance = serializer.save()
     return {"object": instance}
 
 
-@inbox.register({"type": "Delete", "object.type": "Favorite"})
+@inbox.register({"type": "Delete", "object.type": "Like"})
 def inbox_delete_favorite(payload, context):
     actor = context["actor"]
     favorite_id = payload["object"].get("id")

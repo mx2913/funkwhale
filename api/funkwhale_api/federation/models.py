@@ -14,7 +14,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 
-from funkwhale_api.common import session
+from funkwhale_api.common import session, fields
 from funkwhale_api.common import utils as common_utils
 from funkwhale_api.common import validators as common_validators
 from funkwhale_api.music import utils as music_utils
@@ -218,6 +218,7 @@ class Actor(models.Model):
         on_delete=models.SET_NULL,
         related_name="iconed_actor",
     )
+    privacy_level = fields.get_privacy_field()
 
     objects = ActorQuerySet.as_manager()
 
@@ -254,7 +255,7 @@ class Actor(models.Model):
     def should_autoapprove_follow(self, actor):
         if self.get_channel():
             return True
-        if self.user.privacy_level == "public":
+        if self.user.actor.privacy_level == "public":
             return True
         return False
 
@@ -402,8 +403,6 @@ class Fetch(models.Model):
                 serializers.ChannelUploadSerializer,
             ],
             contexts.FW.Library: [serializers.LibrarySerializer],
-            # to do : don't need to fetch a favorite since we can fetch the track and actor already ?
-            # contexts.FW.Favorite: [serializers.TrackFavoriteSerializer],
             contexts.AS.Group: [serializers.ActorSerializer],
             contexts.AS.Person: [serializers.ActorSerializer],
             contexts.AS.Organization: [serializers.ActorSerializer],

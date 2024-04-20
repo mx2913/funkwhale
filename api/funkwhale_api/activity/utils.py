@@ -37,12 +37,8 @@ def combined_recent(limit, **kwargs):
     return records
 
 
-# to do : this should look into actor privacy_level and not iuser privacy level if we want to handle federated
-# privacy_level acces mmanagement
 def get_activity(user, limit=20):
-    query = fields.privacy_level_query(
-        user, "actor__user__privacy_level", "actor__user"
-    )
+    query = fields.privacy_level_query(user, "actor__privacy_level", "actor__user")
     querysets = [
         Listening.objects.filter(query).select_related(
             "track", "actor", "track__artist", "track__album__artist"

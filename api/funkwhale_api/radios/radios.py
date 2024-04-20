@@ -292,17 +292,17 @@ class SimilarRadio(RelatedObjectRadio):
             FROM (
                 SELECT
                     track_id,
-                    creation_date,
+                    h.creation_date,
                     LEAD(track_id) OVER (
-                        PARTITION by user_id order by creation_date asc
+                        PARTITION by actor_id ORDER BY h.creation_date ASC
                     ) AS next
-                FROM history_listening
-                INNER JOIN users_user ON (users_user.id = user_id)
-                WHERE users_user.privacy_level = 'instance' OR users_user.privacy_level = 'everyone' OR user_id = %s
-                ORDER BY creation_date ASC
-            ) t WHERE track_id = %s AND next != %s GROUP BY next ORDER BY c DESC;
+                FROM history_listening h
+                INNER JOIN federation_actor fa ON (fa.id = h.actor_id)
+                WHERE fa.privacy_level = 'instance' OR fa.privacy_level = 'everyone' OR h.actor_id = %s
+                ORDER BY h.creation_date ASC
+            ) t WHERE track_id = %s AND next IS NOT NULL AND next != %s GROUP BY next ORDER BY c DESC;
             """
-            cursor.execute(query, [self.session.user_id, seed, seed])
+            cursor.execute(query, [self.session.user.actor, seed, seed])
             next_candidates = list(cursor.fetchall())
 
         if not next_candidates:

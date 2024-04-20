@@ -48,7 +48,8 @@ def test_owner_permission_read_only(anonymous_user, nodb_factories, api_request)
 def test_privacylevel_permission_anonymous(
     factories, api_request, anonymous_user, privacy_level, expected
 ):
-    user = factories["users.User"](with_actor=True, privacy_level=privacy_level)
+    user = factories["users.User"]()
+    user.create_actor(privacy_level=privacy_level)
     view = APIView.as_view()
     permission = permissions.PrivacyLevelPermission()
     request = api_request.get("/")
@@ -65,7 +66,8 @@ def test_privacylevel_permission_anonymous(
 def test_privacylevel_permission_instance(
     factories, api_request, anonymous_user, privacy_level, expected, mocker
 ):
-    user = factories["users.User"](with_actor=True, privacy_level=privacy_level)
+    user = factories["users.User"]()
+    user.create_actor(privacy_level=privacy_level)
     request_user = factories["users.User"](with_actor=True)
     view = APIView.as_view()
     permission = permissions.PrivacyLevelPermission()
@@ -83,7 +85,8 @@ def test_privacylevel_permission_instance(
 def test_privacylevel_permission_me(
     factories, api_request, anonymous_user, privacy_level, expected, mocker
 ):
-    user = factories["users.User"](with_actor=True, privacy_level=privacy_level)
+    user = factories["users.User"]()
+    user.create_actor(privacy_level=privacy_level)
     view = APIView.as_view()
     permission = permissions.PrivacyLevelPermission()
     request = api_request.get("/")

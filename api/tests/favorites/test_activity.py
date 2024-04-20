@@ -54,7 +54,9 @@ def test_broadcast_track_favorite_to_instance_activity(factories, mocker):
 
 def test_broadcast_track_favorite_to_instance_activity_private(factories, mocker):
     p = mocker.patch("funkwhale_api.common.channels.group_send")
-    user = factories["users.User"](privacy_level="me", with_actor=True)
+    user = factories["users.User"]()
+    user.create_actor(privacy_level="me")
+
     favorite = factories["favorites.TrackFavorite"](actor=user.actor)
     data = serializers.TrackFavoriteActivitySerializer(favorite).data
     consumer = activities.broadcast_track_favorite_to_instance_activity

@@ -10,7 +10,8 @@ from funkwhale_api.favorites import models
 def test_playable_by_local_actor(privacy_level, expected, factories):
     actor = factories["federation.Actor"](local=True)
     # default user actor is local
-    user = factories["users.User"](with_actor=True, privacy_level=privacy_level)
+    user = factories["users.User"]()
+    user.create_actor(privacy_level=privacy_level)
     favorite = factories["favorites.TrackFavorite"](actor=user.actor)
     queryset = models.TrackFavorite.objects.all().viewable_by(actor)
     match = favorite in list(queryset)
@@ -23,10 +24,9 @@ def test_playable_by_local_actor(privacy_level, expected, factories):
 def test_not_playable_by_remote_actor(privacy_level, expected, factories):
     actor = factories["federation.Actor"]()
     # default user actor is local
-    user = factories["users.User"](
-        with_actor=True,
-        privacy_level=privacy_level,
-    )
+    user = factories["users.User"]()
+    user.create_actor(privacy_level=privacy_level)
+
     favorite = factories["favorites.TrackFavorite"](actor=user.actor)
     queryset = models.TrackFavorite.objects.all().viewable_by(actor)
     match = favorite in list(queryset)

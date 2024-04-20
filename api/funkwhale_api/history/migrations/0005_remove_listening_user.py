@@ -13,7 +13,7 @@ def get_user_actor(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("history", "0003_listening_actor_listening_fid_listening_url"),
+        ("history", "0004_listening_actor_listening_fid_listening_url"),
     ]
 
     operations = [

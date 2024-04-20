@@ -55,7 +55,6 @@ FUNKWHALE_OBJECT_TYPES = [
     ("Album", "Album"),
     ("Track", "Track"),
     ("Library", "Library"),
-    ("Favorite", "Favorite"),
 ]
 OBJECT_TYPES = (
     [

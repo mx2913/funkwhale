@@ -54,8 +54,9 @@ def test_broadcast_listening_to_instance_activity(factories, mocker):
 
 def test_broadcast_listening_to_instance_activity_private(factories, mocker):
     p = mocker.patch("funkwhale_api.common.channels.group_send")
-    user = factories["users.User"](privacy_level="me", with_actor=True)
-    listening = factories["history.Listening"](actor__user=user)
+    user = factories["users.User"]()
+    user.create_actor(privacy_level="me")
+    listening = factories["history.Listening"](actor=user.actor)
     data = serializers.ListeningActivitySerializer(listening).data
     consumer = activities.broadcast_listening_to_instance_activity
     consumer(data=data, obj=listening)
