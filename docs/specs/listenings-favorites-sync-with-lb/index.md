@@ -3,29 +3,38 @@ Favorite and listenings sync with listenbrainz
 
 ## The issue
 
-This is a new feature that allows users to sync listening and favorites with ListenBrainz. It can be used to import liked and listened content from other services (YouTube, Deezer, etc) into Funkwhale. Additionally, it enables Troi to utilize local data instead of making queries to ListenBrainz servers, reducing the load on their side and improving performance in recommendation generation.
+Currently, Funkwhale listens and favorites are useful only within the Funkwhale ecosystem. There is no way to import historical listens/favorites from other services, nor to communicate listens and favorites with external services to keep listening aligned across platforms.
+
+
 
 ## Proposed solution
 
-Update the Listenbrainz plugin to send likes to listenbrainz. Add tasks to get listenings and favorites from Listenbrainz
+This is a new feature that allows users to sync listening and favorites with ListenBrainz. It can be used to import liked and listened content from other services (YouTube, Deezer, etc) into Funkwhale. Additionally, it enables Troi to utilize local data instead of making queries to ListenBrainz servers, reducing the load on their side and improving performance in recommendation generation.
 
 ## Feature behavior
 
-Pulling will happen dayly for active users. 
-Pushing will happen each time a track is listened or favored. 
+The synchronization of content will behave as follows:
+
+- Funkwhale pulls new litenings from ListenBrainz on a daily basis for active users
+- The ListenBrainz plugin sends new listens and favorites to ListenBrainz when the user performs the corresponding action in Funkwhale
+
 
 ### Backend
-Use the listenbrainz funkwhale plugin to handle this. 
+To facilitate syncing of data between Funkwhale and MusicBrainz, we need to update the ListenBrainz plugin to send favorites. We also need to create tasks to retrieve listenings and favorites from ListenBrainz.
 
-- Update the `TrackFavorite` and `Listening` models with a new boolean attribute : `source`. 
-- When `TrackFavorite` or `Listening` is created from the plugin `source` is set to `Listenbrainz`
+To keep track of where a favorite or listen occurred, we need to extend our data models to account for external sources. To do this, the following actions are needed:
 
-- A task to pull listenings and favorites daily. 
-- A special care has to be made to avoid listenings duplicates in case the user scrobble listening from funkwhale to musicbrainz. We can use the `submission_client` attribute of lb listenning and exclude the one coming from "Funkwhale ListenBrainz plugin" and than have the same timestamp. 
+1. The `TrackFavorite` and `Listening` models need a new string attribute: `source`
+2. The ListenBrainz plugin must set the `source` attribute to `listenbrainz` when it creates new favorites and listens
+
+On the server side, we require a new daily task to pull listenings and favorites directly from ListenBrainz. To avoid duplicated data, we should discount any ListenBrainz results that have
+
+- the same timestamp as a matching Funkwhale action
+- the following attribute: `submission_client: "Funkwhale ListenBrainz plugin"`
 
 ### Frontend
 
-In the Listenbrainz pluging add: 
+Add the following options to the ListenBrainz plugin
 - User setting to set the listenbrainz User token
 - Push listens
 - Pull listens
