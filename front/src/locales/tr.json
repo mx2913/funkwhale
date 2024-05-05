@@ -1,11 +1,12 @@
 {
   "App": {
-    "loading": "Yükleniyor..."
+    "loading": "Yükleniyor...…"
   },
   "components": {
     "About": {
       "description": {
         "findApp": "Funkwhale'ı uygulamalarımızla öteki aygıtlarda kullanın.",
+        "funkwhale": "Funkwhale, merkezi olmayan açık bir ağ içinde müzik , ses dinlemenizi ve paylaşmanızı sağlayan topluluk odaklı bir projedir.",
         "publicContent": "Bu baklada paylaşılan genel albümler ile oynatma listelerini dinleyin.",
         "quota": "Bu bakladaki kullanıcılar ayrıca kendi içeriklerini yüklemek için {quota} bedava depolama alır!",
         "signup": "Favorilerinizi izlemek, oynatma listeleri oluşturmak, yeni içerik keşfetmek ve çok daha fazlası için şimdi kaydolun!"
@@ -71,6 +72,7 @@
       "message": {
         "contact": "Bize e-posta gönderin: { contactEmail }"
       },
+      "notApplicable": "N/A",
       "placeholder": {
         "noDescription": "Açıklama yok",
         "noRules": "Kural yok",
@@ -88,6 +90,10 @@
     },
     "Home": {
       "description": {
+        "funkwhale": {
+          "paragraph1": "Bu pod, merkezi olmayan, açık bir ağ içinde müzik , ses dinlemenizi ve paylaşmanızı sağlayan topluluk odaklı bir proje olan Funkwhale'i çalıştırır.",
+          "paragraph2": "Funkwhale ücretsiz ve gönüllülerden oluşan samimi bir topluluk tarafından geliştirilmelte."
+        },
         "quota": "Bu bakladaki kullanıcılar kendi içeriklerini yüklemek için ayrıca {quota} bedava depolama alır!",
         "signup": "Favorilerinizi izlemek, oynatma listeleri oluşturmak, yeni içerik keşfetmek ve çok daha fazlası için şimdi kaydolun!"
       },
@@ -122,7 +128,8 @@
         "userGuides": {
           "description": "Funkwhale ile özelliklerine ilişkin bilmeniz gereken her şeyi keşfedin",
           "label": "Kullanıcı kılavuzları"
-        }
+        },
+        "viewMore": "Daha fazlası…"
       },
       "placeholder": {
         "noDescription": "Açıklama yok"
@@ -165,7 +172,7 @@
         "next": "Sıradaki parça",
         "pause": "Durdur",
         "play": "Oynat",
-        "populatingRadio": "Radyo parçası alınıyor...",
+        "populatingRadio": "Radyo parçası alınıyor...…",
         "previous": "Önceki parça",
         "queue": "Sıra",
         "remove": "Sil",
@@ -176,9 +183,12 @@
       },
       "message": {
         "automaticPlay": "Sıradaki parça birkaç saniye içinde otomatikman çalacaktır…",
-        "radio": "Yeni parçalar otomatikman buraya eklenecektir."
+        "radio": "Yeni parçalar otomatikman buraya eklenecektir.",
+        "webglUnsupported": "Tarayıcınız WebGL2'yi desteklemiyor gibi görünüyor."
       },
       "meta": {
+        "end": "Son",
+        "queuePosition": "Parça {index} izi {length}",
         "startTime": "00:00",
         "unknownAlbum": "Bilinmeyen Albüm",
         "unknownArtist": "Bilinmeyen Sanatçı"
@@ -189,8 +199,13 @@
     },
     "RemoteSearchForm": {
       "button": {
+        "fediverse": "Federasyon",
         "rss": "RSS",
         "search": "Ara"
+      },
+      "description": {
+        "fediverse": "Fediverse'de başka bir yerde barındırılan bir kanala abone olmak için bu formu kullanın.",
+        "rss": "Bağlantıdan bir RSS beslemesine abone olmak için bu formu kullanın."
       },
       "error": {
         "fetchFailed": "Bu nesne alınamıyor"
@@ -199,9 +214,15 @@
         "fetchFailed": "Nesne alınırken hata"
       },
       "label": {
+        "fediverse": {
+          "fieldLabel": "Fediverse nesnesi",
+          "fieldPlaceholder": "{'@'}kullanıcıadı{'@'}example.com",
+          "title": "Fediverse nesnesi"
+        },
         "rss": {
           "fieldLabel": "RSS akış konumu",
-          "fieldPlaceholder": "https://website.example.com/rss.xml"
+          "fieldPlaceholder": "https://website.example.com/rss.xml",
+          "title": "Bir podcast RSS akışına abone olun"
         }
       },
       "warning": {
@@ -229,7 +250,10 @@
           "seekBack5": "5s geri sar",
           "seekForward30": "30s ileri sar",
           "seekForward5": "5s ileri sar",
-          "shuffleQueue": "Sırayı karıştır"
+          "shuffleQueue": "Sırayı karıştır",
+          "toggleFavorite": "Favoriyi değiştir",
+          "toggleLoop": "Kuyruk döngüsünü aç kapat",
+          "toggleMute": "Sessizi aç kapat"
         },
         "general": {
           "focus": "Arama çubuğuna odaklan",
@@ -244,15 +268,18 @@
         "administration": "Yönetim",
         "explore": "Keşfet",
         "library": "Kütüphanem",
-        "main": "Ana yöngüdüm"
+        "main": "Ana yöngüdüm",
+        "more": "Daha fazlası"
       },
       "label": {
         "add": "İçerik ekle",
         "administration": "Yönetim",
+        "edits": "Bekleyen inceleme düzenlemeleri",
         "follows": "Bekleyen takip istekleri",
         "language": "Dil",
         "main": "Ana menü",
         "play": "Bu parçayı çal",
+        "reports": "Bekleyen inceleme raporları",
         "theme": "Tema"
       },
       "link": {
@@ -268,9 +295,11 @@
         "login": "Oturum aç",
         "moderation": "Denetim",
         "playlists": "Oynatma listeleri",
+        "podcasts": "Podcastlar",
         "radios": "Radyolar",
         "search": "Ara",
         "settings": "Ayarlar",
+        "switchInstance": "Anahtar örneği",
         "users": "Kullanıcılar"
       }
     },
@@ -290,7 +319,8 @@
       "SignupFormBuilder": {
         "button": {
           "add": "Yeni alan ekle",
-          "edit": "Formu düzenle"
+          "edit": "Formu düzenle",
+          "preview": "Önizleme Formu"
         },
         "help": {
           "additionalFields": "Formda gösterilecek ek form alanları. Yalnızca manuel kayıt doğrulama etkinse gösterilir.",
@@ -308,8 +338,13 @@
           "additionalFields": {
             "header": {
               "actions": "Eylemler",
+              "label": "Alan etiketi",
               "required": "Zorunlu",
               "type": "Alan türü"
+            },
+            "required": {
+              "false": "Yanlış",
+              "true": "Doğru"
             },
             "type": {
               "long": "Uzun yazı",
@@ -337,18 +372,24 @@
           "error": "Kanal kaydedilirken hata."
         },
         "help": {
-          "podcastFields": "Spotify ya da iTunes gibi belli platformlarca istenen itunes:email ile itunes:name alanı için kullanılır."
+          "discography": "Yaptığınız müziği albüm ve single'lardan oluşan güzel bir diskografi olarak yayınlayın.",
+          "podcast": "Bölümlerinizi yayınlayın ve topluluğunuzu güncel tutun.",
+          "podcastFields": "Spotify ya da iTunes gibi belli platformlarca istenen itunes:email ile itunes:name alanı için kullanılır.",
+          "username": "Bağlantılarda ve Fediverse'de bu kanalı takip etmek için kullanılır. Daha sonra değiştirilemez."
         },
         "label": {
           "category": "Kategori",
           "description": "Açıklama",
+          "discography": "Sanatçı Diskografisi",
           "email": "Sahip e-posta adresi",
           "image": "Kanal Resmi",
           "language": "Dil",
           "name": "Ad",
           "owner": "Sahip adı",
+          "podcast": "Podcastlar",
           "subcategory": "Alt kategori",
-          "tags": "Etiketler"
+          "tags": "Etiketler",
+          "username": "Fediverse kolu"
         },
         "legend": {
           "purpose": "Bu kanal ne için kullanılacak?"
@@ -392,6 +433,7 @@
           "width": "Duyarlı bir widget için boş bırakın"
         },
         "label": {
+          "embed": "Embed kodu",
           "height": "Widget boyu",
           "width": "Widget eni"
         },
@@ -428,6 +470,7 @@
           "trackDetails": "Parça ayrıntıları"
         },
         "title": {
+          "more": "Dahası…",
           "unavailable": "Bu parça, erişiminiz olan hiçbir kütüphanede yok"
         }
       },
@@ -443,13 +486,16 @@
           "loopingDisabled": "Döngüleme etkisiz. Tek parça döngülemeye geçmek için tıklayın.",
           "loopingSingle": "Tek parça döngüleniyor. Tüm sıra döngülemeye geçmek için tıklayın.",
           "loopingWholeQueue": "Tüm sıra döngüleniyor. Döngülemeyi etkisizleştirmek için tıklayın.",
+          "mute": "Sessiz",
           "nextTrack": "Sıradaki parça",
           "pause": "Durdur",
           "play": "Oynat",
           "previousTrack": "Önceki parça",
-          "shuffleQueue": "Sıranızı karıştırın"
+          "shuffleQueue": "Sıranızı karıştırın",
+          "unmute": "Sesi aç"
         },
         "meta": {
+          "position": "{index} ve {length}",
           "unknownAlbum": "Bilinmeyen Albüm",
           "unknownArtist": "Bilinmeyen Sanatçı"
         }
@@ -487,7 +533,8 @@
           "album": "Albüm",
           "artist": "Sanatçı",
           "category": {
-            "federation": "Federasyon"
+            "federation": "Federasyon",
+            "podcasts": "Podcastlar"
           },
           "search": "İçerik ara",
           "tag": "Etiket",
@@ -503,6 +550,10 @@
         }
       },
       "VolumeControl": {
+        "button": {
+          "mute": "Sessiz",
+          "unmute": "Sesi aç"
+        },
         "label": {
           "slider": "Ses düzeyini ayarla"
         }
@@ -608,8 +659,13 @@
           "appSecretWarning": "Bu jetonun bir kopyasını güvenli bir yerde tutun.",
           "editApp": "Uygulamayı düzenle"
         },
+        "help": {
+          "appDetails": "Uygulama kimliği , gizlilik gerçekten hassas değerlerdir ve parolalar gibi ele alınmalıdır. Bunları başka kimseyle paylaşmayınız."
+        },
         "label": {
-          "accessToken": "Erişim jetonu"
+          "accessToken": "Erişim jetonu",
+          "appId": "Uygulama Kimliği",
+          "appSecret": "Uygulama gizlilik"
         },
         "link": {
           "settings": "Ayarlara dön"
@@ -634,6 +690,7 @@
           "name": "Ad",
           "redirectUri": "Yönlendirme URI'ı",
           "scopes": {
+            "description": "Üst \"Oku\" veya \"Yaz\" kapsamlarının kontrol edilmesi, ilgili tüm alt kapsamlara erişim anlamına gelir.",
             "label": "Kapsamlar",
             "read": {
               "description": "Kullanıcı verisine salt okuma erişimi",
@@ -667,7 +724,8 @@
         },
         "help": {
           "copyCode": "Uygulamaya kopyalayıp yapıştırmanız için size bir kod gösterilecek",
-          "pasteCode": "Uygulamaya şu kodu kopyalayıp yapıştırın:"
+          "pasteCode": "Uygulamaya şu kodu kopyalayıp yapıştırın:",
+          "redirect": "Şu adrese yönlendirileceksiniz { 0 }"
         },
         "message": {
           "unknownPermissions": "Uygulama ayrıca şu bilinmeyen izinleri istiyor:"
@@ -682,6 +740,7 @@
           "loginFailure": "Oturumunuzu açamıyoruz"
         },
         "help": {
+          "approvalRequired": "Yakın zamanda kaydolduysanız, moderasyon ekibimizin hesabınızı incelemesi veya e-posta adresinizi doğrulaması için beklemeniz gerekebilir.",
           "invalidCredentials": "Lütfen kullanıcı adı ile parola tertipinizin doğru olduğunu yeniden gözden geçirip e-posta adresinizi doğruladığınızdan emin olun."
         },
         "label": {
@@ -719,6 +778,9 @@
         "button": {
           "save": "Kaydet",
           "scan": "Tara"
+        },
+        "description": {
+          "library": "Dosyaların içe aktarılacağı kütüphane."
         },
         "header": {
           "failure": "Eklenti kaydedilirken hata"
@@ -763,6 +825,7 @@
           "accountFailure": "Hesabınızı silemiyoruz",
           "accountSettings": "Hesap ayarları",
           "authorizedApps": "Yetkili uygulamalar",
+          "avatar": "Avatar",
           "avatarFailure": "Avatarınız kaydedilemiyor",
           "changeEmail": "E-posta adresimi değiştir",
           "changePassword": "Parolamı değiştir",
@@ -804,7 +867,8 @@
               "logout": "Bu oturumdan çıkarılacaksınız ve yenisiyle oturum açmanız gerekecek",
               "subsonic": "Subsonic parolanız yeni, rastgele bir parolayla değiştirilecektir ve eski Subsonic parolanızı kullanmış aygıtlarda oturumunuz kapanacaktır",
               "warning": "Parolanızı değiştirmek şu sonuçları doğuracaktır"
-            }
+            },
+            "header": "Şifrenizi mi değiştirdiniz?"
           },
           "deleteAccount": {
             "content": {
@@ -815,12 +879,14 @@
           "deleteApp": {
             "content": {
               "warning": "Bu, uygulamayı ve ilgili jetonları kalıcı olarak kaldıracaktır."
-            }
+            },
+            "header": "Uygulamayı kaldırın {app}?"
           },
           "revokeApp": {
             "content": {
               "warning": "Bu, uygulamanın sizin adınıza servise erişmesini önleyecektir."
-            }
+            },
+            "header": "Uygulama için erişimi iptal etme {app}?"
           }
         },
         "table": {
@@ -866,6 +932,7 @@
         "message": {
           "accountCreated": "Hesabınız başarıyla oluşturuldu. Lütfen oturum açmaya çalışmadan önce e-posta adresinizi doğrulayın.",
           "awaitingReview": "Hesap isteğiniz başarıyla gönderildi. Denetim ekibimiz isteğinizi değerlendirince e-posta ile bilgilendirileceksiniz.",
+          "registrationClosed": "Bu örnekte herkese açık kayıtlar mümkün değildir. Kaydolmak için bir davet koduna ihtiyacınız olacaktır.",
           "requiresReview": "Bu baklaya kayıtlar açıktır, ancak denetçilerce onaydan önce gözden geçirilir."
         },
         "placeholder": {
@@ -900,18 +967,21 @@
         },
         "message": {
           "accessDisabled": "Erişim etkisizleştirildi",
-          "passwordUpdated": "Parola güncellendi"
+          "passwordUpdated": "Parola güncellendi",
+          "unavailable": "Subsonic API bu Funkwhale örneğinde kullanılamaz."
         },
         "modal": {
           "disableSubsonic": {
             "content": {
               "warning": "Bu, Subsonic API'ının hesabınıza kullanım erişimini tümüyle etkisizleştirecektir."
-            }
+            },
+            "header": "Subsonic API erişimini devre dışı bırakın?"
           },
           "newPassword": {
             "content": {
               "warning": "Bu, şimdiki parolanızı kullanan var olan aygıtlarda oturumunuzu kapayacaktır."
-            }
+            },
+            "header": "Yeni bir Subsonic API şifresi mi istiyorsunuz?"
           }
         }
       }
@@ -981,6 +1051,9 @@
         "header": {
           "error": "Yayımlarken hata"
         },
+        "help": {
+          "license": "Halkınıza bazı özgürlükler sağlamak için yüklemenize bir lisans ekleyin."
+        },
         "label": {
           "channel": "Kanal",
           "openBrowser": "Tara…"
@@ -1034,11 +1107,13 @@
         "button": {
           "allSelected": "Seçili öge yok | {n} öge seçili | Tüm {n} öge seçili",
           "go": "Git",
+          "launch": "Fırlatma",
           "refresh": "Tablo içeriğini yenile",
           "select": "Seç",
           "selectAll": "Tüm ögeleri seç",
           "selectCurrentPage": "Salt şimdiki sayfayı seç",
-          "selectElement": "Bir öge seç | Tüm {n} ögeyi seç"
+          "selectElement": "Bir öge seç | Tüm {n} ögeyi seç",
+          "selected": "{ n } toplam {total} seçildi"
         },
         "header": {
           "error": "Eylem uygulanırken hata"
@@ -1048,7 +1123,16 @@
           "performAction": "Eylemleri gerçekleştir"
         },
         "message": {
-          "needsRefresh": "İçerik güncellendi, güncel içeriği görmek için yineleye tıklayın"
+          "needsRefresh": "İçerik güncellendi, güncel içeriği görmek için yineleye tıklayın",
+          "success": "Eylem {action} öğe üzerinde başarıyla {n} başlatıldı | Eylem {action} öğe üzerinde başarıyla {n} başlatıldı"
+        },
+        "modal": {
+          "performAction": {
+            "content": {
+              "warning": "Bu, birçok unsuru etkileyebilir veya geri döndürülemez sonuçlar doğurabilir, lütfen istediğinizin gerçekten bu olduğundan emin olun ve iki kez kontrol edin."
+            },
+            "header": "Öğesi üzerinde {action} {n} başlatmak istiyor musunuz? | Öğesi üzerinde {action} {n} başlatmak istiyor musunuz?"
+          }
         }
       },
       "AttachmentInput": {
@@ -1070,6 +1154,7 @@
       },
       "CollapseLink": {
         "button": {
+          "collapse": "Çöküş",
           "expand": "Genişlet"
         }
       },
@@ -1077,6 +1162,12 @@
         "button": {
           "preview": "Önizleme",
           "write": "Yaz"
+        },
+        "empty": {
+          "noContent": "Önizleme için bir şey yok"
+        },
+        "help": {
+          "markdown": "Markdown sözdizimi desteklenir"
         },
         "placeholder": {
           "input": "Buraya birkaç sözcük yazın…"
@@ -1133,6 +1224,9 @@
       "LoginModal": {
         "description": {
           "noAccess": "Erişiminiz yok"
+        },
+        "header": {
+          "unauthenticated": "Kimlik doğrulanmamış"
         },
         "link": {
           "login": "Oturum aç",
@@ -1645,6 +1739,19 @@
     }
   },
   "views": {
+    "ChooseInstance": {
+      "button": {
+        "submit": "Gönder"
+      },
+      "header": {
+        "failure": "Verilen URL'e bağlanılamaz",
+        "suggestions": "Önerilen seçimler"
+      },
+      "help": {
+        "notFunkwhaleServer": "Verilen adres bir Funkwhale sunucusu değil",
+        "serverDown": "Sunucu çökük olabilir"
+      }
+    },
     "channels": {
       "DetailBase": {
         "meta": {
@@ -1675,19 +1782,6 @@
         "meta": {
           "tracks": "{ n } parça | { n } parça"
         }
-      }
-    },
-    "ChooseInstance": {
-      "button": {
-        "submit": "Gönder"
-      },
-      "header": {
-        "failure": "Verilen URL'e bağlanılamaz",
-        "suggestions": "Önerilen seçimler"
-      },
-      "help": {
-        "notFunkwhaleServer": "Verilen adres bir Funkwhale sunucusu değil",
-        "serverDown": "Sunucu çökük olabilir"
       }
     }
   }
