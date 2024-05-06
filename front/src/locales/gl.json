@@ -3215,6 +3215,28 @@
     }
   },
   "views": {
+    "ChooseInstance": {
+      "button": {
+        "submit": "Enviar"
+      },
+      "header": {
+        "chooseInstance": "Elixe a túa instancia",
+        "failure": "Non se puido conectar ao URL proporcionado",
+        "suggestions": "Opcións suxeridas"
+      },
+      "help": {
+        "notFunkwhaleServer": "O enderezo proporcionado non é un servidor Funkwhale",
+        "selectPod": "Para continuar, elixe a instancia de Funkwhale á que te queres conectar. Escribe o enderezo directamente, ou elixe unha das opcións suxeridas.",
+        "serverDown": "Igoal non está a funcionar o servidor"
+      },
+      "label": {
+        "url": "URL da instancia"
+      },
+      "message": {
+        "currentConnection": "Neste intre tes conexión con { 0 }. Se continúas desconectarémoste da instancia actual e os datos locais serán eliminados.",
+        "newUrl": "Estás utilizando a instancia Funkwhale en { url }"
+      }
+    },
     "Notifications": {
       "button": {
         "read": "Marcar todo como lido",
@@ -4360,7 +4382,7 @@
             "sharingLink": "Compartir ligazón"
           },
           "link": {
-            "scan": "Escanear agora ",
+            "scan": "Escanear agora",
             "scanDetails": "Detalles"
           },
           "message": {
@@ -4587,28 +4609,6 @@
           }
         },
         "title": "Radio"
-      }
-    },
-    "ChooseInstance": {
-      "button": {
-        "submit": "Enviar"
-      },
-      "header": {
-        "chooseInstance": "Elixe a túa instancia",
-        "failure": "Non se puido conectar ao URL proporcionado",
-        "suggestions": "Opcións suxeridas"
-      },
-      "help": {
-        "notFunkwhaleServer": "O enderezo proporcionado non é un servidor Funkwhale",
-        "selectPod": "Para continuar, elixe a instancia de Funkwhale á que te queres conectar. Escribe o enderezo directamente, ou elixe unha das opcións suxeridas.",
-        "serverDown": "Igoal non está a funcionar o servidor"
-      },
-      "label": {
-        "url": "URL da instancia"
-      },
-      "message": {
-        "currentConnection": "Neste intre tes conexión con { 0 }. Se continúas desconectarémoste da instancia actual e os datos locais serán eliminados.",
-        "newUrl": "Estás utilizando a instancia Funkwhale en { url }"
       }
     }
   }
