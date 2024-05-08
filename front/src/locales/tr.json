@@ -1,6 +1,6 @@
 {
   "App": {
-    "loading": "Yükleniyor...…"
+    "loading": "Yükleniyor…"
   },
   "components": {
     "About": {
@@ -172,7 +172,7 @@
         "next": "Sıradaki parça",
         "pause": "Durdur",
         "play": "Oynat",
-        "populatingRadio": "Radyo parçası alınıyor...…",
+        "populatingRadio": "Radyo parçası alınıyor…",
         "previous": "Önceki parça",
         "queue": "Sıra",
         "remove": "Sil",
@@ -1264,6 +1264,7 @@
           "chat": "Söyleşi odası",
           "docs": "Belgeleme",
           "forum": "Forum",
+          "git": "Sorun izleyici",
           "login": "Oturum aç",
           "logout": "Oturumu kapat",
           "notifications": "Bildirimler",
@@ -1274,6 +1275,9 @@
         }
       },
       "UserModal": {
+        "button": {
+          "switchInstance": "Başka bir örnek kullanın"
+        },
         "header": {
           "options": "Seçenekler"
         },
@@ -1287,6 +1291,7 @@
           "chat": "Söyleşi odası",
           "docs": "Belgeleme",
           "forum": "Forum",
+          "git": "Sorun izleyici",
           "login": "Oturum aç",
           "logout": "Oturumu kapat",
           "notifications": "Bildirimler",
@@ -1342,11 +1347,14 @@
         },
         "description": {
           "failure": "Veri yenilemeye çalışılırken bir hata gerçekleşti:",
-          "pending": "Yenileme isteği, sunucumuzca zamanında işlenmedi. Daha sonra işlenecektir."
+          "pending": "Yenileme isteği, sunucumuzca zamanında işlenmedi. Daha sonra işlenecektir.",
+          "skipped": "Uzak sunucu yanıt verdi, ancak döndürülen veriler Funkwhale tarafından desteklenmiyordu.",
+          "success": "Veriler uzak sunucudan başarıyla yenilendi."
         },
         "header": {
           "failure": "Yenileme hatası",
           "pending": "Yenileme beklemede",
+          "refresh": "Uzak sunucudan nesne yenileniyor…",
           "saveFailure": "Ayarlar kaydedilirken hata",
           "skipped": "Yenileme atlandı",
           "success": "Yenileme başarılı"
@@ -1362,6 +1370,12 @@
               "type": "Hata türü"
             },
             "value": {
+              "connectionError": "Uzak sunucuya bağlanamıyor",
+              "httpError": "Uzak sunucuyla iletişim kurulurken bir HTTP hatası oluştu",
+              "httpStatus": "Uzak sunucu HTTP ile yanıt verdi {status}",
+              "invalidAttributesError": "Uzak sunucu tarafından döndürülen verilerde geçersiz veya eksik öznitelikler vardı",
+              "invalidJsonError": "Uzak sunucu geçersiz JSON veya JSON-LD verileri döndürdü",
+              "timeoutError": "Uzak sunucu yeterince hızlı yanıt vermedi",
               "unknownError": "Bilinmeyen hata"
             }
           }
@@ -1406,13 +1420,18 @@
           "episodes": "Bölümler",
           "libraries": "Kullanıcı kütüphaneleri",
           "tracks": "Parçalar"
+        },
+        "meta": {
+          "volume": "Ses {number}"
         }
       },
       "AlbumDropdown": {
         "button": {
           "cancel": "İptal",
           "delete": "Sil",
-          "edit": "Düzenle"
+          "edit": "Düzenle",
+          "embed": "Göm",
+          "more": "Dahası…"
         },
         "link": {
           "discogs": "Discogs üzerinde ara",
@@ -1425,7 +1444,11 @@
           "delete": {
             "content": {
               "warning": "Albüm de ilgili tüm dosyalar ile veri de silinecektir. Bu eylem geri dönüşsüzdür."
-            }
+            },
+            "header": "Albümü silmek istediğinden emin misiniz?"
+          },
+          "embed": {
+            "header": "Bu albümü web sitenize yerleştirin"
           }
         }
       },
@@ -1444,6 +1467,9 @@
         },
         "empty": {
           "noResults": "Sorgunuzla eşleşen sonuç yok"
+        },
+        "header": {
+          "browse": "Albümlere göz at"
         },
         "label": {
           "search": "Ara",
@@ -1472,6 +1498,8 @@
         "button": {
           "cancel": "İptal",
           "edit": "Düzenle",
+          "embed": "Göm",
+          "more": "Dahası…",
           "play": "Tüm albümleri çal"
         },
         "link": {
@@ -1483,7 +1511,13 @@
           "wikipedia": "Wikipedia üzerinde ara"
         },
         "meta": {
-          "albums": "0 albüm | {n} albüm | {n} albüm"
+          "albums": "0 albüm | {n} albüm | {n} albüm",
+          "tracks": "0 içinde izler | {count} içinde izler| {count} içinde izler"
+        },
+        "modal": {
+          "embed": {
+            "header": "Bu sanatçının eserini web sitenize yerleştirin"
+          }
         },
         "title": "Sanatçı"
       },
@@ -1524,6 +1558,9 @@
         "empty": {
           "noResults": "Sorgunuzla eşleşen sonuç yok"
         },
+        "header": {
+          "browse": "Sanatçılara göz at"
+        },
         "label": {
           "excludeCompilation": "Derleme Sanatçılarını Dışarıda Tut",
           "search": "Sanatçı adı",
@@ -1560,6 +1597,9 @@
         "modal": {
           "content": {
             "warning": "Bu öneri tümüyle silinecektir, bu eylem geri alınamaz."
+          },
+          "delete": {
+            "header": "Bu öneriyi silelim mi?"
           }
         },
         "status": {
@@ -1574,7 +1614,8 @@
               "field": "Alan",
               "newValue": "Yeni değer",
               "oldValue": "Eski değer"
-            }
+            },
+            "notApplicable": "N/A"
           }
         }
       },
@@ -1604,6 +1645,7 @@
         "message": {
           "noPermission": "Bu nesneyi düzenlemeye izniniz yok, ancak değişiklikler önerebilirsiniz. Gönderilince öneriler onaylanmadan önce değerlendirilecektir."
         },
+        "notApplicable": "N/A",
         "placeholder": {
           "summary": "Değişikliklerinizi açıklayan kısa bir özet."
         }
@@ -1613,8 +1655,18 @@
           "cancel": "İptal",
           "retry": "Başarısız yüklemeleri yeniden dene"
         },
+        "description": {
+          "import": "İthalat durumu",
+          "previousImport": "Önceki içe aktarma işleminizin sonuçları:"
+        },
         "empty": {
           "noFiles": "0"
+        },
+        "header": {
+          "failure": "İçe aktarma başlatılırken hata oluştu",
+          "local": "'~/yerel depolama alanınızdan müzik yükleyin",
+          "server": "Sunucunuzdan müzik içe aktarma",
+          "status": "İthalat durumu"
         },
         "label": {
           "extensions": "Desteklenen uzantılar: {extensions}",
@@ -1629,6 +1681,7 @@
         "message": {
           "listener": "Bu sayfa ayrılmak istediğinizi doğrulamanızı istiyor - girdiğiniz veri kaydedilmemiş olabilir.",
           "local": {
+            "copyright": "Telif hakkıyla korunan içeriği bir halk kütüphanesine yüklemiyorsunuz, aksi takdirde yasaları ihlal ediyor olabilirsiniz",
             "format": "Yüklediğiniz müzik dosyaları OGG, FLAC, MP3 ya da AIFF biçimindedir",
             "message": "Kütüphanenize müzik yüklemek üzeresiniz. İlerlemeden önce emin olun ki:",
             "tag": "Yüklediğiniz müzik dosyaları gereğince etiketlidir."
@@ -1659,6 +1712,16 @@
           "timeout": "Yükleme zaman aşımı, lütfen yeniden deneyin"
         }
       },
+      "FsBrowser": {
+        "button": {
+          "import": "İthalat"
+        }
+      },
+      "FsLogs": {
+        "empty": {
+          "notStarted": "İthalat henüz başlamadı"
+        }
+      },
       "Home": {
         "header": {
           "newChannels": "Yeni kanallar",
@@ -1675,13 +1738,21 @@
         },
         "error": {
           "importFailure": "Yükleme işlenmesi sırasında bir hata gerçekleşti. Aşağıda daha çok bilgi bulacaksınız.",
+          "invalidMetadata": {
+            "label": "Geçersiz meta veriler",
+            "message": "Dosyaya dahil edilen meta veriler geçersiz veya bazı zorunlu alanlar eksik."
+          },
           "unknownError": {
             "label": "Bilinmeyen hata",
             "message": "Bilinmeyen bir hata gerçekleşti"
           }
         },
+        "header": {
+          "importDetail": "Ayrıntıları içe aktar"
+        },
         "link": {
-          "documentation": "Bu hata için belgelememizi okuyun"
+          "documentation": "Bu hata için belgelememizi okuyun",
+          "support": "Bir destek başlığı açın (aşağıdaki hata ayıklama bilgilerini mesajınıza ekleyin)"
         },
         "message": {
           "importDetail": "Yüklemeniz hâlâ beklemede ve yakında sunucuca işlenecektir.",
@@ -1694,6 +1765,9 @@
             "errorType": "Hata türü",
             "help": "Yardım alma"
           }
+        },
+        "warning": {
+          "importSkipped": "Yükleme atlandı çünkü benzer bir yükleme kütüphanelerinizden birinde zaten mevcut."
         }
       },
       "Podcasts": {
@@ -1704,8 +1778,20 @@
           "search": "Ara",
           "subscribe": "Abone ol"
         },
+        "empty": {
+          "noResults": "Sorgunuzla eşleşen sonuç yok"
+        },
+        "header": {
+          "browse": "Podcastlara göz at"
+        },
         "label": {
+          "search": "Podcast başlığı",
           "tags": "Etiketler"
+        },
+        "modal": {
+          "subscription": {
+            "header": "Abonelik"
+          }
         },
         "ordering": {
           "direction": {
@@ -1720,13 +1806,182 @@
         },
         "placeholder": {
           "search": "Ara…"
+        },
+        "title": "Podcastlar"
+      },
+      "Radios": {
+        "button": {
+          "add": "Bir radyo oluşturun",
+          "create": "Kendi radyonuzu oluşturun",
+          "search": "Ara"
+        },
+        "empty": {
+          "noResults": "Sorgunuzla eşleşen sonuç yok"
+        },
+        "header": {
+          "browse": "Radyolara göz at",
+          "instance": "Örnek radyolar",
+          "user": "Kullanıcı radyoları"
+        },
+        "label": {
+          "search": "Ara"
+        },
+        "ordering": {
+          "direction": {
+            "ascending": "Yükselen",
+            "descending": "Alçalan",
+            "label": "Sipariş"
+          },
+          "label": "Sipariş verme"
+        },
+        "pagination": {
+          "results": "Sayfa başına sonuç"
+        },
+        "placeholder": {
+          "search": "Bir radyo adı girin…"
+        },
+        "title": "Radyolar"
+      },
+      "TagDetail": {
+        "header": {
+          "channels": "Kanallar",
+          "tracks": "Parçalar"
+        },
+        "link": {
+          "albums": "Albümler",
+          "artists": "Artisler",
+          "moderation": "Moderasyon arayüzünde aç"
+        }
+      },
+      "TagSelector": {
+        "placeholder": {
+          "search": "Ara…"
+        }
+      },
+      "TrackBase": {
+        "button": {
+          "cancel": "İptal",
+          "delete": "Sil",
+          "download": "İndir",
+          "edit": "Düzenle",
+          "embed": "Göm",
+          "more": "Dahası…",
+          "play": "Oynat"
+        },
+        "link": {
+          "discogs": "Discogs'ta Ara",
+          "django": "Django'nun yöneticisinde görüntüle",
+          "domain": "Görüntüle {domain}",
+          "moderation": "Moderasyon arayüzünde aç",
+          "wikipedia": "Wikipedia'da ara"
+        },
+        "modal": {
+          "delete": {
+            "content": {
+              "warning": "Parça, ilgili tüm dosya ve verilerle birlikte silinecektir. Bu işlem geri alınamaz."
+            },
+            "header": "Bu parçayı silelim mi?"
+          },
+          "embed": {
+            "header": "Bu parçayı web sitenize yerleştirin"
+          }
+        },
+        "subtitle": {
+          "with-uploader": "{0} tarafından {1} tarihinde yüklendi",
+          "without-uploader": "Üzerine yüklendi {0}"
+        },
+        "title": "Parça"
+      },
+      "TrackDetail": {
+        "description": {
+          "library": "Bu parça aşağıdaki kütüphanelerde mevcuttur:"
+        },
+        "header": {
+          "episode": "Bölüm detayları",
+          "library": "İlgili kütüphaneler",
+          "playlists": "İlgili Çalma Listeleri",
+          "release": "Yayın Detayları",
+          "track": "Parça detayları"
+        },
+        "link": {
+          "musicbrainz": "MusicBrainz'de görüntüle"
+        },
+        "notApplicable": "N/A",
+        "table": {
+          "release": {
+            "album": "Albüm",
+            "artist": "Artis",
+            "copyright": "TelifHakkı",
+            "license": "Lisans",
+            "series": "Seri",
+            "url": "Bağlantı",
+            "year": "Sene"
+          },
+          "track": {
+            "bitrate": {
+              "label": "BitHızı",
+              "value": "{bitrate}/s"
+            },
+            "codec": "Kodcözücü",
+            "downloads": "İndirilenler",
+            "duration": "Süre",
+            "size": "Boyut"
+          }
+        }
+      },
+      "TrackEdit": {
+        "header": {
+          "edit": "Bu parçayı düzenleyin",
+          "suggest": "Bu parça için bir düzenleme önerin"
+        },
+        "message": {
+          "remote": "Bu nesne başka bir sunucu tarafından yönetiliyor, düzenleyemezsiniz."
         }
       },
       "radios": {
         "Builder": {
+          "button": {
+            "filter": "Süzgeç ekle",
+            "save": "Kaydet"
+          },
+          "description": {
+            "builder": "Bu arayüzü, kriterlerinize göre parçalar çalacak kendi özel radyonuzu oluşturmak için kullanabilirsiniz."
+          },
           "header": {
-            "matches": "{ n } tane parça filtrelendi | { n } tane parça filtrelendi"
-          }
+            "builder": "Yaratıcı",
+            "created": "Radyo oluşturuldu",
+            "matches": "{ n } tane parça filtrelendi | { n } tane parça filtrelendi",
+            "updated": "Radyo güncellendi"
+          },
+          "label": {
+            "description": "Açıklama",
+            "filter": "Radyonuzu özelleştirmek için süzgeçler ekleyin",
+            "name": "Radyo adı",
+            "public": "Herkese açık olarak göster"
+          },
+          "option": {
+            "filter": "Bir süzgeç seçin"
+          },
+          "placeholder": {
+            "description": "Benim harika açıklamam",
+            "name": "Muhteşem radyom"
+          },
+          "table": {
+            "filter": {
+              "header": {
+                "actions": "Eylemler",
+                "candidates": "Adaylar",
+                "config": "Konfigürasyon",
+                "exclude": "Hariç tut",
+                "name": "Süzgeç adı"
+              }
+            }
+          },
+          "title": "Radyo Yaratıcısı"
+        },
+        "Filter": {
+          "cancelButton": "İptal",
+          "excludeLabel": "Hariç tut"
         }
       }
     },
@@ -1749,6 +2004,7 @@
       },
       "help": {
         "notFunkwhaleServer": "Verilen adres bir Funkwhale sunucusu değil",
+        "selectPod": "Devam etmek için lütfen bağlanmak istediğiniz Funkwhale örneğini seçin. Adresi doğrudan girin veya önerilen seçeneklerden birini seçin.",
         "serverDown": "Sunucu çökük olabilir"
       }
     },
