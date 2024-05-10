@@ -1523,7 +1523,7 @@
       },
       "ArtistDetail": {
         "button": {
-          "filter": "Süzeği kaldır",
+          "filter": "Süzgeci kaldır",
           "more": "Daha çok yükle…"
         },
         "description": {
@@ -1981,7 +1981,203 @@
         },
         "Filter": {
           "cancelButton": "İptal",
-          "excludeLabel": "Hariç tut"
+          "excludeLabel": "Hariç tut",
+          "matchingTracks": "0 parçalar eşleşen süzgecini izleriz | {n} parça eşleştirme süzgeci | {n} eşleşen parçalar süzgeci",
+          "matchingTracksModalHeader": "Eşleşen parçalar süzgeci izler",
+          "removeButton": "Kaldır"
+        }
+      }
+    },
+    "manage": {
+      "ChannelsTable": {
+        "label": {
+          "category": "Kategori",
+          "search": "Ara"
+        },
+        "link": {
+          "local": "Yerel",
+          "moderation": "Moderasyon arayüzünde aç"
+        },
+        "option": {
+          "all": "Tümü"
+        },
+        "ordering": {
+          "direction": {
+            "ascending": "Yükselen",
+            "descending": "Alçalan",
+            "label": "Sipariş yönü"
+          },
+          "label": "Sipariş verme"
+        },
+        "pagination": {
+          "results": "Sonuçlar {start}-{end} gösteriliyor {total}"
+        },
+        "placeholder": {
+          "search": "Alan adı, isim, hesaba göre ara…"
+        },
+        "table": {
+          "channel": {
+            "header": {
+              "account": "Hesap",
+              "albums": "Albümler",
+              "creationDate": "Oluşturulma tarihi",
+              "domain": "Alan adı",
+              "name": "Ad",
+              "tracks": "Parçalar"
+            }
+          }
+        }
+      },
+      "library": {
+        "AlbumsTable": {
+          "action": {
+            "delete": {
+              "label": "Sil",
+              "warning": "Seçilen albümlerin yanı sıra ilişkili parçalar, yüklemeler, gözdeler ve dinleme geçmişi de kaldırılacaktır. Bu işlem geri alınamaz."
+            }
+          },
+          "label": {
+            "search": "Ara"
+          },
+          "link": {
+            "local": "Yerel",
+            "moderation": "Moderasyon arayüzünde aç"
+          },
+          "notApplicable": "N/A",
+          "ordering": {
+            "direction": {
+              "ascending": "Yükselen",
+              "descending": "Alçalma",
+              "label": "Sipariş yönü"
+            },
+            "label": "Sipariş verme"
+          },
+          "pagination": {
+            "results": "Sonuçlar {start}-{end} gösteriliyor {total}"
+          },
+          "placeholder": {
+            "search": "Alan adı, başlık, sanatçı, MusicBrainz ID'sine göre arama yapınız…"
+          },
+          "table": {
+            "album": {
+              "header": {
+                "artist": "Sanatçı",
+                "creationDate": "Oluşturulma tarihi",
+                "domain": "Alan adı",
+                "name": "Ad",
+                "releaseDate": "Çıkış tarihi",
+                "tracks": "Parçalar"
+              }
+            }
+          }
+        },
+        "ArtistsTable": {
+          "action": {
+            "delete": {
+              "label": "Sil",
+              "warning": "Seçilen sanatçının yanı sıra ilişkili parçalar, yüklemeler, gözdeler ve dinleme geçmişi de kaldırılacaktır. Bu işlem geri alınamaz."
+            }
+          },
+          "label": {
+            "category": "Kategori",
+            "search": "Ara"
+          },
+          "link": {
+            "local": "Yerel"
+          },
+          "option": {
+            "all": "Tümü"
+          },
+          "ordering": {
+            "direction": {
+              "ascending": "Yükselen",
+              "descending": "Alçalan",
+              "label": "Sipariş yönü"
+            },
+            "label": "Sipariş verme"
+          },
+          "pagination": {
+            "results": "Sonuçlar {start}-{end} gösteriliyor {total}"
+          },
+          "placeholder": {
+            "search": "Alan adı, isim, MusicBrainz ID'sine göre ara…"
+          },
+          "table": {
+            "artist": {
+              "header": {
+                "albums": "Albümler",
+                "creationDate": "Oluşturulma tarihi",
+                "domain": "Alan adı",
+                "name": "Ad",
+                "tracks": "Parçalar"
+              }
+            }
+          }
+        },
+        "EditsCardList": {
+          "label": {
+            "search": "Ara",
+            "status": "Durum"
+          },
+          "option": {
+            "all": "Tümü",
+            "approved": "Onaylandı",
+            "pending": "Bekleyen inceleme",
+            "rejected": "Reddedildi"
+          },
+          "ordering": {
+            "direction": {
+              "ascending": "Yükselen",
+              "descending": "Alçalan",
+              "label": "Sipariş"
+            },
+            "label": "Sipariş verme"
+          },
+          "pagination": {
+            "results": "Sonuçlar {start}-{end} gösteriliyor {total}"
+          },
+          "placeholder": {
+            "search": "Hesaba, özete, etki alanına göre ara…"
+          }
+        },
+        "LibrariesTable": {
+          "action": {
+            "delete": {
+              "label": "Sil",
+              "warning": "Seçilen kitaplığın yanı sıra ilişkili yüklemeler ve takipler de kaldırılacaktır. Bu eylem geri döndürülemez."
+            }
+          },
+          "label": {
+            "search": "Ara",
+            "visibility": "Görünürlük"
+          },
+          "link": {
+            "local": "Yerel"
+          },
+          "option": {
+            "all": "Tümü"
+          },
+          "ordering": {
+            "direction": {
+              "ascending": "Yükselen",
+              "descending": "Alçalan",
+              "label": "Sipariş yönü"
+            },
+            "label": "Sipariş"
+          },
+          "pagination": {
+            "results": "Sonuçlar {start}-{end} gösteriliyor {total}"
+          },
+          "placeholder": {
+            "search": "Alan adı, aktör, isim, açıklamaya göre ara…"
+          },
+          "table": {
+            "library": {
+              "header": {
+                "account": "Hesap"
+              }
+            }
+          }
         }
       }
     },
