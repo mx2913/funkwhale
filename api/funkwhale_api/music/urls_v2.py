@@ -4,7 +4,7 @@ from . import views
 
 router = routers.OptionalSlashRouter()
 
-router.register(r"artists", views.V2_ArtistsViewSet, "artists")
+router.register(r"^", views.V2_list_artists, "artists")
 
 
 urlpatterns = router.urls
