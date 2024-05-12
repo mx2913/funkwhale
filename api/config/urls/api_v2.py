@@ -8,6 +8,10 @@ v2_patterns = router.urls
 
 v2_patterns += [
     re_path(
+        r"^artists/",
+        include(("funkwhale_api.music.urls_v2", "artists"), namespace="artists"),
+    ),
+    re_path(
         r"^instance/",
         include(("funkwhale_api.instance.urls_v2", "instance"), namespace="instance"),
     ),
