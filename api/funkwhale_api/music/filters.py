@@ -13,6 +13,18 @@ from funkwhale_api.tags import filters as tags_filters
 from . import models, utils
 
 
+def has_mbid(queryset, name, value):
+    has_mbid = value
+
+    if has_mbid is not None:
+        if has_mbid is True:
+            queryset = queryset.filter(mbid__isnull=False)
+        elif has_mbid is False:
+            queryset = queryset.filter(mbid__isnull=True)
+
+    return queryset
+
+
 def filter_tags(queryset, name, value):
     non_empty_tags = [v.lower() for v in value if v]
     for tag in non_empty_tags:
@@ -21,6 +33,9 @@ def filter_tags(queryset, name, value):
 
 
 TAG_FILTER = common_filters.MultipleQueryFilter(method=filter_tags)
+
+
+MBID_FILTER = filters.BooleanFilter(method=has_mbid)
 
 
 class RelatedFilterSet(filters.FilterSet):
@@ -99,6 +114,49 @@ class ArtistFilter(
     has_albums = filters.BooleanFilter(field_name="_", method="filter_has_albums")
     tag = TAG_FILTER
     content_category = filters.CharFilter("content_category")
+    scope = common_filters.ActorScopeFilter(
+        actor_field="tracks__uploads__library__actor",
+        distinct=True,
+        library_field="tracks__uploads__library",
+    )
+    ordering = common_filters.CaseInsensitiveNameOrderingFilter(
+        fields=(
+            ("id", "id"),
+            ("name", "name"),
+            ("creation_date", "creation_date"),
+            ("modification_date", "modification_date"),
+            ("?", "random"),
+            ("tag_matches", "related"),
+        )
+    )
+
+    class Meta:
+        model = models.Artist
+        fields = {
+            "name": ["exact", "iexact", "startswith", "icontains"],
+            "mbid": ["exact"],
+        }
+        hidden_content_fields_mapping = moderation_filters.USER_FILTER_CONFIG["ARTIST"]
+        include_channels_field = "channel"
+        library_filter_field = "track__artist"
+
+    def filter_playable(self, queryset, name, value):
+        actor = utils.get_actor_from_request(self.request)
+        return queryset.playable_by(actor, value).distinct()
+
+    def filter_has_albums(self, queryset, name, value):
+        return queryset.filter(albums__isnull=not value)
+
+
+class V2_ArtistFilter(
+    RelatedFilterSet,
+    audio_filters.IncludeChannelsFilterSet,
+    moderation_filters.HiddenContentFilterSet,
+):
+    q = fields.SearchFilter(search_fields=["name"], fts_search_fields=["body_text"])
+    tags = TAG_FILTER
+    has_mbid = MBID_FILTER
+    content_category = filters.CharFilter("contentCategory")
     scope = common_filters.ActorScopeFilter(
         actor_field="tracks__uploads__library__actor",
         distinct=True,
