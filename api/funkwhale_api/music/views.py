@@ -175,34 +175,36 @@ class ArtistViewSet(
     )
 
 
-class V2_ArtistsViewSet(
+class V2_list_artists(
     HandleInvalidSearch,
-    common_views.SkipFilterForGetObject,
     viewsets.ReadOnlyModelViewSet,
+    common_views.SkipFilterForGetObject,
 ):
+
+    """
+    List all artists.
+    """
+
     queryset = (
         models.Artist.objects.all()
         .prefetch_related("attributed_to", "attachment_cover")
-        .prefetch_related(
-            "channel__actor",
-            Prefetch(
-                "tracks",
-                queryset=models.Track.objects.all(),
-                to_attr="_prefetched_tracks",
-            ),
-        )
         .order_by("-id")
     )
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.prefetch_related(TAG_PREFETCH)
+
     serializer_class = serializers.V2_BaseArtistSerializer
     permission_classes = [oauth_permissions.ScopePermission]
     required_scope = "libraries"
     anonymous_policy = "setting"
-    filterset_class = filters.ArtistFilter
+    filterset_class = filters.V2_ArtistFilter
 
     fetches = federation_decorators.fetches_route()
-    mutations = common_decorators.mutations_route(types=["update"])
 
-    def get_object(self):
+    @extend_schema(operation_id="get-artists")
+    def get(self, request):
         obj = super().get_object()
 
         if (
@@ -210,32 +212,8 @@ class V2_ArtistsViewSet(
             and self.request.GET.get("refresh", "").lower() == "true"
         ):
             obj = refetch_obj(obj, self.get_queryset())
-        return obj
-
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context["description"] = self.action in ["retrieve", "create", "update"]
-        return context
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        albums = (
-            models.Album.objects.with_tracks_count()
-            .select_related("attachment_cover")
-            .prefetch_related("tracks")
-        )
-        albums = albums.annotate_playable_by_actor(
-            utils.get_actor_from_request(self.request)
-        )
-        return queryset.prefetch_related(
-            Prefetch("albums", queryset=albums), TAG_PREFETCH
-        )
-
-    libraries = get_libraries(
-        lambda o, uploads: uploads.filter(
-            Q(track__artist=o) | Q(track__album__artist=o)
-        )
-    )
+        serializer = self.get_serializer()
+        return Response(serializer.data, status=200, content_type="application/json")
 
 
 class AlbumViewSet(
