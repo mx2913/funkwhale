@@ -1,5 +1,4 @@
 import urllib.parse
-import uuid
 
 from django import urls
 from django.conf import settings
@@ -864,21 +863,28 @@ class V2_BaseArtistSerializer(serializers.ModelSerializer):
     All other serializers that reference an artist should use this serializer.
     """
 
-    guid = models.UUIDField(default=uuid.uuid4, editable=False)
-    fid = serializers.URLField()
-    mbid = serializers.UUIDField()
-    name = serializers.CharField()
-    contentCategory = serializers.CharField()
-    local = serializers.BooleanField()
-    cover = CoverField(allow_null=True, required=False)
+    class Meta:
+        model = models.Artist
+        fields = [
+            "guid",
+            "mbid",
+            "name",
+            "contentCategory",
+            "cover",
+            "tags",
+        ]
+
+    contentCategory = serializers.SerializerMethodField()
+    cover = serializers.SerializerMethodField()
     tags = serializers.SerializerMethodField()
 
-    # Fetch all tags associated with the artist.
+    def get_contentCategory(self, obj):
+        return obj.content_category
+
+    def get_cover(self, obj):
+        return obj.attachment_cover
 
     @extend_schema_field({"type": "array", "items": {"type": "string"}})
     def get_tags(self, obj):
         tagged_items = getattr(obj, "_prefetched_tagged_items", [])
         return [ti.tag.name for ti in tagged_items]
-
-    def get_local(artist, upload) -> bool:
-        return federation_utils.is_local(artist.fid)
