@@ -700,8 +700,8 @@ def handle_modified(event, stdout, library, in_place, **kwargs):
         to_update = (
             existing_candidates.in_place()
             .filter(source=source)
-            .select_related(
-                "track__attributed_to",
+            .select_related("track__attributed_to")
+            .prefetch_related(
                 "track__artist_credit__artist",
                 "track__album__artist_credit__artist",
             )

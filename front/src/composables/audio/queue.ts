@@ -1,4 +1,4 @@
-import type { Track, Upload } from '~/types'
+import type { ArtistCredit, Track, Upload } from '~/types'
 
 import { createGlobalState, useStorage, useTimeAgo, whenever } from '@vueuse/core'
 import { computed, ref, shallowReactive, watchEffect } from 'vue'
@@ -26,7 +26,7 @@ export interface QueueTrackSource {
 export interface QueueTrack {
   id: number
   title: string
-  artistName?: string
+  artistCredit?: ArtistCredit[]
   albumTitle?: string
   position?: number
 
@@ -113,17 +113,22 @@ export const useQueue = createGlobalState(() => {
 
       track.uploads = uploads
     }
+    // # to do : const hideArtist = () => { artistCreditId?
 
     return {
       id: track.id,
       title: track.title,
-      artistName: track.artist?.name,
+      artistCredit: track.artist_credit,
       albumTitle: track.album?.title,
       position: track.position,
-      artistId: track.artist?.id ?? -1,
+      artistId: (track.artist_credit && track.artist_credit[0] && track.artist_credit[0].artist.id) ?? -1,
       albumId: track.album?.id ?? -1,
-      coverUrl: (track.cover?.urls ?? track.album?.cover?.urls ?? track.artist?.cover?.urls)?.original
-        ?? new URL('../../assets/audio/default-cover.png', import.meta.url).href,
+      coverUrl: (
+        (track.cover?.urls)
+        || (track.album?.cover?.urls)
+        || ((track.artist_credit && track.artist_credit[0] && track.artist_credit[0].artist && track.artist_credit[0].artist.cover?.urls))
+        || {}
+      )?.original ?? new URL('../../assets/audio/default-cover.png', import.meta.url).href,
       sources: track.uploads.map(upload => ({
         uuid: upload.uuid,
         duration: upload.duration,

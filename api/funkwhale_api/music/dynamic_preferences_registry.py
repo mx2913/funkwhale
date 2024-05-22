@@ -65,7 +65,7 @@ class JoinPhrases(types.StringPreference):
         "it's recommended to tag files with Musicbrainz Picard."
     )
     default = (
-        "featuring | feat\. | ft\. | feat | with | and | & | &|& |&| vs\. | \| | \||\| |\|| , | ,|, |,|"
+        "featuring | feat\. | ft\. | feat | with | and | & | vs\. | \| | \||\| |\|| , | ,|, |,|"
         " ; | ;|; |;| versus | vs | \( | \(|\( |\(| Remix\) |Remix\) | Remix\)| \) | \)|\) |\)| x |"
         "accompanied by | alongside | together with | collaboration with | featuring special guest |"
         "joined by | joined with | featuring guest | introducing | accompanied by | performed by | performed with |"
@@ -84,8 +84,9 @@ class DefaultJoinPhrases(types.StringPreference):
     verbose_name = "Default Join Phrase"
     help_text = (
         "The default join phrase used by artist parser"
-        "For exemple: `artists = [artist1, Artist2]` will be displayed has : artist1.name;artis2.name"
+        "For exemple: `artists = [artist1, Artist2]` will be displayed has : artist1.name, artis2.name"
+        "Changing this value will not update already parsed artists"
     )
-    default = ";"
+    default = ", "
     widget = widgets.Textarea
     field_kwargs = {"required": False}

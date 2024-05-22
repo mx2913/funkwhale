@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Track, Artist, Album, Playlist, Library, Channel, Actor, Cover } from '~/types'
+import type { Track, Album, Playlist, Library, Channel, Actor, Cover, ArtistCredit } from '~/types'
 import type { PlayOptionsProps } from '~/composables/audio/usePlayOptions'
 
 import { ref } from 'vue'
@@ -26,7 +26,7 @@ interface Props extends PlayOptionsProps {
 
   // TODO(wvffle): Remove after https://github.com/vuejs/core/pull/4512 is merged
   isPlayable?: boolean
-  artist?: Artist | null
+  artistCredit?: ArtistCredit[] | null
   album?: Album | null
   playlist?: Playlist | null
   library?: Library | null
@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
   defaultCover: null,
 
   tracks: () => [],
-  artist: null,
+  artistCredit: null,
   album: null,
   playlist: null,
   library: null,

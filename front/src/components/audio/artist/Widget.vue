@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Artist } from '~/types'
+import type { Artist, ArtistCredit } from '~/types'
 
 import { reactive, ref, watch } from 'vue'
 import { useStore } from '~/store'

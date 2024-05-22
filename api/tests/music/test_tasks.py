@@ -100,20 +100,22 @@ def test_can_create_track_from_file_metadata_featuring(mocker):
     mb_ac = {
         "artist-credit": [
             {
+                "joinphrase": " feat ",
                 "artist": {
                     "id": "9a3bf45c-347d-4630-894d-7cf3e8e0b632",
+                    "type": "Group",
                     "name": "Santana",
+                    "sort-name": "Santana",
                 },
-                "joinphrase": " feat ",
-                "name": "Santana",
             },
             {
                 "artist": {
+                    "id": "11e46b16-2f25-4783-ab32-25250befe84a",
+                    "type": "Person",
                     "name": "Chris Cornell",
-                    "id": "9a3bf45c-347d-4630-894d-7cf3e8e0acab",
+                    "sort-name": "Chris Cornell",
                 },
                 "joinphrase": "",
-                "name": "Chris Cornell",
             },
         ]
     }
@@ -122,16 +124,19 @@ def test_can_create_track_from_file_metadata_featuring(mocker):
             {
                 "artist": {
                     "id": "9a3bf45c-347d-4630-894d-7cf3e8e0b632",
+                    "type": "Group",
                     "name": "Santana",
-                },
-                "joinphrase": "",
-                "name": "Santana",
-            }
+                    "sort-name": "Santana",
+                }
+            },
         ]
     }
-
-    mocker.patch.object(tasks.musicbrainz.api.recordings, "get", return_value=mb_ac)
-    mocker.patch.object(tasks.musicbrainz.api.releases, "get", return_value=mb_ac_album)
+    mocker.patch.object(
+        tasks.musicbrainz.api.recordings, "get", return_value={"recording": mb_ac}
+    )
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     track = tasks.get_track_from_import_metadata(metadata)
 
     assert track.album.artist_credit.all()[0].artist.name == "Santana"
@@ -164,7 +169,7 @@ def test_can_create_track_from_file_metadata_use_featuring(factories):
     }
     track = tasks.get_track_from_import_metadata(metadata)
 
-    assert track.get_artist_credit_string == "Santana;Anatnas"
+    assert track.get_artist_credit_string == "Santana, Anatnas"
 
 
 def test_can_create_track_from_file_metadata_mbid(factories, mocker):
@@ -188,7 +193,30 @@ def test_can_create_track_from_file_metadata_mbid(factories, mocker):
         "mbid": "f269d497-1cc0-4ae4-a0c4-157ec7d73fcb",
         "cover_data": {"content": b"image_content", "mimetype": "image/png"},
     }
-
+    mb_ac = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": "9c6bddde-6228-4d9f-ad0d-03f6fcb19e13",
+                    "type": "Group",
+                    "name": "Test artist",
+                    "sort-name": "Test artist",
+                }
+            },
+        ]
+    }
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": "9c6bddde-6228-4d9f-ad0d-03f6fcb19e13",
+                    "type": "Group",
+                    "name": "Test artist",
+                    "sort-name": "Test artist",
+                }
+            },
+        ]
+    }
     mb_ac = {
         "artist-credit": [
             {
@@ -208,14 +236,18 @@ def test_can_create_track_from_file_metadata_mbid(factories, mocker):
                     "id": "9c6bddde-6478-4d9f-ad0d-03f6fcb19e13",
                     "name": "Test album artist",
                 },
-                "joinphrase": "; ",
-                "name": "Test album artist",
+                "name": "s",
             },
+            "; ",
         ]
     }
 
-    mocker.patch.object(tasks.musicbrainz.api.recordings, "get", return_value=mb_ac)
-    mocker.patch.object(tasks.musicbrainz.api.releases, "get", return_value=mb_ac_album)
+    mocker.patch.object(
+        tasks.musicbrainz.api.recordings, "get", return_value={"recording": mb_ac}
+    )
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
 
     track = tasks.get_track_from_import_metadata(metadata)
 
@@ -263,9 +295,9 @@ def test_can_create_track_from_file_metadata_mbid_existing_album_artist(
                     "id": artist_credit.artist.mbid,
                     "name": artist_credit.artist.name,
                 },
-                "joinphrase": "; ",
                 "name": artist_credit.artist.name,
-            }
+            },
+            "; ",
         ]
     }
     mb_ac = {
@@ -281,8 +313,12 @@ def test_can_create_track_from_file_metadata_mbid_existing_album_artist(
         ]
     }
 
-    mocker.patch.object(tasks.musicbrainz.api.recordings, "get", return_value=mb_ac)
-    mocker.patch.object(tasks.musicbrainz.api.releases, "get", return_value=mb_ac_album)
+    mocker.patch.object(
+        tasks.musicbrainz.api.recordings, "get", return_value={"recording": mb_ac}
+    )
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
 
     track = tasks.get_track_from_import_metadata(metadata)
 
@@ -319,7 +355,7 @@ def test_can_create_track_from_file_metadata_fid_existing_album_artist(
     assert track.artist_credit.all()[0].artist == artist
 
 
-def test_can_create_track_from_file_metadata_distinct_release_mbid(factories):
+def test_can_create_track_from_file_metadata_distinct_release_mbid(factories, mocker):
     """Cf https://dev.funkwhale.audio/funkwhale/funkwhale/issues/772"""
     artist_credit = factories["music.ArtistCredit"]()
     album = factories["music.Album"](artist_credit=artist_credit)
@@ -334,6 +370,21 @@ def test_can_create_track_from_file_metadata_distinct_release_mbid(factories):
         "fid": "https://hello",
     }
 
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": artist_credit.artist.mbid,
+                    "name": artist_credit.artist.name,
+                },
+                "name": artist_credit.artist.name,
+            },
+            "",
+        ]
+    }
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     new_track = tasks.get_track_from_import_metadata(metadata)
 
     # the returned track should be different from the existing one, and mapped
@@ -342,7 +393,7 @@ def test_can_create_track_from_file_metadata_distinct_release_mbid(factories):
     assert new_track != track
 
 
-def test_can_create_track_from_file_metadata_distinct_position(factories):
+def test_can_create_track_from_file_metadata_distinct_position(factories, mocker):
     """Cf https://dev.funkwhale.audio/funkwhale/funkwhale/issues/740"""
     artist_credit = factories["music.ArtistCredit"]()
     album = factories["music.Album"](artist_credit=artist_credit)
@@ -355,7 +406,21 @@ def test_can_create_track_from_file_metadata_distinct_position(factories):
         "title": track.title,
         "position": track.position + 1,
     }
-
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": artist_credit.artist.mbid,
+                    "name": artist_credit.artist.name,
+                },
+                "name": artist_credit.artist.name,
+            },
+            "",
+        ]
+    }
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     new_track = tasks.get_track_from_import_metadata(metadata)
 
     assert new_track != track
@@ -1376,14 +1441,17 @@ def test_can_import_track_with_same_mbid_in_different_albums(factories, mocker):
                     "id": artist.mbid,
                     "name": artist.name,
                 },
-                "joinphrase": "",
                 "name": artist.name,
             },
         ]
     }
 
-    mocker.patch.object(tasks.musicbrainz.api.recordings, "get", return_value=mb_ac)
-    mocker.patch.object(tasks.musicbrainz.api.releases, "get", return_value=mb_ac_album)
+    mocker.patch.object(
+        tasks.musicbrainz.api.recordings, "get", return_value={"recording": mb_ac}
+    )
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     mocker.patch.object(metadata.TrackMetadataSerializer, "validated_data", data)
     mocker.patch.object(tasks, "populate_album_cover")
 
@@ -1452,10 +1520,22 @@ def test_can_import_track_with_same_position_in_different_discs(factories, mocke
         "disc_number": 2,
         "mbid": None,
     }
-
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": upload.track.album.artist_credit.all()[0].artist.mbid,
+                    "name": upload.track.album.artist_credit.all()[0].artist.name,
+                },
+            },
+            "",
+        ]
+    }
     mocker.patch.object(metadata.TrackMetadataSerializer, "validated_data", data)
     mocker.patch.object(tasks, "populate_album_cover")
-
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     new_upload = factories["music.Upload"](library=upload.library)
 
     tasks.process_upload(upload_id=new_upload.pk)
@@ -1490,7 +1570,21 @@ def test_can_import_track_with_same_position_in_same_discs_skipped(factories, mo
         "disc_number": upload.track.disc_number,
         "mbid": None,
     }
-
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": upload.track.album.artist_credit.all()[0].artist.mbid,
+                    "name": upload.track.album.artist_credit.all()[0].artist.name,
+                },
+                "name": upload.track.album.artist_credit.all()[0].artist.name,
+            },
+            "",
+        ]
+    }
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     mocker.patch.object(metadata.TrackMetadataSerializer, "validated_data", data)
     mocker.patch.object(tasks, "populate_album_cover")
 
@@ -1576,6 +1670,7 @@ def test_update_track_metadata_mbid(factories, mocker):
             }
         ]
     }
+
     mb_ac_album = {
         "artist-credit": [
             {
@@ -1583,9 +1678,8 @@ def test_update_track_metadata_mbid(factories, mocker):
                     "id": "013c8e5b-d72a-4cd3-8dee-6c64d6125823",
                     "name": "Edvard Grieg",
                 },
-                "joinphrase": "; ",
-                "name": "Edvard Grieg",
             },
+            "; ",
             {
                 "artist": {
                     "id": "5b4d7d2d-36df-4b38-95e3-a964234f520f",
@@ -1596,8 +1690,13 @@ def test_update_track_metadata_mbid(factories, mocker):
             },
         ]
     }
-    mocker.patch.object(tasks.musicbrainz.api.releases, "get", return_value=mb_ac_album)
-    mocker.patch.object(tasks.musicbrainz.api.recordings, "get", return_value=mb_ac)
+
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
+    mocker.patch.object(
+        tasks.musicbrainz.api.recordings, "get", return_value={"recording": mb_ac}
+    )
     tasks.update_track_metadata(metadata.FakeMetadata(data), track)
 
     track.refresh_from_db()
@@ -1879,10 +1978,14 @@ def test_get_or_create_artists_credits_from_musicbrainz(factories, mocker):
         ("recording", recording_mb_response),
     ]:
         mocker.patch.object(
-            tasks.musicbrainz.api.releases, "get", return_value=mb_response
+            tasks.musicbrainz.api.releases,
+            "get",
+            return_value={"recording": mb_response},
         )
         mocker.patch.object(
-            tasks.musicbrainz.api.recordings, "get", return_value=mb_response
+            tasks.musicbrainz.api.recordings,
+            "get",
+            return_value={"recording": mb_response},
         )
         tasks.get_or_create_artists_credits_from_musicbrainz(
             mb_type, mb_response["id"], None, None

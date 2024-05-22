@@ -88,6 +88,7 @@ class LibraryFilterSet(filters.FilterSet):
         return qs
 
 
+# to do : filter artist credit
 class ArtistCreditFilter(moderation_filters.HiddenContentFilterSet):
     q = fields.SearchFilter(search_fields=["credit"])
 
@@ -131,9 +132,9 @@ class ArtistFilter(
     tag = TAG_FILTER
     content_category = filters.CharFilter("content_category")
     scope = common_filters.ActorScopeFilter(
-        actor_field="tracks__uploads__library__actor",
+        actor_field="artist_credit__tracks__uploads__library__actor",
         distinct=True,
-        library_field="tracks__uploads__library",
+        library_field="artist_credit__tracks__uploads__library",
     )
     ordering = common_filters.CaseInsensitiveNameOrderingFilter(
         fields=(
@@ -161,7 +162,7 @@ class ArtistFilter(
         return queryset.playable_by(actor, value).distinct()
 
     def filter_has_albums(self, queryset, name, value):
-        return queryset.filter(albums__isnull=not value)
+        return queryset.filter(artist_credit__albums__isnull=not value)
 
 
 class TrackFilter(
@@ -319,6 +320,9 @@ class AlbumFilter(
             ("tag_matches", "related"),
         )
     )
+    artist = filters.ModelChoiceFilter(
+        field_name="_", method="filter_artist", queryset=models.Artist.objects.all()
+    )
 
     class Meta:
         model = models.Album
@@ -331,6 +335,9 @@ class AlbumFilter(
     def filter_playable(self, queryset, name, value):
         actor = utils.get_actor_from_request(self.request)
         return queryset.playable_by(actor, value)
+
+    def filter_artist(self, queryset, name, value):
+        return queryset.filter(artist_credit__artist=value)
 
 
 class LibraryFilter(filters.FilterSet):

@@ -29,9 +29,11 @@ class AlbumAdmin(admin.ModelAdmin):
 
 @admin.register(models.Track)
 class TrackAdmin(admin.ModelAdmin):
-    list_display = ["title", "album", "mbid"]
+    list_display = ["title", "album", "mbid", "artist"]
     search_fields = ["title", "album__title", "mbid"]
-    list_select_related = ["album__artist", "artist"]
+
+    def artist(self, obj):
+        return obj.get_artist_credit_string
 
 
 @admin.register(models.TrackActor)

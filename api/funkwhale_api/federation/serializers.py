@@ -1442,16 +1442,6 @@ class AlbumSerializer(MusicEntitySerializer):
         # to do : album channel can only have one artist
         ac = instance.artist_credit.all()
         if len(ac) == 1 and ac[0].artist.get_channel():
-            data["artist_credit"] = [
-                {
-                    "artist": {
-                        "type": ac[0].artist.channel.actor.type,
-                        "id": ac[0].artist.channel.actor.fid,
-                    },
-                    "joinphrase": "",
-                    "credit": ac[0].artist.name,
-                }
-            ]
             data["artist_credit"] = ArtistCreditSerializer(
                 instance.artist_credit.all(),
                 context={"for_album": True},

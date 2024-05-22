@@ -10,7 +10,6 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Count, F, Prefetch, Q, Sum
-from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import mixins, renderers
@@ -121,16 +120,12 @@ class ArtistViewSet(
 ):
     queryset = (
         models.Artist.objects.all()
-        .prefetch_related("attributed_to", "attachment_cover")
+        .select_related("attributed_to", "attachment_cover")
+        .order_by("-id")
         .prefetch_related(
             "channel__actor",
-            Prefetch(
-                "artist_credit__tracks",
-                queryset=models.Track.objects.all(),
-                to_attr="_prefetched_tracks",
-            ),
         )
-        .order_by("-id")
+        .annotate(_tracks_count=Count("artist_credit__tracks"))
     )
     serializer_class = serializers.ArtistWithAlbumsSerializer
     permission_classes = [oauth_permissions.ScopePermission]
@@ -189,7 +184,7 @@ class AlbumViewSet(
         .order_by("-creation_date")
         .select_related("attributed_to", "attachment_cover")
         .prefetch_related("artist_credit__artist__channel")
-    )
+    ).distinct()
     serializer_class = serializers.AlbumSerializer
     permission_classes = [oauth_permissions.ScopePermission]
     required_scope = "libraries"
@@ -248,27 +243,39 @@ class AlbumViewSet(
         )
         models.Album.objects.filter(pk=instance.pk).delete()
 
-    # def create(self, request, *args, **kwargs):
-    #     # if "artist" in request.data:
-    #     #     artist_pk = request.data.pop("artist")
-    #     #     artist = get_object_or_404(models.Artist, pk=artist_pk)
-    #     #     query = Q(artist=artist) & Q(joinphrase="") & Q(credit=artist.name)
-    #     #     defaults = {"artist": artist, "joinphrase": "", "credit": artist.name}
-    #     #     ac = tasks.get_best_candidate_or_create(
-    #     #         models.ArtistCredit, query, defaults, ["pk"]
-    #     #     )
-    #     # if "artist_credit" in request.data:
-    #     #     artist_credit = request.data.pop("artist_credit")
-    #     #     ac = get_object_or_404(models.ArtistCredit, pk=artist_credit)
+    def create(self, request, *args, **kwargs):
+        request_data = request.data.copy()
+        artist_data = request_data.pop("artist")
+        if not artist_data:
+            return Response({}, status=400)
+        if mbid := request_data.get("musicbrainz_albumid", None) or request_data.get(
+            "mbid", None
+        ):
+            artist_credit = tasks.get_or_create_artists_credits_from_musicbrainz(
+                "release",
+                mbid,
+                attributed_to=request.user.actor,
+                from_activity_id=None,
+            )
+        else:
+            try:
+                artist = models.Artist.objects.get(pk=artist_data)
+            except models.Artist.DoesNotExist:
+                return Response({"détail": "artist id not found"}, status=400)
 
-    #     serializer = self.get_serializer(data=request.data)
-
-    #     serializer.is_valid()
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(
-    #         serializer.data, status=status.HTTP_201_CREATED, headers=headers
-    #     )
+            artist_credit, created = models.ArtistCredit.objects.get_or_create(
+                **{
+                    "artist": artist,
+                    "credit": artist.name,
+                    "joinphrase": "",
+                    "index": 0,
+                }
+            )
+        request_data["artist_credit"] = [artist_credit.pk]
+        serializer = self.get_serializer(data=request_data)
+        serializer.is_valid(raise_exception=True)
+        instance = self.perform_create(serializer)
+        return Response(instance, status=204)
 
 
 class LibraryViewSet(
@@ -423,7 +430,7 @@ class TrackViewSet(
         .for_nested_serialization()
         .prefetch_related("attributed_to", "attachment_cover")
         .order_by("-creation_date")
-    )
+    ).distinct()
     serializer_class = serializers.TrackSerializer
     permission_classes = [oauth_permissions.ScopePermission]
     required_scope = "libraries"

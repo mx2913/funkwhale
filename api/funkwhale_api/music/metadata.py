@@ -504,7 +504,6 @@ class ArtistField(serializers.Field):
         # ae29aae4-abfb-4609-8f54-417b1f4d64cc; 3237b5a8-ae44-400c-aa6d-cea51f0b9074;
         raw_mbids = data["mbids"]
         mbids = [raw_mbids]
-        names = []
         if raw_mbids:
             for separator in separators:
                 if separator in raw_mbids:
@@ -523,14 +522,32 @@ class ArtistField(serializers.Field):
             if data.get("artists", False)
             else []
         )
+
+        field = serializers.ListField(
+            child=ArtistSerializer(strict=self.context.get("strict", True)),
+            min_length=1,
+        )
+
         if (
             raw_mbids
             and len(names_artists_credits_tuples) != len(mbids)
             and len(artist_artists_credits_tuples) != len(mbids)
         ):
             logger.info(
-                f"Error parsing artist data, not the same amount of mbids and parsed artists. Trying to proceed anyway"
+                "Error parsing artist data, not the same amount of mbids and parsed artists. \
+                Probably because the artist parser found more artists than there is. Defaulting to mbid only"
             )
+            final = []
+
+            for i, ac in enumerate(mbids):
+                artist = {
+                    "name": "Should use mb data",
+                    "mbid": (mbids[i] if 0 <= i < len(mbids) else None),
+                    "joinphrase": "Should use mb data",
+                    "index": "Should use mb data",
+                }
+                final.append(artist)
+            return field.to_internal_value(final)
 
         if len(names_artists_credits_tuples) > len(artist_artists_credits_tuples):
             artists_credits_tuples = names_artists_credits_tuples
@@ -550,10 +567,6 @@ class ArtistField(serializers.Field):
         if len(artists_credits_tuples) == 0:
             final = []
 
-        field = serializers.ListField(
-            child=ArtistSerializer(strict=self.context.get("strict", True)),
-            min_length=1,
-        )
         return field.to_internal_value(final)
 
 

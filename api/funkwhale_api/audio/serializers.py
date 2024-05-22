@@ -248,12 +248,13 @@ class SimpleChannelArtistSerializer(serializers.Serializer):
     description = common_serializers.ContentSerializer(allow_null=True, required=False)
     cover = CoverField(allow_null=True, required=False)
     channel = serializers.UUIDField(allow_null=True, required=False)
-    tracks_count = serializers.IntegerField(
-        source="_artist_credit__tracks_count", required=False
-    )
+    tracks_count = serializers.SerializerMethodField(required=False)
     tags = serializers.ListField(
         child=serializers.CharField(), source="_prefetched_tagged_items", required=False
     )
+
+    def get_tracks_count(self, o) -> int:
+        return getattr(o, "_tracks_count", 0)
 
 
 class ChannelSerializer(serializers.ModelSerializer):

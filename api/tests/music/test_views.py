@@ -7,7 +7,7 @@ import uuid
 
 import magic
 import pytest
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Count
 from django.urls import reverse
 from django.utils import timezone
 
@@ -30,8 +30,8 @@ def test_artist_list_serializer(api_request, factories, logged_in_api_client):
     ).track
     artist = track.artist_credit.all()[0].artist
     request = api_request.get("/")
-    qs = artist.__class__.objects.with_albums().prefetch_related(
-        Prefetch("artist_credit__tracks", to_attr="_prefetched_tracks")
+    qs = artist.__class__.objects.with_albums().annotate(
+        tracks_count=Count("artist_credit__tracks")
     )
     serializer = serializers.ArtistWithAlbumsSerializer(
         qs, many=True, context={"request": request}
@@ -39,12 +39,11 @@ def test_artist_list_serializer(api_request, factories, logged_in_api_client):
     expected = {"count": 1, "next": None, "previous": None, "results": serializer.data}
     for artist in serializer.data:
         artist["tags"] = tags
-        for album in artist["albums"]:
-            album["is_playable"] = True
 
     url = reverse("api:v1:artists-list")
     response = logged_in_api_client.get(url)
 
+    assert serializer.data[0]["tracks_count"] == 1
     assert response.status_code == 200
     assert response.data == expected
 
@@ -1600,3 +1599,14 @@ def test_fs_import_cancel_already_running(
 
     assert response.status_code == 204
     assert cache.get("fs-import:status") == "canceled"
+
+
+# to do : not working doing strange things but ui test works
+def test_album_create_artist_credit(factories, logged_in_api_client):
+    artist = factories["music.Artist"]()
+    factories["audio.Channel"](artist=artist)
+    url = reverse("api:v1:albums-list")
+    response = logged_in_api_client.post(
+        url, {"artist": artist.pk, "title": "super album"}, format="json"
+    )
+    assert response.status_code == 204

@@ -17,9 +17,7 @@ from funkwhale_api import musicbrainz
 from funkwhale_api.common import channels, preferences
 from funkwhale_api.common import utils as common_utils
 from funkwhale_api.federation import library as lb
-from funkwhale_api.federation import models as federation_models
-from funkwhale_api.federation import actors, routes
-from funkwhale_api.federation import tasks as federation_tasks
+from funkwhale_api.federation import routes
 from funkwhale_api.federation import utils as federation_utils
 from funkwhale_api.music.management.commands import import_files
 from funkwhale_api.tags import models as tags_models
@@ -273,8 +271,8 @@ def process_upload(upload, update_denormalization=True):
         )
     except UploadImportError as e:
         return fail_import(upload, e.code)
-    except Exception:
-        fail_import(upload, "unknown_error")
+    except Exception as e:
+        fail_import(upload, "unknown_error", e)
         raise
 
     broadcast = getter(
@@ -568,7 +566,6 @@ def _get_track(data, attributed_to=None, **forced_values):
     # get / create artist, artist_credit and album artist, album artist_credit
     album_artists_credits = None
     artists_data = getter(data, "artists", default=[])
-    # to do : allow artist credit forced values
     if "artist" in forced_values:
         artist = forced_values["artist"]
         query = Q(artist=artist)
@@ -582,16 +579,10 @@ def _get_track(data, attributed_to=None, **forced_values):
         )
         track_artists_credits = [track_artist_credit]
     else:
-        if data.get("musicbrainz_id", None) or data.get("mbid", None):
+        if mbid := data.get("musicbrainz_id", None) or data.get("mbid", None):
             track_artists_credits = get_or_create_artists_credits_from_musicbrainz(
                 "recording",
-                data.get("musicbrainz_id"),
-                attributed_to=attributed_to,
-                from_activity_id=from_activity_id,
-            )
-            album_artists_credits = get_or_create_artists_credits_from_musicbrainz(
-                "release",
-                data.get("musicbrainz_id"),
+                mbid,
                 attributed_to=attributed_to,
                 from_activity_id=from_activity_id,
             )
@@ -606,37 +597,30 @@ def _get_track(data, attributed_to=None, **forced_values):
         album = forced_values["album"]
         album_artists_credits = track_artists_credits
     else:
-        if "artist" in forced_values:
-            album_artist = forced_values["artist"]
-        else:
-            if album_artists_credits:
-                pass
-            elif data.get("musicbrainz_albumid", None):
-                try:
-                    album_artists_credits = (
-                        get_or_create_artists_credits_from_musicbrainz(
-                            "release",
-                            data.get("musicbrainz_albumid"),
-                            attributed_to=attributed_to,
-                            from_activity_id=from_activity_id,
-                        )
-                    )
-                except ResponseError as e:
-                    logger.error(
-                        f"Couldn't get Musicbrainz information for track with {track_mbid} mbid  \
-                            because of the following exeption : {e}. Plz try again later."
-                    )
-
-            elif album_artists := getter(data, "album", "artists", default=None):
-                album_artists_credits = (
-                    get_or_create_artists_credits_from_artist_metadata(
-                        album_artists,
-                        attributed_to=attributed_to,
-                        from_activity_id=from_activity_id,
-                    )
+        if album_artists_credits:
+            pass
+        elif mbid := data.get("musicbrainz_albumid", None) or album_mbid:
+            try:
+                album_artists_credits = get_or_create_artists_credits_from_musicbrainz(
+                    "release",
+                    mbid,
+                    attributed_to=attributed_to,
+                    from_activity_id=from_activity_id,
                 )
-            else:
-                album_artists_credits = track_artists_credits
+            except ResponseError as e:
+                logger.error(
+                    f"Couldn't get Musicbrainz information for track with {track_mbid} mbid  \
+                        because of the following exeption : {e}. Plz try again later."
+                )
+
+        elif album_artists := getter(data, "album", "artists", default=None):
+            album_artists_credits = get_or_create_artists_credits_from_artist_metadata(
+                album_artists,
+                attributed_to=attributed_to,
+                from_activity_id=from_activity_id,
+            )
+        else:
+            album_artists_credits = track_artists_credits
 
         # get / create album
         if "album" in data:
@@ -803,19 +787,26 @@ def get_or_create_artists_credits_from_musicbrainz(
         elif mb_obj_type == "recording":
             mb_obj = musicbrainz.api.recordings.get(track_mbid, includes=["artists"])
     except ResponseError as e:
-        logger.error(
-            f"Couldn't get Musicbrainz information for track with {track_mbid} mbid  \
-                because of the following exeption : {e}"
+        raise UploadImportError(
+            code=f"Couldn't get Musicbrainz information for {mb_obj_type} with {track_mbid} mbid  \
+            because of the following exeption : {e}"
         )
-        raise
 
     artists_credits = []
-    artists_credits_data = []
-    for i, ac in enumerate(mb_obj["artist-credit"]):
+    acs = mb_obj.get("recording", mb_obj)["artist-credit"]
+    for i, ac in enumerate(acs):
+        if isinstance(ac, str):
+            continue
+        logger.info("ac" + str(ac))
         artist_mbid = ac["artist"]["id"]
         artist_name = ac["artist"]["name"]
-        joinphrase = ac["joinphrase"]
-        credit = ac["name"]
+        credit = ac.get("name", artist_name)
+        if mb_obj_type == "recording":
+            joinphrase = ac["joinphrase"]
+        else:
+            joinphrase = ""
+            if i + 1 < len(acs):
+                joinphrase = acs[i + 1]
 
         # artist creation
         query = Q(mbid=artist_mbid)
@@ -826,7 +817,6 @@ def get_or_create_artists_credits_from_musicbrainz(
             "from_activity_id": from_activity_id,
             "attributed_to": attributed_to,
         }
-
         artist, created = get_best_candidate_or_create(
             models.Artist, query, defaults=defaults, sort_fields=["mbid", "fid"]
         )
@@ -851,7 +841,6 @@ def get_or_create_artists_credits_from_musicbrainz(
             models.ArtistCredit, query, defaults=defaults, sort_fields=["mbid", "fid"]
         )
         artists_credits.append(artist_credit)
-
     return artists_credits
 
 

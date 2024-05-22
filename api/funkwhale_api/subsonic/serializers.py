@@ -144,7 +144,6 @@ def get_track_data(album, track, upload):
         "duration": upload.duration or 0,
         "created": to_subsonic_date(track.creation_date),
         "albumId": album.pk if album else "",
-        # to do : subsonic doesn't explain how to handle multiple artists info
         "artistId": (
             album.artist_credit.all()[0].artist.pk
             if album

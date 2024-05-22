@@ -683,7 +683,7 @@ class Track(APIModelMixin):
 
             track_artist = Artist.get_or_create_from_api(ac_mbid)[0]
 
-            if not "joinphrase" in ac:
+            if "joinphrase" not in ac:
                 joinphrase = ""
             else:
                 joinphrase = ac["joinphrase"]

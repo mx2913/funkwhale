@@ -51,10 +51,16 @@ class ListeningViewSet(
         queryset = queryset.filter(
             fields.privacy_level_query(self.request.user, "user__privacy_level")
         )
-        tracks = Track.objects.with_playable_uploads(
-            music_utils.get_actor_from_request(self.request)
-        ).select_related(
-            "artist", "album__artist", "attributed_to", "artist__attachment_cover"
+        tracks = (
+            Track.objects.with_playable_uploads(
+                music_utils.get_actor_from_request(self.request)
+            )
+            .prefetch_related(
+                "artist_credit",
+                "album__artist_credit__artist",
+                "artist_credit__artist__attachment_cover",
+            )
+            .select_related("attributed_to")
         )
         return queryset.prefetch_related(Prefetch("track", queryset=tracks))
 

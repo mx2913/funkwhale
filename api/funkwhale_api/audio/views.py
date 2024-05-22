@@ -27,7 +27,7 @@ ARTIST_PREFETCH_QS = (
         "attachment_cover",
     )
     .prefetch_related(music_views.TAG_PREFETCH)
-    .annotate(__count=Count("artist_credit__tracks"))
+    .annotate(_tracks_count=Count("artist_credit__tracks"))
 )
 
 

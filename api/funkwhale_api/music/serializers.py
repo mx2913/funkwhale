@@ -137,8 +137,7 @@ class ArtistWithAlbumsSerializer(OptionalDescriptionMixin, serializers.Serialize
         return [ti.tag.name for ti in tagged_items]
 
     def get_tracks_count(self, o) -> int:
-        tracks = getattr(o, "_prefetched_tracks", None)
-        return len(tracks) if tracks else 0
+        return getattr(o, "_tracks_count", 0)
 
 
 class SimpleArtistSerializer(serializers.ModelSerializer):
@@ -160,6 +159,7 @@ class SimpleArtistSerializer(serializers.ModelSerializer):
             "description",
             "attachment_cover",
             "channel",
+            "attributed_to",
         )
 
 
@@ -817,18 +817,22 @@ class AlbumCreateSerializer(serializers.Serializer):
     release_date = serializers.DateField(required=False, allow_null=True)
     tags = tags_serializers.TagsListField(required=False)
     description = common_serializers.ContentSerializer(allow_null=True, required=False)
+    # only used in album channel creation, so this is not a list
     artist_credit = common_serializers.RelatedField(
         "id",
         queryset=models.ArtistCredit.objects.exclude(artist__channel__isnull=True),
         required=True,
         serializer=None,
-        filters=lambda context: {"attributed_to": context["user"].actor},
+        many=True,
+        filters=lambda context: {"artist__attributed_to": context["user"].actor},
     )
 
     def validate(self, validated_data):
-        duplicates = validated_data["artist_credit"].albums.filter(
-            title__iexact=validated_data["title"]
-        )
+        duplicates = models.Album.objects.none()
+        for ac in validated_data["artist_credit"]:
+            duplicates = duplicates | ac.albums.filter(
+                title__iexact=validated_data["title"]
+            )
         if duplicates.exists():
             raise serializers.ValidationError("An album with this title already exist")
 
@@ -841,7 +845,6 @@ class AlbumCreateSerializer(serializers.Serializer):
     def create(self, validated_data):
         instance = models.Album.objects.create(
             attributed_to=self.context["user"].actor,
-            artist=validated_data["artist"],
             release_date=validated_data.get("release_date"),
             title=validated_data["title"],
             attachment_cover=validated_data.get("cover"),
@@ -850,7 +853,8 @@ class AlbumCreateSerializer(serializers.Serializer):
             instance, "description", validated_data.get("description")
         )
         tag_models.set_tags(instance, *(validated_data.get("tags", []) or []))
-        instance.artist.get_channel()
+
+        instance.artist_credit.set(validated_data["artist_credit"])
         return instance
 
 
