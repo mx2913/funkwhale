@@ -321,6 +321,8 @@ class Command(BaseCommand):
                 candidates = list(queryset.values_list("pk", flat=True))
                 picked_pks = [random.choice(candidates) for _ in objects]
                 picked_objects = {o.pk: o for o in queryset.filter(pk__in=picked_pks)}
+
+            saved_obj = []
             for i, obj in enumerate(objects):
                 if create_dependencies:
                     value = random.choice(candidates)
@@ -329,10 +331,22 @@ class Command(BaseCommand):
                 if dependency["field"] == "artist_credit":
                     # Direct assignment to the forward side of a many-to-many set is prohibited.
                     # Use artist_credit.set() instead.
-                    continue
+                    obj.save()
+                    obj.artist_credit.set([value])
+                    saved_obj.append(obj)
+
                 else:
                     setattr(obj, dependency["field"], value)
+            if saved_obj:
+                return saved_obj
+
         if not handler:
-            objects = row["model"].objects.bulk_create(objects, batch_size=BATCH_SIZE)
+            try:
+                objects = row["model"].objects.bulk_create(
+                    objects, batch_size=BATCH_SIZE
+                )
+            except Exception as e:
+                breakpoint()
+                raise e
         results[row["id"]] = objects
         return objects

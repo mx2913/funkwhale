@@ -497,6 +497,13 @@ class ArtistField(serializers.Field):
     def to_internal_value(self, data):
         from . import tasks
 
+        if (
+            self.context.get("strict", True)
+            and not data.get("artists", False)
+            and not data.get("names", False)
+        ):
+            raise serializers.ValidationError("This field is required.")
+
         # we have multiple mbid values that can be separated by various separators
         separators = [";", ",", "/"]
         artists_credits_tuples = None
@@ -528,26 +535,16 @@ class ArtistField(serializers.Field):
             min_length=1,
         )
 
+        # to do : should handle this case by manually defaulting to mbids
         if (
             raw_mbids
             and len(names_artists_credits_tuples) != len(mbids)
             and len(artist_artists_credits_tuples) != len(mbids)
         ):
-            logger.info(
+            logger.warning(
                 "Error parsing artist data, not the same amount of mbids and parsed artists. \
-                Probably because the artist parser found more artists than there is. Defaulting to mbid only"
+                Probably because the artist parser found more artists than there is."
             )
-            final = []
-
-            for i, ac in enumerate(mbids):
-                artist = {
-                    "name": "Should use mb data",
-                    "mbid": (mbids[i] if 0 <= i < len(mbids) else None),
-                    "joinphrase": "Should use mb data",
-                    "index": "Should use mb data",
-                }
-                final.append(artist)
-            return field.to_internal_value(final)
 
         if len(names_artists_credits_tuples) > len(artist_artists_credits_tuples):
             artists_credits_tuples = names_artists_credits_tuples

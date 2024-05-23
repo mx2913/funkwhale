@@ -1299,7 +1299,6 @@ class ArtistSerializer(MusicEntitySerializer):
             MUSIC_ENTITY_JSONLD_MAPPING,
             {
                 "released": jsonld.first_val(contexts.FW.released),
-                # "artist_credit": jsonld.first_attr(contexts.FW.artist_credit, "@list"),
                 "image": jsonld.first_obj(contexts.AS.image),
             },
         )
@@ -1338,9 +1337,6 @@ class ArtistCreditSerializer(MusicEntitySerializer):
         ("name", "credit"),
         ("artist", "artist"),
         ("joinphrase", "joinphrase"),
-        ("musicbrainzId", "mbid"),
-        ("attributedTo", "attributed_to"),
-        ("published", "published"),
     ]
 
     class Meta:
@@ -1355,27 +1351,6 @@ class ArtistCreditSerializer(MusicEntitySerializer):
         )
 
     def to_representation(self, instance):
-        if self.context.get("for_album", False):
-            data = {
-                "type": "ArtistCredit",
-                "id": instance.fid,
-                "artist": ArtistSerializer(
-                    instance.artist, context={"include_ap_context": False}
-                ).data,
-                "joinphrase": instance.joinphrase,
-                "name": instance.credit,
-                "index": instance.index,
-                "published": instance.creation_date.isoformat(),
-                "musicbrainzId": str(instance.mbid) if instance.mbid else None,
-                # "attributedTo": instance.attributed_to.fid,
-            }
-
-        elif (
-            isinstance(instance, music_models.ArtistCreditQuerySet)
-            and len(instance) == 1
-        ):
-            instance = instance[0]
-
         data = {
             "type": "ArtistCredit",
             "id": instance.fid,
@@ -1386,8 +1361,6 @@ class ArtistCreditSerializer(MusicEntitySerializer):
             "name": instance.credit,
             "index": instance.index,
             "published": instance.creation_date.isoformat(),
-            "musicbrainzId": str(instance.mbid) if instance.mbid else None,
-            # "attributedTo": instance.attributed_to.fid,
         }
         if self.context.get("include_ap_context", self.parent is None):
             data["@context"] = jsonld.get_default_context()
@@ -1439,20 +1412,11 @@ class AlbumSerializer(MusicEntitySerializer):
             "tag": self.get_tags_repr(instance),
         }
 
-        # to do : album channel can only have one artist
-        ac = instance.artist_credit.all()
-        if len(ac) == 1 and ac[0].artist.get_channel():
-            data["artist_credit"] = ArtistCreditSerializer(
-                instance.artist_credit.all(),
-                context={"for_album": True},
-                many=True,
-            ).data
-        else:
-            data["artist_credit"] = ArtistCreditSerializer(
-                instance.artist_credit.all(),
-                context={"include_ap_context": False},
-                many=True,
-            ).data
+        data["artist_credit"] = ArtistCreditSerializer(
+            instance.artist_credit.all(),
+            context={"include_ap_context": False},
+            many=True,
+        ).data
         include_content(data, instance.description)
         if instance.attachment_cover:
             include_image(data, instance.attachment_cover)
@@ -1582,7 +1546,7 @@ class TrackSerializer(MusicEntitySerializer):
         )
         album_artists = (
             common_utils.recursive_getattr(
-                validated_data, "album.artist_credit.all()", permissive=True
+                validated_data, "album.artist_credit", permissive=True
             )
             or []
         )
@@ -2026,9 +1990,7 @@ class ChannelUploadSerializer(jsonld.JsonLdSerializer):
         if validated_data.get("license"):
             track_defaults["license"] = licenses.match(validated_data["license"])
 
-        # to do : channel
         track, created = music_models.Track.objects.update_or_create(
-            # artist_credit__artist__channel=channel,
             fid=validated_data["id"],
             defaults=track_defaults,
         )

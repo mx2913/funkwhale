@@ -839,7 +839,6 @@ class AlbumCreateSerializer(serializers.Serializer):
         return super().validate(validated_data)
 
     def to_representation(self, obj):
-        obj.artist.attachment_cover
         return AlbumSerializer(obj, context=self.context).data
 
     def create(self, validated_data):

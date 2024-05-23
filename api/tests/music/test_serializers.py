@@ -57,11 +57,12 @@ def test_artist_with_albums_serializer(factories, to_api_date):
         artist__attributed_to=actor, artist__with_cover=True
     )
 
-    track = factories["music.Track"](album__artist_credit=artist_credit)
+    track = factories["music.Track"](
+        album__artist_credit=artist_credit, artist_credit=artist_credit
+    )
     artist = track.artist_credit.all()[0].artist
-    # artist = artist.__class__.objects.with_albums().get(pk=artist.pk)
     album = artist.artist_credit.all()[0].albums.all()[0]
-    setattr(artist, "_tracks_count", range(42))
+    setattr(artist, "_tracks_count", 42)
     expected = {
         "id": artist.id,
         "fid": artist.fid,
@@ -89,7 +90,7 @@ def test_artist_with_albums_serializer_channel(factories, to_api_date):
     artist = track.artist_credit.all()[0].artist
     artist = artist.__class__.objects.with_albums().get(pk=artist.pk)
     album = list(artist.artist_credit.all()[0].albums.all())[0]
-    setattr(artist, "_tracks_count", range(42))
+    setattr(artist, "_tracks_count", 42)
     expected = {
         "id": artist.id,
         "fid": artist.fid,

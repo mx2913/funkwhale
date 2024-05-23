@@ -750,8 +750,6 @@ def test_serializer_strict_mode_true():
     serializer = metadata.TrackMetadataSerializer(
         data=metadata.FakeMetadata(data), context={"strict": True}
     )
-
-    serializer.is_valid(raise_exception=True)
     with pytest.raises(metadata.serializers.ValidationError):
         assert serializer.is_valid(raise_exception=True)
 

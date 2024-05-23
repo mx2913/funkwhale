@@ -442,6 +442,7 @@ def federation_audio_track_to_metadata(payload, references):
         "fdate": payload["published"],
         "tags": [t["name"] for t in payload.get("tags", []) or []],
     }
+
     return new_data
 
 
@@ -578,6 +579,12 @@ def _get_track(data, attributed_to=None, **forced_values):
             models.ArtistCredit, query, defaults=defaults, sort_fields=["mbid", "fid"]
         )
         track_artists_credits = [track_artist_credit]
+    elif ac := data.get("artist_credit", False):
+        track_artists_credits = (
+            get_or_create_artists_credits_from_artist_credit_metadata(
+                ac, attributed_to, from_activity_id
+            )
+        )
     else:
         if mbid := data.get("musicbrainz_id", None) or data.get("mbid", None):
             track_artists_credits = get_or_create_artists_credits_from_musicbrainz(
@@ -599,6 +606,12 @@ def _get_track(data, attributed_to=None, **forced_values):
     else:
         if album_artists_credits:
             pass
+        elif ac := data.get("album", {}).get("artist_credit", False):
+            album_artists_credits = (
+                get_or_create_artists_credits_from_artist_credit_metadata(
+                    ac, attributed_to, from_activity_id
+                )
+            )
         elif mbid := data.get("musicbrainz_albumid", None) or album_mbid:
             try:
                 album_artists_credits = get_or_create_artists_credits_from_musicbrainz(
@@ -961,13 +974,11 @@ def get_or_create_artists_credits_from_artist_credit_metadata(
         elif "joinphrase" in ac:
             joinphrase = ac["joinphrase"]
         else:
-            joinphrase = ", "
-
-        artist_lookup = {"name": ac["artist"]["name"]}
-        if "mbid" in ac:
-            artist_lookup["mbid"] = ac["mbid"]
+            joinphrase = preferences.get("music__default_join_phrase")
+        artist_lookup = ac["artist"]
 
         credit = ac.get("credit", ac["artist"]["name"])
+
         artist_obj = get_artist(artist_lookup, attributed_to, from_activity_id)
         defaults = {
             "artist": artist_obj,
@@ -977,8 +988,8 @@ def get_or_create_artists_credits_from_artist_credit_metadata(
         }
         query = Q(credit=credit) & Q(joinphrase=joinphrase) & Q(index=0)
 
-        if "mbid" in ac:
-            query &= Q(artist__mbid=ac["mbid"])
+        if "mbid" in ac["artist"]:
+            query &= Q(artist__mbid=ac["artist"]["mbid"])
         artist_credit, created = get_best_candidate_or_create(
             models.ArtistCredit, query, defaults, ["artist", "joinphrase"]
         )

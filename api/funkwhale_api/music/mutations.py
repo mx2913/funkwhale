@@ -126,7 +126,6 @@ class TrackMutationSerializer(CoverMutation, TagMutation, DescriptionMutation):
         return serialized_relations
 
     def post_apply(self, obj, validated_data):
-        # to do : channel, only allow channel tracks to have one artist credit to avoid errors ?
         channel = (
             obj.artist_credit.all()[0].artist.get_channel()
             if len(obj.artist_credit.all()) == 1

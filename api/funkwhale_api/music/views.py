@@ -245,9 +245,7 @@ class AlbumViewSet(
 
     def create(self, request, *args, **kwargs):
         request_data = request.data.copy()
-        artist_data = request_data.pop("artist")
-        if not artist_data:
-            return Response({}, status=400)
+
         if mbid := request_data.get("musicbrainz_albumid", None) or request_data.get(
             "mbid", None
         ):
@@ -258,24 +256,39 @@ class AlbumViewSet(
                 from_activity_id=None,
             )
         else:
-            try:
-                artist = models.Artist.objects.get(pk=artist_data)
-            except models.Artist.DoesNotExist:
-                return Response({"détail": "artist id not found"}, status=400)
+            artist_data = request_data.pop("artist", False)
+            artist_credit_data = request_data.pop("artist_credit", False)
+            if not artist_data and not artist_credit_data:
+                return Response({}, status=400)
+            if artist_data:
+                try:
+                    artist = models.Artist.objects.get(pk=artist_data)
+                except models.Artist.DoesNotExist:
+                    return Response({"détail": "artist id not found"}, status=400)
 
-            artist_credit, created = models.ArtistCredit.objects.get_or_create(
-                **{
-                    "artist": artist,
-                    "credit": artist.name,
-                    "joinphrase": "",
-                    "index": 0,
-                }
-            )
+                artist_credit, created = models.ArtistCredit.objects.get_or_create(
+                    **{
+                        "artist": artist,
+                        "credit": artist.name,
+                        "joinphrase": "",
+                        "index": 0,
+                    }
+                )
+            elif artist_credit_data:
+                try:
+                    artist_credit = models.ArtistCredit.objects.get(
+                        pk=artist_credit_data
+                    )
+                except models.ArtistCredit.DoesNotExist:
+                    return Response(
+                        {"détail": "artist_credit id not found"}, status=400
+                    )
+
         request_data["artist_credit"] = [artist_credit.pk]
         serializer = self.get_serializer(data=request_data)
         serializer.is_valid(raise_exception=True)
-        instance = self.perform_create(serializer)
-        return Response(instance, status=204)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=204)
 
 
 class LibraryViewSet(

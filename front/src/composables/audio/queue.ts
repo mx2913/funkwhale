@@ -113,7 +113,6 @@ export const useQueue = createGlobalState(() => {
 
       track.uploads = uploads
     }
-    // # to do : const hideArtist = () => { artistCreditId?
 
     return {
       id: track.id,

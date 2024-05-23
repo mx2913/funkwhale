@@ -31,7 +31,7 @@ def test_artist_list_serializer(api_request, factories, logged_in_api_client):
     artist = track.artist_credit.all()[0].artist
     request = api_request.get("/")
     qs = artist.__class__.objects.with_albums().annotate(
-        tracks_count=Count("artist_credit__tracks")
+        _tracks_count=Count("artist_credit__tracks")
     )
     serializer = serializers.ArtistWithAlbumsSerializer(
         qs, many=True, context={"request": request}
@@ -1416,7 +1416,7 @@ def test_channel_owner_can_create_album(factories, logged_in_api_client):
     url = reverse("api:v1:albums-list")
 
     data = {
-        "artist_credit": serializers.ArtistCreditSerializer(ac).data,
+        "artist_credit": ac.pk,
         "cover": attachment.uuid,
         "title": "Hello world",
         "release_date": "2019-01-02",
@@ -1426,10 +1426,9 @@ def test_channel_owner_can_create_album(factories, logged_in_api_client):
 
     response = logged_in_api_client.post(url, data, format="json")
 
-    assert response.status_code == 201
+    assert response.status_code == 204
 
-    album = channel.artist.albums.get(title=data["title"])
-
+    album = channel.artist.artist_credit.albums().get(title=data["title"])
     assert (
         response.data
         == serializers.AlbumSerializer(album, context={"description": True}).data
@@ -1601,7 +1600,6 @@ def test_fs_import_cancel_already_running(
     assert cache.get("fs-import:status") == "canceled"
 
 
-# to do : not working doing strange things but ui test works
 def test_album_create_artist_credit(factories, logged_in_api_client):
     artist = factories["music.Artist"]()
     factories["audio.Channel"](artist=artist)

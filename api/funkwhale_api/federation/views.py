@@ -406,9 +406,6 @@ class MusicArtistCreditViewSet(
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        if utils.should_redirect_ap_to_html(request.headers.get("accept")):
-            return redirect_to_html(instance.get_absolute_url())
-
         serializer = self.get_serializer(instance)
         return response.Response(serializer.data)
 

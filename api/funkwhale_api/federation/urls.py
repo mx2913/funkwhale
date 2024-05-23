@@ -19,7 +19,7 @@ music_router.register(r"uploads", views.MusicUploadViewSet, "uploads")
 music_router.register(r"artists", views.MusicArtistViewSet, "artists")
 # need to be here since the federation namespace need to be used by federation_utils.full_url()
 # we cannot have two namespace with the same name.
-music_router.register(r"artistcredit", views.MusicArtistCreditViewSet, "artistcredit")
+music_router.register(r"x   ", views.MusicArtistCreditViewSet, "artistcredit")
 music_router.register(r"albums", views.MusicAlbumViewSet, "albums")
 music_router.register(r"tracks", views.MusicTrackViewSet, "tracks")
 

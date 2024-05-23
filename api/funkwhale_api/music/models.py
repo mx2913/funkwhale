@@ -619,14 +619,6 @@ class Track(APIModelMixin):
     def get_artists_list(self):
         return [ac.artist for ac in self.artist_credit.all()]
 
-    def save(self, **kwargs):
-        super().save(**kwargs)
-        # to do :
-        # try:
-        #     self.artist_credit.all()[0]
-        # except IndexError:
-        #     self.artist_credit.set(self.album.artist_credit.all())
-
     @property
     def full_name(self):
         try:
@@ -672,13 +664,12 @@ class Track(APIModelMixin):
         if not track_data:
             raise ValueError("No track found matching this ID")
 
-        # to do : support multiple artist_credit in get_or_create_from_release
         artists_credits = []
         for i, ac in enumerate(track_data["recording"]["artist-credit"]):
             try:
                 ac_mbid = ac["artist"]["id"]
             except TypeError:
-                # it's probably a string, like "feat." -> why should not be a string be the id..
+                # it's probably a string, like "feat.". This is not used but can be helpfull
                 continue
 
             track_artist = Artist.get_or_create_from_api(ac_mbid)[0]

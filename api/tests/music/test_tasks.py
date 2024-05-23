@@ -1853,7 +1853,6 @@ def test_can_parse_multiples_artist(raw_string, expected):
     assert artist_credit == expected
 
 
-# to do : what if an artist create a remix of a track ? artist_credit and title will match...
 def test_get_best_candidate_or_create_find_artist_credit(factories):
     track = factories["music.Track"]()
     query = Q(

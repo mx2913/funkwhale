@@ -88,29 +88,18 @@ class LibraryFilterSet(filters.FilterSet):
         return qs
 
 
-# to do : filter artist credit
+# to do : filter artist credit ->  artistcreditviewset. Is it really needed ?
 class ArtistCreditFilter(moderation_filters.HiddenContentFilterSet):
     q = fields.SearchFilter(search_fields=["credit"])
+    artist = filters.CharFilter(field_name="_", method="filter_artist")
 
-    credited_artist = filters.CharFilter(field_name="_", method="filter_artist_credit")
-
-    # def filter_artist_credit(self, queryset, name, value):
-    #     return models.ArtistCredit.objects.all().filter(artist=value)
-    # library = filters.CharFilter(field_name="_", method="filter_library")
-
-    def filter_artist_credit(self, queryset, name, value):
+    def filter_artist(self, queryset, name, value):
         if not value:
             return queryset
 
-        actor = utils.get_actor_from_request(self.request)
         artist = models.Artist.objects.get(pk=value)
         if not artist:
             return queryset.none()
-
-        # uploads = models.Upload.objects.filter(track__artist_credit__artist=artist)
-
-        # uploads = uploads.playable_by(actor)
-        # ids = uploads.values_list(self.Meta.artist_credit_filter_field, flat=True)
         qs = queryset.filter(artist_credit__artist=artist)
 
         return qs

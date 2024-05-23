@@ -813,28 +813,26 @@ def test_activity_pub_album_serializer_to_ap_channel_artist(factories):
     )
 
     serializer = serializers.AlbumSerializer(album)
-    # assert serializer.data["artist_credit"] == [
-    #     {"type": channel.actor.type, "id": channel.actor.fid}
-    # ]
     assert serializer.data["artist_credit"] == [
         {
             "type": "ArtistCredit",
-            "id": album.artist_credit.id,
+            "id": album.artist_credit.all()[0].fid,
             "artist": {
                 "type": "Artist",
-                "id": album.artist_credit.all()[0].artist.id,
-                "name": "Alexander Parker",
-                "published": "2024-03-26T20:13:17.809789+00:00",
-                "musicbrainzId": "f0249e91-fd84-477c-adf3-c7e58dc5e9b5",
-                "attributedTo": "https://warren.biz/users/rwalsh977",
+                "id": album.artist_credit.all()[0].artist.fid,
+                "name": album.artist_credit.all()[0].artist.name,
+                "published": album.artist_credit.all()[
+                    0
+                ].artist.creation_date.isoformat(),
+                "musicbrainzId": str(album.artist_credit.all()[0].artist.mbid),
+                "attributedTo": album.artist_credit.all()[0].artist.attributed_to.fid,
                 "tag": [],
                 "image": None,
             },
             "joinphrase": "",
-            "name": "Alexander Parker",
+            "name": album.artist_credit.all()[0].credit,
             "index": None,
-            "published": "2024-03-26T20:13:17.813552+00:00",
-            "musicbrainzId": None,
+            "published": album.artist_credit.all()[0].creation_date.isoformat(),
         }
     ]
 
@@ -1122,7 +1120,7 @@ def test_activity_pub_track_serializer_from_ap(factories, r_mock, mocker):
     track = serializer.save()
     album = track.album
     artist = track.artist_credit.all()[0].artist
-    album_artist = track.album.artist
+    album_artist = track.album.artist_credit.all()[0].artist
 
     assert track.from_activity == activity
     assert track.fid == data["id"]
@@ -1150,8 +1148,8 @@ def test_activity_pub_track_serializer_from_ap(factories, r_mock, mocker):
     assert album.description.content_type == data["album"]["mediaType"]
 
     assert artist.from_activity == activity
-    assert artist.name == data["artist"][0]["artist"]["name"]
-    assert artist.fid == data["artist"][0]["artist"]["id"]
+    assert artist.name == data["artist_credit"][0]["artist"]["name"]
+    assert artist.fid == data["artist_credit"][0]["artist"]["id"]
     assert str(artist.mbid) == data["artist_credit"][0]["artist"]["musicbrainzId"]
     assert artist.creation_date == published
     assert artist.attributed_to == artist_attributed_to
@@ -2054,7 +2052,6 @@ def test_artist_credit_serializer_to_ap(factories):
         "joinphrase": ac.joinphrase,
         "name": ac.credit,
         "index": ac.index,
-        "musicbrainzId": ac.mbid,
         "published": ac.creation_date.isoformat(),
     }
 
