@@ -592,7 +592,6 @@ def inbox_delete_album(payload, context):
 @outbox.register({"type": "Delete", "object.type": "Album"})
 def outbox_delete_album(context):
     album = context["album"]
-    # album channels only have one artist but we might want to enhance this in the future
     actor = (
         album.artist_credit.all()[0].artist.channel.actor
         if album.artist_credit.all()[0].artist.get_channel()

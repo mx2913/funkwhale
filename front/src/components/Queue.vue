@@ -267,7 +267,7 @@ if (!isWebGLSupported) {
                       v-for="ac in currentTrack.artistCredit"
                       :key="ac.artist.id"
                     >
-                      {{ ac.credit ?? $t('components.audio.Player.meta.unknownArtist') }}
+                      {{ ac.credit ?? $t('components.Queue.meta.unknownArtist') }}
                       <span>{{ ac.joinphrase }}</span>
                     </div>
                     <span class="symbol hyphen middle" />
@@ -296,7 +296,7 @@ if (!isWebGLSupported) {
                       :to="{name: 'library.artists.detail', params: {id: ac.artist.id }}"
                       @click.stop.prevent=""
                     >
-                      {{ ac.credit ?? $t('components.audio.Player.meta.unknownArtist') }}
+                      {{ ac.credit ?? $t('components.Queue.meta.unknownArtist') }}
                     </router-link>
                     <span>{{ ac.joinphrase }}</span>
                   </template>

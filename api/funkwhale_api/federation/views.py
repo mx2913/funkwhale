@@ -291,20 +291,20 @@ class MusicLibraryViewSet(
             .prefetch_related(
                 Prefetch(
                     "track",
-                    queryset=music_models.Track.objects.prefetch_related(
-                        "album__artist_credit__artist__attributed_to",
-                        "artist_credit__artist__attributed_to",
-                        "artist_credit__artist__attachment_cover",
+                    queryset=music_models.Track.objects.select_related(
                         "attachment_cover",
                         "album__attributed_to",
                         "attributed_to",
                         "album__attachment_cover",
-                        "album__artist_credit__artist__attachment_cover",
                         "description",
                     ).prefetch_related(
+                        "album__artist_credit__artist__attributed_to",
+                        "artist_credit__artist__attributed_to",
+                        "artist_credit__artist__attachment_cover",
                         "tagged_items__tag",
                         "album__tagged_items__tag",
                         "album__artist_credit__artist__tagged_items__tag",
+                        "album__artist_credit__artist__attachment_cover",
                         "artist_credit__artist__tagged_items__tag",
                         "artist_credit__artist__description",
                         "album__description",
@@ -333,15 +333,20 @@ class MusicUploadViewSet(
 ):
     authentication_classes = [authentication.SignatureAuthentication]
     renderer_classes = renderers.get_ap_renderers()
-    queryset = music_models.Upload.objects.local().prefetch_related(
-        "library__actor",
-        "track__artist_credit__artist",
-        "track__album__artist_credit__artist",
-        "track__description",
-        "track__album__attachment_cover",
-        "track__album__artist_credit__artist__attachment_cover",
-        "track__artist_credit__artist__attachment_cover",
-        "track__attachment_cover",
+    queryset = (
+        music_models.Upload.objects.local()
+        .select_related(
+            "library__actor",
+            "track__description",
+            "track__album__attachment_cover",
+            "track__attachment_cover",
+        )
+        .prefetch_related(
+            "track__artist_credit__artist",
+            "track__album__artist_credit__artist",
+            "track__album__artist_credit__artist__attachment_cover",
+            "track__artist_credit__artist__attachment_cover",
+        )
     )
     serializer_class = serializers.UploadSerializer
     lookup_field = "uuid"
@@ -415,10 +420,15 @@ class MusicAlbumViewSet(
 ):
     authentication_classes = [authentication.SignatureAuthentication]
     renderer_classes = renderers.get_ap_renderers()
-    queryset = music_models.Album.objects.local().prefetch_related(
-        "artist_credit__artist__description",
-        "description",
-        "artist_credit__artist__attachment_cover",
+    queryset = (
+        music_models.Album.objects.local()
+        .prefetch_related(
+            "artist_credit__artist__description",
+            "artist_credit__artist__attachment_cover",
+        )
+        .select_related(
+            "description",
+        )
     )
     serializer_class = serializers.AlbumSerializer
     lookup_field = "uuid"
@@ -437,16 +447,22 @@ class MusicTrackViewSet(
 ):
     authentication_classes = [authentication.SignatureAuthentication]
     renderer_classes = renderers.get_ap_renderers()
-    queryset = music_models.Track.objects.local().prefetch_related(
-        "album__artist_credit__artist",
-        "album__description",
-        "artist_credit__artist__description",
-        "description",
-        "attachment_cover",
-        "album__artist_credit__artist__attachment_cover",
-        "album__attachment_cover",
-        "artist_credit__artist__attachment_cover",
+    queryset = (
+        music_models.Track.objects.local()
+        .select_related(
+            "album__description",
+            "description",
+            "attachment_cover",
+            "album__attachment_cover",
+        )
+        .prefetch_related(
+            "album__artist_credit__artist",
+            "artist_credit__artist__description",
+            "artist_credit__artist__attachment_cover",
+            "album__artist_credit__artist__attachment_cover",
+        )
     )
+
     serializer_class = serializers.TrackSerializer
     lookup_field = "uuid"
 

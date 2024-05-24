@@ -329,8 +329,6 @@ class Command(BaseCommand):
                 else:
                     value = picked_objects[picked_pks[i]]
                 if dependency["field"] == "artist_credit":
-                    # Direct assignment to the forward side of a many-to-many set is prohibited.
-                    # Use artist_credit.set() instead.
                     obj.save()
                     obj.artist_credit.set([value])
                     saved_obj.append(obj)
@@ -341,12 +339,6 @@ class Command(BaseCommand):
                 return saved_obj
 
         if not handler:
-            try:
-                objects = row["model"].objects.bulk_create(
-                    objects, batch_size=BATCH_SIZE
-                )
-            except Exception as e:
-                breakpoint()
-                raise e
+            objects = row["model"].objects.bulk_create(objects, batch_size=BATCH_SIZE)
         results[row["id"]] = objects
         return objects

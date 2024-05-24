@@ -839,7 +839,7 @@ def check_upload(stdout, upload):
                 "  Cannot update track metadata, track belongs to someone else"
             )
         else:
-            track = models.Track.objects.select_related(
+            track = models.Track.objects.prefetch_related(
                 "artist_credit__artist", "album__artist_credit__artist"
             ).get(pk=upload.track_id)
             try:

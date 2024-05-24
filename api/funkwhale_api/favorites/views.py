@@ -67,9 +67,11 @@ class TrackFavoriteViewSet(
             .prefetch_related(
                 "artist_credit__artist",
                 "album__artist_credit__artist",
+            )
+            .select_related(
+                "attributed_to",
                 "album__attachment_cover",
             )
-            .select_related("attributed_to")
         )
 
         queryset = queryset.prefetch_related(Prefetch("track", queryset=tracks))

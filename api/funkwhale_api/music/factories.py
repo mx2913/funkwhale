@@ -1,7 +1,7 @@
 import os
+from urllib.parse import urlparse
 
 import factory
-
 from django.conf import settings
 
 from funkwhale_api.common import factories as common_factories
@@ -11,7 +11,6 @@ from funkwhale_api.music import licenses
 from funkwhale_api.tags import factories as tags_factories
 from funkwhale_api.users import factories as users_factories
 
-from urllib.parse import urlparse
 
 SAMPLES_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),

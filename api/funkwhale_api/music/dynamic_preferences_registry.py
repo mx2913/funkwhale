@@ -60,13 +60,13 @@ class JoinPhrases(types.StringPreference):
         "Used by the artist parser to create multiples artists in case the metadata "
         "is a single string. BE WARNED, changing this can break the parser in unexpected ways. "
         "It's MANDATORY to escape dots and to put doted variation before because the first match is used "
-        "(example : `|feat\.|ft\.|feat|` and not `feat|feat\.|ft\.|feat`.). ORDER is really important "
+        r"(example : `|feat\.|ft\.|feat|` and not `feat|feat\.|ft\.|feat`.). ORDER is really important "
         "(says an anarchist). To avoid artist duplication and wrongly parsed artist data "
         "it's recommended to tag files with Musicbrainz Picard."
     )
     default = (
-        "featuring | feat\. | ft\. | feat | with | and | & | vs\. | \| | \||\| |\|| , | ,|, |,|"
-        " ; | ;|; |;| versus | vs | \( | \(|\( |\(| Remix\) |Remix\) | Remix\)| \) | \)|\) |\)| x |"
+        r"featuring | feat\. | ft\. | feat | with | and | & | vs\. | \| | \||\| |\|| , | ,|, |,|"
+        r" ; | ;|; |;| versus | vs | \( | \(|\( |\(| Remix\) |Remix\) | Remix\)| \) | \)|\) |\)| x |"
         "accompanied by | alongside | together with | collaboration with | featuring special guest |"
         "joined by | joined with | featuring guest | introducing | accompanied by | performed by | performed with |"
         "performed by and | and | featuring | with | presenting | accompanied by | and special guest |"

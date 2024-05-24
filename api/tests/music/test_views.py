@@ -7,7 +7,7 @@ import uuid
 
 import magic
 import pytest
-from django.db.models import Prefetch, Count
+from django.db.models import Count, Prefetch
 from django.urls import reverse
 from django.utils import timezone
 

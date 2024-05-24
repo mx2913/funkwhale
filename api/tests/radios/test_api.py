@@ -1,6 +1,6 @@
-import pytest
 from itertools import chain
 
+import pytest
 from django.urls import reverse
 
 from funkwhale_api.music.serializers import TrackSerializer

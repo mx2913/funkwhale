@@ -24,8 +24,9 @@ from django.urls import reverse
 from django.utils import timezone
 
 from funkwhale_api import musicbrainz
-from funkwhale_api.common import fields, preferences, session
+from funkwhale_api.common import fields
 from funkwhale_api.common import models as common_models
+from funkwhale_api.common import fields, preferences, session
 from funkwhale_api.common import utils as common_utils
 from funkwhale_api.federation import models as federation_models
 from funkwhale_api.federation import utils as federation_utils
