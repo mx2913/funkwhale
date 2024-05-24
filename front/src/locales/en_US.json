@@ -9,7 +9,7 @@
         "funkwhale": "Funkwhale is a community-driven project that lets you listen and share music and audio within a decentralized, open network.",
         "publicContent": "Listen to public albums and playlists shared on this pod.",
         "quota": "Users on this pod also get {quota} of free storage to upload their own content!",
-        "signup": "Sign up now to keep a track of your favorites, create playlists, discover new content and much more!"
+        "signup": "Sign up now to keep track of your favorites, create playlists, discover new content, and much more!"
       },
       "header": {
         "aboutPod": "About this pod",
@@ -95,7 +95,7 @@
           "paragraph2": "Funkwhale is free and developed by a friendly community of volunteers."
         },
         "quota": "Users on this pod also get {quota} of free storage to upload their own content!",
-        "signup": "Sign up now to keep a track of your favorites, create playlists, discover new content and much more!"
+        "signup": "Sign up now to keep track of your favorites, create playlists, discover new content, and much more!"
       },
       "header": {
         "about": "About this Funkwhale pod",
@@ -3215,6 +3215,28 @@
     }
   },
   "views": {
+    "ChooseInstance": {
+      "button": {
+        "submit": "Submit"
+      },
+      "header": {
+        "chooseInstance": "Choose your instance",
+        "failure": "It is not possible to connect to the given URL",
+        "suggestions": "Suggested choices"
+      },
+      "help": {
+        "notFunkwhaleServer": "The given address is not a Funkwhale server",
+        "selectPod": "To continue, please select the Funkwhale instance you want to connect to. Enter the address directly, or select one of the suggested choices.",
+        "serverDown": "The server might be down"
+      },
+      "label": {
+        "url": "Instance URL"
+      },
+      "message": {
+        "currentConnection": "You are currently connected to { 0 }. If you continue, you will be disconnected from your current instance and all your local data will be deleted.",
+        "newUrl": "You are now using the Funkwhale instance at {url}"
+      }
+    },
     "Notifications": {
       "button": {
         "read": "Mark all as read",
@@ -4587,28 +4609,6 @@
           }
         },
         "title": "Radio"
-      }
-    },
-    "ChooseInstance": {
-      "button": {
-        "submit": "Submit"
-      },
-      "header": {
-        "chooseInstance": "Choose your instance",
-        "failure": "It is not possible to connect to the given URL",
-        "suggestions": "Suggested choices"
-      },
-      "help": {
-        "notFunkwhaleServer": "The given address is not a Funkwhale server",
-        "selectPod": "To continue, please select the Funkwhale instance you want to connect to. Enter the address directly, or select one of the suggested choices.",
-        "serverDown": "The server might be down"
-      },
-      "label": {
-        "url": "Instance URL"
-      },
-      "message": {
-        "currentConnection": "You are currently connected to { 0 }. If you continue, you will be disconnected from your current instance and all your local data will be deleted.",
-        "newUrl": "You are now using the Funkwhale instance at {url}"
       }
     }
   }
