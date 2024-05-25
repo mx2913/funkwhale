@@ -10,6 +10,7 @@ import { computed, ref } from 'vue'
 import usePlayOptions from '~/composables/audio/usePlayOptions'
 import useReport from '~/composables/moderation/useReport'
 import { useVModel } from '@vueuse/core'
+import { generateTrackCreditString, getArtistCoverUrl } from '~/utils/utils'
 
 interface Events {
   (e: 'update:show', value: boolean): void
@@ -64,17 +65,17 @@ const favoriteButton = computed(() => isFavorite.value
   : t('components.audio.podcast.Modal.button.addToFavorites')
 )
 
-const trackDetailsButton = computed(() => props.track.artist?.content_category === 'podcast'
+const trackDetailsButton = computed(() => props.track.artist_credit?.[0].artist.content_category === 'podcast'
   ? t('components.audio.podcast.Modal.button.episodeDetails')
   : t('components.audio.podcast.Modal.button.trackDetails')
 )
 
-const albumDetailsButton = computed(() => props.track.artist?.content_category === 'podcast'
+const albumDetailsButton = computed(() => props.track.artist_credit?.[0].artist?.content_category === 'podcast'
   ? t('components.audio.podcast.Modal.button.seriesDetails')
   : t('components.audio.podcast.Modal.button.albumDetails')
 )
 
-const artistDetailsButton = computed(() => props.track.artist?.content_category === 'podcast'
+const artistDetailsButton = computed(() => props.track.artist_credit?.[0].artist?.content_category === 'podcast'
   ? t('components.audio.podcast.Modal.button.channelDetails')
   : t('components.audio.podcast.Modal.button.artistDetails')
 )
@@ -118,11 +119,9 @@ const labels = computed(() => ({
           class="ui centered image"
         >
         <img
-          v-else-if="track.artist?.cover"
+          v-else-if="track.artist_credit"
           v-lazy="
-            $store.getters['instance/absoluteUrl'](
-              track.artist.cover.urls.medium_square_crop
-            )
+            getArtistCoverUrl(track.artist_credit)
           "
           alt=""
           class="ui centered image"
@@ -138,14 +137,14 @@ const labels = computed(() => ({
         {{ track.title }}
       </h3>
       <h4 class="track-modal-subtitle">
-        {{ track.artist?.name }}
+        {{ generateTrackCreditString(track) }}
       </h4>
     </div>
     <div class="ui hidden divider" />
     <div class="content">
       <div class="ui one column unstackable grid">
         <div
-          v-if="$store.state.auth.authenticated && track.artist?.content_category !== 'podcast'"
+          v-if="$store.state.auth.authenticated && track.artist_credit?.[0].artist?.content_category !== 'podcast'"
           class="row"
         >
           <div
@@ -254,20 +253,16 @@ const labels = computed(() => ({
           class="row"
         >
           <div
+            v-for="ac in track.artist_credit"
+            :key="ac.artist.id"
             class="column"
             role="button"
             :aria-label="artistDetailsButton"
-            @click.prevent.exact="
-              $router.push({
-                name: 'library.artists.detail',
-                params: { id: track.artist?.id },
-              })
-            "
+            @click.prevent.exact="$router.push({ name: 'library.artists.detail', params: { id: ac.artist.id } })"
           >
             <i class="user icon track-modal list-icon" />
-            <span class="track-modal list-item">{{
-              artistDetailsButton
-            }}</span>
+            <span class="track-modal list-item">{{ ac.artist.name }}</span>
+            <span v-if="ac.joinphrase">{{ ac.joinphrase }}</span>
           </div>
         </div>
         <div class="row">
@@ -290,7 +285,7 @@ const labels = computed(() => ({
         </div>
         <div class="ui divider" />
         <div
-          v-for="obj in getReportableObjects({ track, album: track.album, artist: track.artist })"
+          v-for="obj in getReportableObjects({ track, album: track.album, artistCredit: track.artist_credit })"
           :key="obj.target.type + obj.target.id"
           class="row"
           @click.stop.prevent="report(obj)"

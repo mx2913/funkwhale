@@ -47,8 +47,8 @@ const domain = computed(() => getDomain(track.value?.fid ?? ''))
 const publicLibraries = computed(() => libraries.value?.filter(library => library.privacy_level === 'everyone') ?? [])
 const isEmbedable = computed(() => artist.value?.channel?.actor || publicLibraries.value.length)
 const upload = computed(() => track.value?.uploads?.[0] ?? null)
-const wikipediaUrl = computed(() => `https://en.wikipedia.org/w/index.php?search=${encodeURI(`${track.value?.title ?? ''} ${track.value?.artist?.name ?? ''}`)}`)
-const discogsUrl = computed(() => `https://discogs.com/search/?type=release&title=${encodeURI(track.value?.album?.title ?? '')}&artist=${encodeURI(track.value?.artist?.name ?? '')}&title=${encodeURI(track.value?.title ?? '')}`)
+const wikipediaUrl = computed(() => `https://en.wikipedia.org/w/index.php?search=${encodeURI(`${track.value?.title ?? ''} ${track.value?.artist_credit?.[0].artist?.name ?? ''}`)}`)
+const discogsUrl = computed(() => `https://discogs.com/search/?type=release&title=${encodeURI(track.value?.album?.title ?? '')}&artist=${encodeURI(track.value?.artist_credit?.[0].artist?.name ?? '')}&title=${encodeURI(track.value?.title ?? '')}`)
 const downloadUrl = computed(() => {
   const url = store.getters['instance/absoluteUrl'](upload.value?.listen_url ?? '')
   return store.state.auth.authenticated

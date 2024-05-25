@@ -43,7 +43,7 @@ const duration = computed(() => props.entry.uploads.find(upload => upload.durati
       @click="$router.push({name: 'library.tracks.detail', params: {id: entry.id}})"
     >
     <img
-      v-else-if="entry.artist?.content_category === 'podcast' && defaultCover != undefined"
+      v-else-if="entry.artist_credit?.[0].artist.content_category === 'podcast' && defaultCover != undefined"
       v-lazy="$store.getters['instance/absoluteUrl'](defaultCover.urls.medium_square_crop)"
       class="channel-image image"
       @click="$router.push({name: 'library.tracks.detail', params: {id: entry.id}})"

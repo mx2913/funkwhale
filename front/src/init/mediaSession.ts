@@ -28,11 +28,10 @@ export const install: InitModule = ({ app }) => {
         return
       }
 
-      const { title, artistName, albumTitle, coverUrl, albumId } = track
+      const { title, albumTitle, coverUrl, albumId } = track
 
       const metadata: MediaMetadataInit = {
-        title,
-        artist: artistName
+        title
       }
 
       if (albumId !== -1) {

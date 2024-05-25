@@ -10,6 +10,7 @@ import useLogger from '~/composables/useLogger'
 import { useStore } from '~/store'
 import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { generateTrackCreditString } from '~/utils/utils'
 
 const logger = useLogger()
 const store = useStore()
@@ -24,6 +25,7 @@ router.beforeEach(() => {
 
 const playlists = computed(() => store.state.playlists.playlists)
 const track = computed(() => store.state.playlists.modalTrack)
+const trackCreditString = computed(() => generateTrackCreditString(track.value))
 
 const { t } = useI18n()
 const labels = computed(() => ({
@@ -87,7 +89,7 @@ store.dispatch('playlists/fetchOwn')
         <h2 class="ui header">
           {{ $t('components.playlists.PlaylistModal.header.addToPlaylist') }}
           <div class="ui sub header">
-            {{ $t('components.playlists.PlaylistModal.header.track', {artist: track.artist?.name, title: track.title}) }}
+            {{ $t('components.playlists.PlaylistModal.header.track', {artist: trackCreditString, title: track.title}) }}
           </div>
         </h2>
       </template>

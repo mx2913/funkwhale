@@ -1,4 +1,4 @@
-import type { Track, Artist, Album, Playlist, Library, Channel, Actor } from '~/types'
+import type { Track, Artist, Album, Playlist, Library, Channel, Actor, ArtistCredit } from '~/types'
 
 import { i18n } from '~/init/locale'
 
@@ -10,6 +10,7 @@ interface Objects {
   track?: Track | null
   album?: Album | null
   artist?: Artist | null
+  artistCredit?: ArtistCredit[] | null
   playlist?: Playlist | null
   account?: Actor | null
   library?: Library | null
@@ -30,7 +31,7 @@ interface ReportableObject {
   }
 }
 
-const getReportableObjects = ({ track, album, artist, playlist, account, library, channel }: Objects) => {
+const getReportableObjects = ({ track, album, artist, artistCredit, playlist, account, library, channel }: Objects) => {
   const reportableObjs: ReportableObject[] = []
 
   if (account) {
@@ -59,7 +60,7 @@ const getReportableObjects = ({ track, album, artist, playlist, account, library
     })
 
     album = track.album
-    artist = track.artist
+    artistCredit = track.artist_credit
   }
 
   if (album) {
@@ -75,7 +76,7 @@ const getReportableObjects = ({ track, album, artist, playlist, account, library
     })
 
     if (!artist) {
-      artist = album.artist
+      artistCredit = album.artist_credit
     }
   }
 
@@ -90,17 +91,19 @@ const getReportableObjects = ({ track, album, artist, playlist, account, library
         typeLabel: t('composables.moderation.useReport.channel.typeLabel')
       }
     })
-  } else if (artist) {
-    reportableObjs.push({
-      label: t('composables.moderation.useReport.artist.label'),
-      target: {
-        type: 'artist',
-        id: artist.id,
-        label: artist.name,
-        _obj: artist,
-        typeLabel: t('composables.moderation.useReport.artist.typeLabel')
-      }
-    })
+  } else if (artistCredit) {
+    for (const ac of artistCredit) {
+      reportableObjs.push({
+        label: t('composables.moderation.useReport.artist.label'),
+        target: {
+          type: 'artist',
+          id: ac.artist.id,
+          label: ac.artist.name,
+          _obj: artist,
+          typeLabel: t('composables.moderation.useReport.artist.typeLabel')
+        }
+      })
+    }
   }
 
   if (playlist) {

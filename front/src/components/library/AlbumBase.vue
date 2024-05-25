@@ -344,7 +344,7 @@ const remove = async () => {
               :paginate-by="paginateBy"
               :total-tracks="totalTracks"
               :is-serie="isSerie"
-              :artist_credit="artistCredit"
+              :artist-credit="artistCredit"
               :object="object"
               :is-loading-tracks="isLoadingTracks"
               object-type="album"
