@@ -84,7 +84,7 @@ class DefaultJoinPhrases(types.StringPreference):
     verbose_name = "Default Join Phrase"
     help_text = (
         "The default join phrase used by artist parser"
-        "For exemple: `artists = [artist1, Artist2]` will be displayed has : artist1.name, artis2.name"
+        "For example: `artists = [artist1, Artist2]` will be displayed has : artist1.name, artis2.name"
         "Changing this value will not update already parsed artists"
     )
     default = ", "

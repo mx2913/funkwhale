@@ -242,6 +242,7 @@ class AlbumViewSet(
         )
         models.Album.objects.filter(pk=instance.pk).delete()
 
+    @transaction.atomic
     def create(self, request, *args, **kwargs):
         request_data = request.data.copy()
 

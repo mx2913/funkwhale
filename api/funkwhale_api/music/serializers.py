@@ -841,6 +841,7 @@ class AlbumCreateSerializer(serializers.Serializer):
     def to_representation(self, obj):
         return AlbumSerializer(obj, context=self.context).data
 
+    @transaction.atomic
     def create(self, validated_data):
         instance = models.Album.objects.create(
             attributed_to=self.context["user"].actor,

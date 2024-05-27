@@ -1523,6 +1523,7 @@ class TrackSerializer(MusicEntitySerializer):
             data["@context"] = jsonld.get_default_context()
         return data
 
+    @transaction.atomic
     def create(self, validated_data):
         from funkwhale_api.music import tasks as music_tasks
 
