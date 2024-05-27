@@ -116,7 +116,7 @@ class Migration(migrations.Migration):
                 to="music.artistcredit",
             ),
         ),
-        migrations.RunPython(set_artist_credit, skip),
+        migrations.RunPython(set_all_artists_credit, skip),
         migrations.RemoveField(
             model_name="album",
             name="artist",
