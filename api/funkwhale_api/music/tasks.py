@@ -623,7 +623,7 @@ def _get_track(data, attributed_to=None, **forced_values):
             except ResponseError as e:
                 logger.error(
                     f"Couldn't get Musicbrainz information for track with {track_mbid} mbid  \
-                        because of the following exeption : {e}. Plz try again later."
+                        because of the following exception : {e}. Plz try again later."
                 )
 
         elif album_artists := getter(data, "album", "artists", default=None):
@@ -802,7 +802,7 @@ def get_or_create_artists_credits_from_musicbrainz(
     except ResponseError as e:
         raise UploadImportError(
             code=f"Couldn't get Musicbrainz information for {mb_obj_type} with {track_mbid} mbid  \
-            because of the following exeption : {e}"
+            because of the following exception : {e}"
         )
 
     artists_credits = []

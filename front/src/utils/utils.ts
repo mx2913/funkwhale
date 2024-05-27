@@ -1,4 +1,4 @@
-import type { Track, Album, ArtistCredit } from '~/types'
+import type { Track, Album, ArtistCredit, QueueItemSource } from '~/types'
 import { useStore } from '~/store'
 
 const store = useStore()
@@ -15,10 +15,26 @@ export function generateTrackCreditString (track: Track | Album | null): string 
   return artistCredits.join()
 }
 
-export function getArtistCoverUrl (artistCredit: ArtistCredit[]): string {
-  for (let i = 1; i < artistCredit.length; i++) {
-    if (artistCredit[i].artist.cover) {
-      return store.getters['instance/absoluteUrl'](artistCredit[i].artist.cover.urls.medium_square_crop)
+export function generateTrackCreditStringFromQueue (track: QueueItemSource | null): string | null {
+  if (!track || !track.artistCredit || track.artistCredit.length === 0) {
+    return null
+  }
+
+  const artistCredits = track.artistCredit.map((ac: ArtistCredit) => {
+    return ac.artist.name + (ac.joinphrase ? ` ${ac.joinphrase}` : '')
+  })
+
+  return artistCredits.join()
+}
+
+export function getArtistCoverUrl (artistCredit: ArtistCredit[]): string | undefined {
+  for (let i = 0; i < artistCredit.length; i++) {
+    const cover = artistCredit[i]?.artist?.cover
+    const mediumSquareCrop = cover?.urls?.medium_square_crop
+
+    if (mediumSquareCrop) {
+      return store.getters['instance/absoluteUrl'](mediumSquareCrop)
     }
   }
+  return undefined
 }

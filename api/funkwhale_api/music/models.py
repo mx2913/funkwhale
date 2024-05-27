@@ -670,7 +670,7 @@ class Track(APIModelMixin):
             try:
                 ac_mbid = ac["artist"]["id"]
             except TypeError:
-                # it's probably a string, like "feat.". This is not used but can be helpfull
+                # it's probably a string, like "feat.". This is not used but can be helpful
                 continue
 
             track_artist = Artist.get_or_create_from_api(ac_mbid)[0]

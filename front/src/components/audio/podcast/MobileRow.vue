@@ -82,7 +82,7 @@ const actionsButtonLabel = computed(() => t('components.audio.podcast.MobileRow.
         class="ui artist-track mini image"
       >
       <img
-        v-else-if="track.artist_credit"
+        v-else-if="track.artist_credit && track.artist_credit[0].artist.cover"
         v-lazy="getArtistCoverUrl(track.artist_credit)"
         alt=""
         class="ui artist-track mini image"

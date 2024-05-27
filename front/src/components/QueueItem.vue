@@ -2,6 +2,7 @@
 import type { QueueItemSource } from '~/types'
 
 import time from '~/utils/time'
+import { generateTrackCreditStringFromQueue } from '~/utils/utils'
 
 interface Events {
   (e: 'play', index: number): void
@@ -43,7 +44,7 @@ defineProps<Props>()
       >
         <strong>{{ source.title }}</strong><br>
         <span>
-          {{ source.artistName }}
+          {{ generateTrackCreditStringFromQueue(source) }}
         </span>
       </button>
     </div>

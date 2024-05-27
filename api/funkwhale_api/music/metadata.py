@@ -499,8 +499,8 @@ class ArtistField(serializers.Field):
 
         if (
             self.context.get("strict", True)
-            and not data.get("artists", False)
-            and not data.get("names", False)
+            and not data.get("artists", [])
+            and not data.get("names", [])
         ):
             raise serializers.ValidationError("This field is required.")
 

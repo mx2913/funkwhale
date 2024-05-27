@@ -119,7 +119,7 @@ const labels = computed(() => ({
           class="ui centered image"
         >
         <img
-          v-else-if="track.artist_credit"
+          v-else-if="track.artist_credit && track.artist_credit[0].artist.cover"
           v-lazy="
             getArtistCoverUrl(track.artist_credit)
           "

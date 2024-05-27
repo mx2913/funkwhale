@@ -11,7 +11,6 @@ from funkwhale_api.music import licenses
 from funkwhale_api.tags import factories as tags_factories
 from funkwhale_api.users import factories as users_factories
 
-
 SAMPLES_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
     "tests",
