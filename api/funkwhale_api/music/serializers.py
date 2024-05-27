@@ -651,7 +651,7 @@ class OembedSerializer(serializers.Serializer):
             data["description"] = track.full_name
             data["author_name"] = track.get_artist_credit_string
             data["height"] = 150
-            # here we take the first artist since oembed standart do not allow a list of url
+            # here we take the first artist since oembed standard do not allow a list of url
             data["author_url"] = federation_utils.full_url(
                 common_utils.spa_reverse(
                     "library_artist",

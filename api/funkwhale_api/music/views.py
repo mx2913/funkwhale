@@ -4,7 +4,6 @@ import logging
 import urllib.parse
 
 import django.db.utils
-
 import requests.exceptions
 from django.conf import settings
 from django.core.cache import cache
