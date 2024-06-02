@@ -1,5 +1,6 @@
 import django_filters
 from django import forms
+from django.db.models.functions import Collate
 from django.db.models import Q
 from django_filters import rest_framework as filters
 
@@ -369,6 +370,13 @@ class ManageTagFilterSet(filters.FilterSet):
     class Meta:
         model = tags_models.Tag
         fields = []
+
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .annotate(tag_deterministic=Collate("name", "und-x-icu"))
+        )
 
 
 class ManageReportFilterSet(filters.FilterSet):

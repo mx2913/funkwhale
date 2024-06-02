@@ -506,6 +506,7 @@ def truncate(v, length):
 
 
 def _get_track(data, attributed_to=None, **forced_values):
+    sync_mb_tag = preferences.get("music__sync_musicbrainz_tags")
     track_uuid = getter(data, "funkwhale", "track", "uuid")
 
     if track_uuid:
@@ -642,6 +643,10 @@ def _get_track(data, attributed_to=None, **forced_values):
                 common_utils.attach_file(
                     album, "attachment_cover", album_data.get("cover_data")
                 )
+
+            if sync_mb_tag and album_mbid:
+                tags_tasks.sync_fw_item_tag_with_musicbrainz_tags(album)
+
         else:
             album = None
     # get / create track
@@ -724,10 +729,14 @@ def _get_track(data, attributed_to=None, **forced_values):
         common_utils.attach_content(track, "description", description)
         common_utils.attach_file(track, "attachment_cover", cover_data)
 
+    if sync_mb_tag and track_mbid:
+        tags_tasks.sync_fw_item_tag_with_musicbrainz_tags(track)
+
     return track
 
 
 def get_artist(artist_data, attributed_to, from_activity_id):
+    sync_mb_tag = preferences.get("music__sync_musicbrainz_tags")
     artist_mbid = artist_data.get("mbid", None)
     artist_fid = artist_data.get("fid", None)
     artist_name = artist_data["name"]
@@ -759,6 +768,9 @@ def get_artist(artist_data, attributed_to, from_activity_id):
         common_utils.attach_file(
             artist, "attachment_cover", artist_data.get("cover_data")
         )
+    if sync_mb_tag and artist_mbid:
+        tags_tasks.sync_fw_item_tag_with_musicbrainz_tags(artist)
+
     return artist
 
 

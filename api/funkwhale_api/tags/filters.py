@@ -8,7 +8,7 @@ from . import models
 
 
 class TagFilter(filters.FilterSet):
-    q = fields.SearchFilter(search_fields=["name"])
+    q = fields.SearchFilter(search_fields=["tag_deterministic"])
     ordering = django_filters.OrderingFilter(
         fields=(
             ("name", "name"),
