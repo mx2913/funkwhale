@@ -1,9 +1,10 @@
 import collections
 import logging
-import requests
 import time
 
+import requests
 from django.contrib.contenttypes.models import ContentType
+
 from funkwhale_api import musicbrainz
 from funkwhale_api.taskapp import celery
 

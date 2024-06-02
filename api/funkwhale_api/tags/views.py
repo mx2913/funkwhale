@@ -1,7 +1,7 @@
 import django_filters.rest_framework
-from django.db.models.functions import Collate
 
 from django.db.models import functions
+from django.db.models.functions import Collate
 from rest_framework import viewsets
 
 from funkwhale_api.users.oauth import permissions as oauth_permissions

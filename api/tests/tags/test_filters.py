@@ -1,6 +1,6 @@
-from funkwhale_api.tags import filters, models
-
 from django.db.models.functions import Collate
+
+from funkwhale_api.tags import filters, models
 
 
 def test_filter_search_tag(factories, queryset_equal_list):
