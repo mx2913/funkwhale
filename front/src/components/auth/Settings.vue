@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { BackendError, Application, PrivacyLevel } from '~/types'
-import type { $ElementType } from 'utility-types'
 
 import axios from 'axios'
 import $ from 'jquery'
@@ -21,7 +20,7 @@ const SETTINGS_ORDER: FieldId[] = ['summary', 'privacy_level']
 
 type Field = { id: 'summary', type: 'content', value: { text: string, content_type: 'text/markdown' } }
   | { id: 'privacy_level', type: 'dropdown', choices: PrivacyLevel[], value: string }
-type FieldId = $ElementType<Field, 'id'>
+type FieldId = Field['id']
 
 interface Settings {
   success: boolean
@@ -274,7 +273,7 @@ fetchOwnedApps()
     class="main pusher"
   >
     <div class="ui vertical stripe segment">
-      <section class="ui text container">
+      <section class="container ui text">
         <h2 class="ui header">
           {{ $t('components.auth.Settings.header.accountSettings') }}
         </h2>
@@ -344,8 +343,8 @@ fetchOwnedApps()
           </button>
         </form>
       </section>
-      <section class="ui text container">
-        <div class="ui hidden divider" />
+      <section class="container ui text">
+        <div class="hidden ui divider" />
         <h2 class="ui header">
           {{ $t('components.auth.Settings.header.avatar') }}
         </h2>
@@ -378,8 +377,8 @@ fetchOwnedApps()
         </div>
       </section>
 
-      <section class="ui text container">
-        <div class="ui hidden divider" />
+      <section class="container ui text">
+        <div class="hidden ui divider" />
         <h2 class="ui header">
           {{ $t('components.auth.Settings.header.changePassword') }}
         </h2>
@@ -452,15 +451,15 @@ fetchOwnedApps()
             </template>
           </dangerous-button>
         </form>
-        <div class="ui hidden divider" />
+        <div class="hidden ui divider" />
         <subsonic-token-form />
       </section>
 
       <section
         id="content-filters"
-        class="ui text container"
+        class="container ui text"
       >
-        <div class="ui hidden divider" />
+        <div class="hidden ui divider" />
         <h2 class="ui header">
           <i class="eye slash outline icon" />
           <div class="content">
@@ -481,7 +480,7 @@ fetchOwnedApps()
         <h3 class="ui header">
           {{ $t('components.auth.Settings.header.hiddenArtists') }}
         </h3>
-        <table class="ui compact very basic unstackable table">
+        <table class="table ui compact very basic unstackable">
           <thead>
             <tr>
               <th>
@@ -520,9 +519,9 @@ fetchOwnedApps()
       </section>
       <section
         id="grants"
-        class="ui text container"
+        class="container ui text"
       >
-        <div class="ui hidden divider" />
+        <div class="hidden ui divider" />
         <h2 class="ui header">
           <i class="open lock icon" />
           <div class="content">
@@ -541,7 +540,7 @@ fetchOwnedApps()
         </button>
         <table
           v-if="apps.length > 0"
-          class="ui compact very basic unstackable table"
+          class="table ui compact very basic unstackable"
         >
           <thead>
             <tr>
@@ -600,9 +599,9 @@ fetchOwnedApps()
       </section>
       <section
         id="apps"
-        class="ui text container"
+        class="container ui text"
       >
-        <div class="ui hidden divider" />
+        <div class="hidden ui divider" />
         <h2 class="ui header">
           <i class="code icon" />
           <div class="content">
@@ -620,7 +619,7 @@ fetchOwnedApps()
         </router-link>
         <table
           v-if="ownedApps.length > 0"
-          class="ui compact very basic unstackable table"
+          class="table ui compact very basic unstackable"
         >
           <thead>
             <tr>
@@ -694,9 +693,9 @@ fetchOwnedApps()
 
       <section
         id="plugins"
-        class="ui text container"
+        class="container ui text"
       >
-        <div class="ui hidden divider" />
+        <div class="hidden ui divider" />
         <h2 class="ui header">
           <i class="code icon" />
           <div class="content">
@@ -713,8 +712,8 @@ fetchOwnedApps()
           {{ $t('components.auth.Settings.link.managePlugins') }}
         </router-link>
       </section>
-      <section class="ui text container">
-        <div class="ui hidden divider" />
+      <section class="container ui text">
+        <div class="hidden ui divider" />
         <h2 class="ui header">
           <i class="comment icon" />
           <div class="content">
@@ -773,8 +772,8 @@ fetchOwnedApps()
           </button>
         </form>
       </section>
-      <section class="ui text container">
-        <div class="ui hidden divider" />
+      <section class="container ui text">
+        <div class="hidden ui divider" />
         <h2 class="ui header">
           <i class="trash icon" />
           <div class="content">

@@ -131,6 +131,7 @@ export default (props: PlayOptionsProps) => {
 
   const el = useCurrentElement()
   const enqueue = async () => {
+    if (!(el.value instanceof HTMLElement)) return
     jQuery(el.value).find('.ui.dropdown').dropdown('hide')
 
     const tracks = await getPlayableTracks()
@@ -139,6 +140,7 @@ export default (props: PlayOptionsProps) => {
   }
 
   const enqueueNext = async (next = false) => {
+    if (!(el.value instanceof HTMLElement)) return
     jQuery(el.value).find('.ui.dropdown').dropdown('hide')
 
     const tracks = await getPlayableTracks()
@@ -157,6 +159,7 @@ export default (props: PlayOptionsProps) => {
   const replacePlay = async (index?: number) => {
     await clear()
 
+    if (!(el.value instanceof HTMLElement)) return
     jQuery(el.value).find('.ui.dropdown').dropdown('hide')
 
     const tracksToPlay = await getPlayableTracks()

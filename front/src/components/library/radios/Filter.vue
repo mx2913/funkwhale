@@ -87,6 +87,7 @@ onMounted(() => {
       }
     }
 
+    if (!(el.value instanceof HTMLElement)) return
     $(el.value).find(selector).dropdown(settings)
   }
 })

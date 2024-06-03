@@ -83,6 +83,7 @@ watchEffect(async () => {
 const list = ref()
 const el = useCurrentElement()
 const scrollToCurrent = (behavior: ScrollBehavior = 'smooth') => {
+  if (!(el.value instanceof HTMLElement)) return
   const item = el.value?.querySelector('.queue-item.active')
   item?.scrollIntoView({
     behavior,
@@ -275,7 +276,7 @@ if (!isWebGLSupported) {
           <h1 class="ui header">
             <div class="content ellipsis">
               <router-link
-                class="small header discrete link track"
+                class="header discrete link track small"
                 :to="{name: 'library.tracks.detail', params: {id: currentTrack.id }}"
               >
                 {{ currentTrack.title }}
@@ -301,7 +302,7 @@ if (!isWebGLSupported) {
           </h1>
           <div
             v-if="currentTrack && errored"
-            class="ui small warning message"
+            class="ui warning message small"
           >
             <h3 class="header">
               {{ $t('components.Queue.header.failure') }}
@@ -316,7 +317,7 @@ if (!isWebGLSupported) {
           </div>
           <div
             v-else-if="currentSound && !currentSound.playable"
-            class="ui small warning message"
+            class="ui warning message small"
           >
             <h3 class="header">
               {{ $t('components.Queue.header.noSources') }}

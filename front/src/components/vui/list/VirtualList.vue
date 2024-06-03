@@ -61,11 +61,11 @@ const onTouchmove = (event: TouchEvent) => {
   }
 }
 
-document.addEventListener('touchcancel', (event: TouchEvent) => {
+document.addEventListener('touchcancel', (_event: TouchEvent) => {
   cleanup()
 })
 
-const reorder = (event: MouseEvent | TouchEvent) => {
+const reorder = (_event: MouseEvent | TouchEvent) => {
   if (draggedItem.value) {
     const from = draggedItem.value.index
     let to = hoveredIndex.value
@@ -155,6 +155,7 @@ const { resume, pause } = useRafFn(() => {
   const now = +new Date()
   const direction = scrollDirection.value
 
+  if (!(el.value instanceof HTMLElement)) return
   if (direction && el.value?.children[0] && !isTouch.value) {
     el.value.children[0].scrollTop += 200 / (now - lastDate) * (direction === 'up' ? -1 : 1)
   }
