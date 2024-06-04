@@ -1,3 +1,5 @@
+from itertools import chain
+
 import pytest
 from django.urls import reverse
 
@@ -20,9 +22,11 @@ def test_can_list_config_options(logged_in_api_client):
 def test_can_validate_config(logged_in_api_client, factories):
     artist1 = factories["music.Artist"]()
     artist2 = factories["music.Artist"]()
-    factories["music.Track"].create_batch(3, artist=artist1)
-    factories["music.Track"].create_batch(3, artist=artist2)
-    candidates = artist1.tracks.order_by("pk")
+    factories["music.Track"].create_batch(3, artist_credit__artist=artist1)
+    factories["music.Track"].create_batch(3, artist_credit__artist=artist2)
+    candidates = list(
+        chain(*[ac.tracks.order_by("pk") for ac in artist1.artist_credit.all()])
+    )
     f = {"filters": [{"type": "artist", "ids": [artist1.pk]}]}
     url = reverse("api:v1:radios:radios-validate")
     response = logged_in_api_client.post(url, f, format="json")
@@ -32,7 +36,7 @@ def test_can_validate_config(logged_in_api_client, factories):
     payload = response.data
 
     expected = {
-        "count": candidates.count(),
+        "count": len(candidates),
         "sample": TrackSerializer(candidates, many=True).data,
     }
 

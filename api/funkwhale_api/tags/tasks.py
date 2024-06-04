@@ -14,19 +14,21 @@ def get_tags_from_foreign_key(
     """
     data = {}
     objs = foreign_key_model.objects.filter(
-        **{f"{foreign_key_attr}__pk__in": ids}
+        **{f"artist_credit__{foreign_key_attr}__pk__in": ids}
     ).order_by("-id")
-    objs = objs.only("id", f"{foreign_key_attr}_id").prefetch_related(tagged_items_attr)
-
+    objs = objs.only("id", f"artist_credit__{foreign_key_attr}_id").prefetch_related(
+        tagged_items_attr
+    )
     for obj in objs.iterator():
-        # loop on all objects, store the objs tags + counter on the corresponding foreign key
-        row_data = data.setdefault(
-            getattr(obj, f"{foreign_key_attr}_id"),
-            {"total_objs": 0, "tags": []},
-        )
-        row_data["total_objs"] += 1
-        for ti in getattr(obj, tagged_items_attr).all():
-            row_data["tags"].append(ti.tag_id)
+        for ac in obj.artist_credit.all():
+            # loop on all objects, store the objs tags + counter on the corresponding foreign key
+            row_data = data.setdefault(
+                getattr(ac, f"{foreign_key_attr}_id"),
+                {"total_objs": 0, "tags": []},
+            )
+            row_data["total_objs"] += 1
+            for ti in getattr(obj, tagged_items_attr).all():
+                row_data["tags"].append(ti.tag_id)
 
     # now, keep only tags that are present on all objects, i.e tags where the count
     # matches total_objs

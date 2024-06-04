@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Artist, Album, Library, Track } from '~/types'
+import type { ArtistCredit, Album, Library, Track } from '~/types'
 
 import LibraryWidget from '~/components/federation/LibraryWidget.vue'
 import ChannelEntries from '~/components/audio/ChannelEntries.vue'
@@ -17,7 +17,7 @@ interface Props {
 
   isLoadingTracks: boolean
   isSerie: boolean
-  artist: Artist
+  artistCredit: ArtistCredit[]
   paginateBy: number
   totalTracks: number
 }
@@ -66,10 +66,10 @@ const paginatedDiscs = computed(() => props.object.tracks.slice(props.paginateBy
     </h2>
 
     <channel-entries
-      v-if="artist.channel && isSerie"
+      v-if="artistCredit && artistCredit[0].artist.channel && isSerie"
       :is-podcast="isSerie"
       :limit="50"
-      :filters="{channel: artist.channel.uuid, album: object.id, ordering: '-creation_date'}"
+      :filters="{channel: artistCredit[0].artist.channel.uuid, album: object.id, ordering: '-creation_date'}"
     />
 
     <template v-else>
@@ -123,7 +123,7 @@ const paginatedDiscs = computed(() => props.object.tracks.slice(props.paginateBy
       </div>
     </template>
 
-    <template v-if="!artist.channel && !isSerie">
+    <template v-if="artistCredit && !artistCredit[0]?.artist.channel && !isSerie">
       <h2>
         {{ $t('components.library.AlbumDetail.header.libraries') }}
       </h2>

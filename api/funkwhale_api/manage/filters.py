@@ -96,12 +96,15 @@ class ManageAlbumFilterSet(filters.FilterSet):
             search_fields={
                 "title": {"to": "title"},
                 "fid": {"to": "fid"},
-                "artist": {"to": "artist__name"},
+                "artist": {"to": "artist_credit__artist__name"},
                 "mbid": {"to": "mbid"},
             },
             filter_fields={
                 "uuid": {"to": "uuid"},
-                "artist_id": {"to": "artist_id", "field": forms.IntegerField()},
+                "artist_id": {
+                    "to": "artist_credit__artist_id",
+                    "field": forms.IntegerField(),
+                },
                 "domain": {
                     "handler": lambda v: federation_utils.get_domain_query_from_url(v)
                 },
@@ -117,7 +120,7 @@ class ManageAlbumFilterSet(filters.FilterSet):
 
     class Meta:
         model = music_models.Album
-        fields = ["title", "mbid", "fid", "artist"]
+        fields = ["title", "mbid", "fid", "artist_credit"]
 
 
 class ManageTrackFilterSet(filters.FilterSet):
@@ -127,9 +130,9 @@ class ManageTrackFilterSet(filters.FilterSet):
                 "title": {"to": "title"},
                 "fid": {"to": "fid"},
                 "mbid": {"to": "mbid"},
-                "artist": {"to": "artist__name"},
+                "artist": {"to": "artist_credit__artist__name"},
                 "album": {"to": "album__title"},
-                "album_artist": {"to": "album__artist__name"},
+                "album_artist": {"to": "album__artist_credit__artist__name"},
                 "copyright": {"to": "copyright"},
             },
             filter_fields={
@@ -156,7 +159,7 @@ class ManageTrackFilterSet(filters.FilterSet):
 
     class Meta:
         model = music_models.Track
-        fields = ["title", "mbid", "fid", "artist", "album", "license"]
+        fields = ["title", "mbid", "fid", "artist_credit", "album", "license"]
 
 
 class ManageLibraryFilterSet(filters.FilterSet):

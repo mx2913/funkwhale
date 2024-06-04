@@ -1,6 +1,8 @@
 import os
+from urllib.parse import urlparse
 
 import factory
+from django.conf import settings
 
 from funkwhale_api.common import factories as common_factories
 from funkwhale_api.factories import NoUpdateOnCreate, registry
@@ -62,7 +64,7 @@ class ArtistFactory(
     name = factory.Faker("name")
     mbid = factory.Faker("uuid4")
     fid = factory.Faker("federation_url")
-    playable = playable_factory("track__album__artist")
+    playable = playable_factory("track__album__artist_credit__artist")
 
     class Meta:
         model = "music.Artist"
@@ -78,13 +80,22 @@ class ArtistFactory(
 
 
 @registry.register
+class ArtistCreditFactory(factory.django.DjangoModelFactory):
+    artist = factory.SubFactory(ArtistFactory)
+    credit = factory.LazyAttribute(lambda obj: obj.artist.name)
+    joinphrase = ""
+
+    class Meta:
+        model = "music.ArtistCredit"
+
+
+@registry.register
 class AlbumFactory(
     tags_factories.TaggableFactory, NoUpdateOnCreate, factory.django.DjangoModelFactory
 ):
     title = factory.Faker("sentence", nb_words=3)
     mbid = factory.Faker("uuid4")
     release_date = factory.Faker("date_object")
-    artist = factory.SubFactory(ArtistFactory)
     release_group_id = factory.Faker("uuid4")
     fid = factory.Faker("federation_url")
     playable = playable_factory("track__album")
@@ -96,13 +107,21 @@ class AlbumFactory(
         attributed = factory.Trait(
             attributed_to=factory.SubFactory(federation_factories.ActorFactory)
         )
-
         local = factory.Trait(
-            fid=factory.Faker("federation_url", local=True), artist__local=True
+            fid=factory.Faker("federation_url", local=True),
         )
         with_cover = factory.Trait(
             attachment_cover=factory.SubFactory(common_factories.AttachmentFactory)
         )
+
+    @factory.post_generation
+    def artist_credit(self, create, extracted, **kwargs):
+        if urlparse(self.fid).netloc == settings.FEDERATION_HOSTNAME:
+            kwargs["artist__local"] = True
+        if extracted:
+            self.artist_credit.add(extracted)
+        if create:
+            self.artist_credit.add(ArtistCreditFactory(**kwargs))
 
 
 @registry.register
@@ -132,22 +151,29 @@ class TrackFactory(
         )
 
     @factory.post_generation
-    def artist(self, created, extracted, **kwargs):
+    def artist_credit(self, created, extracted, **kwargs):
         """
         A bit intricated, because we want to be able to specify a different
         track artist with a fallback on album artist if nothing is specified.
 
         And handle cases where build or build_batch are used (so no db calls)
         """
+        # needed to get a primary key on the track and album objects. The primary key is needed for many_to_many
+        if self.album:
+            self.album.save()
+
+        if not self.pk:
+            self.save()
+
         if extracted:
-            self.artist = extracted
+            self.artist_credit.add(extracted)
         elif kwargs:
             if created:
-                self.artist = ArtistFactory(**kwargs)
+                self.artist_credit.add(ArtistCreditFactory(**kwargs))
             else:
-                self.artist = ArtistFactory.build(**kwargs)
+                self.artist_credit.add(ArtistCreditFactory.build(**kwargs))
         elif self.album:
-            self.artist = self.album.artist
+            self.artist_credit.set(self.album.artist_credit.all())
         if created:
             self.save()
 
@@ -194,7 +220,9 @@ class UploadFactory(NoUpdateOnCreate, factory.django.DjangoModelFactory):
         from funkwhale_api.audio import factories as audio_factories
 
         audio_factories.ChannelFactory(
-            library=self.library, artist=self.track.artist, **kwargs
+            library=self.library,
+            artist=self.track.artist_credit.all()[0].artist,
+            **kwargs
         )
 
 

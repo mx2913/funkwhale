@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Track, Artist, Album, Playlist, Library, Channel, Actor } from '~/types'
+import type { Track, ArtistCredit, Album, Playlist, Library, Channel, Actor } from '~/types'
 import type { PlayOptionsProps } from '~/composables/audio/usePlayOptions'
 
 import { computed, ref } from 'vue'
@@ -26,7 +26,7 @@ interface Props extends PlayOptionsProps {
   // TODO(wvffle): Remove after https://github.com/vuejs/core/pull/4512 is merged
   tracks: Track[]
   isPlayable?: boolean
-  artist?: Artist | null
+  artistCredit?: ArtistCredit[] | null
   album?: Album | null
   playlist?: Playlist | null
   library?: Library | null
@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   showPosition: false,
   displayActions: true,
 
-  artist: null,
+  artistCredit: null,
   album: null,
   playlist: null,
   library: null,
@@ -130,8 +130,8 @@ const hover = ref(false)
         class="ui artist-track mini image"
       >
       <img
-        v-else-if="track.artist?.cover?.urls.original"
-        v-lazy="$store.getters['instance/absoluteUrl'](track.artist.cover.urls.medium_square_crop) "
+        v-else-if="track.artist_credit && track.artist_credit[0].artist.cover?.urls.original"
+        v-lazy="$store.getters['instance/absoluteUrl'](track.artist_credit[0].artist.cover.urls.medium_square_crop) "
         alt=""
         class="ui artist-track mini image"
       >
@@ -166,15 +166,21 @@ const hover = ref(false)
       v-if="showArtist"
       class="content ellipsis left floated column"
     >
-      <router-link
-        class="artist link"
-        :to="{
-          name: 'library.artists.detail',
-          params: { id: track.artist?.id },
-        }"
+      <template
+        v-for="ac in track.artist_credit"
+        :key="ac.artist.id"
       >
-        {{ track.artist?.name }}
-      </router-link>
+        <router-link
+          class="artist link"
+          :to="{
+            name: 'library.artists.detail',
+            params: { id: ac.artist?.id },
+          }"
+        >
+          {{ ac.credit }}
+        </router-link>
+        <span>{{ ac.joinphrase }}</span>
+      </template>
     </div>
     <div
       v-if="$store.state.auth.authenticated"

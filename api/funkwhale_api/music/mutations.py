@@ -126,7 +126,11 @@ class TrackMutationSerializer(CoverMutation, TagMutation, DescriptionMutation):
         return serialized_relations
 
     def post_apply(self, obj, validated_data):
-        channel = obj.artist.get_channel()
+        channel = (
+            obj.artist_credit.all()[0].artist.get_channel()
+            if len(obj.artist_credit.all()) == 1
+            else None
+        )
         if channel:
             upload = channel.library.uploads.filter(track=obj).first()
             if upload:

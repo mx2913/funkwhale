@@ -278,7 +278,9 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         detail=False, methods=["get", "post"], url_name="get_album", url_path="getAlbum"
     )
     @find_object(
-        music_models.Album.objects.with_duration().select_related("artist"),
+        music_models.Album.objects.with_duration().prefetch_related(
+            "artist_credit__artist"
+        ),
         filter_playable=True,
     )
     def get_album(self, request, *args, **kwargs):
@@ -292,7 +294,9 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     def stream(self, request, *args, **kwargs):
         data = request.GET or request.POST
         track = kwargs.pop("obj")
-        queryset = track.uploads.select_related("track__album__artist", "track__artist")
+        queryset = track.uploads.prefetch_related(
+            "track__album__artist_credit__artist", "track__artist_credit__artist"
+        )
         sorted_uploads = music_serializers.sort_uploads_for_listen(queryset)
 
         if not sorted_uploads:
@@ -416,9 +420,11 @@ class SubsonicViewSet(viewsets.GenericViewSet):
             queryset.playable_by(actor)
             .filter(
                 Q(tagged_items__tag__name=genre)
-                | Q(artist__tagged_items__tag__name=genre)
-                | Q(album__artist__tagged_items__tag__name=genre)
-                | Q(album__tagged_items__tag__name=genre)
+                | Q(artist_credit__artist__tagged_items__tag__name=genre)
+                | Q(
+                    artist_credit__albums__artist_credit__artist__tagged_items__tag__name=genre
+                )
+                | Q(artist_credit__albums__tagged_items__tag__name=genre)
             )
             .prefetch_related("uploads")
             .distinct()
@@ -457,7 +463,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
             )
             .with_tracks_count()
             .with_duration()
-            .order_by("artist__name")
+            .order_by("artist_credit__artist__name")
         )
         data = request.GET or request.POST
         filterset = filters.AlbumList2FilterSet(data, queryset=queryset)
@@ -480,7 +486,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
             genre = data.get("genre")
             queryset = queryset.filter(
                 Q(tagged_items__tag__name=genre)
-                | Q(artist__tagged_items__tag__name=genre)
+                | Q(artist_credit__artist__tagged_items__tag__name=genre)
             )
         elif type == "byYear":
             try:
@@ -549,7 +555,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
                 "queryset": (
                     music_models.Album.objects.with_duration()
                     .with_tracks_count()
-                    .select_related("artist")
+                    .prefetch_related("artist_credit__artist")
                 ),
                 "serializer": serializers.get_album_list2_data,
             },
@@ -559,7 +565,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
                 "queryset": (
                     music_models.Track.objects.prefetch_related(
                         "uploads"
-                    ).select_related("album__artist")
+                    ).prefetch_related("artist_credit__albums__artist_credit__artist")
                 ),
                 "serializer": serializers.get_song_list_data,
             },

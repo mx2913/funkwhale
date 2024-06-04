@@ -39,8 +39,10 @@ def test_can_create_album_from_api(artists, albums, mocker, db):
     assert album.mbid, data["id"]
     assert album.title, "Hypnotize"
     assert album.release_date, datetime.date(2005, 1, 1)
-    assert album.artist.name, "System of a Down"
-    assert album.artist.mbid, data["artist-credit"][0]["artist"]["id"]
+    assert album.artist_credit.all()[0].artist.name, "System of a Down"
+    assert album.artist_credit.all()[0].artist.mbid, data["artist-credit"][0]["artist"][
+        "id"
+    ]
     assert album.fid == federation_utils.full_url(
         f"/federation/music/albums/{album.uuid}"
     )
@@ -64,9 +66,12 @@ def test_can_create_track_from_api(artists, albums, tracks, mocker, db):
     assert int(data["ext:score"]) == 100
     assert data["id"] == "9968a9d6-8d92-4051-8f76-674e157b6eed"
     assert track.mbid == data["id"]
-    assert track.artist.pk is not None
-    assert str(track.artist.mbid) == "62c3befb-6366-4585-b256-809472333801"
-    assert track.artist.name == "Adhesive Wombat"
+    assert track.artist_credit.all()[0].artist.pk is not None
+    assert (
+        str(track.artist_credit.all()[0].artist.mbid)
+        == "62c3befb-6366-4585-b256-809472333801"
+    )
+    assert track.artist_credit.all()[0].artist.name == "Adhesive Wombat"
     assert str(track.album.mbid) == "a50d2a81-2a50-484d-9cb4-b9f6833f583e"
     assert track.album.title == "Marsupial Madness"
     assert track.fid == federation_utils.full_url(
@@ -114,9 +119,12 @@ def test_can_get_or_create_track_from_api(artists, albums, tracks, mocker, db):
     assert int(data["ext:score"]) == 100
     assert data["id"] == "9968a9d6-8d92-4051-8f76-674e157b6eed"
     assert track.mbid == data["id"]
-    assert track.artist.pk is not None
-    assert str(track.artist.mbid) == "62c3befb-6366-4585-b256-809472333801"
-    assert track.artist.name == "Adhesive Wombat"
+    assert track.artist_credit.all()[0].artist.pk is not None
+    assert (
+        str(track.artist_credit.all()[0].artist.mbid)
+        == "62c3befb-6366-4585-b256-809472333801"
+    )
+    assert track.artist_credit.all()[0].artist.name == "Adhesive Wombat"
 
     track2, created = models.Track.get_or_create_from_api(mbid=data["id"])
     assert not created

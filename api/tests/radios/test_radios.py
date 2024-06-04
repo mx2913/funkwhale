@@ -91,7 +91,9 @@ def test_can_get_choices_for_favorites_radio(factories):
 
 def test_can_get_choices_for_custom_radio(factories):
     artist = factories["music.Artist"]()
-    files = factories["music.Upload"].create_batch(5, track__artist=artist)
+    files = factories["music.Upload"].create_batch(
+        5, track__artist_credit__artist=artist
+    )
     tracks = [f.track for f in files]
     factories["music.Upload"].create_batch(5)
 
@@ -208,7 +210,9 @@ def test_can_start_artist_radio(factories):
     user = factories["users.User"]()
     artist = factories["music.Artist"]()
     factories["music.Upload"].create_batch(5)
-    good_files = factories["music.Upload"].create_batch(5, track__artist=artist)
+    good_files = factories["music.Upload"].create_batch(
+        5, track__artist_credit__artist=artist
+    )
     good_tracks = [f.track for f in good_files]
 
     radio = radios.ArtistRadio()
@@ -224,7 +228,7 @@ def test_can_start_tag_radio(factories):
     good_tracks = [
         factories["music.Track"](set_tags=[tag.name]),
         factories["music.Track"](album__set_tags=[tag.name]),
-        factories["music.Track"](album__artist__set_tags=[tag.name]),
+        factories["music.Track"](album__artist_credit__artist__set_tags=[tag.name]),
     ]
     factories["music.Track"].create_batch(3, set_tags=["notrock"])
 
@@ -358,7 +362,7 @@ def test_session_radio_get_queryset_ignore_filtered_track_artist(
     factories, queryset_equal_list
 ):
     cf = factories["moderation.UserFilter"](for_artist=True)
-    factories["music.Track"](artist=cf.target_artist)
+    factories["music.Track"](artist_credit__artist=cf.target_artist)
     valid_track = factories["music.Track"]()
     radio = radios.RandomRadio()
     radio.start_session(user=cf.user)
@@ -370,7 +374,7 @@ def test_session_radio_get_queryset_ignore_filtered_track_album_artist(
     factories, queryset_equal_list
 ):
     cf = factories["moderation.UserFilter"](for_artist=True)
-    factories["music.Track"](album__artist=cf.target_artist)
+    factories["music.Track"](album__artist_credit__artist=cf.target_artist)
     valid_track = factories["music.Track"]()
     radio = radios.RandomRadio()
     radio.start_session(user=cf.user)
@@ -382,9 +386,11 @@ def test_get_choices_for_custom_radio_exclude_artist(factories):
     included_artist = factories["music.Artist"]()
     excluded_artist = factories["music.Artist"]()
     included_uploads = factories["music.Upload"].create_batch(
-        5, track__artist=included_artist
+        5, track__artist_credit__artist=included_artist
     )
-    factories["music.Upload"].create_batch(5, track__artist=excluded_artist)
+    factories["music.Upload"].create_batch(
+        5, track__artist_credit__artist=excluded_artist
+    )
 
     session = factories["radios.CustomRadioSession"](
         custom_radio__config=[
@@ -422,7 +428,9 @@ def test_can_start_custom_multiple_radio_from_api(api_client, factories):
     map_filters_to_type = {"tags": "names", "artists": "ids", "playlists": "names"}
     for key, value in map_filters_to_type.items():
         attr = value[:-1]
-        track_filter_key = [getattr(a.artist, attr) for a in tracks]
+        track_filter_key = [
+            getattr(a.artist_credit.all()[0].artist, attr) for a in tracks
+        ]
         config = {"filters": [{"type": key, value: track_filter_key}]}
         response = api_client.post(
             url,

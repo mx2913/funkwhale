@@ -1,7 +1,7 @@
-import type { Track, Upload } from '~/types'
+import type { ArtistCredit, Track, Upload } from '~/types'
 
 import { createGlobalState, useStorage, useTimeAgo, whenever } from '@vueuse/core'
-import { computed, ref, shallowReactive, watchEffect } from 'vue'
+import { toRaw, computed, ref, shallowReactive, watchEffect } from 'vue'
 import { shuffle as shuffleArray, sum } from 'lodash-es'
 import { useClamp } from '@vueuse/math'
 import { useStore } from '~/store'
@@ -26,7 +26,7 @@ export interface QueueTrackSource {
 export interface QueueTrack {
   id: number
   title: string
-  artistName?: string
+  artistCredit?: ArtistCredit[]
   albumTitle?: string
   position?: number
 
@@ -117,13 +117,17 @@ export const useQueue = createGlobalState(() => {
     return {
       id: track.id,
       title: track.title,
-      artistName: track.artist?.name,
+      artistCredit: track.artist_credit,
       albumTitle: track.album?.title,
       position: track.position,
-      artistId: track.artist?.id ?? -1,
+      artistId: (track.artist_credit && track.artist_credit[0] && track.artist_credit[0].artist.id) ?? -1,
       albumId: track.album?.id ?? -1,
-      coverUrl: (track.cover?.urls ?? track.album?.cover?.urls ?? track.artist?.cover?.urls)?.original
-        ?? new URL('../../assets/audio/default-cover.png', import.meta.url).href,
+      coverUrl: (
+        (track.cover?.urls)
+        || (track.album?.cover?.urls)
+        || ((track.artist_credit && track.artist_credit[0] && track.artist_credit[0].artist && track.artist_credit[0].artist.cover?.urls))
+        || {}
+      )?.original ?? new URL('../../assets/audio/default-cover.png', import.meta.url).href,
       sources: track.uploads.map(upload => ({
         uuid: upload.uuid,
         duration: upload.duration,
@@ -136,6 +140,20 @@ export const useQueue = createGlobalState(() => {
 
   const isTrack = (track: Track | boolean): track is Track => typeof track !== 'boolean'
 
+  function deepToRaw (obj: any): any {
+    if (Array.isArray(obj)) {
+      return obj.map(item => deepToRaw(toRaw(item)))
+    } else if (typeof obj === 'object' && obj !== null) {
+      const rawObj = toRaw(obj)
+      const plainObj: any = {}
+      for (const key in rawObj) {
+        plainObj[key] = deepToRaw(rawObj[key])
+      }
+      return plainObj
+    }
+    return obj
+  }
+
   // Adding tracks
   async function enqueueAt(index: number, ...newTracks: Track[]): Promise<void>
   // NOTE: Only last boolean of newTracks is considered as skipFetch
@@ -147,9 +165,10 @@ export const useQueue = createGlobalState(() => {
     }
 
     const queueTracks = await Promise.all(newTracks.filter(isTrack).map((track) => createQueueTrack(track, skipFetch)))
-    await setMany(queueTracks.map(track => [track.id, track]))
+    const plainQueueTracks = queueTracks.map(track => deepToRaw(track))
+    await setMany(plainQueueTracks.map(track => [track.id, track]))
 
-    const ids = queueTracks.map(track => track.id)
+    const ids = plainQueueTracks.map(track => track.id)
 
     if (index >= tracks.value.length) {
       // we simply push to the end

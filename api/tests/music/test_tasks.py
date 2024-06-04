@@ -4,6 +4,7 @@ import uuid
 
 import pytest
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.utils import timezone
 
 from funkwhale_api.common import utils as common_utils
@@ -43,12 +44,12 @@ def test_can_create_track_from_file_metadata_no_mbid(db, mocker):
     assert track.album.title == metadata["album"]["title"]
     assert track.album.mbid is None
     assert track.album.release_date == datetime.date(2012, 8, 15)
-    assert track.artist.name == metadata["artists"][0]["name"]
-    assert track.artist.mbid is None
-    assert track.artist.attributed_to is None
+    assert track.artist_credit.all()[0].artist.name == metadata["artists"][0]["name"]
+    assert track.artist_credit.all()[0].artist.mbid is None
+    assert track.artist_credit.all()[0].artist.attributed_to is None
     match_license.assert_called_once_with(metadata["license"], metadata["copyright"])
     add_tags.assert_any_call(track, *metadata["tags"])
-    add_tags.assert_any_call(track.artist, *[])
+    add_tags.assert_any_call(track.artist_credit.all()[0].artist, *[])
     add_tags.assert_any_call(track.album, *[])
 
 
@@ -75,12 +76,12 @@ def test_can_create_track_from_file_metadata_attributed_to(factories, mocker):
     assert track.album.mbid is None
     assert track.album.release_date == datetime.date(2012, 8, 15)
     assert track.album.attributed_to == actor
-    assert track.artist.name == metadata["artists"][0]["name"]
-    assert track.artist.mbid is None
-    assert track.artist.attributed_to == actor
+    assert track.artist_credit.all()[0].artist.name == metadata["artists"][0]["name"]
+    assert track.artist_credit.all()[0].artist.mbid is None
+    assert track.artist_credit.all()[0].artist.attributed_to == actor
 
 
-def test_can_create_track_from_file_metadata_featuring(factories):
+def test_can_create_track_from_file_metadata_featuring(mocker):
     metadata = {
         "title": "Whole Lotta Love",
         "position": 1,
@@ -94,12 +95,52 @@ def test_can_create_track_from_file_metadata_featuring(factories):
                 {"name": "Santana", "mbid": "9a3bf45c-347d-4630-894d-7cf3e8e0b632"}
             ],
         },
-        "artists": [{"name": "Santana feat. Chris Cornell", "mbid": None}],
+        "artists": [{"name": "Santana feat Chris Cornell", "mbid": None}],
     }
+    mb_ac = {
+        "artist-credit": [
+            {
+                "joinphrase": " feat ",
+                "artist": {
+                    "id": "9a3bf45c-347d-4630-894d-7cf3e8e0b632",
+                    "type": "Group",
+                    "name": "Santana",
+                    "sort-name": "Santana",
+                },
+            },
+            {
+                "artist": {
+                    "id": "11e46b16-2f25-4783-ab32-25250befe84a",
+                    "type": "Person",
+                    "name": "Chris Cornell",
+                    "sort-name": "Chris Cornell",
+                },
+                "joinphrase": "",
+            },
+        ]
+    }
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": "9a3bf45c-347d-4630-894d-7cf3e8e0b632",
+                    "type": "Group",
+                    "name": "Santana",
+                    "sort-name": "Santana",
+                }
+            },
+        ]
+    }
+    mocker.patch.object(
+        tasks.musicbrainz.api.recordings, "get", return_value={"recording": mb_ac}
+    )
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     track = tasks.get_track_from_import_metadata(metadata)
 
-    assert track.album.artist.name == "Santana"
-    assert track.artist.name == "Santana feat. Chris Cornell"
+    assert track.album.artist_credit.all()[0].artist.name == "Santana"
+    assert track.get_artist_credit_string == "Santana feat Chris Cornell"
 
 
 def test_can_create_track_from_file_metadata_description(factories):
@@ -128,7 +169,7 @@ def test_can_create_track_from_file_metadata_use_featuring(factories):
     }
     track = tasks.get_track_from_import_metadata(metadata)
 
-    assert track.artist.name == "Anatnas"
+    assert track.get_artist_credit_string == "Santana, Anatnas"
 
 
 def test_can_create_track_from_file_metadata_mbid(factories, mocker):
@@ -152,6 +193,61 @@ def test_can_create_track_from_file_metadata_mbid(factories, mocker):
         "mbid": "f269d497-1cc0-4ae4-a0c4-157ec7d73fcb",
         "cover_data": {"content": b"image_content", "mimetype": "image/png"},
     }
+    mb_ac = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": "9c6bddde-6228-4d9f-ad0d-03f6fcb19e13",
+                    "type": "Group",
+                    "name": "Test artist",
+                    "sort-name": "Test artist",
+                }
+            },
+        ]
+    }
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": "9c6bddde-6228-4d9f-ad0d-03f6fcb19e13",
+                    "type": "Group",
+                    "name": "Test artist",
+                    "sort-name": "Test artist",
+                }
+            },
+        ]
+    }
+    mb_ac = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": "9c6bddde-6228-4d9f-ad0d-03f6fcb19e13",
+                    "name": "Test artist",
+                },
+                "joinphrase": "",
+                "name": "Test artist",
+            }
+        ]
+    }
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": "9c6bddde-6478-4d9f-ad0d-03f6fcb19e13",
+                    "name": "Test album artist",
+                },
+                "name": "s",
+            },
+            "; ",
+        ]
+    }
+
+    mocker.patch.object(
+        tasks.musicbrainz.api.recordings, "get", return_value={"recording": mb_ac}
+    )
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
 
     track = tasks.get_track_from_import_metadata(metadata)
 
@@ -161,29 +257,68 @@ def test_can_create_track_from_file_metadata_mbid(factories, mocker):
     assert track.disc_number is None
     assert track.album.title == metadata["album"]["title"]
     assert track.album.mbid == metadata["album"]["mbid"]
-    assert track.album.artist.mbid == metadata["album"]["artists"][0]["mbid"]
-    assert track.album.artist.name == metadata["album"]["artists"][0]["name"]
+    assert (
+        str(track.album.artist_credit.all()[0].artist.mbid)
+        == metadata["album"]["artists"][0]["mbid"]
+    )
+    assert (
+        track.album.artist_credit.all()[0].artist.name
+        == metadata["album"]["artists"][0]["name"]
+    )
     assert track.album.release_date == datetime.date(2012, 8, 15)
-    assert track.artist.name == metadata["artists"][0]["name"]
-    assert track.artist.mbid == metadata["artists"][0]["mbid"]
+    assert track.artist_credit.all()[0].artist.name == metadata["artists"][0]["name"]
+    assert (
+        str(track.artist_credit.all()[0].artist.mbid) == metadata["artists"][0]["mbid"]
+    )
 
 
 def test_can_create_track_from_file_metadata_mbid_existing_album_artist(
     factories, mocker
 ):
-    artist = factories["music.Artist"]()
-    album = factories["music.Album"]()
+    artist_credit = factories["music.ArtistCredit"](joinphrase="", index=0)
+    album = factories["music.Album"](artist_credit=artist_credit)
     metadata = {
         "album": {
             "mbid": album.mbid,
             "title": "",
-            "artists": [{"name": "", "mbid": album.artist.mbid}],
+            "artists": [{"name": "", "mbid": album.artist_credit.all()[0].mbid}],
         },
         "title": "Hello",
         "position": 4,
-        "artists": [{"mbid": artist.mbid, "name": ""}],
-        "mbid": "f269d497-1cc0-4ae4-a0c4-157ec7d73fcb",
+        "artists": [{"mbid": album.artist_credit.all()[0].mbid, "name": ""}],
+        "mbid": "f269d497-1cc0-4ae4-a0c4-157ec7d73acb",
     }
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": artist_credit.artist.mbid,
+                    "name": artist_credit.artist.name,
+                },
+                "name": artist_credit.artist.name,
+            },
+            "; ",
+        ]
+    }
+    mb_ac = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": album.artist_credit.all()[0].artist.mbid,
+                    "name": "Test artist",
+                },
+                "joinphrase": "",
+                "name": album.artist_credit.all()[0].artist.name,
+            }
+        ]
+    }
+
+    mocker.patch.object(
+        tasks.musicbrainz.api.recordings, "get", return_value={"recording": mb_ac}
+    )
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
 
     track = tasks.get_track_from_import_metadata(metadata)
 
@@ -191,7 +326,7 @@ def test_can_create_track_from_file_metadata_mbid_existing_album_artist(
     assert track.mbid == metadata["mbid"]
     assert track.position == 4
     assert track.album == album
-    assert track.artist == artist
+    assert track.artist_credit.all()[0] == artist_credit
 
 
 def test_can_create_track_from_file_metadata_fid_existing_album_artist(
@@ -204,7 +339,7 @@ def test_can_create_track_from_file_metadata_fid_existing_album_artist(
         "album": {
             "title": "",
             "fid": album.fid,
-            "artists": [{"name": "", "fid": album.artist.fid}],
+            "artists": [{"name": "", "fid": album.artist_credit.all()[0].artist.fid}],
         },
         "title": "Hello",
         "position": 4,
@@ -217,22 +352,39 @@ def test_can_create_track_from_file_metadata_fid_existing_album_artist(
     assert track.fid == metadata["fid"]
     assert track.position == 4
     assert track.album == album
-    assert track.artist == artist
+    assert track.artist_credit.all()[0].artist == artist
 
 
-def test_can_create_track_from_file_metadata_distinct_release_mbid(factories):
+def test_can_create_track_from_file_metadata_distinct_release_mbid(factories, mocker):
     """Cf https://dev.funkwhale.audio/funkwhale/funkwhale/issues/772"""
-    artist = factories["music.Artist"]()
-    album = factories["music.Album"](artist=artist)
-    track = factories["music.Track"](album=album, artist=artist)
+    artist_credit = factories["music.ArtistCredit"]()
+    album = factories["music.Album"](artist_credit=artist_credit)
+    track = factories["music.Track"](album=album, artist_credit=artist_credit)
     metadata = {
-        "artists": [{"name": artist.name, "mbid": artist.mbid}],
+        "artists": [
+            {"name": artist_credit.artist.name, "mbid": artist_credit.artist.mbid}
+        ],
         "album": {"title": album.title, "mbid": str(uuid.uuid4())},
         "title": track.title,
         "position": 4,
         "fid": "https://hello",
     }
 
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": artist_credit.artist.mbid,
+                    "name": artist_credit.artist.name,
+                },
+                "name": artist_credit.artist.name,
+            },
+            "",
+        ]
+    }
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     new_track = tasks.get_track_from_import_metadata(metadata)
 
     # the returned track should be different from the existing one, and mapped
@@ -241,18 +393,34 @@ def test_can_create_track_from_file_metadata_distinct_release_mbid(factories):
     assert new_track != track
 
 
-def test_can_create_track_from_file_metadata_distinct_position(factories):
+def test_can_create_track_from_file_metadata_distinct_position(factories, mocker):
     """Cf https://dev.funkwhale.audio/funkwhale/funkwhale/issues/740"""
-    artist = factories["music.Artist"]()
-    album = factories["music.Album"](artist=artist)
-    track = factories["music.Track"](album=album, artist=artist)
+    artist_credit = factories["music.ArtistCredit"]()
+    album = factories["music.Album"](artist_credit=artist_credit)
+    track = factories["music.Track"](album=album, artist_credit=artist_credit)
     metadata = {
-        "artists": [{"name": artist.name, "mbid": artist.mbid}],
+        "artists": [
+            {"name": artist_credit.artist.name, "mbid": artist_credit.artist.mbid}
+        ],
         "album": {"title": album.title, "mbid": album.mbid},
         "title": track.title,
         "position": track.position + 1,
     }
-
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": artist_credit.artist.mbid,
+                    "name": artist_credit.artist.name,
+                },
+                "name": artist_credit.artist.name,
+            },
+            "",
+        ]
+    }
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     new_track = tasks.get_track_from_import_metadata(metadata)
 
     assert new_track != track
@@ -297,12 +465,24 @@ def test_can_create_track_from_file_metadata_federation(factories, mocker):
     assert track.album.fid == metadata["album"]["fid"]
     assert track.album.title == metadata["album"]["title"]
     assert track.album.creation_date == metadata["album"]["fdate"]
-    assert track.album.artist.fid == metadata["album"]["artists"][0]["fid"]
-    assert track.album.artist.name == metadata["album"]["artists"][0]["name"]
-    assert track.album.artist.creation_date == metadata["album"]["artists"][0]["fdate"]
-    assert track.artist.fid == metadata["artists"][0]["fid"]
-    assert track.artist.name == metadata["artists"][0]["name"]
-    assert track.artist.creation_date == metadata["artists"][0]["fdate"]
+    assert (
+        track.album.artist_credit.all()[0].artist.fid
+        == metadata["album"]["artists"][0]["fid"]
+    )
+    assert (
+        track.album.artist_credit.all()[0].artist.name
+        == metadata["album"]["artists"][0]["name"]
+    )
+    assert (
+        track.album.artist_credit.all()[0].artist.creation_date
+        == metadata["album"]["artists"][0]["fdate"]
+    )
+    assert track.artist_credit.all()[0].artist.fid == metadata["artists"][0]["fid"]
+    assert track.artist_credit.all()[0].artist.name == metadata["artists"][0]["name"]
+    assert (
+        track.artist_credit.all()[0].artist.creation_date
+        == metadata["artists"][0]["fdate"]
+    )
 
 
 def test_sort_candidates(factories):
@@ -616,22 +796,28 @@ def test_federation_audio_track_to_metadata(now, mocker):
             "attributedTo": "http://album.attributed",
             "content": "album desc",
             "mediaType": "text/plain",
-            "artists": [
+            "artist_credit": [
                 {
-                    "type": "Artist",
-                    "published": published.isoformat(),
-                    "id": "http://hello.artist",
-                    "name": "John Smith",
-                    "content": "album artist desc",
-                    "mediaType": "text/markdown",
-                    "musicbrainzId": str(uuid.uuid4()),
-                    "attributedTo": "http://album-artist.attributed",
-                    "tag": [{"type": "Hashtag", "name": "AlbumArtistTag"}],
-                    "image": {
-                        "type": "Link",
-                        "href": "http://cover.test/album-artist",
-                        "mediaType": "image/png",
+                    "artist": {
+                        "type": "Artist",
+                        "published": published.isoformat(),
+                        "id": "http://hello.artist",
+                        "name": "John Smith",
+                        "content": "album artist desc",
+                        "mediaType": "text/markdown",
+                        "musicbrainzId": str(uuid.uuid4()),
+                        "attributedTo": "http://album-artist.attributed",
+                        "tag": [{"type": "Hashtag", "name": "AlbumArtistTag"}],
+                        "image": {
+                            "type": "Link",
+                            "href": "http://cover.test/album-artist",
+                            "mediaType": "image/png",
+                        },
                     },
+                    "joinphrase": "",
+                    "id": "http://lol.fr",
+                    "published": published.isoformat(),
+                    "name": "John Smith",
                 }
             ],
             "image": {
@@ -640,22 +826,28 @@ def test_federation_audio_track_to_metadata(now, mocker):
                 "mediaType": "image/png",
             },
         },
-        "artists": [
+        "artist_credit": [
             {
-                "published": published.isoformat(),
-                "type": "Artist",
-                "id": "http://hello.trackartist",
-                "name": "Bob Smith",
-                "content": "artist desc",
-                "mediaType": "text/html",
-                "musicbrainzId": str(uuid.uuid4()),
-                "attributedTo": "http://artist.attributed",
-                "tag": [{"type": "Hashtag", "name": "ArtistTag"}],
-                "image": {
-                    "type": "Link",
-                    "href": "http://cover.test/artist",
-                    "mediaType": "image/png",
+                "artist": {
+                    "published": published.isoformat(),
+                    "type": "Artist",
+                    "id": "http://hello.trackartist",
+                    "name": "Bob Smith",
+                    "content": "artist desc",
+                    "mediaType": "text/html",
+                    "musicbrainzId": str(uuid.uuid4()),
+                    "attributedTo": "http://artist.attributed",
+                    "tag": [{"type": "Hashtag", "name": "ArtistTag"}],
+                    "image": {
+                        "type": "Link",
+                        "href": "http://cover.test/artist",
+                        "mediaType": "image/png",
+                    },
                 },
+                "joinphrase": "",
+                "id": "http://loli.fr",
+                "published": published.isoformat(),
+                "name": "Bob Smith",
             }
         ],
     }
@@ -690,51 +882,61 @@ def test_federation_audio_track_to_metadata(now, mocker):
                 "mimetype": serializer.validated_data["album"]["image"]["mediaType"],
                 "url": serializer.validated_data["album"]["image"]["href"],
             },
-            "artists": [
+            "artist_credit": [
                 {
-                    "name": a["name"],
-                    "mbid": a["musicbrainzId"],
-                    "fid": a["id"],
-                    "attributed_to": references["http://album-artist.attributed"],
-                    "fdate": serializer.validated_data["album"]["artists"][i][
+                    "artist": {
+                        "name": a["artist"]["name"],
+                        "mbid": a["artist"]["musicbrainzId"],
+                        "fid": a["artist"]["id"],
+                        "attributed_to": references["http://album-artist.attributed"],
+                        "fdate": serializer.validated_data["album"]["artist_credit"][i][
+                            "artist"
+                        ]["published"],
+                        "description": {
+                            "content_type": "text/markdown",
+                            "text": "album artist desc",
+                        },
+                        "tags": ["AlbumArtistTag"],
+                        "cover_data": {
+                            "mimetype": serializer.validated_data["album"][
+                                "artist_credit"
+                            ][i]["artist"]["image"]["mediaType"],
+                            "url": serializer.validated_data["album"]["artist_credit"][
+                                i
+                            ]["artist"]["image"]["href"],
+                        },
+                    },
+                    "joinphrase": a["joinphrase"],
+                    "credit": a["artist"]["name"],
+                }
+                for i, a in enumerate(payload["album"]["artist_credit"])
+            ],
+        },
+        "artist_credit": [
+            {
+                "artist": {
+                    "name": a["artist"]["name"],
+                    "mbid": a["artist"]["musicbrainzId"],
+                    "fid": a["artist"]["id"],
+                    "fdate": serializer.validated_data["artist_credit"][i]["artist"][
                         "published"
                     ],
-                    "description": {
-                        "content_type": "text/markdown",
-                        "text": "album artist desc",
-                    },
-                    "tags": ["AlbumArtistTag"],
+                    "attributed_to": references["http://artist.attributed"],
+                    "tags": ["ArtistTag"],
+                    "description": {"content_type": "text/html", "text": "artist desc"},
                     "cover_data": {
-                        "mimetype": serializer.validated_data["album"]["artists"][i][
-                            "image"
-                        ]["mediaType"],
-                        "url": serializer.validated_data["album"]["artists"][i][
+                        "mimetype": serializer.validated_data["artist_credit"][i][
+                            "artist"
+                        ]["image"]["mediaType"],
+                        "url": serializer.validated_data["artist_credit"][i]["artist"][
                             "image"
                         ]["href"],
                     },
-                }
-                for i, a in enumerate(payload["album"]["artists"])
-            ],
-        },
-        # musicbrainz
-        # federation
-        "artists": [
-            {
-                "name": a["name"],
-                "mbid": a["musicbrainzId"],
-                "fid": a["id"],
-                "fdate": serializer.validated_data["artists"][i]["published"],
-                "attributed_to": references["http://artist.attributed"],
-                "tags": ["ArtistTag"],
-                "description": {"content_type": "text/html", "text": "artist desc"},
-                "cover_data": {
-                    "mimetype": serializer.validated_data["artists"][i]["image"][
-                        "mediaType"
-                    ],
-                    "url": serializer.validated_data["artists"][i]["image"]["href"],
                 },
+                "joinphrase": "",
+                "credit": a["artist"]["name"],
             }
-            for i, a in enumerate(payload["artists"])
+            for i, a in enumerate(payload["artist_credit"])
         ],
     }
 
@@ -918,8 +1120,8 @@ def test_get_prunable_artists(factories):
     # non prunable artist
     non_prunable_artist = factories["music.Artist"]()
     non_prunable_album_artist = factories["music.Artist"]()
-    factories["music.Track"](artist=non_prunable_artist)
-    factories["music.Track"](album__artist=non_prunable_album_artist)
+    factories["music.Track"](artist_credit__artist=non_prunable_artist)
+    factories["music.Track"](album__artist_credit__artist=non_prunable_album_artist)
 
     assert list(tasks.get_prunable_artists()) == [prunable_artist]
 
@@ -997,7 +1199,7 @@ def test_get_track_from_import_metadata_with_forced_values(factories, mocker, fa
     assert track.disc_number == metadata["disc_number"]
     assert track.copyright == forced_values["copyright"]
     assert track.album == forced_values["album"]
-    assert track.artist == forced_values["artist"]
+    assert track.artist_credit.all()[0].artist == forced_values["artist"]
     assert track.attributed_to == forced_values["attributed_to"]
     assert track.license == forced_values["license"]
     assert (
@@ -1010,7 +1212,9 @@ def test_get_track_from_import_metadata_with_forced_values_album(
     factories, mocker, faker
 ):
     channel = factories["audio.Channel"]()
-    album = factories["music.Album"](artist=channel.artist, with_cover=True)
+    album = factories["music.Album"](
+        artist_credit__artist=channel.artist, with_cover=True
+    )
 
     forced_values = {
         "title": "Real title",
@@ -1019,13 +1223,14 @@ def test_get_track_from_import_metadata_with_forced_values_album(
     upload = factories["music.Upload"](
         import_metadata=forced_values, library=channel.library, track=None
     )
+
     tasks.process_upload(upload_id=upload.pk)
     upload.refresh_from_db()
     assert upload.import_status == "finished"
 
     assert upload.track.title == forced_values["title"]
     assert upload.track.album == album
-    assert upload.track.artist == channel.artist
+    assert upload.track.artist_credit.all()[0].artist == channel.artist
 
 
 def test_process_channel_upload_forces_artist_and_attributed_to(
@@ -1073,7 +1278,7 @@ def test_process_channel_upload_forces_artist_and_attributed_to(
     assert upload.track.position == import_metadata["position"]
     assert upload.track.copyright == import_metadata["copyright"]
     assert upload.track.get_tags() == import_metadata["tags"]
-    assert upload.track.artist == channel.artist
+    assert upload.track.artist_credit.all()[0].artist == channel.artist
     assert upload.track.attributed_to == channel.attributed_to
     assert upload.track.attachment_cover == attachment
 
@@ -1196,8 +1401,11 @@ def test_can_download_image_file_for_album_mbid(binary_cover, mocker, factories)
 
 def test_can_import_track_with_same_mbid_in_different_albums(factories, mocker):
     artist = factories["music.Artist"]()
+    artist_credit = factories["music.ArtistCredit"](artist=artist)
     upload = factories["music.Upload"](
-        playable=True, track__artist=artist, track__album__artist=artist
+        playable=True,
+        track__artist_credit=artist_credit,
+        track__album__artist_credit=artist_credit,
     )
     assert upload.track.mbid is not None
     data = {
@@ -1214,6 +1422,36 @@ def test_can_import_track_with_same_mbid_in_different_albums(factories, mocker):
         "mbid": upload.track.mbid,
     }
 
+    mb_ac = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": artist.mbid,
+                    "name": artist.name,
+                },
+                "joinphrase": "",
+                "name": artist.name,
+            },
+        ]
+    }
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": artist.mbid,
+                    "name": artist.name,
+                },
+                "name": artist.name,
+            },
+        ]
+    }
+
+    mocker.patch.object(
+        tasks.musicbrainz.api.recordings, "get", return_value={"recording": mb_ac}
+    )
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     mocker.patch.object(metadata.TrackMetadataSerializer, "validated_data", data)
     mocker.patch.object(tasks, "populate_album_cover")
 
@@ -1228,8 +1466,12 @@ def test_can_import_track_with_same_mbid_in_different_albums(factories, mocker):
 
 def test_import_track_with_same_mbid_in_same_albums_skipped(factories, mocker):
     artist = factories["music.Artist"]()
+    artist_credit = factories["music.ArtistCredit"](artist=artist)
+
     upload = factories["music.Upload"](
-        playable=True, track__artist=artist, track__album__artist=artist
+        playable=True,
+        track__artist_credit=artist_credit,
+        track__album__artist_credit=artist_credit,
     )
     assert upload.track.mbid is not None
     data = {
@@ -1261,8 +1503,8 @@ def test_can_import_track_with_same_position_in_different_discs(factories, mocke
     upload = factories["music.Upload"](playable=True)
     artist_data = [
         {
-            "name": upload.track.album.artist.name,
-            "mbid": upload.track.album.artist.mbid,
+            "name": upload.track.album.artist_credit.all()[0].artist.name,
+            "mbid": upload.track.album.artist_credit.all()[0].artist.mbid,
         }
     ]
     data = {
@@ -1278,10 +1520,22 @@ def test_can_import_track_with_same_position_in_different_discs(factories, mocke
         "disc_number": 2,
         "mbid": None,
     }
-
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": upload.track.album.artist_credit.all()[0].artist.mbid,
+                    "name": upload.track.album.artist_credit.all()[0].artist.name,
+                },
+            },
+            "",
+        ]
+    }
     mocker.patch.object(metadata.TrackMetadataSerializer, "validated_data", data)
     mocker.patch.object(tasks, "populate_album_cover")
-
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     new_upload = factories["music.Upload"](library=upload.library)
 
     tasks.process_upload(upload_id=new_upload.pk)
@@ -1292,13 +1546,17 @@ def test_can_import_track_with_same_position_in_different_discs(factories, mocke
 
 
 def test_can_import_track_with_same_position_in_same_discs_skipped(factories, mocker):
-    upload = factories["music.Upload"](playable=True)
+    ac = factories["music.ArtistCredit"](joinphrase="", index=0)
+    upload = factories["music.Upload"](
+        playable=True, track__artist_credit=ac, track__album__artist_credit=ac
+    )
     artist_data = [
         {
-            "name": upload.track.album.artist.name,
-            "mbid": upload.track.album.artist.mbid,
+            "name": upload.track.album.artist_credit.all()[0].artist.name,
+            "mbid": upload.track.album.artist_credit.all()[0].artist.mbid,
         }
     ]
+
     data = {
         "title": upload.track.title,
         "artists": artist_data,
@@ -1312,7 +1570,21 @@ def test_can_import_track_with_same_position_in_same_discs_skipped(factories, mo
         "disc_number": upload.track.disc_number,
         "mbid": None,
     }
-
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": upload.track.album.artist_credit.all()[0].artist.mbid,
+                    "name": upload.track.album.artist_credit.all()[0].artist.name,
+                },
+                "name": upload.track.album.artist_credit.all()[0].artist.name,
+            },
+            "",
+        ]
+    }
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
     mocker.patch.object(metadata.TrackMetadataSerializer, "validated_data", data)
     mocker.patch.object(tasks, "populate_album_cover")
 
@@ -1325,8 +1597,50 @@ def test_can_import_track_with_same_position_in_same_discs_skipped(factories, mo
     assert new_upload.import_status == "skipped"
 
 
-def test_update_track_metadata(factories):
+def test_update_track_metadata_no_mbid(factories):
     track = factories["music.Track"]()
+    data = {
+        "title": "Peer Gynt Suite no. 1, op. 46: I. Morning",
+        "artist": "Edvard Grieg",
+        "album_artist": "Edvard Grieg; Musopen Symphony Orchestra",
+        "album": "Peer Gynt Suite no. 1, op. 46",
+        "date": "2012-08-15",
+        "position": "4",
+        "disc_number": "2",
+        "license": "Dummy license: http://creativecommons.org/licenses/by-sa/4.0/",
+        "copyright": "Someone",
+        "comment": "hello there",
+        "genre": "classical",
+    }
+
+    tasks.update_track_metadata(metadata.FakeMetadata(data), track)
+
+    track.refresh_from_db()
+
+    assert track.title == data["title"]
+    assert track.position == int(data["position"])
+    assert track.disc_number == int(data["disc_number"])
+    assert track.license.code == "cc-by-sa-4.0"
+    assert track.copyright == data["copyright"]
+    assert track.album.title == data["album"]
+    assert track.album.release_date == datetime.date(2012, 8, 15)
+    assert track.get_artist_credit_string == data["artist"]
+    assert track.artist_credit.all()[0].artist.mbid is None
+    assert (
+        track.album.get_artist_credit_string
+        == "Edvard Grieg; Musopen Symphony Orchestra"
+    )
+    assert track.album.artist_credit.all()[0].artist.mbid is None
+    assert sorted(track.tagged_items.values_list("tag__name", flat=True)) == [
+        "classical"
+    ]
+
+
+def test_update_track_metadata_mbid(factories, mocker):
+    track = factories["music.Track"]()
+    factories["music.Artist"](
+        name="Edvard Grieg", mbid="013c8e5b-d72a-4cd3-8dee-6c64d6125823"
+    )
     data = {
         "title": "Peer Gynt Suite no. 1, op. 46: I. Morning",
         "artist": "Edvard Grieg",
@@ -1344,6 +1658,45 @@ def test_update_track_metadata(factories):
         "comment": "hello there",
         "genre": "classical",
     }
+    mb_ac = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": "013c8e5b-d72a-4cd3-8dee-6c64d6125823",
+                    "name": "Edvard Grieg",
+                },
+                "joinphrase": "",
+                "name": "Edvard Grieg",
+            }
+        ]
+    }
+
+    mb_ac_album = {
+        "artist-credit": [
+            {
+                "artist": {
+                    "id": "013c8e5b-d72a-4cd3-8dee-6c64d6125823",
+                    "name": "Edvard Grieg",
+                },
+            },
+            "; ",
+            {
+                "artist": {
+                    "id": "5b4d7d2d-36df-4b38-95e3-a964234f520f",
+                    "name": "Musopen Symphony Orchestra",
+                },
+                "joinphrase": "",
+                "name": "Musopen Symphony Orchestra",
+            },
+        ]
+    }
+
+    mocker.patch.object(
+        tasks.musicbrainz.api.releases, "get", return_value={"recording": mb_ac_album}
+    )
+    mocker.patch.object(
+        tasks.musicbrainz.api.recordings, "get", return_value={"recording": mb_ac}
+    )
     tasks.update_track_metadata(metadata.FakeMetadata(data), track)
 
     track.refresh_from_db()
@@ -1357,10 +1710,19 @@ def test_update_track_metadata(factories):
     assert track.album.title == data["album"]
     assert track.album.release_date == datetime.date(2012, 8, 15)
     assert str(track.album.mbid) == data["musicbrainz_albumid"]
-    assert track.artist.name == data["artist"]
-    assert str(track.artist.mbid) == data["musicbrainz_artistid"]
-    assert track.album.artist.name == "Edvard Grieg"
-    assert str(track.album.artist.mbid) == "013c8e5b-d72a-4cd3-8dee-6c64d6125823"
+    assert track.get_artist_credit_string == data["artist"]
+    assert (
+        str(track.artist_credit.all()[0].artist.mbid)
+        == "013c8e5b-d72a-4cd3-8dee-6c64d6125823"
+    )
+    assert (
+        track.album.get_artist_credit_string
+        == "Edvard Grieg; Musopen Symphony Orchestra"
+    )
+    assert (
+        str(track.album.artist_credit.all()[0].artist.mbid)
+        == "013c8e5b-d72a-4cd3-8dee-6c64d6125823"
+    )
     assert sorted(track.tagged_items.values_list("tag__name", flat=True)) == [
         "classical"
     ]
@@ -1450,3 +1812,192 @@ def test_upload_checks_mbid_tag_pass(temp_signal, factories, mocker, preferences
     upload.refresh_from_db()
 
     assert upload.import_status == "finished"
+
+
+@pytest.mark.parametrize(
+    "raw_string, expected",
+    [
+        (
+            "The Kinks|Various Artists",
+            [("The Kinks", "|", 0, None), ("Various Artists", "", 1, None)],
+        ),
+        (
+            "The Kinks,Various Artists",
+            [("The Kinks", ",", 0, None), ("Various Artists", "", 1, None)],
+        ),
+        (
+            "Luigi 21 Plus feat. Ñejo feat Ñengo Flow & Chyno Nyno with Linkin Park and Evanescance",
+            [
+                ("Luigi 21 Plus", " feat. ", 0, None),
+                ("Ñejo", " feat ", 1, None),
+                ("Ñengo Flow", " & ", 2, None),
+                ("Chyno Nyno", " with ", 3, None),
+                ("Linkin Park", " and ", 4, None),
+                ("Evanescance", "", 5, None),
+            ],
+        ),
+        (
+            "Bad Bunny x Poeta Callejero ; Mark B (Carlos Serrano & Carlos Martin Mambo Remix)",
+            [
+                ("Bad Bunny", " x ", 0, None),
+                ("Poeta Callejero", " ; ", 1, None),
+                ("Mark B", " (", 2, None),
+                ("Carlos Serrano", " & ", 3, None),
+                ("Carlos Martin Mambo", " Remix)", 4, None),
+            ],
+        ),
+    ],
+)
+def test_can_parse_multiples_artist(raw_string, expected):
+    artist_credit = tasks.parse_credits(raw_string, None, None)
+    assert artist_credit == expected
+
+
+def test_get_best_candidate_or_create_find_artist_credit(factories):
+    track = factories["music.Track"]()
+    query = Q(
+        title__iexact=track.title,
+        artist_credit__in=track.artist_credit.all(),
+        position=track.position,
+        disc_number=track.disc_number,
+    )
+    defaults = "lol"
+    tasks.get_best_candidate_or_create(
+        models.Track, query, defaults=defaults, sort_fields=["mbid", "fid"]
+    )
+
+
+def test_get_or_create_artists_credits_from_musicbrainz(factories, mocker):
+    release_mb_response = {
+        "status": "Official",
+        "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+        "country": "XW",
+        "text-representation": {"script": "Latn", "language": "spa"},
+        "release-events": [
+            {
+                "date": "2019-05-30",
+                "area": {
+                    "sort-name": "[Worldwide]",
+                    "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+                    "disambiguation": "",
+                    "iso-3166-1-codes": ["XW"],
+                    "name": "[Worldwide]",
+                },
+            }
+        ],
+        "disambiguation": "",
+        "cover-art-archive": {
+            "front": True,
+            "count": 1,
+            "back": False,
+            "darkened": False,
+            "artwork": True,
+        },
+        "id": "48cc978e-17b8-46ab-91e8-3dceef2725b5",
+        "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+        "packaging": "None",
+        "date": "2019-05-30",
+        "title": "#TBT",
+        "artist-credit": [
+            {
+                "joinphrase": "",
+                "artist": {
+                    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                    "disambiguation": 'Hiram David Santos Rojas, reggaeton artist aka "Lui-G 21+"',
+                    "name": "Luigi 21 Plus",
+                    "type": "Person",
+                    "sort-name": "Luigi 21 Plus",
+                    "id": "f1642d37-bbe2-4aff-a75e-86845ff49fa4",
+                },
+                "name": "Luigi 21 Plus",
+            }
+        ],
+        "quality": "normal",
+    }
+    recording_mb_response = {
+        "length": 337000,
+        "first-release-date": "2019-05-30",
+        "disambiguation": "",
+        "id": "cf3dacb7-3cee-430f-b0bb-cc4557158a03",
+        "title": "Mueve ese culo puñeta",
+        "artist-credit": [
+            {
+                "joinphrase": " feat. ",
+                "artist": {
+                    "type": "Person",
+                    "id": "f1642d37-bbe2-4aff-a75e-86845ff49fa4",
+                    "sort-name": "Luigi 21 Plus",
+                    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                    "name": "Luigi 21 Plus",
+                    "disambiguation": 'Hiram David Santos Rojas, reggaeton artist aka "Lui-G 21+"',
+                },
+                "name": "Luigi 21 Plus",
+            },
+            {
+                "name": "Ñejo",
+                "artist": {
+                    "type": "Person",
+                    "id": "8248c905-689d-4e36-9def-7c515c5ef5eb",
+                    "name": "Ñejo",
+                    "disambiguation": "",
+                    "sort-name": "Ñejo",
+                    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                },
+                "joinphrase": ", ",
+            },
+            {
+                "joinphrase": " & ",
+                "artist": {
+                    "type": "Person",
+                    "id": "b7f5054e-c9de-49d8-b0eb-6deefb89b86b",
+                    "name": "Ñengo Flow",
+                    "disambiguation": "",
+                    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                    "sort-name": "Ñengo Flow",
+                },
+                "name": "Ñengo Flow",
+            },
+            {
+                "joinphrase": "",
+                "artist": {
+                    "id": "3d50191b-820c-4f6f-b25a-bc12d63e6718",
+                    "type": "Person",
+                    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                    "sort-name": "Chyno Nyno",
+                    "disambiguation": "",
+                    "name": "Chyno Nyno",
+                },
+                "name": "Chyno Nyno",
+            },
+        ],
+        "video": False,
+    }
+    for mb_type, mb_response in [
+        ("release", release_mb_response),
+        ("recording", recording_mb_response),
+    ]:
+        mocker.patch.object(
+            tasks.musicbrainz.api.releases,
+            "get",
+            return_value={"recording": mb_response},
+        )
+        mocker.patch.object(
+            tasks.musicbrainz.api.recordings,
+            "get",
+            return_value={"recording": mb_response},
+        )
+        tasks.get_or_create_artists_credits_from_musicbrainz(
+            mb_type, mb_response["id"], None, None
+        )
+        for i, ac in enumerate(mb_response["artist-credit"]):
+            ac = models.ArtistCredit.objects.get(
+                artist__name=ac["artist"]["name"],
+                joinphrase=ac["joinphrase"],
+                credit=ac["name"],
+            )
+
+            assert ac.artist.name == mb_response["artist-credit"][i]["artist"]["name"]
+            assert (
+                str(ac.artist.mbid) == mb_response["artist-credit"][i]["artist"]["id"]
+            )
+            assert ac.joinphrase == mb_response["artist-credit"][i]["joinphrase"]

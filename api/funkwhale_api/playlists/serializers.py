@@ -95,7 +95,9 @@ class PlaylistSerializer(serializers.ModelSerializer):
         covers = []
         max_covers = 5
         for plt in plts:
-            if plt.track.album.artist_id in excluded_artists:
+            if [
+                ac.artist.pk for ac in plt.track.album.artist_credit.all()
+            ] in excluded_artists:
                 continue
             url = plt.track.album.attachment_cover.download_url_medium_square_crop
             if url in covers:

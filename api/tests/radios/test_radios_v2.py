@@ -95,7 +95,9 @@ def test_can_get_choices_for_favorites_radio_v2(factories):
 
 def test_can_get_choices_for_custom_radio_v2(factories):
     artist = factories["music.Artist"]()
-    files = factories["music.Upload"].create_batch(5, track__artist=artist)
+    files = factories["music.Upload"].create_batch(
+        5, track__artist_credit__artist=artist
+    )
     tracks = [f.track for f in files]
     factories["music.Upload"].create_batch(5)
 

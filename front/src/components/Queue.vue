@@ -130,14 +130,13 @@ const reorderTracks = async (from: number, to: number) => {
     scrollToCurrent()
   }
 }
-
 const hideArtist = () => {
-  if (currentTrack.value.artistId !== -1) {
+  if (currentTrack.value.artistId !== -1 && currentTrack.value.artistCredit) {
     return store.dispatch('moderation/hide', {
       type: 'artist',
       target: {
-        id: currentTrack.value.artistId,
-        name: currentTrack.value.artistName
+        id: currentTrack.value.artistCredit[0].artist.id,
+        name: currentTrack.value.artistCredit[0].artist.name
       }
     })
   }
@@ -264,7 +263,13 @@ if (!isWebGLSupported) {
                 >
                   <h1>{{ currentTrack.title }}</h1>
                   <h2>
-                    {{ currentTrack.artistName ?? $t('components.Queue.meta.unknownArtist') }}
+                    <div
+                      v-for="ac in currentTrack.artistCredit"
+                      :key="ac.artist.id"
+                    >
+                      {{ ac.credit ?? $t('components.Queue.meta.unknownArtist') }}
+                      <span>{{ ac.joinphrase }}</span>
+                    </div>
                     <span class="symbol hyphen middle" />
                     {{ currentTrack.albumTitle ?? $t('components.Queue.meta.unknownAlbum') }}
                   </h2>
@@ -281,12 +286,21 @@ if (!isWebGLSupported) {
                 {{ currentTrack.title }}
               </router-link>
               <div class="sub header ellipsis">
-                <router-link
-                  class="discrete link artist"
-                  :to="{name: 'library.artists.detail', params: {id: currentTrack.artistId }}"
-                >
-                  {{ currentTrack.artistName ?? $t('components.Queue.meta.unknownArtist') }}
-                </router-link>
+                <span>
+                  <template
+                    v-for="ac in currentTrack.artistCredit"
+                    :key="ac.artist.id"
+                  >
+                    <router-link
+                      class="discrete link"
+                      :to="{name: 'library.artists.detail', params: {id: ac.artist.id }}"
+                      @click.stop.prevent=""
+                    >
+                      {{ ac.credit ?? $t('components.Queue.meta.unknownArtist') }}
+                    </router-link>
+                    <span>{{ ac.joinphrase }}</span>
+                  </template>
+                </span>
                 <template v-if="currentTrack.albumId !== -1">
                   <span class="middle slash symbol" />
                   <router-link

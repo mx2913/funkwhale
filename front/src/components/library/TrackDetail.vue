@@ -76,7 +76,7 @@ watchEffect(() => {
               class="ui fluid image track-cover-image"
             >
             <h3 class="ui header">
-              <span v-if="track.artist?.content_category === 'music'">
+              <span v-if="track.artist_credit?.[0].artist?.content_category === 'music'">
                 {{ $t('components.library.TrackDetail.header.track') }}
               </span>
               <span v-else>
@@ -169,14 +169,23 @@ watchEffect(() => {
                   {{ $t('components.library.TrackDetail.table.release.artist') }}
                 </td>
                 <td class="right aligned">
-                  <router-link :to="{name: 'library.artists.detail', params: {id: track.artist?.id}}">
-                    {{ track.artist?.name }}
-                  </router-link>
+                  <template
+                    v-for="(credit, index) in track.artist_credit"
+                    :key="credit.artist_id"
+                  >
+                    <router-link
+                      class="discrete link"
+                      :to="{ name: 'library.artists.detail', params: { id: credit.artist.id }}"
+                    >
+                      {{ credit.credit }}
+                    </router-link>
+                    <span v-if="index < (track.album?.artist_credit?.length ?? 0) ">{{ credit.joinphrase }}</span>
+                  </template>
                 </td>
               </tr>
               <tr v-if="track.album">
                 <td>
-                  <span v-if="track.album.artist.content_category === 'music'">
+                  <span v-if="track.album.artist_credit?.[0].artist.content_category === 'music'">
                     {{ $t('components.library.TrackDetail.table.release.album') }}
                   </span>
                   <span v-else>

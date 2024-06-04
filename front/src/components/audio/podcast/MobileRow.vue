@@ -12,6 +12,7 @@ import usePlayOptions from '~/composables/audio/usePlayOptions'
 
 import TrackFavoriteIcon from '~/components/favorites/TrackFavoriteIcon.vue'
 import TrackModal from '~/components/audio/track/Modal.vue'
+import { generateTrackCreditString, getArtistCoverUrl } from '~/utils/utils'
 
 interface Props extends PlayOptionsProps {
   track: Track
@@ -81,8 +82,8 @@ const actionsButtonLabel = computed(() => t('components.audio.podcast.MobileRow.
         class="ui artist-track mini image"
       >
       <img
-        v-else-if="track.artist?.cover"
-        v-lazy="$store.getters['instance/absoluteUrl'](track.artist.cover.urls.medium_square_crop) "
+        v-else-if="track.artist_credit && track.artist_credit[0].artist.cover"
+        v-lazy="getArtistCoverUrl(track.artist_credit)"
         alt=""
         class="ui artist-track mini image"
       >
@@ -109,7 +110,7 @@ const actionsButtonLabel = computed(() => t('components.audio.podcast.MobileRow.
         {{ track.title }}
       </p>
       <p
-        v-if="track.artist?.content_category === 'podcast'"
+        v-if="track.artist_credit?.[0].artist.content_category === 'podcast'"
         class="track-meta mobile"
       >
         <human-date
@@ -126,7 +127,7 @@ const actionsButtonLabel = computed(() => t('components.audio.podcast.MobileRow.
         v-else
         class="track-meta mobile"
       >
-        {{ track.artist?.name }}
+        {{ generateTrackCreditString(track) }}
         <span class="middledot symbol" />
         <human-duration
           v-if="track.uploads[0] && track.uploads[0].duration"
@@ -135,7 +136,7 @@ const actionsButtonLabel = computed(() => t('components.audio.podcast.MobileRow.
       </p>
     </div>
     <div
-      v-if="$store.state.auth.authenticated && track.artist?.content_category !== 'podcast'"
+      v-if="$store.state.auth.authenticated && track.artist_credit?.[0].artist.content_category !== 'podcast'"
       :class="[
         'meta',
         'right',

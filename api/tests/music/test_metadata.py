@@ -316,8 +316,13 @@ def test_metadata_fallback_ogg_theora(mocker):
                     {
                         "name": "Binärpilot",
                         "mbid": uuid.UUID("9c6bddde-6228-4d9f-ad0d-03f6fcb19e13"),
+                        "joinphrase": "; ",
                     },
-                    {"name": "Another artist", "mbid": None},
+                    {
+                        "name": "Another artist",
+                        "mbid": None,
+                        "joinphrase": "",
+                    },
                 ],
                 "album": {
                     "title": "You Can't Stop Da Funk",
@@ -327,8 +332,9 @@ def test_metadata_fallback_ogg_theora(mocker):
                         {
                             "name": "Binärpilot",
                             "mbid": uuid.UUID("9c6bddde-6228-4d9f-ad0d-03f6fcb19e13"),
+                            "joinphrase": "; ",
                         },
-                        {"name": "Another artist", "mbid": None},
+                        {"name": "Another artist", "mbid": None, "joinphrase": ""},
                     ],
                 },
                 "position": 2,
@@ -348,8 +354,13 @@ def test_metadata_fallback_ogg_theora(mocker):
                     {
                         "name": "Edvard Grieg",
                         "mbid": uuid.UUID("013c8e5b-d72a-4cd3-8dee-6c64d6125823"),
+                        "joinphrase": "; ",
                     },
-                    {"name": "Musopen Symphony Orchestra", "mbid": None},
+                    {
+                        "name": "Musopen Symphony Orchestra",
+                        "mbid": None,
+                        "joinphrase": "",
+                    },
                 ],
                 "album": {
                     "title": "Peer Gynt Suite no. 1, op. 46",
@@ -359,10 +370,12 @@ def test_metadata_fallback_ogg_theora(mocker):
                         {
                             "name": "Edvard Grieg",
                             "mbid": uuid.UUID("013c8e5b-d72a-4cd3-8dee-6c64d6125823"),
+                            "joinphrase": "; ",
                         },
                         {
                             "name": "Musopen Symphony Orchestra",
                             "mbid": uuid.UUID("5b4d7d2d-36df-4b38-95e3-a964234f520f"),
+                            "joinphrase": "",
                         },
                     ],
                 },
@@ -383,8 +396,13 @@ def test_metadata_fallback_ogg_theora(mocker):
                     {
                         "name": "Edvard Grieg",
                         "mbid": uuid.UUID("013c8e5b-d72a-4cd3-8dee-6c64d6125823"),
+                        "joinphrase": "; ",
                     },
-                    {"name": "Musopen Symphony Orchestra", "mbid": None},
+                    {
+                        "name": "Musopen Symphony Orchestra",
+                        "mbid": None,
+                        "joinphrase": "",
+                    },
                 ],
                 "album": {
                     "title": "Peer Gynt Suite no. 1, op. 46",
@@ -394,10 +412,12 @@ def test_metadata_fallback_ogg_theora(mocker):
                         {
                             "name": "Edvard Grieg",
                             "mbid": uuid.UUID("013c8e5b-d72a-4cd3-8dee-6c64d6125823"),
+                            "joinphrase": "; ",
                         },
                         {
                             "name": "Musopen Symphony Orchestra",
                             "mbid": uuid.UUID("5b4d7d2d-36df-4b38-95e3-a964234f520f"),
+                            "joinphrase": "",
                         },
                     ],
                 },
@@ -418,6 +438,7 @@ def test_metadata_fallback_ogg_theora(mocker):
                     {
                         "name": "Die Toten Hosen",
                         "mbid": uuid.UUID("c3bc80a6-1f4a-4e17-8cf0-6b1efe8302f1"),
+                        "joinphrase": "",
                     }
                 ],
                 "album": {
@@ -428,6 +449,7 @@ def test_metadata_fallback_ogg_theora(mocker):
                         {
                             "name": "Die Toten Hosen",
                             "mbid": uuid.UUID("c3bc80a6-1f4a-4e17-8cf0-6b1efe8302f1"),
+                            "joinphrase": "",
                         }
                     ],
                 },
@@ -450,6 +472,7 @@ def test_metadata_fallback_ogg_theora(mocker):
                     {
                         "name": "Nine Inch Nails",
                         "mbid": uuid.UUID("b7ffd2af-418f-4be2-bdd1-22f8b48613da"),
+                        "joinphrase": "",
                     }
                 ],
                 "album": {
@@ -460,6 +483,7 @@ def test_metadata_fallback_ogg_theora(mocker):
                         {
                             "name": "Nine Inch Nails",
                             "mbid": uuid.UUID("b7ffd2af-418f-4be2-bdd1-22f8b48613da"),
+                            "joinphrase": "",
                         }
                     ],
                 },
@@ -499,10 +523,12 @@ def test_track_metadata_serializer(path, expected, mocker):
                 {
                     "name": "Hello",
                     "mbid": uuid.UUID("f269d497-1cc0-4ae4-a0c4-157ec7d73fcb"),
+                    "joinphrase": "; ",
                 },
                 {
                     "name": "World",
                     "mbid": uuid.UUID("f269d497-1cc0-4ae4-a0c4-157ec7d73fcd"),
+                    "joinphrase": "",
                 },
             ],
         ),
@@ -515,12 +541,14 @@ def test_track_metadata_serializer(path, expected, mocker):
                 {
                     "name": "Hello",
                     "mbid": uuid.UUID("f269d497-1cc0-4ae4-a0c4-157ec7d73fcb"),
+                    "joinphrase": "; ",
                 },
                 {
                     "name": "World",
                     "mbid": uuid.UUID("f269d497-1cc0-4ae4-a0c4-157ec7d73fcd"),
+                    "joinphrase": "; ",
                 },
-                {"name": "Foo", "mbid": None},
+                {"name": "Foo", "mbid": None, "joinphrase": ""},
             ],
         ),
     ],
@@ -588,6 +616,7 @@ def test_fake_metadata_with_serializer():
             {
                 "name": "Edvard Grieg",
                 "mbid": uuid.UUID("013c8e5b-d72a-4cd3-8dee-6c64d6125823"),
+                "joinphrase": "",
             }
         ],
         "album": {
@@ -598,10 +627,12 @@ def test_fake_metadata_with_serializer():
                 {
                     "name": "Edvard Grieg",
                     "mbid": uuid.UUID("013c8e5b-d72a-4cd3-8dee-6c64d6125823"),
+                    "joinphrase": "; ",
                 },
                 {
                     "name": "Musopen Symphony Orchestra",
                     "mbid": uuid.UUID("5b4d7d2d-36df-4b38-95e3-a964234f520f"),
+                    "joinphrase": "",
                 },
             ],
             "cover_data": None,
@@ -626,7 +657,7 @@ def test_serializer_album_artist_missing():
 
     expected = {
         "title": "Peer Gynt Suite no. 1, op. 46: I. Morning",
-        "artists": [{"name": "Edvard Grieg", "mbid": None}],
+        "artists": [{"name": "Edvard Grieg", "mbid": None, "joinphrase": ""}],
         "album": {
             "title": "Peer Gynt Suite no. 1, op. 46",
             "mbid": None,
@@ -654,7 +685,7 @@ def test_serializer_album_artist_missing():
 def test_serializer_album_default_title_when_missing_or_empty(data):
     expected = {
         "title": "Track",
-        "artists": [{"name": "Artist", "mbid": None}],
+        "artists": [{"name": "Artist", "mbid": None, "joinphrase": ""}],
         "album": {
             "title": metadata.UNKNOWN_ALBUM,
             "mbid": None,
@@ -681,7 +712,7 @@ def test_serializer_empty_fields(field_name):
     }
     expected = {
         "title": "Track Title",
-        "artists": [{"name": "Track Artist", "mbid": None}],
+        "artists": [{"name": "Track Artist", "mbid": None, "joinphrase": ""}],
         "album": {
             "title": "Track Album",
             "mbid": None,
@@ -698,7 +729,7 @@ def test_serializer_empty_fields(field_name):
 def test_serializer_strict_mode_false():
     data = {}
     expected = {
-        "artists": [{"name": None, "mbid": None}],
+        "artists": [],
         "album": {
             "title": "[Unknown Album]",
             "mbid": None,
@@ -730,11 +761,21 @@ def test_artist_field_featuring():
         "musicbrainz_artistid": "9a3bf45c-347d-4630-894d-7cf3e8e0b632/cbf9738d-8f81-4a92-bc64-ede09341652d",
     }
 
-    expected = [{"name": "Santana feat. Chris Cornell", "mbid": None}]
+    expected = [
+        {
+            "name": "Santana",
+            "mbid": uuid.UUID("9a3bf45c-347d-4630-894d-7cf3e8e0b632"),
+            "joinphrase": " feat. ",
+        },
+        {
+            "name": "Chris Cornell",
+            "mbid": uuid.UUID("cbf9738d-8f81-4a92-bc64-ede09341652d"),
+            "joinphrase": "",
+        },
+    ]
 
     field = metadata.ArtistField()
     value = field.get_value(data)
-
     assert field.to_internal_value(value) == expected
 
 
@@ -761,7 +802,7 @@ def test_acquire_tags_from_genre(genre, expected_tags):
     }
     expected = {
         "title": "Track Title",
-        "artists": [{"name": "Track Artist", "mbid": None}],
+        "artists": [{"name": "Track Artist", "mbid": None, "joinphrase": ""}],
         "album": {
             "title": "Track Album",
             "mbid": None,

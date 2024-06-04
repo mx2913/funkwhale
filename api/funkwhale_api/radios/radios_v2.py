@@ -63,7 +63,9 @@ class SessionRadio(SimpleRadio):
         qs = (
             Track.objects.all()
             .with_playable_uploads(actor=actor)
-            .select_related("artist", "album__artist", "attributed_to")
+            .prefetch_related(
+                "artist_credit__artist", "album__artist_credit__artist", "attributed_to"
+            )
         )
 
         query = moderation_filters.get_filtered_content_query(
@@ -164,7 +166,7 @@ class SessionRadio(SimpleRadio):
 class RandomRadio(SessionRadio):
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
-        return qs.filter(artist__content_category="music").order_by("?")
+        return qs.filter(artist_credit__artist__content_category="music").order_by("?")
 
 
 @registry.register(name="random_library")
@@ -174,7 +176,9 @@ class RandomLibraryRadio(SessionRadio):
         tracks_ids = self.session.user.actor.attributed_tracks.all().values_list(
             "id", flat=True
         )
-        query = Q(artist__content_category="music") & Q(pk__in=tracks_ids)
+        query = Q(artist_credit__artist__content_category="music") & Q(
+            pk__in=tracks_ids
+        )
         return qs.filter(query).order_by("?")
 
 
@@ -189,7 +193,9 @@ class FavoritesRadio(SessionRadio):
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
         track_ids = kwargs["user"].track_favorites.all().values_list("track", flat=True)
-        return qs.filter(pk__in=track_ids, artist__content_category="music")
+        return qs.filter(
+            pk__in=track_ids, artist_credit__artist__content_category="music"
+        )
 
 
 @registry.register(name="custom")
@@ -363,7 +369,7 @@ class ArtistRadio(RelatedObjectRadio):
 
     def get_queryset(self, **kwargs):
         qs = super().get_queryset(**kwargs)
-        return qs.filter(artist=self.session.related_object)
+        return qs.filter(artist_credit__artist=self.session.related_object)
 
 
 @registry.register(name="less-listened")
@@ -376,7 +382,7 @@ class LessListenedRadio(SessionRadio):
         qs = super().get_queryset(**kwargs)
         listened = self.session.user.listenings.all().values_list("track", flat=True)
         return (
-            qs.filter(artist__content_category="music")
+            qs.filter(artist_credit__artist__content_category="music")
             .exclude(pk__in=listened)
             .order_by("?")
         )
@@ -394,7 +400,9 @@ class LessListenedLibraryRadio(SessionRadio):
         tracks_ids = self.session.user.actor.attributed_tracks.all().values_list(
             "id", flat=True
         )
-        query = Q(artist__content_category="music") & Q(pk__in=tracks_ids)
+        query = Q(artist_credit__artist__content_category="music") & Q(
+            pk__in=tracks_ids
+        )
         return qs.filter(query).exclude(pk__in=listened).order_by("?")
 
 
@@ -450,7 +458,7 @@ class RecentlyAdded(SessionRadio):
         date = datetime.date.today() - datetime.timedelta(days=30)
         qs = super().get_queryset(**kwargs)
         return qs.filter(
-            Q(artist__content_category="music"),
+            Q(artist_credit__artist__content_category="music"),
             Q(creation_date__gt=date),
         )
 

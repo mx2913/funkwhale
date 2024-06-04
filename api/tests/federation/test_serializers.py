@@ -787,11 +787,11 @@ def test_activity_pub_album_serializer_to_ap(factories):
         "musicbrainzId": album.mbid,
         "published": album.creation_date.isoformat(),
         "released": album.release_date.isoformat(),
-        "artists": [
-            serializers.ArtistSerializer(
-                album.artist, context={"include_ap_context": False}
-            ).data
-        ],
+        "artist_credit": serializers.ArtistCreditSerializer(
+            album.artist_credit.all(),
+            many=True,
+            context={"include_ap_context": False},
+        ).data,
         "attributedTo": album.attributed_to.fid,
         "mediaType": "text/html",
         "content": common_utils.render_html(content.text, content.content_type),
@@ -805,22 +805,43 @@ def test_activity_pub_album_serializer_to_ap(factories):
     assert serializer.data == expected
 
 
+# to do : this change will break federation, should album channels be allowed to have multiples artist ?
 def test_activity_pub_album_serializer_to_ap_channel_artist(factories):
     channel = factories["audio.Channel"]()
     album = factories["music.Album"](
-        artist=channel.artist,
+        artist_credit__artist=channel.artist,
     )
 
     serializer = serializers.AlbumSerializer(album)
-
-    assert serializer.data["artists"] == [
-        {"type": channel.actor.type, "id": channel.actor.fid}
+    assert serializer.data["artist_credit"] == [
+        {
+            "type": "ArtistCredit",
+            "id": album.artist_credit.all()[0].fid,
+            "artist": {
+                "type": "Artist",
+                "id": album.artist_credit.all()[0].artist.fid,
+                "name": album.artist_credit.all()[0].artist.name,
+                "published": album.artist_credit.all()[
+                    0
+                ].artist.creation_date.isoformat(),
+                "musicbrainzId": str(album.artist_credit.all()[0].artist.mbid),
+                "attributedTo": album.artist_credit.all()[0].artist.attributed_to.fid,
+                "tag": [],
+                "image": None,
+            },
+            "joinphrase": "",
+            "name": album.artist_credit.all()[0].credit,
+            "index": None,
+            "published": album.artist_credit.all()[0].creation_date.isoformat(),
+        }
     ]
 
 
 def test_activity_pub_album_serializer_from_ap_create(factories, faker, now):
     actor = factories["federation.Actor"]()
     artist = factories["music.Artist"]()
+    artist_credit = factories["music.ArtistCredit"](artist=artist)
+
     released = faker.date_object()
     payload = {
         "@context": jsonld.get_default_context(),
@@ -831,11 +852,9 @@ def test_activity_pub_album_serializer_from_ap_create(factories, faker, now):
         "musicbrainzId": faker.uuid4(),
         "published": now.isoformat(),
         "released": released.isoformat(),
-        "artists": [
-            serializers.ArtistSerializer(
-                artist, context={"include_ap_context": False}
-            ).data
-        ],
+        "artist_credit": serializers.ArtistCreditSerializer(
+            [artist_credit], many=True, context={"include_ap_context": False}
+        ).data,
         "attributedTo": actor.fid,
         "tag": [
             {"type": "Hashtag", "name": "#Punk"},
@@ -850,7 +869,7 @@ def test_activity_pub_album_serializer_from_ap_create(factories, faker, now):
     assert album.title == payload["name"]
     assert str(album.mbid) == payload["musicbrainzId"]
     assert album.release_date == released
-    assert album.artist == artist
+    assert album.artist_credit.all()[0].artist == artist
     assert album.attachment_cover.url == payload["image"]["href"]
     assert album.attachment_cover.mimetype == payload["image"]["mediaType"]
     assert sorted(album.tagged_items.values_list("tag__name", flat=True)) == [
@@ -860,10 +879,12 @@ def test_activity_pub_album_serializer_from_ap_create(factories, faker, now):
 
 
 def test_activity_pub_album_serializer_from_ap_create_channel_artist(
-    factories, faker, now
+    factories, faker, now, mocker
 ):
     actor = factories["federation.Actor"]()
     channel = factories["audio.Channel"]()
+    ac = factories["music.ArtistCredit"](artist=channel.artist)
+
     released = faker.date_object()
     payload = {
         "@context": jsonld.get_default_context(),
@@ -872,15 +893,40 @@ def test_activity_pub_album_serializer_from_ap_create_channel_artist(
         "name": faker.sentence(),
         "published": now.isoformat(),
         "released": released.isoformat(),
-        "artists": [{"type": channel.actor.type, "id": channel.actor.fid}],
+        "artist_credit": [
+            {
+                "artist": {
+                    "type": "Artist",
+                    "mediaType": "text/plain",
+                    "content": "Artist summary",
+                    "id": "http://hello.artist",
+                    "name": "John Smith",
+                    "musicbrainzId": str(uuid.uuid4()),
+                    "published": now.isoformat(),
+                    "attributedTo": "https://cover.image/album-artist.pn",
+                    "tag": [{"type": "Hashtag", "name": "AlbumArtistTag"}],
+                    "image": {
+                        "type": "Image",
+                        "url": "https://cover.image/album-artist.png",
+                        "mediaType": "image/png",
+                    },
+                },
+                "joinphrase": "",
+                "name": "John Smith",
+                "published": now.isoformat(),
+                "id": "http://hello.artistcredit",
+            }
+        ],
         "attributedTo": actor.fid,
     }
+
+    mocker.patch.object(utils, "retrieve_ap_object", return_value=ac)
     serializer = serializers.AlbumSerializer(data=payload)
     assert serializer.is_valid(raise_exception=True) is True
 
     album = serializer.save()
 
-    assert album.artist == channel.artist
+    assert album.artist_credit.all()[0].artist == channel.artist
 
 
 def test_activity_pub_album_serializer_from_ap_update(factories, faker):
@@ -895,11 +941,11 @@ def test_activity_pub_album_serializer_from_ap_update(factories, faker):
         "musicbrainzId": faker.uuid4(),
         "published": album.creation_date.isoformat(),
         "released": released.isoformat(),
-        "artists": [
-            serializers.ArtistSerializer(
-                album.artist, context={"include_ap_context": False}
-            ).data
-        ],
+        "artist_credit": serializers.ArtistCreditSerializer(
+            album.artist_credit.all(),
+            many=True,
+            context={"include_ap_context": False},
+        ).data,
         "attributedTo": album.attributed_to.fid,
         "tag": [
             {"type": "Hashtag", "name": "#Punk"},
@@ -946,11 +992,11 @@ def test_activity_pub_track_serializer_to_ap(factories):
         "disc": track.disc_number,
         "license": track.license.conf["identifiers"][0],
         "copyright": "test",
-        "artists": [
-            serializers.ArtistSerializer(
-                track.artist, context={"include_ap_context": False}
-            ).data
-        ],
+        "artist_credit": serializers.ArtistCreditSerializer(
+            track.artist_credit.all(),
+            many=True,
+            context={"include_ap_context": False},
+        ).data,
         "album": serializers.AlbumSerializer(
             track.album, context={"include_ap_context": False}
         ).data,
@@ -1014,41 +1060,53 @@ def test_activity_pub_track_serializer_from_ap(factories, r_mock, mocker):
                 "mediaType": "image/png",
             },
             "tag": [{"type": "Hashtag", "name": "AlbumTag"}],
-            "artists": [
+            "artist_credit": [
                 {
-                    "type": "Artist",
-                    "mediaType": "text/plain",
-                    "content": "Artist summary",
-                    "id": "http://hello.artist",
-                    "name": "John Smith",
-                    "musicbrainzId": str(uuid.uuid4()),
-                    "published": published.isoformat(),
-                    "attributedTo": album_artist_attributed_to.fid,
-                    "tag": [{"type": "Hashtag", "name": "AlbumArtistTag"}],
-                    "image": {
-                        "type": "Image",
-                        "url": "https://cover.image/album-artist.png",
-                        "mediaType": "image/png",
+                    "artist": {
+                        "type": "Artist",
+                        "mediaType": "text/plain",
+                        "content": "Artist summary",
+                        "id": "http://hello.artist",
+                        "name": "John Smith",
+                        "musicbrainzId": str(uuid.uuid4()),
+                        "published": published.isoformat(),
+                        "attributedTo": album_artist_attributed_to.fid,
+                        "tag": [{"type": "Hashtag", "name": "AlbumArtistTag"}],
+                        "image": {
+                            "type": "Image",
+                            "url": "https://cover.image/album-artist.png",
+                            "mediaType": "image/png",
+                        },
                     },
+                    "joinphrase": "",
+                    "name": "John Smith",
+                    "published": published.isoformat(),
+                    "id": "http://hello.artistcredit",
                 }
             ],
         },
-        "artists": [
+        "artist_credit": [
             {
-                "type": "Artist",
-                "id": "http://hello.trackartist",
-                "name": "Bob Smith",
-                "mediaType": "text/plain",
-                "content": "Other artist summary",
-                "musicbrainzId": str(uuid.uuid4()),
-                "attributedTo": artist_attributed_to.fid,
-                "published": published.isoformat(),
-                "tag": [{"type": "Hashtag", "name": "ArtistTag"}],
-                "image": {
-                    "type": "Image",
-                    "url": "https://cover.image/artist.png",
-                    "mediaType": "image/png",
+                "artist": {
+                    "type": "Artist",
+                    "id": "http://hello.trackartist",
+                    "name": "Bob Smith",
+                    "mediaType": "text/plain",
+                    "content": "Other artist summary",
+                    "musicbrainzId": str(uuid.uuid4()),
+                    "attributedTo": artist_attributed_to.fid,
+                    "published": published.isoformat(),
+                    "tag": [{"type": "Hashtag", "name": "ArtistTag"}],
+                    "image": {
+                        "type": "Image",
+                        "url": "https://cover.image/artist.png",
+                        "mediaType": "image/png",
+                    },
                 },
+                "joinphrase": "",
+                "name": "John Smith",
+                "published": published.isoformat(),
+                "id": "http://hello.artistcredit",
             }
         ],
         "tag": [
@@ -1061,8 +1119,8 @@ def test_activity_pub_track_serializer_from_ap(factories, r_mock, mocker):
 
     track = serializer.save()
     album = track.album
-    artist = track.artist
-    album_artist = track.album.artist
+    artist = track.artist_credit.all()[0].artist
+    album_artist = track.album.artist_credit.all()[0].artist
 
     assert track.from_activity == activity
     assert track.fid == data["id"]
@@ -1090,33 +1148,49 @@ def test_activity_pub_track_serializer_from_ap(factories, r_mock, mocker):
     assert album.description.content_type == data["album"]["mediaType"]
 
     assert artist.from_activity == activity
-    assert artist.name == data["artists"][0]["name"]
-    assert artist.fid == data["artists"][0]["id"]
-    assert str(artist.mbid) == data["artists"][0]["musicbrainzId"]
+    assert artist.name == data["artist_credit"][0]["artist"]["name"]
+    assert artist.fid == data["artist_credit"][0]["artist"]["id"]
+    assert str(artist.mbid) == data["artist_credit"][0]["artist"]["musicbrainzId"]
     assert artist.creation_date == published
     assert artist.attributed_to == artist_attributed_to
-    assert artist.description.text == data["artists"][0]["content"]
-    assert artist.description.content_type == data["artists"][0]["mediaType"]
-    assert artist.attachment_cover.url == data["artists"][0]["image"]["url"]
-    assert artist.attachment_cover.mimetype == data["artists"][0]["image"]["mediaType"]
-
-    assert album_artist.from_activity == activity
-    assert album_artist.name == data["album"]["artists"][0]["name"]
-    assert album_artist.fid == data["album"]["artists"][0]["id"]
-    assert str(album_artist.mbid) == data["album"]["artists"][0]["musicbrainzId"]
-    assert album_artist.creation_date == published
-    assert album_artist.attributed_to == album_artist_attributed_to
-    assert album_artist.description.text == data["album"]["artists"][0]["content"]
+    assert artist.description.text == data["artist_credit"][0]["artist"]["content"]
     assert (
-        album_artist.description.content_type
-        == data["album"]["artists"][0]["mediaType"]
+        artist.description.content_type
+        == data["artist_credit"][0]["artist"]["mediaType"]
     )
     assert (
-        album_artist.attachment_cover.url == data["album"]["artists"][0]["image"]["url"]
+        artist.attachment_cover.url
+        == data["artist_credit"][0]["artist"]["image"]["url"]
+    )
+    assert (
+        artist.attachment_cover.mimetype
+        == data["artist_credit"][0]["artist"]["image"]["mediaType"]
+    )
+
+    assert album_artist.from_activity == activity
+    assert album_artist.name == data["album"]["artist_credit"][0]["artist"]["name"]
+    assert album_artist.fid == data["album"]["artist_credit"][0]["artist"]["id"]
+    assert (
+        str(album_artist.mbid)
+        == data["album"]["artist_credit"][0]["artist"]["musicbrainzId"]
+    )
+    assert album_artist.creation_date == published
+    assert album_artist.attributed_to == album_artist_attributed_to
+    assert (
+        album_artist.description.text
+        == data["album"]["artist_credit"][0]["artist"]["content"]
+    )
+    assert (
+        album_artist.description.content_type
+        == data["album"]["artist_credit"][0]["artist"]["mediaType"]
+    )
+    assert (
+        album_artist.attachment_cover.url
+        == data["album"]["artist_credit"][0]["artist"]["image"]["url"]
     )
     assert (
         album_artist.attachment_cover.mimetype
-        == data["album"]["artists"][0]["image"]["mediaType"]
+        == data["album"]["artist_credit"][0]["artist"]["image"]["mediaType"]
     )
 
     add_tags.assert_any_call(track, *["Hello", "World"])
@@ -1144,7 +1218,9 @@ def test_activity_pub_track_serializer_from_ap_update(factories, r_mock, mocker,
         "content": "hello there",
         "attributedTo": track_attributed_to.fid,
         "album": serializers.AlbumSerializer(track.album).data,
-        "artists": [serializers.ArtistSerializer(track.artist).data],
+        "artist_credit": serializers.ArtistCreditSerializer(
+            track.artist_credit.all(), many=True
+        ).data,
         "image": {"type": "Image", "mediaType": "image/jpeg", "url": faker.url()},
         "tag": [
             {"type": "Hashtag", "name": "#Hello"},
@@ -1213,23 +1289,35 @@ def test_activity_pub_upload_serializer_from_ap(factories, mocker, r_mock):
                     "href": "https://cover.image/test.png",
                     "mediaType": "image/png",
                 },
-                "artists": [
+                "artist_credit": [
                     {
-                        "type": "Artist",
-                        "id": "http://hello.artist",
+                        "artist": {
+                            "type": "Artist",
+                            "id": "http://hello.artist",
+                            "name": "John Smith",
+                            "musicbrainzId": str(uuid.uuid4()),
+                            "published": published.isoformat(),
+                        },
+                        "joinphrase": "",
                         "name": "John Smith",
-                        "musicbrainzId": str(uuid.uuid4()),
                         "published": published.isoformat(),
+                        "id": "http://hello.artistcredit",
                     }
                 ],
             },
-            "artists": [
+            "artist_credit": [
                 {
-                    "type": "Artist",
-                    "id": "http://hello.trackartist",
-                    "name": "Bob Smith",
-                    "musicbrainzId": str(uuid.uuid4()),
+                    "artist": {
+                        "type": "Artist",
+                        "id": "http://hello.trackartist",
+                        "name": "Bob Smith",
+                        "musicbrainzId": str(uuid.uuid4()),
+                        "published": published.isoformat(),
+                    },
+                    "joinphrase": "",
+                    "name": "John Smith",
                     "published": published.isoformat(),
+                    "id": "http://hello.artistcredit",
                 }
             ],
         },
@@ -1259,7 +1347,6 @@ def test_activity_pub_upload_serializer_from_ap(factories, mocker, r_mock):
 def test_activity_pub_upload_serializer_from_ap_update(factories, mocker, now, r_mock):
     library = factories["music.Library"]()
     upload = factories["music.Upload"](library=library, track__album__with_cover=True)
-
     data = {
         "@context": jsonld.get_default_context(),
         "type": "Audio",
@@ -1631,7 +1718,7 @@ def test_channel_actor_outbox_serializer(factories):
     channel = factories["audio.Channel"]()
     uploads = factories["music.Upload"].create_batch(
         5,
-        track__artist=channel.artist,
+        track__artist_credit__artist=channel.artist,
         library=channel.library,
         import_status="finished",
     )
@@ -1671,7 +1758,8 @@ def test_channel_upload_serializer(factories):
         track__license="cc0-1.0",
         track__copyright="Copyright something",
         track__album__set_tags=["Rock"],
-        track__artist__set_tags=["Indie"],
+        track__artist_credit__artist__set_tags=["Indie"],
+        track__artist_credit__artist__local=True,
     )
 
     expected = {
@@ -1722,9 +1810,9 @@ def test_channel_upload_serializer(factories):
     assert serializer.data == expected
 
 
-def test_channel_upload_serializer_from_ap_create(factories, now):
+def test_channel_upload_serializer_from_ap_create(factories, now, mocker):
     channel = factories["audio.Channel"](library__privacy_level="everyone")
-    album = factories["music.Album"](artist=channel.artist)
+    album = factories["music.Album"](artist_credit__artist=channel.artist)
     payload = {
         "@context": jsonld.get_default_context(),
         "type": "Audio",
@@ -1767,6 +1855,7 @@ def test_channel_upload_serializer_from_ap_create(factories, now):
             "url": "https://image.example/image.png",
         },
     }
+    mocker.patch.object(utils, "retrieve_ap_object", return_value=album)
 
     serializer = serializers.ChannelUploadSerializer(
         data=payload, context={"channel": channel}
@@ -1784,7 +1873,7 @@ def test_channel_upload_serializer_from_ap_create(factories, now):
     assert upload.size == payload["url"][1]["size"]
     assert upload.bitrate == payload["url"][1]["bitrate"]
     assert upload.duration == payload["duration"]
-    assert upload.track.artist == channel.artist
+    assert upload.track.artist_credit.all()[0].artist == channel.artist
     assert upload.track.position == payload["position"]
     assert upload.track.disc_number == payload["disc"]
     assert upload.track.attributed_to == channel.attributed_to
@@ -1801,10 +1890,12 @@ def test_channel_upload_serializer_from_ap_create(factories, now):
     assert upload.track.album == album
 
 
-def test_channel_upload_serializer_from_ap_update(factories, now):
+def test_channel_upload_serializer_from_ap_update(factories, now, mocker):
     channel = factories["audio.Channel"](library__privacy_level="everyone")
-    album = factories["music.Album"](artist=channel.artist)
-    upload = factories["music.Upload"](track__album=album, track__artist=channel.artist)
+    album = factories["music.Album"](artist_credit__artist=channel.artist)
+    upload = factories["music.Upload"](
+        track__album=album, track__artist_credit__artist=channel.artist
+    )
 
     payload = {
         "@context": jsonld.get_default_context(),
@@ -1847,6 +1938,7 @@ def test_channel_upload_serializer_from_ap_update(factories, now):
             "url": "https://image.example/image.png",
         },
     }
+    mocker.patch.object(utils, "retrieve_ap_object", return_value=album)
 
     serializer = serializers.ChannelUploadSerializer(
         data=payload, context={"channel": channel}
@@ -1865,7 +1957,7 @@ def test_channel_upload_serializer_from_ap_update(factories, now):
     assert upload.size == payload["url"][1]["size"]
     assert upload.bitrate == payload["url"][1]["bitrate"]
     assert upload.duration == payload["duration"]
-    assert upload.track.artist == channel.artist
+    assert upload.track.artist_credit.all()[0].artist == channel.artist
     assert upload.track.position == payload["position"]
     assert upload.track.disc_number == payload["disc"]
     assert upload.track.attributed_to == channel.attributed_to
@@ -1944,3 +2036,59 @@ def test_report_serializer_to_ap(factories):
     }
     serializer = serializers.FlagSerializer(report)
     assert serializer.data == expected
+
+
+def test_artist_credit_serializer_to_ap(factories):
+    ac = factories["music.ArtistCredit"](artist__local=True)
+    serializer = serializers.ArtistCreditSerializer(ac)
+
+    expected = {
+        "@context": jsonld.get_default_context(),
+        "id": ac.get_federation_id(),
+        "type": "ArtistCredit",
+        "artist": serializers.ArtistSerializer(
+            ac.artist, context={"include_ap_context": False}
+        ).data,
+        "joinphrase": ac.joinphrase,
+        "name": ac.credit,
+        "index": ac.index,
+        "published": ac.creation_date.isoformat(),
+    }
+
+    assert serializer.data == expected
+
+
+# def test_artist_credit_serializer_from_ap(factories):
+#     ac = factories["music.ArtistCredit"](artist__local=True)
+
+#     payload = {
+#         "@context": jsonld.get_default_context(),
+#         "id": ac.get_federation_id(),
+#         "type": "ArtistCredit",
+#         "artist": serializers.ArtistSerializer(
+#             ac.artist, context={"include_ap_context": False}
+#         ).data,
+#         "joinphrase": ac.joinphrase,
+#         "name": ac.credit,
+#         "index": ac.index,
+#         "musicbrainzId": ac.mbid,
+#         "published": ac.creation_date.isoformat(),
+#     }
+
+#     expected = {
+#         "id": ac.get_federation_id(),
+#         "type": "ArtistCredit",
+#         "artist": serializers.ArtistSerializer(
+#             ac.artist, context={"include_ap_context": False}
+#         ).data,
+#         "joinphrase": ac.joinphrase,
+#         "name": ac.credit,
+#         "index": ac.index,
+#         "musicbrainzId": ac.mbid,
+#         "published": ac.creation_date.isoformat(),
+#     }
+#     serializer = serializers.ArtistCreditSerializer(data=payload)
+
+#     serializer.is_valid()
+
+#     assert serializer.validated_data == expected

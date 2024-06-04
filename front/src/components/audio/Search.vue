@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Artist, Album } from '~/types'
+import type { Album, ArtistCredit } from '~/types'
 
 import { useI18n } from 'vue-i18n'
 import { ref, computed, reactive, watch, onMounted } from 'vue'
@@ -27,7 +27,7 @@ const query = ref('')
 const queryDebounced = refDebounced(query, 500)
 
 const results = reactive({
-  artists: [] as Artist[],
+  artists: [] as ArtistCredit[],
   albums: [] as Album[]
 })
 
@@ -94,9 +94,9 @@ const labels = computed(() => ({
       <div v-if="results.artists.length > 0">
         <div class="ui cards">
           <artist-card
-            v-for="artist in results.artists"
-            :key="artist.id"
-            :artist="artist"
+            v-for="ac in results.artists"
+            :key="ac.artist.id"
+            :artist="ac.artist"
           />
         </div>
       </div>

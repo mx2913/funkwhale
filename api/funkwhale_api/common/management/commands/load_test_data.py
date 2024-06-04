@@ -69,21 +69,32 @@ def create_taggable_items(dependency):
 
 CONFIG = [
     {
+        "id": "artist_credit",
+        "model": music_models.ArtistCredit,
+        "factory": "music.ArtistCredit",
+        "factory_kwargs": {"joinphrase": ""},
+        "depends_on": [
+            {"field": "artist", "id": "artists", "default_factor": 0.5},
+        ],
+    },
+    {
         "id": "tracks",
         "model": music_models.Track,
         "factory": "music.Track",
-        "factory_kwargs": {"artist": None, "album": None},
+        "factory_kwargs": {"album": None},
         "depends_on": [
             {"field": "album", "id": "albums", "default_factor": 0.1},
-            {"field": "artist", "id": "artists", "default_factor": 0.05},
+            {"field": "artist_credit", "id": "artist_credit", "default_factor": 0.05},
         ],
     },
     {
         "id": "albums",
         "model": music_models.Album,
         "factory": "music.Album",
-        "factory_kwargs": {"artist": None},
-        "depends_on": [{"field": "artist", "id": "artists", "default_factor": 0.3}],
+        "factory_kwargs": {},
+        "depends_on": [
+            {"field": "artist_credit", "id": "artist_credit", "default_factor": 0.3}
+        ],
     },
     {"id": "artists", "model": music_models.Artist, "factory": "music.Artist"},
     {
@@ -310,12 +321,23 @@ class Command(BaseCommand):
                 candidates = list(queryset.values_list("pk", flat=True))
                 picked_pks = [random.choice(candidates) for _ in objects]
                 picked_objects = {o.pk: o for o in queryset.filter(pk__in=picked_pks)}
+
+            saved_obj = []
             for i, obj in enumerate(objects):
                 if create_dependencies:
                     value = random.choice(candidates)
                 else:
                     value = picked_objects[picked_pks[i]]
-                setattr(obj, dependency["field"], value)
+                if dependency["field"] == "artist_credit":
+                    obj.save()
+                    obj.artist_credit.set([value])
+                    saved_obj.append(obj)
+
+                else:
+                    setattr(obj, dependency["field"], value)
+            if saved_obj:
+                return saved_obj
+
         if not handler:
             objects = row["model"].objects.bulk_create(objects, batch_size=BATCH_SIZE)
         results[row["id"]] = objects

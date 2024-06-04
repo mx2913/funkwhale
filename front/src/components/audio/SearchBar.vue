@@ -9,6 +9,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useStore } from '~/store'
+import { generateTrackCreditString } from '~/utils/utils'
 
 import onKeyboardShortcut from '~/composables/onKeyboardShortcut'
 
@@ -97,7 +98,7 @@ const categories = computed(() => [
     name: labels.value.album,
     getId: (obj: Album) => obj.id,
     getTitle: (obj: Album) => obj.title,
-    getDescription: (obj: Album) => obj.artist.name
+    getDescription: (obj: Album) => generateTrackCreditString(obj)
   },
   {
     code: 'tracks',
@@ -105,7 +106,10 @@ const categories = computed(() => [
     name: labels.value.track,
     getId: (obj: Track) => obj.id,
     getTitle: (obj: Track) => obj.title,
-    getDescription: (obj: Track) => obj.album?.artist.name ?? obj.artist?.name ?? ''
+    getDescription: (obj: Track) => {
+      const album = obj.album ?? null
+      return generateTrackCreditString(album) ?? generateTrackCreditString(obj) ?? ''
+    }
   },
   {
     code: 'tags',

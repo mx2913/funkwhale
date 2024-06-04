@@ -119,16 +119,12 @@ class ArtistViewSet(
 ):
     queryset = (
         models.Artist.objects.all()
-        .prefetch_related("attributed_to", "attachment_cover")
+        .select_related("attributed_to", "attachment_cover")
+        .order_by("-id")
         .prefetch_related(
             "channel__actor",
-            Prefetch(
-                "tracks",
-                queryset=models.Track.objects.all(),
-                to_attr="_prefetched_tracks",
-            ),
         )
-        .order_by("-id")
+        .annotate(_tracks_count=Count("artist_credit__tracks"))
     )
     serializer_class = serializers.ArtistWithAlbumsSerializer
     permission_classes = [oauth_permissions.ScopePermission]
@@ -165,12 +161,12 @@ class ArtistViewSet(
             utils.get_actor_from_request(self.request)
         )
         return queryset.prefetch_related(
-            Prefetch("albums", queryset=albums), TAG_PREFETCH
+            Prefetch("artist_credit__albums", queryset=albums), TAG_PREFETCH
         )
 
     libraries = get_libraries(
         lambda o, uploads: uploads.filter(
-            Q(track__artist=o) | Q(track__album__artist=o)
+            Q(track__artist_credit__artist=o) | Q(track__album__artist_credit__artist=o)
         )
     )
 
@@ -185,8 +181,9 @@ class AlbumViewSet(
     queryset = (
         models.Album.objects.all()
         .order_by("-creation_date")
-        .prefetch_related("artist__channel", "attributed_to", "attachment_cover")
-    )
+        .select_related("attributed_to", "attachment_cover")
+        .prefetch_related("artist_credit__artist__channel")
+    ).distinct()
     serializer_class = serializers.AlbumSerializer
     permission_classes = [oauth_permissions.ScopePermission]
     required_scope = "libraries"
@@ -218,8 +215,8 @@ class AlbumViewSet(
     def get_queryset(self):
         queryset = super().get_queryset()
         if self.action in ["destroy"]:
-            queryset = queryset.exclude(artist__channel=None).filter(
-                artist__attributed_to=self.request.user.actor
+            queryset = queryset.exclude(artist_credit__artist__channel=None).filter(
+                artist_credit__artist__attributed_to=self.request.user.actor
             )
 
         tracks = models.Track.objects.all().prefetch_related("album")
@@ -244,6 +241,54 @@ class AlbumViewSet(
             context={"album": instance},
         )
         models.Album.objects.filter(pk=instance.pk).delete()
+
+    @transaction.atomic
+    def create(self, request, *args, **kwargs):
+        request_data = request.data.copy()
+
+        if mbid := request_data.get("musicbrainz_albumid", None) or request_data.get(
+            "mbid", None
+        ):
+            artist_credit = tasks.get_or_create_artists_credits_from_musicbrainz(
+                "release",
+                mbid,
+                attributed_to=request.user.actor,
+                from_activity_id=None,
+            )
+        else:
+            artist_data = request_data.pop("artist", False)
+            artist_credit_data = request_data.pop("artist_credit", False)
+            if not artist_data and not artist_credit_data:
+                return Response({}, status=400)
+            if artist_data:
+                try:
+                    artist = models.Artist.objects.get(pk=artist_data)
+                except models.Artist.DoesNotExist:
+                    return Response({"détail": "artist id not found"}, status=400)
+
+                artist_credit, created = models.ArtistCredit.objects.get_or_create(
+                    **{
+                        "artist": artist,
+                        "credit": artist.name,
+                        "joinphrase": "",
+                        "index": 0,
+                    }
+                )
+            elif artist_credit_data:
+                try:
+                    artist_credit = models.ArtistCredit.objects.get(
+                        pk=artist_credit_data
+                    )
+                except models.ArtistCredit.DoesNotExist:
+                    return Response(
+                        {"détail": "artist_credit id not found"}, status=400
+                    )
+
+        request_data["artist_credit"] = [artist_credit.pk]
+        serializer = self.get_serializer(data=request_data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=204)
 
 
 class LibraryViewSet(
@@ -398,7 +443,7 @@ class TrackViewSet(
         .for_nested_serialization()
         .prefetch_related("attributed_to", "attachment_cover")
         .order_by("-creation_date")
-    )
+    ).distinct()
     serializer_class = serializers.TrackSerializer
     permission_classes = [oauth_permissions.ScopePermission]
     required_scope = "libraries"
@@ -420,8 +465,8 @@ class TrackViewSet(
     def get_queryset(self):
         queryset = super().get_queryset()
         if self.action in ["destroy"]:
-            queryset = queryset.exclude(artist__channel=None).filter(
-                artist__attributed_to=self.request.user.actor
+            queryset = queryset.exclude(artist_credit__artist__channel=None).filter(
+                artist_credit__artist__attributed_to=self.request.user.actor
             )
         filter_favorites = self.request.GET.get("favorites", None)
         user = self.request.user
@@ -647,7 +692,9 @@ class ListenMixin(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 
 def handle_stream(track, request, download, explicit_file, format, max_bitrate):
     actor = utils.get_actor_from_request(request)
-    queryset = track.uploads.prefetch_related("track__album__artist", "track__artist")
+    queryset = track.uploads.prefetch_related(
+        "track__album__artist_credit__artist", "track__artist_credit"
+    )
     if explicit_file:
         queryset = queryset.filter(uuid=explicit_file)
     queryset = queryset.playable_by(actor)
@@ -717,8 +764,8 @@ class UploadViewSet(
         .order_by("-creation_date")
         .prefetch_related(
             "library__actor",
-            "track__artist",
-            "track__album__artist",
+            "track__artist_credit",
+            "track__album__artist_credit",
             "track__attachment_cover",
         )
     )
@@ -737,7 +784,7 @@ class UploadViewSet(
         "import_date",
         "bitrate",
         "size",
-        "artist__name",
+        "artist_credit__artist__name",
     )
 
     def get_queryset(self):
@@ -840,20 +887,24 @@ class Search(views.APIView):
     def get_tracks(self, query):
         query_obj = utils.get_fts_query(
             query,
-            fts_fields=["body_text", "album__body_text", "artist__body_text"],
+            fts_fields=[
+                "body_text",
+                "album__body_text",
+                "artist_credit__artist__body_text",
+            ],
             model=models.Track,
         )
         qs = (
             models.Track.objects.all()
             .filter(query_obj)
             .prefetch_related(
-                "artist",
+                "artist_credit",
                 "attributed_to",
                 Prefetch(
                     "album",
                     queryset=models.Album.objects.select_related(
-                        "artist", "attachment_cover", "attributed_to"
-                    ).prefetch_related("tracks"),
+                        "attachment_cover", "attributed_to"
+                    ).prefetch_related("tracks", "artist_credit"),
                 ),
             )
         )
@@ -861,13 +912,15 @@ class Search(views.APIView):
 
     def get_albums(self, query):
         query_obj = utils.get_fts_query(
-            query, fts_fields=["body_text", "artist__body_text"], model=models.Album
+            query,
+            fts_fields=["body_text", "artist_credit__artist__body_text"],
+            model=models.Album,
         )
         qs = (
             models.Album.objects.all()
             .filter(query_obj)
-            .select_related("artist", "attachment_cover", "attributed_to")
-            .prefetch_related("tracks__artist")
+            .select_related("attachment_cover", "attributed_to")
+            .prefetch_related("tracks__artist_credit", "artist_credit")
         )
         return common_utils.order_for_search(qs, "title")[: self.max_results]
 

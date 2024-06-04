@@ -21,7 +21,11 @@ TAG_FILTER = common_filters.MultipleQueryFilter(method=filter_tags)
 
 class ChannelFilter(moderation_filters.HiddenContentFilterSet):
     q = fields.SearchFilter(
-        search_fields=["artist__name", "actor__summary", "actor__preferred_username"]
+        search_fields=[
+            "artist_credit__artist__name",
+            "actor__summary",
+            "actor__preferred_username",
+        ]
     )
     tag = TAG_FILTER
     scope = common_filters.ActorScopeFilter(actor_field="attributed_to", distinct=True)
@@ -33,7 +37,7 @@ class ChannelFilter(moderation_filters.HiddenContentFilterSet):
         # tuple-mapping retains order
         fields=(
             ("creation_date", "creation_date"),
-            ("artist__modification_date", "modification_date"),
+            ("artist_credit__artist__modification_date", "modification_date"),
             ("?", "random"),
         )
     )

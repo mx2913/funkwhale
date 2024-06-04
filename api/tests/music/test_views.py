@@ -7,7 +7,7 @@ import uuid
 
 import magic
 import pytest
-from django.db.models import Prefetch
+from django.db.models import Count, Prefetch
 from django.urls import reverse
 from django.utils import timezone
 
@@ -26,12 +26,12 @@ def test_artist_list_serializer(api_request, factories, logged_in_api_client):
     track = factories["music.Upload"](
         library__privacy_level="everyone",
         import_status="finished",
-        track__album__artist__set_tags=tags,
+        track__album__artist_credit__artist__set_tags=tags,
     ).track
-    artist = track.artist
+    artist = track.artist_credit.all()[0].artist
     request = api_request.get("/")
-    qs = artist.__class__.objects.with_albums().prefetch_related(
-        Prefetch("tracks", to_attr="_prefetched_tracks")
+    qs = artist.__class__.objects.with_albums().annotate(
+        _tracks_count=Count("artist_credit__tracks")
     )
     serializer = serializers.ArtistWithAlbumsSerializer(
         qs, many=True, context={"request": request}
@@ -39,12 +39,11 @@ def test_artist_list_serializer(api_request, factories, logged_in_api_client):
     expected = {"count": 1, "next": None, "previous": None, "results": serializer.data}
     for artist in serializer.data:
         artist["tags"] = tags
-        for album in artist["albums"]:
-            album["is_playable"] = True
 
     url = reverse("api:v1:artists-list")
     response = logged_in_api_client.get(url)
 
+    assert serializer.data[0]["tracks_count"] == 1
     assert response.status_code == 200
     assert response.data == expected
 
@@ -118,7 +117,9 @@ def test_artist_view_filter_playable(param, expected, factories, api_request):
         "empty": factories["music.Artist"](),
         "full": factories["music.Upload"](
             library__privacy_level="everyone", import_status="finished"
-        ).track.artist,
+        )
+        .track.artist_credit.all()[0]
+        .artist,
     }
 
     request = api_request.get("/", {"playable": param})
@@ -817,7 +818,7 @@ def test_user_can_create_upload_in_channel(
     channel = factories["audio.Channel"](attributed_to=actor)
     url = reverse("api:v1:uploads-list")
     m = mocker.patch("funkwhale_api.common.utils.on_commit")
-    album = factories["music.Album"](artist=channel.artist)
+    album = factories["music.Album"](artist_credit__artist=channel.artist)
     response = logged_in_api_client.post(
         url,
         {
@@ -968,12 +969,14 @@ def test_can_get_libraries_for_music_entities(
     library = upload.library
     setattr(library, "_uploads_count", 1)
     data = {
-        "artist": upload.track.artist,
+        "artist": upload.track.artist_credit.all()[0].artist,
         "album": upload.track.album,
         "track": upload.track,
     }
     # libraries in channel should be missing excluded
-    channel = factories["audio.Channel"](artist=upload.track.artist)
+    channel = factories["audio.Channel"](
+        artist=upload.track.artist_credit.all()[0].artist
+    )
     factories["music.Upload"](
         library=channel.library, playable=True, track=upload.track
     )
@@ -1035,7 +1038,7 @@ def test_oembed_track(factories, no_api_auth, api_client, settings):
         "provider_url": settings.FUNKWHALE_URL,
         "height": 150,
         "width": 600,
-        "title": f"{track.title} by {track.artist.name}",
+        "title": f"{track.title} by {track.artist_credit.all()[0].artist.name}",
         "description": track.full_name,
         "thumbnail_url": federation_utils.full_url(
             track.album.attachment_cover.file.crop["200x200"].url
@@ -1045,9 +1048,11 @@ def test_oembed_track(factories, no_api_auth, api_client, settings):
         "html": '<iframe width="600" height="150" scrolling="no" frameborder="no" src="{}"></iframe>'.format(
             iframe_src
         ),
-        "author_name": track.artist.name,
+        "author_name": track.artist_credit.all()[0].artist.name,
         "author_url": federation_utils.full_url(
-            utils.spa_reverse("library_artist", kwargs={"pk": track.artist.pk})
+            utils.spa_reverse(
+                "library_artist", kwargs={"pk": track.artist_credit.all()[0].artist.pk}
+            )
         ),
     }
 
@@ -1071,8 +1076,8 @@ def test_oembed_album(factories, no_api_auth, api_client, settings):
         "provider_url": settings.FUNKWHALE_URL,
         "height": 400,
         "width": 600,
-        "title": f"{album.title} by {album.artist.name}",
-        "description": f"{album.title} by {album.artist.name}",
+        "title": f"{album.title} by {album.artist_credit.all()[0].artist.name}",
+        "description": f"{album.title} by {album.artist_credit.all()[0].artist.name}",
         "thumbnail_url": federation_utils.full_url(
             album.attachment_cover.file.crop["200x200"].url
         ),
@@ -1081,9 +1086,11 @@ def test_oembed_album(factories, no_api_auth, api_client, settings):
         "html": '<iframe width="600" height="400" scrolling="no" frameborder="no" src="{}"></iframe>'.format(
             iframe_src
         ),
-        "author_name": album.artist.name,
+        "author_name": album.artist_credit.all()[0].artist.name,
         "author_url": federation_utils.full_url(
-            utils.spa_reverse("library_artist", kwargs={"pk": album.artist.pk})
+            utils.spa_reverse(
+                "library_artist", kwargs={"pk": album.artist_credit.all()[0].artist.pk}
+            )
         ),
     }
 
@@ -1097,7 +1104,7 @@ def test_oembed_artist(factories, no_api_auth, api_client, settings):
     settings.FUNKWHALE_EMBED_URL = "http://embed"
     track = factories["music.Track"](album__with_cover=True)
     album = track.album
-    artist = track.artist
+    artist = track.artist_credit.all()[0].artist
     url = reverse("api:v1:oembed")
     artist_url = f"https://test.com/library/artists/{artist.pk}"
     iframe_src = f"http://embed?type=artist&id={artist.pk}"
@@ -1281,7 +1288,7 @@ def test_artist_list_exclude_channels(
 )
 def test_album_list_exclude_channels(params, expected, factories, logged_in_api_client):
     channel_artist = factories["audio.Channel"]().artist
-    factories["music.Album"](artist=channel_artist)
+    factories["music.Album"](artist_credit__artist=channel_artist)
 
     url = reverse("api:v1:albums-list")
     response = logged_in_api_client.get(url, params)
@@ -1296,7 +1303,7 @@ def test_album_list_exclude_channels(params, expected, factories, logged_in_api_
 )
 def test_track_list_exclude_channels(params, expected, factories, logged_in_api_client):
     channel_artist = factories["audio.Channel"]().artist
-    factories["music.Track"](artist=channel_artist)
+    factories["music.Track"](artist_credit__artist=channel_artist)
 
     url = reverse("api:v1:tracks-list")
     response = logged_in_api_client.get(url, params)
@@ -1404,10 +1411,12 @@ def test_channel_owner_can_create_album(factories, logged_in_api_client):
     actor = logged_in_api_client.user.create_actor()
     channel = factories["audio.Channel"](attributed_to=actor, artist__with_cover=True)
     attachment = factories["common.Attachment"](actor=actor)
+    ac = factories["music.ArtistCredit"](artist=channel.artist)
+
     url = reverse("api:v1:albums-list")
 
     data = {
-        "artist": channel.artist.pk,
+        "artist_credit": ac.pk,
         "cover": attachment.uuid,
         "title": "Hello world",
         "release_date": "2019-01-02",
@@ -1417,10 +1426,9 @@ def test_channel_owner_can_create_album(factories, logged_in_api_client):
 
     response = logged_in_api_client.post(url, data, format="json")
 
-    assert response.status_code == 201
+    assert response.status_code == 204
 
-    album = channel.artist.albums.get(title=data["title"])
-
+    album = channel.artist.artist_credit.albums().get(title=data["title"])
     assert (
         response.data
         == serializers.AlbumSerializer(album, context={"description": True}).data
@@ -1437,7 +1445,7 @@ def test_channel_owner_can_delete_album(factories, logged_in_api_client, mocker)
     dispatch = mocker.patch("funkwhale_api.federation.routes.outbox.dispatch")
     actor = logged_in_api_client.user.create_actor()
     channel = factories["audio.Channel"](attributed_to=actor)
-    album = factories["music.Album"](artist=channel.artist)
+    album = factories["music.Album"](artist_credit__artist=channel.artist)
     url = reverse("api:v1:albums-detail", kwargs={"pk": album.pk})
 
     response = logged_in_api_client.delete(url)
@@ -1474,7 +1482,7 @@ def test_other_user_cannot_create_album(factories, logged_in_api_client):
 def test_other_user_cannot_delete_album(factories, logged_in_api_client):
     logged_in_api_client.user.create_actor()
     channel = factories["audio.Channel"]()
-    album = factories["music.Album"](artist=channel.artist)
+    album = factories["music.Album"](artist_credit__artist=channel.artist)
     url = reverse("api:v1:albums-detail", kwargs={"pk": album.pk})
 
     response = logged_in_api_client.delete(url)
@@ -1487,7 +1495,7 @@ def test_channel_owner_can_delete_track(factories, logged_in_api_client, mocker)
     dispatch = mocker.patch("funkwhale_api.federation.routes.outbox.dispatch")
     actor = logged_in_api_client.user.create_actor()
     channel = factories["audio.Channel"](attributed_to=actor)
-    track = factories["music.Track"](artist=channel.artist)
+    track = factories["music.Track"](artist_credit__artist=channel.artist)
     upload1 = factories["music.Upload"](track=track)
     upload2 = factories["music.Upload"](track=track)
     url = reverse("api:v1:tracks-detail", kwargs={"pk": track.pk})
@@ -1506,7 +1514,7 @@ def test_channel_owner_can_delete_track(factories, logged_in_api_client, mocker)
 def test_other_user_cannot_delete_track(factories, logged_in_api_client):
     logged_in_api_client.user.create_actor()
     channel = factories["audio.Channel"]()
-    track = factories["music.Track"](artist=channel.artist)
+    track = factories["music.Track"](artist_credit__artist=channel.artist)
     url = reverse("api:v1:tracks-detail", kwargs={"pk": track.pk})
 
     response = logged_in_api_client.delete(url)
@@ -1590,3 +1598,13 @@ def test_fs_import_cancel_already_running(
 
     assert response.status_code == 204
     assert cache.get("fs-import:status") == "canceled"
+
+
+def test_album_create_artist_credit(factories, logged_in_api_client):
+    artist = factories["music.Artist"]()
+    factories["audio.Channel"](artist=artist)
+    url = reverse("api:v1:albums-list")
+    response = logged_in_api_client.post(
+        url, {"artist": artist.pk, "title": "super album"}, format="json"
+    )
+    assert response.status_code == 204

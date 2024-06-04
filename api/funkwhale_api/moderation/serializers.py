@@ -89,10 +89,29 @@ class ArtistStateSerializer(DescriptionStateMixin, serializers.ModelSerializer):
         ]
 
 
+@state_serializers.register(name="music.ArtistCredit")
+class ArtistCreditStateSerializer(DescriptionStateMixin, serializers.ModelSerializer):
+    artist = ArtistStateSerializer()
+
+    class Meta:
+        model = music_models.ArtistCredit
+        fields = [
+            "id",
+            "credit",
+            "mbid",
+            "fid",
+            "creation_date",
+            "uuid",
+            "artist",
+            "joinphrase",
+            "index",
+        ]
+
+
 @state_serializers.register(name="music.Album")
 class AlbumStateSerializer(DescriptionStateMixin, serializers.ModelSerializer):
     tags = TAGS_FIELD
-    artist = ArtistStateSerializer()
+    artist_credit = ArtistCreditStateSerializer(many=True)
 
     class Meta:
         model = music_models.Album
@@ -103,7 +122,7 @@ class AlbumStateSerializer(DescriptionStateMixin, serializers.ModelSerializer):
             "fid",
             "creation_date",
             "uuid",
-            "artist",
+            "artist_credit",
             "release_date",
             "tags",
             "description",
@@ -113,7 +132,7 @@ class AlbumStateSerializer(DescriptionStateMixin, serializers.ModelSerializer):
 @state_serializers.register(name="music.Track")
 class TrackStateSerializer(DescriptionStateMixin, serializers.ModelSerializer):
     tags = TAGS_FIELD
-    artist = ArtistStateSerializer()
+    artist_credit = ArtistCreditStateSerializer(many=True)
     album = AlbumStateSerializer()
 
     class Meta:
@@ -125,7 +144,7 @@ class TrackStateSerializer(DescriptionStateMixin, serializers.ModelSerializer):
             "fid",
             "creation_date",
             "uuid",
-            "artist",
+            "artist_credit",
             "album",
             "disc_number",
             "position",
@@ -230,6 +249,7 @@ TARGET_CONFIG = {
         "id_field": serializers.UUIDField(),
     },
     "artist": {"queryset": music_models.Artist.objects.all()},
+    "artist_credit": {"queryset": music_models.ArtistCredit.objects.all()},
     "album": {"queryset": music_models.Album.objects.all()},
     "track": {"queryset": music_models.Track.objects.all()},
     "library": {

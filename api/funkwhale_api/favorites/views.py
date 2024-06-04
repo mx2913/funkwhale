@@ -60,11 +60,20 @@ class TrackFavoriteViewSet(
         queryset = queryset.filter(
             fields.privacy_level_query(self.request.user, "user__privacy_level")
         )
-        tracks = Track.objects.with_playable_uploads(
-            music_utils.get_actor_from_request(self.request)
-        ).select_related(
-            "artist", "album__artist", "attributed_to", "album__attachment_cover"
+        tracks = (
+            Track.objects.with_playable_uploads(
+                music_utils.get_actor_from_request(self.request)
+            )
+            .prefetch_related(
+                "artist_credit__artist",
+                "album__artist_credit__artist",
+            )
+            .select_related(
+                "attributed_to",
+                "album__attachment_cover",
+            )
         )
+
         queryset = queryset.prefetch_related(Prefetch("track", queryset=tracks))
         return queryset
 

@@ -199,7 +199,7 @@ const openMenu = () => {
           @click.stop.prevent="$router.push(`/library/tracks/${track?.id}/`)"
         >
           <i class="info icon" />
-          <span v-if="track.artist?.content_category === 'podcast'">
+          <span v-if="track.artist_credit?.some(ac => ac.artist.content_category === 'podcast')">
             {{ $t('components.audio.PlayButton.button.episodeDetails') }}
           </span>
           <span v-else>

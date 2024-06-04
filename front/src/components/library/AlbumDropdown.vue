@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Album, Artist, Library } from '~/types'
+import type { Album, ArtistCredit, Library } from '~/types'
 
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -17,7 +17,7 @@ interface Events {
 
 interface Props {
   isLoading: boolean
-  artist: Artist | null
+  artistCredit: ArtistCredit[]
   object: Album
   publicLibraries: Library[]
   isAlbum: boolean
@@ -38,9 +38,9 @@ const labels = computed(() => ({
   more: t('components.library.AlbumDropdown.button.more')
 }))
 
-const isEmbedable = computed(() => (props.isChannel && props.artist?.channel?.actor) || props.publicLibraries.length)
+const isEmbedable = computed(() => (props.isChannel && props.artistCredit[0].artist?.channel?.actor) || props.publicLibraries.length)
 const musicbrainzUrl = computed(() => props.object?.mbid ? `https://musicbrainz.org/release/${props.object.mbid}` : null)
-const discogsUrl = computed(() => `https://discogs.com/search/?type=release&title=${encodeURI(props.object?.title)}&artist=${encodeURI(props.object?.artist.name)}`)
+const discogsUrl = computed(() => `https://discogs.com/search/?type=release&title=${encodeURI(props.object?.title)}&artist=${encodeURI(props.object?.artist_credit[0].artist.name)}`)
 
 const remove = () => emit('remove')
 </script>
@@ -125,7 +125,7 @@ const remove = () => emit('remove')
           {{ $t('components.library.AlbumDropdown.button.edit') }}
         </router-link>
         <dangerous-button
-          v-if="artist && $store.state.auth.authenticated && artist.channel && artist.attributed_to.full_username === $store.state.auth.fullUsername"
+          v-if="artistCredit[0] && $store.state.auth.authenticated && artistCredit[0].artist.channel && artistCredit[0].artist.attributed_to?.full_username === $store.state.auth.fullUsername"
           :class="['ui', {loading: isLoading}, 'item']"
           @confirm="remove()"
         >
@@ -151,7 +151,7 @@ const remove = () => emit('remove')
         </dangerous-button>
         <div class="divider" />
         <div
-          v-for="obj in getReportableObjects({album: object, channel: artist?.channel})"
+          v-for="obj in getReportableObjects({album: object, channel: artistCredit[0]?.artist.channel})"
           :key="obj.target.type + obj.target.id"
           role="button"
           class="basic item"

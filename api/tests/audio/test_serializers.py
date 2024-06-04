@@ -678,7 +678,7 @@ def test_rss_feed_item_serializer_create(factories):
     assert upload.duration == 1357
     assert upload.mimetype == "audio/mpeg"
     assert upload.track.uuid == expected_uuid
-    assert upload.track.artist == channel.artist
+    assert upload.track.artist_credit.all()[0].artist == channel.artist
     assert upload.track.copyright == "test something"
     assert upload.track.position == 33
     assert upload.track.disc_number == 2
@@ -702,7 +702,7 @@ def test_rss_feed_item_serializer_update(factories):
         track__uuid=expected_uuid,
         source="https://file.domain/audio.mp3",
         library=channel.library,
-        track__artist=channel.artist,
+        track__artist_credit__artist=channel.artist,
     )
     track = upload.track
 
@@ -748,7 +748,7 @@ def test_rss_feed_item_serializer_update(factories):
     assert upload.duration == 1357
     assert upload.mimetype == "audio/mpeg"
     assert upload.track.uuid == expected_uuid
-    assert upload.track.artist == channel.artist
+    assert upload.track.artist_credit.all()[0].artist == channel.artist
     assert upload.track.copyright == "test something"
     assert upload.track.position == 33
     assert upload.track.disc_number == 2

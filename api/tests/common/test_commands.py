@@ -24,6 +24,13 @@ def test_load_test_data_dry_run(factories, mocker):
             [(music_models.Artist.objects.all(), 10)],
         ),
         (
+            {"create_dependencies": True, "artist_credit": 1, "artists": 1},
+            [
+                (music_models.ArtistCredit.objects.all(), 1),
+                (music_models.Artist.objects.all(), 1),
+            ],
+        ),
+        (
             {"create_dependencies": True, "albums": 10, "artists": 1},
             [
                 (music_models.Album.objects.all(), 10),
@@ -39,10 +46,14 @@ def test_load_test_data_dry_run(factories, mocker):
             ],
         ),
         (
-            {"create_dependencies": True, "albums": 10, "albums_artist_factor": 0.5},
+            {
+                "create_dependencies": True,
+                "albums": 10,
+                "albums_artist_credit_factor": 0.5,
+            },
             [
                 (music_models.Album.objects.all(), 10),
-                (music_models.Artist.objects.all(), 5),
+                (music_models.ArtistCredit.objects.all(), 5),
             ],
         ),
         (
@@ -95,7 +106,7 @@ def test_load_test_data_args(factories, kwargs, expected_counts, mocker):
 
 
 def test_load_test_data_skip_dependencies(factories):
-    factories["music.Artist"].create_batch(size=5)
+    factories["music.ArtistCredit"].create_batch(size=5)
     call_command("load_test_data", dry_run=False, albums=10, create_dependencies=False)
 
     assert music_models.Artist.objects.count() == 5

@@ -191,7 +191,6 @@ def prepare_for_serializer(payload, config, fallbacks={}):
             value = noop
             if not aliases:
                 continue
-
             for a in aliases:
                 try:
                     value = get_value(
@@ -279,7 +278,6 @@ class JsonLdSerializer(serializers.Serializer):
             for field in dereferenced_fields:
                 for i in get_ids(data[field]):
                     dereferenced_ids.add(i)
-
             if dereferenced_ids:
                 try:
                     loop = asyncio.get_event_loop()

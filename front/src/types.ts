@@ -62,6 +62,13 @@ export interface Artist {
   modification_date?: string
 }
 
+export interface ArtistCredit {
+  artist: Artist
+  credit: string
+  joinphrase: string
+  index: number
+}
+
 export interface Album {
   id: number
   fid: string
@@ -73,7 +80,7 @@ export interface Album {
   cover?: Cover
   tags: string[]
 
-  artist: Artist
+  artist_credit: ArtistCredit[]
   tracks_count: number
   tracks: Track[]
 
@@ -97,7 +104,7 @@ export interface Track {
   downloads_count: number
 
   album?: Album
-  artist?: Artist
+  artist_credit?: ArtistCredit[]
   disc_number: number
 
   listen_url: string

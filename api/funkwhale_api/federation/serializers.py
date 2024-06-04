@@ -6,6 +6,7 @@ import uuid
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.db import transaction
+from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import serializers
@@ -1221,12 +1222,22 @@ class MusicEntitySerializer(jsonld.JsonLdSerializer):
             self.updateable_fields, validated_data, instance
         )
         updated_fields = self.validate_updated_data(instance, updated_fields)
+
+        set_ac = False
+        if "artist_credit" in updated_fields:
+            artist_credit = updated_fields.pop("artist_credit")
+            set_ac = True
+
         if creating:
             instance, created = self.Meta.model.objects.get_or_create(
                 fid=validated_data["id"], defaults=updated_fields
             )
+            if set_ac:
+                instance.artist_credit.set(artist_credit)
         else:
-            music_tasks.update_library_entity(instance, updated_fields)
+            obj = music_tasks.update_library_entity(instance, updated_fields)
+            if set_ac:
+                obj.artist_credit.set(artist_credit)
 
         tags = [t["name"] for t in validated_data.get("tags", []) or []]
         tags_models.set_tags(instance, *tags)
@@ -1288,7 +1299,6 @@ class ArtistSerializer(MusicEntitySerializer):
             MUSIC_ENTITY_JSONLD_MAPPING,
             {
                 "released": jsonld.first_val(contexts.FW.released),
-                "artists": jsonld.first_attr(contexts.FW.artists, "@list"),
                 "image": jsonld.first_obj(contexts.AS.image),
             },
         )
@@ -1314,12 +1324,52 @@ class ArtistSerializer(MusicEntitySerializer):
     create = MusicEntitySerializer.update_or_create
 
 
+class ArtistCreditSerializer(MusicEntitySerializer):
+    artist = MultipleSerializer(allowed=[BasicActorSerializer, ArtistSerializer])
+    joinphrase = serializers.CharField(
+        trim_whitespace=False, required=False, allow_null=True, allow_blank=True
+    )
+    credit = serializers.CharField(
+        trim_whitespace=False, required=False, allow_null=True, allow_blank=True
+    )
+
+    updateable_fields = [
+        ("name", "credit"),
+        ("artist", "artist"),
+        ("joinphrase", "joinphrase"),
+    ]
+
+    class Meta:
+        model = music_models.ArtistCredit
+        jsonld_mapping = common_utils.concat_dicts(
+            MUSIC_ENTITY_JSONLD_MAPPING,
+            {
+                "artist": jsonld.first_obj(contexts.FW.artist),
+                "index": jsonld.first_val(contexts.FW.index),
+                "joinphrase": jsonld.first_val(contexts.FW.joinphrase),
+            },
+        )
+
+    def to_representation(self, instance):
+        data = {
+            "type": "ArtistCredit",
+            "id": instance.fid,
+            "artist": ArtistSerializer(
+                instance.artist, context={"include_ap_context": False}
+            ).data,
+            "joinphrase": instance.joinphrase,
+            "name": instance.credit,
+            "index": instance.index,
+            "published": instance.creation_date.isoformat(),
+        }
+        if self.context.get("include_ap_context", self.parent is None):
+            data["@context"] = jsonld.get_default_context()
+        return data
+
+
 class AlbumSerializer(MusicEntitySerializer):
     released = serializers.DateField(allow_null=True, required=False)
-    artists = serializers.ListField(
-        child=MultipleSerializer(allowed=[BasicActorSerializer, ArtistSerializer]),
-        min_length=1,
-    )
+    artist_credit = serializers.ListField(child=ArtistCreditSerializer(), min_length=1)
     image = ImageSerializer(
         allowed_mimetypes=["image/*"],
         allow_null=True,
@@ -1332,7 +1382,7 @@ class AlbumSerializer(MusicEntitySerializer):
         ("musicbrainzId", "mbid"),
         ("attributedTo", "attributed_to"),
         ("released", "release_date"),
-        ("_artist", "artist"),
+        ("artist_credit", "artist_credit"),
     ]
 
     class Meta:
@@ -1341,13 +1391,13 @@ class AlbumSerializer(MusicEntitySerializer):
             MUSIC_ENTITY_JSONLD_MAPPING,
             {
                 "released": jsonld.first_val(contexts.FW.released),
-                "artists": jsonld.first_attr(contexts.FW.artists, "@list"),
+                "artist_credit": jsonld.first_attr(contexts.FW.artist_credit, "@list"),
                 "image": jsonld.first_obj(contexts.AS.image),
             },
         )
 
     def to_representation(self, instance):
-        d = {
+        data = {
             "type": "Album",
             "id": instance.fid,
             "name": instance.title,
@@ -1361,42 +1411,40 @@ class AlbumSerializer(MusicEntitySerializer):
             else None,
             "tag": self.get_tags_repr(instance),
         }
-        if instance.artist.get_channel():
-            d["artists"] = [
-                {
-                    "type": instance.artist.channel.actor.type,
-                    "id": instance.artist.channel.actor.fid,
-                }
-            ]
-        else:
-            d["artists"] = [
-                ArtistSerializer(
-                    instance.artist, context={"include_ap_context": False}
-                ).data
-            ]
-        include_content(d, instance.description)
+
+        data["artist_credit"] = ArtistCreditSerializer(
+            instance.artist_credit.all(),
+            context={"include_ap_context": False},
+            many=True,
+        ).data
+        include_content(data, instance.description)
         if instance.attachment_cover:
-            include_image(d, instance.attachment_cover)
+            include_image(data, instance.attachment_cover)
 
         if self.context.get("include_ap_context", self.parent is None):
-            d["@context"] = jsonld.get_default_context()
-        return d
+            data["@context"] = jsonld.get_default_context()
+        return data
 
     def validate(self, data):
         validated_data = super().validate(data)
         if not self.parent:
-            artist_data = validated_data["artists"][0]
-            if artist_data.get("type", "Artist") == "Artist":
-                validated_data["_artist"] = utils.retrieve_ap_object(
-                    artist_data["id"],
-                    actor=self.context.get("fetch_actor"),
-                    queryset=music_models.Artist,
-                    serializer_class=ArtistSerializer,
-                )
+            artist_credit_data = validated_data["artist_credit"]
+            if artist_credit_data[0]["artist"].get("type", "Artist") == "Artist":
+                acs = []
+                for ac in validated_data["artist_credit"]:
+                    acs.append(
+                        utils.retrieve_ap_object(
+                            validated_data["artist_credit"][0]["id"],
+                            actor=self.context.get("fetch_actor"),
+                            queryset=music_models.ArtistCredit,
+                            serializer_class=ArtistCreditSerializer,
+                        )
+                    )
+                validated_data["artist_credit"] = acs
             else:
                 # we have an actor as an artist, so it's a channel
-                actor = actors.get_actor(artist_data["id"])
-                validated_data["_artist"] = actor.channel.artist
+                actor = actors.get_actor(artist_credit_data[0]["artist"]["id"])
+                validated_data["artist_credit"] = [{"artist": actor.channel.artist}]
 
         return validated_data
 
@@ -1406,7 +1454,7 @@ class AlbumSerializer(MusicEntitySerializer):
 class TrackSerializer(MusicEntitySerializer):
     position = serializers.IntegerField(min_value=0, allow_null=True, required=False)
     disc = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    artists = serializers.ListField(child=ArtistSerializer(), min_length=1)
+    artist_credit = serializers.ListField(child=ArtistCreditSerializer(), min_length=1)
     album = AlbumSerializer()
     license = serializers.URLField(allow_null=True, required=False)
     copyright = serializers.CharField(allow_null=True, required=False)
@@ -1434,7 +1482,7 @@ class TrackSerializer(MusicEntitySerializer):
             MUSIC_ENTITY_JSONLD_MAPPING,
             {
                 "album": jsonld.first_obj(contexts.FW.album),
-                "artists": jsonld.first_attr(contexts.FW.artists, "@list"),
+                "artist_credit": jsonld.first_attr(contexts.FW.artist_credit, "@list"),
                 "copyright": jsonld.first_val(contexts.FW.copyright),
                 "disc": jsonld.first_val(contexts.FW.disc),
                 "license": jsonld.first_id(contexts.FW.license),
@@ -1444,7 +1492,7 @@ class TrackSerializer(MusicEntitySerializer):
         )
 
     def to_representation(self, instance):
-        d = {
+        data = {
             "type": "Track",
             "id": instance.fid,
             "name": instance.title,
@@ -1456,11 +1504,11 @@ class TrackSerializer(MusicEntitySerializer):
             if instance.local_license
             else None,
             "copyright": instance.copyright if instance.copyright else None,
-            "artists": [
-                ArtistSerializer(
-                    instance.artist, context={"include_ap_context": False}
-                ).data
-            ],
+            "artist_credit": ArtistCreditSerializer(
+                instance.artist_credit.all(),
+                context={"include_ap_context": False},
+                many=True,
+            ).data,
             "album": AlbumSerializer(
                 instance.album, context={"include_ap_context": False}
             ).data,
@@ -1469,12 +1517,13 @@ class TrackSerializer(MusicEntitySerializer):
             else None,
             "tag": self.get_tags_repr(instance),
         }
-        include_content(d, instance.description)
-        include_image(d, instance.attachment_cover)
+        include_content(data, instance.description)
+        include_image(data, instance.attachment_cover)
         if self.context.get("include_ap_context", self.parent is None):
-            d["@context"] = jsonld.get_default_context()
-        return d
+            data["@context"] = jsonld.get_default_context()
+        return data
 
+    @transaction.atomic
     def create(self, validated_data):
         from funkwhale_api.music import tasks as music_tasks
 
@@ -1490,18 +1539,21 @@ class TrackSerializer(MusicEntitySerializer):
                 validated_data, "album.attributedTo", permissive=True
             )
         )
-        artists = (
-            common_utils.recursive_getattr(validated_data, "artists", permissive=True)
+        artist_credit = (
+            common_utils.recursive_getattr(
+                validated_data, "artist_credit", permissive=True
+            )
             or []
         )
         album_artists = (
             common_utils.recursive_getattr(
-                validated_data, "album.artists", permissive=True
+                validated_data, "album.artist_credit", permissive=True
             )
             or []
         )
-        for artist in artists + album_artists:
-            actors_to_fetch.add(artist.get("attributedTo"))
+
+        for ac in artist_credit + album_artists:
+            actors_to_fetch.add(ac["artist"].get("attributedTo"))
 
         for url in actors_to_fetch:
             if not url:
@@ -1515,7 +1567,6 @@ class TrackSerializer(MusicEntitySerializer):
         if from_activity:
             metadata["from_activity_id"] = from_activity.pk
         track = music_tasks.get_track_from_import_metadata(metadata, update_cover=True)
-
         return track
 
     def update(self, obj, validated_data):
@@ -1780,7 +1831,7 @@ class ChannelOutboxSerializer(PaginatedCollectionSerializer):
             "actor": channel.actor,
             "items": channel.library.uploads.for_federation()
             .order_by("-creation_date")
-            .filter(track__artist=channel.artist),
+            .filter(track__artist_credit__artist=channel.artist),
             "type": "OrderedCollection",
         }
         r = super().to_representation(conf)
@@ -1850,7 +1901,7 @@ class ChannelUploadSerializer(jsonld.JsonLdSerializer):
             actor=actors.get_service_actor(),
             serializer_class=AlbumSerializer,
             queryset=music_models.Album.objects.filter(
-                artist__channel=self.context["channel"]
+                artist_credit__artist__channel=self.context["channel"]
             ),
         )
 
@@ -1929,7 +1980,6 @@ class ChannelUploadSerializer(jsonld.JsonLdSerializer):
         now = timezone.now()
         track_defaults = {
             "fid": validated_data["id"],
-            "artist": channel.artist,
             "position": validated_data.get("position", 1),
             "disc_number": validated_data.get("disc", 1),
             "title": validated_data["name"],
@@ -1942,8 +1992,29 @@ class ChannelUploadSerializer(jsonld.JsonLdSerializer):
             track_defaults["license"] = licenses.match(validated_data["license"])
 
         track, created = music_models.Track.objects.update_or_create(
-            artist__channel=channel, fid=validated_data["id"], defaults=track_defaults
+            fid=validated_data["id"],
+            defaults=track_defaults,
         )
+        query = (
+            Q(
+                artist=channel.artist,
+            )
+            & Q(credit__iexact=channel.artist.name)
+            & Q(joinphrase="")
+        )
+        defaults = {
+            "artist": channel.artist,
+            "joinphrase": "",
+            "credit": channel.artist.name,
+        }
+
+        ac_obj = music_tasks.get_best_candidate_or_create(
+            music_models.ArtistCredit,
+            query,
+            defaults=defaults,
+            sort_fields=["mbid", "fid"],
+        )
+        track.artist_credit.set([ac_obj[0].id])
 
         if "image" in validated_data:
             new_value = self.validated_data["image"]

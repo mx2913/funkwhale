@@ -48,12 +48,18 @@ const imageUrl = computed(() => props.album.cover?.urls.original
       </strong>
       <div class="description">
         <span>
-          <router-link
-            class="discrete link"
-            :to="{name: 'library.artists.detail', params: {id: album.artist.id}}"
+          <template
+            v-for="ac in album.artist_credit"
+            :key="ac.artist.id"
           >
-            {{ album.artist.name }}
-          </router-link>
+            <router-link
+              class="discrete link"
+              :to="{ name: 'library.artists.detail', params: { id: ac.artist.id }}"
+            >
+              {{ ac.credit }}
+            </router-link>
+            <span>{{ ac.joinphrase }}</span>
+          </template>
         </span>
       </div>
     </div>

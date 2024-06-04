@@ -13,6 +13,8 @@ import TagsList from '~/components/tags/List.vue'
 
 import useErrorHandler from '~/composables/useErrorHandler'
 
+import { getArtistCoverUrl } from '~/utils/utils'
+
 interface Events {
   (e: 'count', count: number): void
 }
@@ -117,8 +119,8 @@ watch(() => props.websocketHandlers.includes('Listen'), (to) => {
             alt=""
           >
           <img
-            v-else-if="object.track.artist?.cover"
-            v-lazy="$store.getters['instance/absoluteUrl'](object.track.artist.cover.urls.medium_square_crop)"
+            v-else-if="object.track.artist_credit && object.track.artist_credit.length > 0"
+            v-lazy="getArtistCoverUrl(object.track.artist_credit)"
             alt=""
           >
           <img
@@ -142,16 +144,20 @@ watch(() => props.websocketHandlers.includes('Listen'), (to) => {
                 </router-link>
               </div>
               <div
-                v-if="object.track.artist"
+                v-if="object.track.artist_credit"
                 class="meta ellipsis"
               >
-                <span>
+                <span
+                  v-for="ac in object.track.artist_credit"
+                  :key="ac.artist.id"
+                >
                   <router-link
                     class="discrete link"
-                    :to="{name: 'library.artists.detail', params: {id: object.track.artist.id}}"
+                    :to="{ name: 'library.artists.detail', params: { id: ac.artist.id } }"
                   >
-                    {{ object.track.artist.name }}
+                    {{ ac.credit }}
                   </router-link>
+                  <span v-if="ac.joinphrase">{{ ac.joinphrase }}</span>
                 </span>
               </div>
               <tags-list

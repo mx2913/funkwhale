@@ -2,6 +2,7 @@ import collections
 import datetime
 import logging
 import os
+import re
 
 from django.conf import settings
 from django.core.cache import cache
@@ -270,8 +271,8 @@ def process_upload(upload, update_denormalization=True):
         )
     except UploadImportError as e:
         return fail_import(upload, e.code)
-    except Exception:
-        fail_import(upload, "unknown_error")
+    except Exception as e:
+        fail_import(upload, "unknown_error", e)
         raise
 
     broadcast = getter(
@@ -395,38 +396,53 @@ def federation_audio_track_to_metadata(payload, references):
             "cover_data": get_cover(payload["album"], "image"),
             "release_date": payload["album"].get("released"),
             "tags": [t["name"] for t in payload["album"].get("tags", []) or []],
-            "artists": [
+            "artist_credit": [
                 {
-                    "fid": a["id"],
-                    "name": a["name"],
-                    "fdate": a["published"],
-                    "cover_data": get_cover(a, "image"),
-                    "description": a.get("description"),
-                    "attributed_to": references.get(a.get("attributedTo")),
-                    "mbid": str(a["musicbrainzId"]) if a.get("musicbrainzId") else None,
-                    "tags": [t["name"] for t in a.get("tags", []) or []],
+                    "artist": {
+                        "fid": a["artist"]["id"],
+                        "name": a["artist"]["name"],
+                        "fdate": a["artist"]["published"],
+                        "cover_data": get_cover(a["artist"], "image"),
+                        "description": a["artist"].get("description"),
+                        "attributed_to": references.get(
+                            a["artist"].get("attributedTo")
+                        ),
+                        "mbid": str(a["artist"]["musicbrainzId"])
+                        if a["artist"].get("musicbrainzId")
+                        else None,
+                        "tags": [t["name"] for t in a["artist"].get("tags", []) or []],
+                    },
+                    "joinphrase": (a["joinphrase"] if "joinphrase" in a else ""),
+                    "credit": (a["credit"] if "credit" in a else a["name"]),
                 }
-                for a in payload["album"]["artists"]
+                for a in payload["album"]["artist_credit"]
             ],
         },
-        "artists": [
+        "artist_credit": [
             {
-                "fid": a["id"],
-                "name": a["name"],
-                "fdate": a["published"],
-                "description": a.get("description"),
-                "attributed_to": references.get(a.get("attributedTo")),
-                "mbid": str(a["musicbrainzId"]) if a.get("musicbrainzId") else None,
-                "tags": [t["name"] for t in a.get("tags", []) or []],
-                "cover_data": get_cover(a, "image"),
+                "artist": {
+                    "fid": a["artist"]["id"],
+                    "name": a["artist"]["name"],
+                    "fdate": a["artist"]["published"],
+                    "description": a["artist"].get("description"),
+                    "attributed_to": references.get(a["artist"].get("attributedTo")),
+                    "mbid": str(a["artist"]["musicbrainzId"])
+                    if a["artist"].get("musicbrainzId")
+                    else None,
+                    "tags": [t["name"] for t in a["artist"].get("tags", []) or []],
+                    "cover_data": get_cover(a["artist"], "image"),
+                },
+                "joinphrase": (a["joinphrase"] if "joinphrase" in a else ""),
+                "credit": (a["credit"] if "credit" in a else a["name"]),
             }
-            for a in payload["artists"]
+            for a in payload["artist_credit"]
         ],
         # federation
         "fid": payload["id"],
         "fdate": payload["published"],
         "tags": [t["name"] for t in payload.get("tags", []) or []],
     }
+
     return new_data
 
 
@@ -434,6 +450,7 @@ def get_owned_duplicates(upload, track):
     """
     Ensure we skip duplicate tracks to avoid wasting user/instance storage
     """
+
     owned_libraries = upload.library.actor.libraries.all()
     return (
         models.Upload.objects.filter(
@@ -547,64 +564,76 @@ def _get_track(data, attributed_to=None, **forced_values):
         except IndexError:
             pass
 
-    # get / create artist and album artist
-    artists = getter(data, "artists", default=[])
+    # get / create artist, artist_credit and album artist, album artist_credit
+    album_artists_credits = None
+    artists_data = getter(data, "artists", default=[])
     if "artist" in forced_values:
         artist = forced_values["artist"]
-    else:
-        artist_data = artists[0]
-        artist = get_artist(
-            artist_data, attributed_to=attributed_to, from_activity_id=from_activity_id
+        query = Q(artist=artist)
+        defaults = {
+            "artist": artist,
+            "joinphrase": "",
+            "credit": artist.name,
+        }
+        track_artist_credit, created = get_best_candidate_or_create(
+            models.ArtistCredit, query, defaults=defaults, sort_fields=["mbid", "fid"]
         )
-        artist_name = artist.name
+        track_artists_credits = [track_artist_credit]
+    elif ac := data.get("artist_credit", False):
+        track_artists_credits = (
+            get_or_create_artists_credits_from_artist_credit_metadata(
+                ac, attributed_to, from_activity_id
+            )
+        )
+    else:
+        if mbid := data.get("musicbrainz_id", None) or data.get("mbid", None):
+            track_artists_credits = get_or_create_artists_credits_from_musicbrainz(
+                "recording",
+                mbid,
+                attributed_to=attributed_to,
+                from_activity_id=from_activity_id,
+            )
+        else:
+            track_artists_credits = get_or_create_artists_credits_from_artist_metadata(
+                artists_data,
+                attributed_to=attributed_to,
+                from_activity_id=from_activity_id,
+            )
+
     if "album" in forced_values:
         album = forced_values["album"]
+        album_artists_credits = track_artists_credits
     else:
-        if "artist" in forced_values:
-            album_artist = forced_values["artist"]
-        else:
-            album_artists = getter(data, "album", "artists", default=artists) or artists
-            album_artist_data = album_artists[0]
-            album_artist_name = album_artist_data.get("name")
-            if album_artist_name == artist_name:
-                album_artist = artist
-            else:
-                query = Q(name__iexact=album_artist_name)
-                album_artist_mbid = album_artist_data.get("mbid", None)
-                album_artist_fid = album_artist_data.get("fid", None)
-                if album_artist_mbid:
-                    query |= Q(mbid=album_artist_mbid)
-                if album_artist_fid:
-                    query |= Q(fid=album_artist_fid)
-                defaults = {
-                    "name": album_artist_name,
-                    "mbid": album_artist_mbid,
-                    "fid": album_artist_fid,
-                    "from_activity_id": from_activity_id,
-                    "attributed_to": album_artist_data.get(
-                        "attributed_to", attributed_to
-                    ),
-                }
-                if album_artist_data.get("fdate"):
-                    defaults["creation_date"] = album_artist_data.get("fdate")
-
-                album_artist, created = get_best_candidate_or_create(
-                    models.Artist, query, defaults=defaults, sort_fields=["mbid", "fid"]
+        if album_artists_credits:
+            pass
+        elif ac := data.get("album", {}).get("artist_credit", False):
+            album_artists_credits = (
+                get_or_create_artists_credits_from_artist_credit_metadata(
+                    ac, attributed_to, from_activity_id
                 )
-                if created:
-                    tags_models.add_tags(
-                        album_artist, *album_artist_data.get("tags", [])
-                    )
-                    common_utils.attach_content(
-                        album_artist,
-                        "description",
-                        album_artist_data.get("description"),
-                    )
-                    common_utils.attach_file(
-                        album_artist,
-                        "attachment_cover",
-                        album_artist_data.get("cover_data"),
-                    )
+            )
+        elif mbid := data.get("musicbrainz_albumid", None) or album_mbid:
+            try:
+                album_artists_credits = get_or_create_artists_credits_from_musicbrainz(
+                    "release",
+                    mbid,
+                    attributed_to=attributed_to,
+                    from_activity_id=from_activity_id,
+                )
+            except ResponseError as e:
+                logger.error(
+                    f"Couldn't get Musicbrainz information for track with {track_mbid} mbid  \
+                        because of the following exception : {e}. Plz try again later."
+                )
+
+        elif album_artists := getter(data, "album", "artists", default=None):
+            album_artists_credits = get_or_create_artists_credits_from_artist_metadata(
+                album_artists,
+                attributed_to=attributed_to,
+                from_activity_id=from_activity_id,
+            )
+        else:
+            album_artists_credits = track_artists_credits
 
         # get / create album
         if "album" in data:
@@ -615,13 +644,15 @@ def _get_track(data, attributed_to=None, **forced_values):
             if album_mbid:
                 query = Q(mbid=album_mbid)
             else:
-                query = Q(title__iexact=album_title, artist=album_artist)
+                query = Q(
+                    title__iexact=album_title, artist_credit__in=album_artists_credits
+                )
 
             if album_fid:
                 query |= Q(fid=album_fid)
+
             defaults = {
                 "title": album_title,
-                "artist": album_artist,
                 "mbid": album_mbid,
                 "release_date": album_data.get("release_date"),
                 "fid": album_fid,
@@ -634,6 +665,8 @@ def _get_track(data, attributed_to=None, **forced_values):
             album, created = get_best_candidate_or_create(
                 models.Album, query, defaults=defaults, sort_fields=["mbid", "fid"]
             )
+            album.artist_credit.set(album_artists_credits)
+
             if created:
                 tags_models.add_tags(album, *album_data.get("tags", []))
                 common_utils.attach_content(
@@ -677,7 +710,7 @@ def _get_track(data, attributed_to=None, **forced_values):
 
     query = Q(
         title__iexact=track_title,
-        artist=artist,
+        artist_credit__in=track_artists_credits,
         album=album,
         position=position,
         disc_number=disc_number,
@@ -690,17 +723,10 @@ def _get_track(data, attributed_to=None, **forced_values):
     if track_fid:
         query |= Q(fid=track_fid)
 
-    if album and len(artists) > 1:
-        # we use the second artist to preserve featuring information
-        artist = artist = get_artist(
-            artists[1], attributed_to=attributed_to, from_activity_id=from_activity_id
-        )
-
     defaults = {
         "title": track_title,
         "album": album,
         "mbid": track_mbid,
-        "artist": artist,
         "position": position,
         "disc_number": disc_number,
         "fid": track_fid,
@@ -723,7 +749,7 @@ def _get_track(data, attributed_to=None, **forced_values):
         tags_models.add_tags(track, *tags)
         common_utils.attach_content(track, "description", description)
         common_utils.attach_file(track, "attachment_cover", cover_data)
-
+    track.artist_credit.set(track_artists_credits)
     return track
 
 
@@ -731,6 +757,7 @@ def get_artist(artist_data, attributed_to, from_activity_id):
     artist_mbid = artist_data.get("mbid", None)
     artist_fid = artist_data.get("fid", None)
     artist_name = artist_data["name"]
+    creation_date = artist_data.get("fdate", timezone.now())
 
     if artist_mbid:
         query = Q(mbid=artist_mbid)
@@ -738,12 +765,14 @@ def get_artist(artist_data, attributed_to, from_activity_id):
         query = Q(name__iexact=artist_name)
     if artist_fid:
         query |= Q(fid=artist_fid)
+
     defaults = {
         "name": artist_name,
         "mbid": artist_mbid,
         "fid": artist_fid,
         "from_activity_id": from_activity_id,
         "attributed_to": artist_data.get("attributed_to", attributed_to),
+        "creation_date": creation_date,
     }
     if artist_data.get("fdate"):
         defaults["creation_date"] = artist_data.get("fdate")
@@ -760,6 +789,213 @@ def get_artist(artist_data, attributed_to, from_activity_id):
             artist, "attachment_cover", artist_data.get("cover_data")
         )
     return artist
+
+
+def get_or_create_artists_credits_from_musicbrainz(
+    mb_obj_type, track_mbid, attributed_to, from_activity_id
+):
+    try:
+        if mb_obj_type == "release":
+            mb_obj = musicbrainz.api.releases.get(track_mbid, includes=["artists"])
+        elif mb_obj_type == "recording":
+            mb_obj = musicbrainz.api.recordings.get(track_mbid, includes=["artists"])
+    except ResponseError as e:
+        raise UploadImportError(
+            code=f"Couldn't get Musicbrainz information for {mb_obj_type} with {track_mbid} mbid  \
+            because of the following exception : {e}"
+        )
+
+    artists_credits = []
+    acs = mb_obj.get("recording", mb_obj)["artist-credit"]
+    for i, ac in enumerate(acs):
+        if isinstance(ac, str):
+            continue
+        logger.info("ac" + str(ac))
+        artist_mbid = ac["artist"]["id"]
+        artist_name = ac["artist"]["name"]
+        credit = ac.get("name", artist_name)
+        if mb_obj_type == "recording":
+            joinphrase = ac["joinphrase"]
+        else:
+            joinphrase = ""
+            if i + 1 < len(acs):
+                joinphrase = acs[i + 1]
+
+        # artist creation
+        query = Q(mbid=artist_mbid)
+
+        defaults = {
+            "name": artist_name,
+            "mbid": artist_mbid,
+            "from_activity_id": from_activity_id,
+            "attributed_to": attributed_to,
+        }
+        artist, created = get_best_candidate_or_create(
+            models.Artist, query, defaults=defaults, sort_fields=["mbid", "fid"]
+        )
+
+        # we could import tag, description, cover here.
+
+        # artist_credit creation
+        defaults = {
+            "artist": artist,
+            "joinphrase": joinphrase,
+            "credit": credit,
+            "index": i,
+        }
+        query = (
+            Q(artist=artist.pk)
+            & Q(joinphrase=joinphrase)
+            & Q(credit=credit)
+            & Q(index=i)
+        )
+
+        artist_credit, created = get_best_candidate_or_create(
+            models.ArtistCredit, query, defaults=defaults, sort_fields=["mbid", "fid"]
+        )
+        artists_credits.append(artist_credit)
+    return artists_credits
+
+
+def parse_credits(artist_string, forced_joinphrase, forced_index, forced_artist=None):
+    """
+    Return a list of parsed artist_credit information from a string like :
+    LoveDiversity featuring Hatingprisons
+    """
+    if not artist_string:
+        return []
+    join_phrase = preferences.get("music__join_phrases")
+    join_phrase_regex = re.compile(rf"({join_phrase})", re.IGNORECASE)
+    split = re.split(join_phrase_regex, artist_string)
+    raw_artists_credits = tuple(zip(split[0::2], split[1::2]))
+
+    artists_credits_tuple = []
+    for index, raw_artist_credit in enumerate(raw_artists_credits):
+        clean_credit = raw_artist_credit[0].strip()
+        clean_join_phrase = raw_artist_credit[1]
+        if clean_join_phrase == "( ":
+            clean_join_phrase = "("
+        if clean_join_phrase == ") ":
+            clean_join_phrase = ")"
+        if forced_joinphrase:
+            clean_join_phrase = forced_joinphrase
+
+        artists_credits_tuple.append(
+            (
+                clean_credit,
+                clean_join_phrase,
+                (index if not forced_index else forced_index),
+                forced_artist,
+            )
+        )
+
+    # impar split :
+    if len(split) % 2 != 0 and split[len(split) - 1] != "" and len(split) > 1:
+        artists_credits_tuple.append(
+            (
+                str(split[len(split) - 1]).rstrip(),
+                ("" if not forced_joinphrase else forced_joinphrase),
+                (len(artists_credits_tuple) if not forced_index else forced_index),
+                forced_artist,
+            )
+        )
+
+    # if "name" is empty or didn't split
+    if not raw_artists_credits:
+        clean_credit = forced_artist.name if forced_artist else artist_string
+        artists_credits_tuple.append(
+            (
+                clean_credit,
+                ("" if not forced_joinphrase else forced_joinphrase),
+                (0 if not forced_index else forced_index),
+                forced_artist,
+            )
+        )
+    return artists_credits_tuple
+
+
+def get_or_create_artists_credits_from_artist_metadata(
+    artists_data, attributed_to, from_activity_id
+):
+    artists_credits = []
+    raw_artists_credits = []
+    artist = None
+    for i, artist_data in enumerate(artists_data):
+        if i + 1 == len(artists_data):
+            joinphrase = ""
+        elif len(artists_data) > 1:
+            joinphrase = preferences.get("music__default_join_phrase")
+        else:
+            joinphrase = None
+
+        artist = get_artist(artist_data, attributed_to, from_activity_id)
+
+        raw_artists_credits.extend(
+            parse_credits(
+                (
+                    artist.name
+                    if artist
+                    else artist_data.get("names", artist_data.get("name"))
+                ),
+                joinphrase,
+                i,
+                artist,
+            )
+        )
+    for parsed_artist_credit in raw_artists_credits:
+        artist_obj = parsed_artist_credit[3]
+        defaults = {
+            "artist": artist_obj,
+            "credit": parsed_artist_credit[0],
+            "joinphrase": parsed_artist_credit[1],
+            "index": parsed_artist_credit[2],
+        }
+        query = (
+            Q(artist=artist_obj)
+            & Q(credit=parsed_artist_credit[0])
+            & Q(joinphrase=parsed_artist_credit[1])
+            & Q(index=parsed_artist_credit[2])
+        )
+        artist_credit, created = get_best_candidate_or_create(
+            models.ArtistCredit, query, defaults, ["artist", "joinphrase"]
+        )
+        artists_credits.append(artist_credit)
+
+    return artists_credits
+
+
+def get_or_create_artists_credits_from_artist_credit_metadata(
+    artists_credits_data, attributed_to, from_activity_id
+):
+    artists_credits = []
+    for i, ac in enumerate(artists_credits_data):
+        if i + 1 == len(artists_credits_data):
+            joinphrase = ""
+        elif "joinphrase" in ac:
+            joinphrase = ac["joinphrase"]
+        else:
+            joinphrase = preferences.get("music__default_join_phrase")
+        artist_lookup = ac["artist"]
+
+        credit = ac.get("credit", ac["artist"]["name"])
+
+        artist_obj = get_artist(artist_lookup, attributed_to, from_activity_id)
+        defaults = {
+            "artist": artist_obj,
+            "credit": credit,
+            "joinphrase": joinphrase,
+            "index": 0,
+        }
+        query = Q(credit=credit) & Q(joinphrase=joinphrase) & Q(index=0)
+
+        if "mbid" in ac["artist"]:
+            query &= Q(artist__mbid=ac["artist"]["mbid"])
+        artist_credit, created = get_best_candidate_or_create(
+            models.ArtistCredit, query, defaults, ["artist", "joinphrase"]
+        )
+        artists_credits.append(artist_credit)
+
+    return artists_credits
 
 
 @receiver(signals.upload_import_status_updated)
@@ -883,7 +1119,7 @@ def get_prunable_albums():
 
 
 def get_prunable_artists():
-    return models.Artist.objects.filter(tracks__isnull=True, albums__isnull=True)
+    return models.Artist.objects.filter(artist_credit__isnull=True)
 
 
 def update_library_entity(obj, data):
@@ -914,8 +1150,8 @@ UPDATE_CONFIG = {
             )
         },
     },
+    "artists": {},
     "album": {"title": {}, "mbid": {}, "release_date": {}},
-    "artist": {"name": {}, "mbid": {}},
     "album_artist": {"name": {}, "mbid": {}},
 }
 
@@ -929,11 +1165,15 @@ def update_track_metadata(audio_metadata, track):
     to_update = [
         ("track", track, lambda data: data),
         ("album", track.album, lambda data: data["album"]),
-        ("artist", track.artist, lambda data: data["artists"][0]),
+        (
+            "artists",
+            track.artist_credit.all(),
+            lambda data: data["artists"],
+        ),
         (
             "album_artist",
-            track.album.artist if track.album else None,
-            lambda data: data["album"]["artists"][0],
+            track.album.artist_credit.all() if track.album else None,
+            lambda data: data["album"]["artists"],
         ),
     ]
     for id, obj, data_getter in to_update:
@@ -944,6 +1184,60 @@ def update_track_metadata(audio_metadata, track):
             obj_data = data_getter(new_data)
         except IndexError:
             continue
+
+        if id == "artists":
+            if new_data.get("mbid", False):
+                logger.warning(
+                    "If a track mbid is provided, it will be use to generate artist_credit \
+                    information. If you want to set a custom artist_credit you nee to remove the track mbid"
+                )
+                track_artists_credits = get_or_create_artists_credits_from_musicbrainz(
+                    "recording", new_data.get("mbid"), None, None
+                )
+            else:
+                track_artists_credits = (
+                    get_or_create_artists_credits_from_artist_credit_metadata(
+                        [
+                            {"artist": o, "joinphrase": o["joinphrase"]}
+                            for o in obj_data
+                        ],
+                        None,
+                        None,
+                    )
+                )
+            if track_artists_credits == obj:
+                continue
+
+            track.artist_credit.set(track_artists_credits)
+            continue
+
+        if id == "album_artist":
+            if new_data["album"].get("mbid", False):
+                logger.warning(
+                    "If a album mbid is provided, it will be use to generate album artist_credit \
+                    information. If you want to set a custom artist_credit you nee to remove the track mbid"
+                )
+                album_artists_credits = get_or_create_artists_credits_from_musicbrainz(
+                    "release", new_data["album"].get("mbid"), None, None
+                )
+            else:
+                album_artists_credits = (
+                    get_or_create_artists_credits_from_artist_credit_metadata(
+                        [
+                            {"artist": o, "joinphrase": o["joinphrase"]}
+                            for o in obj_data
+                        ],
+                        None,
+                        None,
+                    )
+                )
+
+            if album_artists_credits == obj:
+                continue
+
+            track.album.artist_credit.set(album_artists_credits)
+            continue
+
         for field, config in UPDATE_CONFIG[id].items():
             getter = config.get(
                 "getter", lambda data, field: data[config.get("field", field)]
@@ -960,7 +1254,6 @@ def update_track_metadata(audio_metadata, track):
 
         if obj_updated_fields:
             obj.save(update_fields=obj_updated_fields)
-
     tags_models.set_tags(track, *new_data.get("tags", []))
 
     if track.album and "album" in new_data and new_data["album"].get("cover_data"):

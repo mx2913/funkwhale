@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Track, Album, Artist, Library } from '~/types'
+import type { Track, Album, Artist, Library, ArtistCredit } from '~/types'
 
 import { momentFormat } from '~/utils/filters'
 import { computed, reactive, ref, watch } from 'vue'
@@ -9,7 +9,7 @@ import { sum } from 'lodash-es'
 
 import axios from 'axios'
 
-import ArtistLabel from '~/components/audio/ArtistLabel.vue'
+import ArtistCreditLabel from '~/components/audio/ArtistCreditLabel.vue'
 import PlayButton from '~/components/audio/PlayButton.vue'
 import TagsList from '~/components/tags/List.vue'
 import AlbumDropdown from './AlbumDropdown.vue'
@@ -30,13 +30,21 @@ const props = defineProps<Props>()
 
 const object = ref<Album | null>(null)
 const artist = ref<Artist | null>(null)
+const artistCredit = ref([] as ArtistCredit[])
 const libraries = ref([] as Library[])
 const paginateBy = ref(50)
 
 const totalTracks = computed(() => object.value?.tracks_count ?? 0)
-const isChannel = computed(() => !!object.value?.artist.channel)
-const isAlbum = computed(() => object.value?.artist.content_category === 'music')
-const isSerie = computed(() => object.value?.artist.content_category === 'podcast')
+const isChannel = computed(() => {
+  return artistCredit.value.some(ac => ac.artist.channel)
+})
+const isAlbum = computed(() => {
+  return artistCredit.value.some(ac => ac.artist.content_category === 'music')
+})
+const isSerie = computed(() => {
+  return artistCredit.value.some(ac => ac.artist.content_category === 'podcast')
+})
+
 const totalDuration = computed(() => sum((object.value?.tracks ?? []).map(track => track.uploads[0]?.duration ?? 0)))
 const publicLibraries = computed(() => libraries.value?.filter(library => library.privacy_level === 'everyone') ?? [])
 
@@ -52,9 +60,13 @@ const fetchData = async () => {
   isLoading.value = true
 
   const albumResponse = await axios.get(`albums/${props.id}/`, { params: { refresh: 'true' } })
-  const artistResponse = await axios.get(`artists/${albumResponse.data.artist.id}/`)
+
+  artistCredit.value = albumResponse.data.artist_credit
+
+  const artistResponse = await axios.get(`artists/${albumResponse.data.artist_credit[0].artist.id}/`)
 
   artist.value = artistResponse.data
+  // artist.value = albumResponse.data.artist_credit[0].artist
   if (artist.value?.channel) {
     artist.value.channel.artist = artist.value
   }
@@ -201,7 +213,7 @@ const remove = async () => {
                     :is-album="isAlbum"
                     :is-serie="isSerie"
                     :is-channel="isChannel"
-                    :artist="artist"
+                    :artist-credit="artistCredit"
                     @remove="remove"
                   />
                 </div>
@@ -214,9 +226,9 @@ const remove = async () => {
                 >
                   {{ object.title }}
                 </h2>
-                <artist-label
-                  v-if="artist"
-                  :artist="artist"
+                <artist-credit-label
+                  v-if="artistCredit"
+                  :artist-credit="artistCredit"
                 />
               </header>
             </div>
@@ -244,10 +256,9 @@ const remove = async () => {
                 >
                   {{ object.title }}
                 </h2>
-                <artist-label
-                  v-if="artist"
-                  :artist="artist"
-                  class="rounded"
+                <artist-credit-label
+                  v-if="artistCredit"
+                  :artist-credit="artistCredit"
                 />
               </header>
               <div
@@ -285,7 +296,7 @@ const remove = async () => {
                 :is-album="isAlbum"
                 :is-serie="isSerie"
                 :is-channel="isChannel"
-                :artist="artist"
+                :artist-credit="artistCredit"
                 @remove="remove"
               />
               <div v-if="(object.tags && object.tags.length > 0) || object.description || $store.state.auth.authenticated && object.is_local">
@@ -333,7 +344,7 @@ const remove = async () => {
               :paginate-by="paginateBy"
               :total-tracks="totalTracks"
               :is-serie="isSerie"
-              :artist="artist"
+              :artist-credit="artistCredit"
               :object="object"
               :is-loading-tracks="isLoadingTracks"
               object-type="album"

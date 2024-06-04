@@ -293,7 +293,7 @@ def inbox_delete_audio(payload, context):
         upload_fids = [payload["object"]["id"]]
 
     query = Q(fid__in=upload_fids) & (
-        Q(library__actor=actor) | Q(track__artist__channel__actor=actor)
+        Q(library__actor=actor) | Q(track__artist_credit__artist__channel__actor=actor)
     )
     candidates = music_models.Upload.objects.filter(query)
 
@@ -577,7 +577,9 @@ def inbox_delete_album(payload, context):
         logger.debug("Discarding deletion of empty library")
         return
 
-    query = Q(fid=album_id) & (Q(attributed_to=actor) | Q(artist__channel__actor=actor))
+    query = Q(fid=album_id) & (
+        Q(attributed_to=actor) | Q(artist_credit__artist__channel__actor=actor)
+    )
     try:
         album = music_models.Album.objects.get(query)
     except music_models.Album.DoesNotExist:
@@ -591,8 +593,8 @@ def inbox_delete_album(payload, context):
 def outbox_delete_album(context):
     album = context["album"]
     actor = (
-        album.artist.channel.actor
-        if album.artist.get_channel()
+        album.artist_credit.all()[0].artist.channel.actor
+        if album.artist_credit.all()[0].artist.get_channel()
         else album.attributed_to
     )
     actor = actor or actors.get_service_actor()

@@ -32,7 +32,7 @@ const getTrackInformationText = (track: QueueTrack | undefined) => {
     return null
   }
 
-  return `♫ ${track.title} – ${track.artistName} ♫`
+  return `♫ ${track.title} – ${track.artistCredit} ♫`
 }
 
 // Update title

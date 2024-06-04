@@ -6,9 +6,11 @@ def test_get_tags_from_foreign_key(factories):
     rock_tag = factories["tags.Tag"](name="Rock")
     rap_tag = factories["tags.Tag"](name="Rap")
     artist = factories["music.Artist"]()
-    factories["music.Track"].create_batch(3, artist=artist, set_tags=["rock", "rap"])
     factories["music.Track"].create_batch(
-        3, artist=artist, set_tags=["rock", "rap", "techno"]
+        3, artist_credit__artist=artist, set_tags=["rock", "rap"]
+    )
+    factories["music.Track"].create_batch(
+        3, artist_credit__artist=artist, set_tags=["rock", "rap", "techno"]
     )
 
     result = tasks.get_tags_from_foreign_key(

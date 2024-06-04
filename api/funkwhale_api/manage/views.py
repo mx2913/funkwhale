@@ -84,8 +84,8 @@ class ManageArtistViewSet(
         music_models.Artist.objects.all()
         .order_by("-id")
         .select_related("attributed_to", "attachment_cover", "channel")
-        .annotate(_tracks_count=Count("tracks", distinct=True))
-        .annotate(_albums_count=Count("albums", distinct=True))
+        .annotate(_tracks_count=Count("artist_credit__tracks", distinct=True))
+        .annotate(_albums_count=Count("artist_credit__albums", distinct=True))
         .prefetch_related(music_views.TAG_PREFETCH)
     )
     serializer_class = serializers.ManageArtistSerializer
@@ -98,7 +98,7 @@ class ManageArtistViewSet(
     def stats(self, request, *args, **kwargs):
         artist = self.get_object()
         tracks = music_models.Track.objects.filter(
-            Q(artist=artist) | Q(album__artist=artist)
+            Q(artist_credit__artist=artist) | Q(album__artist_credit__artist=artist)
         )
         data = get_stats(tracks, artist)
         return response.Response(data, status=200)
@@ -128,8 +128,8 @@ class ManageAlbumViewSet(
     queryset = (
         music_models.Album.objects.all()
         .order_by("-id")
-        .select_related("attributed_to", "artist", "attachment_cover")
-        .prefetch_related("tracks")
+        .select_related("attributed_to", "attachment_cover")
+        .prefetch_related("tracks", "artist_credit__artist")
     )
     serializer_class = serializers.ManageAlbumSerializer
     filterset_class = filters.ManageAlbumFilterSet
@@ -177,10 +177,10 @@ class ManageTrackViewSet(
     queryset = (
         music_models.Track.objects.all()
         .order_by("-id")
-        .select_related(
+        .prefetch_related(
             "attributed_to",
-            "artist",
-            "album__artist",
+            "artist_credit",
+            "album__artist_credit",
             "album__attachment_cover",
             "attachment_cover",
         )
@@ -273,11 +273,11 @@ class ManageLibraryViewSet(
         )
         artists = set(
             music_models.Album.objects.filter(pk__in=albums).values_list(
-                "artist", flat=True
+                "artist_credit__artist", flat=True
             )
         ) | set(
             music_models.Track.objects.filter(pk__in=tracks).values_list(
-                "artist", flat=True
+                "artist_credit__artist", flat=True
             )
         )
 
@@ -313,7 +313,11 @@ class ManageUploadViewSet(
     queryset = (
         music_models.Upload.objects.all()
         .order_by("-id")
-        .select_related("library__actor", "track__artist", "track__album__artist")
+        .prefetch_related(
+            "library__actor",
+            "track__artist_credit__artist",
+            "track__album__artist_credit__artist",
+        )
     )
     serializer_class = serializers.ManageUploadSerializer
     filterset_class = filters.ManageUploadFilterSet
@@ -702,8 +706,8 @@ class ManageChannelViewSet(
                     music_models.Artist.objects.all()
                     .order_by("-id")
                     .select_related("attributed_to", "attachment_cover", "channel")
-                    .annotate(_tracks_count=Count("tracks"))
-                    .annotate(_albums_count=Count("albums"))
+                    .annotate(_tracks_count=Count("artist_credit__tracks"))
+                    .annotate(_albums_count=Count("artist_credit__albums"))
                     .prefetch_related(music_views.TAG_PREFETCH)
                 ),
             )
@@ -719,7 +723,8 @@ class ManageChannelViewSet(
     def stats(self, request, *args, **kwargs):
         channel = self.get_object()
         tracks = music_models.Track.objects.filter(
-            Q(artist=channel.artist) | Q(album__artist=channel.artist)
+            Q(artist_credit__artist=channel.artist)
+            | Q(album__artist_credit__artist=channel.artist)
         )
         data = get_stats(tracks, channel, ignore_fields=["libraries", "channels"])
         data["follows"] = channel.actor.received_follows.count()

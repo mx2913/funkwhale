@@ -64,7 +64,7 @@ def test_attachment(factories, now):
 def test_attachment_queryset_attached(args, expected, factories, queryset_equal_list):
     attachments = [
         factories["music.Album"](
-            with_cover=True, artist__attachment_cover=None
+            with_cover=True, artist_credit__artist__attachment_cover=None
         ).attachment_cover,
         factories["common.Attachment"](),
     ]
