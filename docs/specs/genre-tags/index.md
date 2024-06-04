@@ -16,12 +16,12 @@ Having these tags easily available also facilitates better tagging within Funkwh
 
 The `tags_tag` table contains the following fields:
 
-| Field            | Data type                | Description                                                                                                             | Relations                            | Constraints    |
-| ---------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | -------------- |
-| `id`             | Integer                  | The randomly generated table ID                                                                                         | `tags_taggeditem.tag_id` foreign key | None           |
-| `musicbrainz_id` | UUID                     | The Musicbrainz genre tag `id`. Used to identify the tag in Musicbrainz fetches                                         | None                                 | None           |
-| `name`           | String                   | The name of the tag. Assigned by Funkwhale during creation for use in URLs. Uses Pascal casing for consistency          | None                                 | Must be unique |
-| `creation_date`  | Timestamp with time zone | The date on which the tag was created                                                                                   | None                                 | None           |
+| Field            | Data type                | Description                                                                                                    | Relations                            | Constraints    |
+| ---------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------- | ------------------------------------ | -------------- |
+| `id`             | Integer                  | The randomly generated table ID                                                                                | `tags_taggeditem.tag_id` foreign key | None           |
+| `musicbrainz_id` | UUID                     | The Musicbrainz genre tag `id`. Used to identify the tag in Musicbrainz fetches                                | None                                 | None           |
+| `name`           | String                   | The name of the tag. Assigned by Funkwhale during creation for use in URLs. Uses Pascal casing for consistency | None                                 | Must be unique |
+| `creation_date`  | Timestamp with time zone | The date on which the tag was created                                                                          | None                                 | None           |
 
 #### Musicbrainz fetch task
 
@@ -183,7 +183,7 @@ The task should use the following logic:
 | Musicbrainz response field | Tags table column | Notes                                                                             |
 | -------------------------- | ----------------- | --------------------------------------------------------------------------------- |
 | `id`                       | `musicbrainz_id`  |                                                                                   |
-| `name`                     | `name`    | Funkwhale should automatically generate a Pascal cased `name` based on this entry |
+| `name`                     | `name`            | Funkwhale should automatically generate a Pascal cased `name` based on this entry |
 
 4. If the `name` of a tag **exactly matches** a `name` in the Musicbrainz response but the tag has no `musicbrainz_id`, the `musicbrainz_id` should be populated
 
