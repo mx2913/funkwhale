@@ -632,10 +632,6 @@ def extract_tags_from_genre(string):
         if not tag:
             continue
         final_tag = ""
-        if not tags_models.TAG_REGEX.match(tag.replace(" ", "")):
-            # the string contains some non words chars ($, €, etc.), right now
-            # we simply skip such tags
-            continue
         # concatenate the parts and uppercase them so that 'pop rock' becomes 'PopRock'
         if len(tag.split(" ")) == 1:
             # we append the tag "as is", because it doesn't contain any space
