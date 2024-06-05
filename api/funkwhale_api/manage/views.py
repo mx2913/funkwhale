@@ -1,6 +1,6 @@
 from django.db import transaction
 from django.db.models import Count, OuterRef, Prefetch, Q, Subquery, Sum
-from django.db.models.functions import Coalesce, Length
+from django.db.models.functions import Coalesce, Collate, Length
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework import decorators as rest_decorators
@@ -579,6 +579,7 @@ class ManageTagViewSet(
         .order_by("-creation_date")
         .annotate(items_count=Count("tagged_items"))
         .annotate(length=Length("name"))
+        .annotate(tag_deterministic=Collate("name", "und-x-icu"))
     )
     serializer_class = serializers.ManageTagSerializer
     filterset_class = filters.ManageTagFilterSet
