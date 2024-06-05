@@ -502,7 +502,7 @@ def get_file_path(audio_file):
         return path.encode("utf-8")
 
 
-def should_transcode(upload, format, max_bitrate=None):
+def should_transcode(upload, format, max_bitrate=None, time_offset=None):
     if not preferences.get("music__transcoding_enabled"):
         return False
     format_need_transcoding = True
@@ -553,7 +553,7 @@ def record_downloads(f):
 
 @record_downloads
 def handle_serve(
-    upload, user, format=None, max_bitrate=None, proxy_media=True, download=True
+    upload, user, format=None, max_bitrate=None, time_offset=None, proxy_media=True, download=True
 ):
     f = upload
     # we update the accessed_date
@@ -594,8 +594,8 @@ def handle_serve(
         file_path = get_file_path(f.source.replace("file://", "", 1))
     mt = f.mimetype
 
-    if should_transcode(f, format, max_bitrate=max_bitrate):
-        transcoded_version = f.get_transcoded_version(format, max_bitrate=max_bitrate)
+    if should_transcode(f, format, max_bitrate=max_bitrate, time_offset=time_offset):
+        transcoded_version = f.get_transcoded_version(format, max_bitrate=max_bitrate, time_offset=time_offset)
         transcoded_version.accessed_date = now
         transcoded_version.save(update_fields=["accessed_date"])
         f = transcoded_version

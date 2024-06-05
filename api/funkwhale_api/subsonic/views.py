@@ -189,7 +189,10 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     )
     def get_open_subsonic_extensions(self, request, *args, **kwargs):
         data = {
-            "openSubsonicExtensions": [{"name": "formPost", "versions": [1]}],
+            "openSubsonicExtensions": [
+                {"name": "formPost", "versions": [1]},
+                {"name": "transcodeOffset", "versions": [1]}
+            ],
         }
         return response.Response(data, status=200)
 
@@ -309,6 +312,15 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         if max_bitrate:
             max_bitrate = max_bitrate * 1000
 
+        time_offset = data.get("timeOffset")
+        try:
+            time_offset = int(time_offset) or None
+        except (TypeError, ValueError):
+            time_offset = None
+
+        if time_offset:
+            time_offset = time_offset * 1000
+
         format = data.get("format") or None
         if max_bitrate and not format:
             # specific bitrate requested, but no format specified
@@ -323,6 +335,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
             user=request.user,
             format=format,
             max_bitrate=max_bitrate,
+            time_offset=time_offset,
             # Subsonic clients don't expect 302 redirection unfortunately,
             # So we have to proxy media files
             proxy_media=True,
