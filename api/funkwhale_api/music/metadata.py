@@ -622,6 +622,8 @@ def extract_tags_from_genre(string):
 
     # loop on the parts (splitting on our custom delimiter)
     for tag in string.split(delimiter):
+        if not tag:
+            continue
         tags.append(tag)
     return tags
 
