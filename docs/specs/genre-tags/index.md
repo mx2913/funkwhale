@@ -16,13 +16,12 @@ Having these tags easily available also facilitates better tagging within Funkwh
 
 The `tags_tag` table contains the following fields:
 
-| Field            | Data type                | Description                                                                                                             | Relations                            | Constraints    |
-| ---------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | -------------- |
-| `id`             | Integer                  | The randomly generated table ID                                                                                         | `tags_taggeditem.tag_id` foreign key | None           |
-| `musicbrainz_id` | UUID                     | The Musicbrainz genre tag `id`. Used to identify the tag in Musicbrainz fetches                                         | None                                 | None           |
-| `name`           | String                   | The name of the tag. Assigned by Funkwhale during creation for use in URLs. Uses Pascal casing for consistency          | None                                 | Must be unique |
-| `display_name`   | String                   | The name of the tag as the user entered it or as it was originally written by Musicbrainz. Lowercase, normalizes spaces | None                                 | None           |
-| `creation_date`  | Timestamp with time zone | The date on which the tag was created                                                                                   | None                                 | None           |
+| Field            | Data type                | Description                                                                                                    | Relations                            | Constraints    |
+| ---------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------- | ------------------------------------ | -------------- |
+| `id`             | Integer                  | The randomly generated table ID                                                                                | `tags_taggeditem.tag_id` foreign key | None           |
+| `musicbrainz_id` | UUID                     | The Musicbrainz genre tag `id`. Used to identify the tag in Musicbrainz fetches                                | None                                 | None           |
+| `name`           | String                   | The name of the tag. Assigned by Funkwhale during creation for use in URLs. Uses Pascal casing for consistency | None                                 | Must be unique |
+| `creation_date`  | Timestamp with time zone | The date on which the tag was created                                                                          | None                                 | None           |
 
 #### Musicbrainz fetch task
 
@@ -184,9 +183,9 @@ The task should use the following logic:
 | Musicbrainz response field | Tags table column | Notes                                                                             |
 | -------------------------- | ----------------- | --------------------------------------------------------------------------------- |
 | `id`                       | `musicbrainz_id`  |                                                                                   |
-| `name`                     | `display_name`    | Funkwhale should automatically generate a Pascal cased `name` based on this entry |
+| `name`                     | `name`            | Funkwhale should automatically generate a Pascal cased `name` based on this entry |
 
-4. If the `display_name` of a tag **exactly matches** a `name` in the Musicbrainz response but the tag has no `musicbrainz_id`, the `musicbrainz_id` should be populated
+4. If the `name` of a tag **exactly matches** a `name` in the Musicbrainz response but the tag has no `musicbrainz_id`, the `musicbrainz_id` should be populated
 
 ### Frontend behavior
 
@@ -196,28 +195,26 @@ When a user uploads new content with genre tags, the tagged item should be linke
 
 #### In-app tagging
 
-When a user uploads new content with _no_ genre tags, they should be able to select tags from a dropdown menu. This menu is populated with the tags from the database with the `display_name` shown in the list. When a tag is selected, the item is linked to the associated tag.
+When a user uploads new content with _no_ genre tags, they should be able to select tags from a dropdown menu. This menu is populated with the tags from the database with the `name` shown in the list. When a tag is selected, the item is linked to the associated tag.
 
 If a user inserts a new tag, Funkwhale should:
 
-1. Store the entered string as the tag's `display_name`
-2. Generate a Pascal cased `name` for the tag
-3. Associate the targeted object with the new tag
+1. Store the entered string as the tag's `name`
+2. Associate the targeted object with the new tag
 
 #### Search results
 
-Users should be able to search for tags using Funkwhale's in-app search. In search autocomplete and search results page, the `display_name` should be used. The `name` of the tag should be used to populate the search URL.
+Users should be able to search for tags using Funkwhale's in-app search. In search autocomplete and search results page, the `name` should be used. The `name` of the tag should be used to populate the search URL.
 
 #### Cards
 
-The `display_name` of the tag should be shown in pills against cards.
+The `name` of the tag should be shown in pills against cards.
 
 ### Admin options
 
 If the admin of a server wants to **disable** MusicBrainz tagging, they should be able to toggle this in their instance settings. If the setting is **disabled**:
 
 - The sync task should stop running
-- Any tags with an `musicbrainz_id` should be excluded from API queries.
 
 ## Availability
 
@@ -232,8 +229,5 @@ If the admin of a server wants to **disable** MusicBrainz tagging, they should b
   - Update the API to support the new information, or create a new v2 endpoint
   - Create the new fetch task
   - Add admin controls for the new task
-- Frontend group:
-  - Update views to use `display_name` instead of `name` for tag results
-  - Update API calls to use the new API structure created by the backend group
 - Documentation group:
   - Document the new task and settings for admins
