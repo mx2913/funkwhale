@@ -1,5 +1,6 @@
 import django_filters.rest_framework
 from django.db.models import functions
+from django.db.models.functions import Collate
 from rest_framework import viewsets
 
 from funkwhale_api.users.oauth import permissions as oauth_permissions
@@ -12,6 +13,7 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = (
         models.Tag.objects.all()
         .annotate(__size=functions.Length("name"))
+        .annotate(tag_deterministic=Collate("name", "und-x-icu"))
         .order_by("name")
     )
     serializer_class = serializers.TagSerializer

@@ -1,3 +1,5 @@
+from django.db.models.functions import Collate
+
 from funkwhale_api.tags import filters, models
 
 
@@ -9,7 +11,11 @@ def test_filter_search_tag(factories, queryset_equal_list):
     ]
     factories["tags.Tag"](name="TestTag")
     factories["tags.Tag"](name="TestTag2")
-    qs = models.Tag.objects.all().order_by("name")
+    qs = (
+        models.Tag.objects.all()
+        .annotate(tag_deterministic=Collate("name", "und-x-icu"))
+        .order_by("name")
+    )
     filterset = filters.TagFilter({"q": "tag1"}, queryset=qs)
 
     assert filterset.qs == matches

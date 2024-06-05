@@ -9,6 +9,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Count, F, Prefetch, Q, Sum
+from django.db.models.functions import Collate
 from django.utils import timezone
 from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import mixins, renderers
@@ -883,9 +884,13 @@ class Search(views.APIView):
         return common_utils.order_for_search(qs, "name")[: self.max_results]
 
     def get_tags(self, query):
-        search_fields = ["name__unaccent"]
+        search_fields = ["tag_deterministic"]
         query_obj = utils.get_query(query, search_fields)
-        qs = Tag.objects.all().filter(query_obj)
+        qs = (
+            Tag.objects.all()
+            .annotate(tag_deterministic=Collate("name", "und-x-icu"))
+            .filter(query_obj)
+        )
         return common_utils.order_for_search(qs, "name")[: self.max_results]
 
 

@@ -47,3 +47,32 @@ class MbidTaggedContent(types.BooleanPreference):
         "or enable quality filtering to hide untagged content from API calls. "
     )
     default = False
+
+
+@global_preferences_registry.register
+class MbGenreTags(types.BooleanPreference):
+    show_in_api = True
+    section = music
+    name = "musicbrainz_genre_update"
+    verbose_name = "Prepopulate tags with MusicBrainz Genre "
+    help_text = (
+        "Will trigger a monthly update of the tag table "
+        "using Musicbrainz genres. Non-existing tag will be created and "
+        "MusicBrainz Ids will be added to the tags if "
+        "they match the genre name."
+    )
+    default = True
+
+
+@global_preferences_registry.register
+class MbSyncTags(types.BooleanPreference):
+    show_in_api = True
+    section = music
+    name = "sync_musicbrainz_tags"
+    verbose_name = "Sync MusicBrainz to to funkwhale objects"
+    help_text = (
+        "If uploaded files are tagged with a MusicBrainz ID, "
+        "Funkwhale will query MusicBrainz server to add tags to "
+        "the track, artist and album objects."
+    )
+    default = False

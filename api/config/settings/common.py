@@ -960,6 +960,11 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(day_of_week="*", minute="0", hour="3"),
         "options": {"expires": 60 * 60 * 24},
     },
+    "tags.update_musicbrainz_genre": {
+        "task": "tags.update_musicbrainz_genre",
+        "schedule": crontab(day_of_month="2", minute="30", hour="3"),
+        "options": {"expires": 60 * 60 * 24},
+    },
 }
 
 if env.str("TYPESENSE_API_KEY", default=None):
