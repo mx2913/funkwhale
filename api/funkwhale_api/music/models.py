@@ -1,4 +1,5 @@
 import datetime
+import itertools
 import logging
 import os
 import tempfile
@@ -710,6 +711,9 @@ def get_import_reference():
     return str(uuid.uuid4())
 
 
+quality_choices = [(0, "low"), (1, "medium"), (2, "high"), (3, "very_high")]
+
+
 class Upload(models.Model):
     fid = models.URLField(unique=True, max_length=500, null=True, blank=True)
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid.uuid4)
@@ -768,6 +772,7 @@ class Upload(models.Model):
     # stores checksums such as `sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
     checksum = models.CharField(max_length=100, db_index=True, null=True, blank=True)
 
+    quality = models.IntegerField(choices=quality_choices, default=1)
     objects = UploadQuerySet.as_manager()
 
     @property
@@ -871,6 +876,48 @@ class Upload(models.Model):
         audio = pydub.AudioSegment.from_file(input)
         return audio
 
+    def get_quality(self):
+        extension_to_mimetypes = utils.get_extension_to_mimetype_dict()
+
+        if not self.bitrate and self.mimetype not in list(
+            itertools.chain(
+                extension_to_mimetypes["aiff"],
+                extension_to_mimetypes["aif"],
+                extension_to_mimetypes["flac"],
+            )
+        ):
+            return 1
+
+        bitrate_limits = {
+            "mp3": {192: 0, 256: 1, 320: 2},
+            "ogg": {96: 0, 192: 1, 256: 2},
+            "aac": {96: 0, 128: 1, 288: 2},
+            "m4a": {96: 0, 128: 1, 288: 2},
+            "opus": {
+                96: 0,
+                128: 1,
+                160: 2,
+            },
+        }
+
+        for ext in bitrate_limits:
+            if self.mimetype in extension_to_mimetypes[ext]:
+                for limit, quality in sorted(bitrate_limits[ext].items()):
+                    if int(self.bitrate) <= limit:
+                        return quality
+
+                # opus higher tham 160
+                return 3
+
+        if self.mimetype in list(
+            itertools.chain(
+                extension_to_mimetypes["aiff"],
+                extension_to_mimetypes["aif"],
+                extension_to_mimetypes["flac"],
+            )
+        ):
+            return 3
+
     def save(self, **kwargs):
         if not self.mimetype:
             if self.audio_file:
@@ -890,6 +937,7 @@ class Upload(models.Model):
 
         if not self.pk and not self.fid and self.library.actor.get_user():
             self.fid = self.get_federation_id()
+        self.quality = self.get_quality()
         return super().save(**kwargs)
 
     def get_metadata(self):
