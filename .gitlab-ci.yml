@@ -338,23 +338,12 @@ build_api_schema:
     - changes: [docs/**/*]
 
   image: $CI_REGISTRY/funkwhale/ci/python-funkwhale-api:3.11
-  services:
-    - postgres:15-alpine
-    - redis:7-alpine
   cache: *api_cache
-  variables:
-    DATABASE_URL: "postgresql://postgres@postgres/postgres"
-    FUNKWHALE_URL: "https://funkwhale.ci"
-    DJANGO_SETTINGS_MODULE: config.settings.local
-    POSTGRES_HOST_AUTH_METHOD: trust
-    CACHE_URL: "redis://redis:6379/0"
-    API_TYPE: "v1"
   before_script:
     - cd api
     - make install
-    - poetry run funkwhale-manage migrate
   script:
-    - poetry run funkwhale-manage spectacular --file ../docs/schema.yml
+    - make schema SCHEMA_FILE=../docs/schema.yml
   artifacts:
     expire_in: 2 weeks
     paths:

@@ -1,10 +1,16 @@
 import re
 
 from allauth.account import models as allauth_models
-from dj_rest_auth.registration.serializers import RegisterSerializer as RS
+from dj_rest_auth.registration.serializers import (
+    RegisterSerializer as BaseRegisterSerializer,
+)
 from dj_rest_auth.registration.serializers import get_adapter
-from dj_rest_auth.serializers import PasswordResetConfirmSerializer as PRCS
-from dj_rest_auth.serializers import PasswordResetSerializer as PRS
+from dj_rest_auth.serializers import (
+    PasswordResetConfirmSerializer as BasePasswordResetConfirmSerializer,
+)
+from dj_rest_auth.serializers import (
+    PasswordResetSerializer as BasePasswordResetSerializer,
+)
 from django.contrib import auth
 from django.contrib.auth.forms import PasswordResetForm
 from django.core import validators
@@ -45,14 +51,17 @@ username_validators = [ASCIIUsernameValidator()]
 NOOP = object()
 
 
-class RegisterSerializer(RS):
+class RegisterSerializer(BaseRegisterSerializer):
     invitation = serializers.CharField(
         required=False, allow_null=True, allow_blank=True
     )
 
     def __init__(self, *args, **kwargs):
-        self.approval_enabled = preferences.get("moderation__signup_approval_enabled")
         super().__init__(*args, **kwargs)
+        if getattr(self.context.get("view", None), "swagger_fake_view", False):
+            return
+
+        self.approval_enabled = preferences.get("moderation__signup_approval_enabled")
         if self.approval_enabled:
             customization = preferences.get("moderation__signup_form_customization")
             self.fields[
@@ -248,14 +257,14 @@ class MeSerializer(UserReadSerializer):
         }
 
 
-class PasswordResetSerializer(PRS):
+class PasswordResetSerializer(BasePasswordResetSerializer):
     password_reset_form_class = PasswordResetForm
 
     def get_email_options(self):
         return {"extra_email_context": adapters.get_email_context()}
 
 
-class PasswordResetConfirmSerializer(PRCS):
+class PasswordResetConfirmSerializer(BasePasswordResetConfirmSerializer):
     def validate(self, attrs):
         from allauth.account.forms import default_token_generator
         from django.utils.http import urlsafe_base64_decode as uid_decoder
