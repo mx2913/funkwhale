@@ -743,13 +743,13 @@ def test_artist_field_featuring():
     [
         ("Pop", ["Pop"]),
         ("pop", ["pop"]),
-        ("Pop-Rock", ["PopRock"]),
-        ("Pop - Rock", ["Pop", "Rock"]),
-        ("Soundtrack - Cute Anime", ["Soundtrack", "CuteAnime"]),
+        ("Soundtrack - Cute Anime", ["Soundtrack", "Cute Anime"]),
         ("Pop, Rock", ["Pop", "Rock"]),
-        ("Chanson française", ["ChansonFrançaise"]),
-        ("Unhandled❤️", []),
-        ("tag with non-breaking spaces", []),
+        ("Chanson française", ["Chanson française"]),
+        (
+            "tag with non-breaking spaces",
+            ["tag\u202fwith\u202fnon-breaking\u202fspaces"],
+        ),
     ],
 )
 def test_acquire_tags_from_genre(genre, expected_tags):

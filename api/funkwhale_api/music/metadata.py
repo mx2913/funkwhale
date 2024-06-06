@@ -10,8 +10,6 @@ import mutagen.oggtheora
 import mutagen.oggvorbis
 from rest_framework import serializers
 
-from funkwhale_api.tags import models as tags_models
-
 logger = logging.getLogger(__name__)
 NODEFAULT = object()
 # default title used when imported tracks miss the `Album` tag, see #122
@@ -618,38 +616,15 @@ class PermissiveDateField(serializers.CharField):
 def extract_tags_from_genre(string):
     tags = []
     delimiter = "@@@@@"
-    for d in [" - ", ",", ";", "/"]:
+    for d in [" - ", ", ", ",", "; ", ";", "/"]:
         # Replace common tags separators by a custom delimiter
         string = string.replace(d, delimiter)
 
     # loop on the parts (splitting on our custom delimiter)
     for tag in string.split(delimiter):
-        tag = tag.strip()
-        for d in ["-"]:
-            # preparation for replacement so that Pop-Rock becomes Pop Rock, then PopRock
-            # (step 1, step 2 happens below)
-            tag = tag.replace(d, " ")
         if not tag:
             continue
-        final_tag = ""
-        if not tags_models.TAG_REGEX.match(tag.replace(" ", "")):
-            # the string contains some non words chars ($, €, etc.), right now
-            # we simply skip such tags
-            continue
-        # concatenate the parts and uppercase them so that 'pop rock' becomes 'PopRock'
-        if len(tag.split(" ")) == 1:
-            # we append the tag "as is", because it doesn't contain any space
-            tags.append(tag)
-            continue
-        for part in tag.split(" "):
-            # the tag contains space, there's work to do to have consistent case
-            # 'pop rock' -> 'PopRock'
-            # (step 2)
-            if not part:
-                continue
-            final_tag += part[0].upper() + part[1:]
-        if final_tag:
-            tags.append(final_tag)
+        tags.append(tag)
     return tags
 
 
