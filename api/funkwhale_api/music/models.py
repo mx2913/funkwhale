@@ -202,6 +202,7 @@ class ArtistQuerySet(common_models.LocalFromFidQuerySet, models.QuerySet):
 
 
 class Artist(APIModelMixin):
+    guid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.TextField()
     federation_namespace = "artists"
     musicbrainz_model = "artist"

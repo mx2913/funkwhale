@@ -176,6 +176,47 @@ class ArtistViewSet(
     )
 
 
+class V2_list_artists(
+    HandleInvalidSearch,
+    viewsets.ReadOnlyModelViewSet,
+    common_views.SkipFilterForGetObject,
+):
+
+    """
+    List all artists.
+    """
+
+    queryset = (
+        models.Artist.objects.all()
+        .prefetch_related("attributed_to", "attachment_cover")
+        .order_by("-id")
+    )
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.prefetch_related(TAG_PREFETCH)
+
+    serializer_class = serializers.V2_BaseArtistSerializer
+    permission_classes = [oauth_permissions.ScopePermission]
+    required_scope = "libraries"
+    anonymous_policy = "setting"
+    filterset_class = filters.V2_ArtistFilter
+
+    fetches = federation_decorators.fetches_route()
+
+    @extend_schema(operation_id="get-artists")
+    def get(self, request):
+        obj = super().get_object()
+
+        if (
+            self.action == "retrieve"
+            and self.request.GET.get("refresh", "").lower() == "true"
+        ):
+            obj = refetch_obj(obj, self.get_queryset())
+        serializer = self.get_serializer()
+        return Response(serializer.data, status=200, content_type="application/json")
+
+
 class AlbumViewSet(
     HandleInvalidSearch,
     common_views.SkipFilterForGetObject,

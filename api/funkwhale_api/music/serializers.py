@@ -854,3 +854,37 @@ class SearchResultSerializer(serializers.Serializer):
     tracks = TrackSerializer(many=True)
     albums = AlbumSerializer(many=True)
     tags = tags_serializers.TagSerializer(many=True)
+
+
+class V2_BaseArtistSerializer(serializers.ModelSerializer):
+
+    """
+    A simple serializer for artist information.
+    All other serializers that reference an artist should use this serializer.
+    """
+
+    class Meta:
+        model = models.Artist
+        fields = [
+            "guid",
+            "mbid",
+            "name",
+            "contentCategory",
+            "cover",
+            "tags",
+        ]
+
+    contentCategory = serializers.SerializerMethodField()
+    cover = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+
+    def get_contentCategory(self, obj):
+        return obj.content_category
+
+    def get_cover(self, obj):
+        return obj.attachment_cover
+
+    @extend_schema_field({"type": "array", "items": {"type": "string"}})
+    def get_tags(self, obj):
+        tagged_items = getattr(obj, "_prefetched_tagged_items", [])
+        return [ti.tag.name for ti in tagged_items]
