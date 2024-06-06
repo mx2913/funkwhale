@@ -5,5 +5,5 @@ from . import models
 
 @admin.register(models.TrackFavorite)
 class TrackFavoriteAdmin(admin.ModelAdmin):
-    list_display = ["user", "track", "creation_date"]
-    list_select_related = ["user", "track"]
+    list_display = ["actor", "track", "creation_date"]
+    list_select_related = ["actor", "track"]

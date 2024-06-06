@@ -333,14 +333,14 @@ class SubsonicViewSet(viewsets.GenericViewSet):
     @find_object(music_models.Track.objects.all())
     def star(self, request, *args, **kwargs):
         track = kwargs.pop("obj")
-        TrackFavorite.add(user=request.user, track=track)
+        TrackFavorite.add(actor=request.user.actor, track=track)
         return response.Response({"status": "ok"})
 
     @action(detail=False, methods=["get", "post"], url_name="unstar", url_path="unstar")
     @find_object(music_models.Track.objects.all())
     def unstar(self, request, *args, **kwargs):
         track = kwargs.pop("obj")
-        request.user.track_favorites.filter(track=track).delete()
+        request.user.actor.track_favorites.filter(track=track).delete()
         return response.Response({"status": "ok"})
 
     @action(
@@ -350,7 +350,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         url_path="getStarred2",
     )
     def get_starred2(self, request, *args, **kwargs):
-        favorites = request.user.track_favorites.all()
+        favorites = request.user.actor.track_favorites.all()
         data = {"starred2": {"song": serializers.get_starred_tracks_data(favorites)}}
         return response.Response(data)
 
@@ -438,7 +438,7 @@ class SubsonicViewSet(viewsets.GenericViewSet):
         url_path="getStarred",
     )
     def get_starred(self, request, *args, **kwargs):
-        favorites = request.user.track_favorites.all()
+        favorites = request.user.actor.track_favorites.all()
         data = {"starred": {"song": serializers.get_starred_tracks_data(favorites)}}
         return response.Response(data)
 

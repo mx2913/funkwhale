@@ -13,7 +13,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from funkwhale_api.common import preferences, throttling
-
+from funkwhale_api.federation import routes
 from . import models, serializers, tasks
 
 
@@ -94,6 +94,8 @@ class UserViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
         """Return information about the current user or delete it"""
         new_settings = request.data
         request.user.set_settings(**new_settings)
+        if "privacy_level" in new_settings:
+            dispatch_privacy_downgrade(new_settings["privacy_level"], request.user)
         return Response(request.user.settings)
 
     @action(
@@ -137,9 +139,17 @@ class UserViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
         serializer.save(request)
         return Response(status=204)
 
+    # to do : this work but maybe front should send privacy level update on the actor endpoint an not hte user endpoint ?
     def update(self, request, *args, **kwargs):
         if not self.request.user.username == kwargs.get("username"):
             return Response(status=403)
+        if "privacy_level" in request.data:
+            user = self.get_object()
+            request.data._mutable = True
+            privacy_level = request.data.pop("privacy_level")
+            request.data._mutable = False
+            user.actor.privacy_level = privacy_level[0]
+            user.actor.save()
         return super().update(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):
@@ -179,3 +189,18 @@ def logout(request):
     response = http.HttpResponse(status=200)
     response.set_cookie("csrftoken", token, max_age=None)
     return response
+
+
+# to do : privacy downgrade
+def dispatch_privacy_downgrade(privacy_level, user):
+    if privacy_level == "me" or privacy_level == "instance":
+        # this will automatically delete all related actor acitivities
+        routes.outbox.dispatch(
+            {"type": "Delete", "object": {"type": user.actor.type}},
+            context={"actor": user.actor},
+        )
+    if privacy_level == "followers":
+        routes.outbox.dispatch(
+            {"type": "Update", "object": {"type": user.actor.type}},
+            context={"actor": user.actor},
+        )

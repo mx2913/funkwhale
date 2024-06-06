@@ -104,7 +104,7 @@ def sync_listenings_from_listenbrainz(user, conf):
     logger.info("Getting listenings from ListenBrainz")
     try:
         last_ts = (
-            history_models.Listening.objects.filter(user=user)
+            history_models.Listening.objects.filter(actor=user.actor)
             .filter(source="Listenbrainz")
             .latest("creation_date")
             .values_list("creation_date", flat=True)
@@ -124,7 +124,7 @@ def sync_favorites_from_listenbrainz(user, conf):
         return
     try:
         last_ts = (
-            favorites_models.TrackFavorite.objects.filter(user=user)
+            favorites_models.TrackFavorite.objects.filter(actor=user.actor)
             .filter(source="Listenbrainz")
             .latest("creation_date")
             .creation_date.timestamp()

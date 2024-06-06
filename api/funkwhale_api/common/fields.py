@@ -24,8 +24,20 @@ def privacy_level_query(user, lookup_field="privacy_level", user_field="user"):
     if user.is_anonymous:
         return models.Q(**{lookup_field: "everyone"})
 
-    return models.Q(**{f"{lookup_field}__in": ["instance", "everyone"]}) | models.Q(
-        **{lookup_field: "me", user_field: user}
+    actors_follows = user.actor.user_follows.filter(approved=True).values_list(
+        "target", flat=True
+    )
+
+    followers_query = models.Q(
+        **{
+            f"{lookup_field}": "followers",
+            f"{user_field}__actor__pk__in": actors_follows,
+        }
+    )
+    return (
+        models.Q(**{f"{lookup_field}__in": ["instance", "everyone"]})
+        | models.Q(**{lookup_field: "me", user_field: user})
+        | followers_query
     )
 
 

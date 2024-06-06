@@ -296,7 +296,7 @@ class ManageActorFilterSet(filters.FilterSet):
 
     class Meta:
         model = federation_models.Actor
-        fields = ["domain", "type", "manually_approves_followers"]
+        fields = ["domain", "type", "manually_approves_followers", "privacy_level"]
 
     def filter_local(self, queryset, name, value):
         return queryset.local(value)
@@ -317,7 +317,6 @@ class ManageUserFilterSet(filters.FilterSet):
         model = users_models.User
         fields = [
             "is_active",
-            "privacy_level",
             "is_staff",
             "is_superuser",
             "permission_library",

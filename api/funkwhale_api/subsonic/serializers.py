@@ -314,7 +314,7 @@ class ScrobbleSerializer(serializers.Serializer):
 
     def create(self, data):
         return history_models.Listening.objects.create(
-            user=self.context["user"], track=data["id"]
+            actor=self.context["user"].actor, track=data["id"]
         )
 
 

@@ -5,6 +5,8 @@ from django.db.models import Q
 
 from funkwhale_api.music import models as music_models
 
+from funkwhale_api.favorites import models as favorites_models
+
 from . import activity, actors, models, serializers
 
 logger = logging.getLogger(__name__)
@@ -608,3 +610,64 @@ def outbox_delete_album(context):
             to=[activity.PUBLIC_ADDRESS, {"type": "instances_with_followers"}],
         ),
     }
+
+
+@outbox.register({"type": "Like", "object.type": "Track"})
+def outbox_create_favorite(context):
+    favorite = context["favorite"]
+    actor = favorite.actor
+
+    serializer = serializers.ActivitySerializer(
+        {
+            "type": "Like",
+            "id": favorite.fid,
+            "object": {"type": "Track", "id": favorite.track.fid},
+        }
+    )
+    yield {
+        "type": "Like",
+        "actor": actor,
+        "payload": with_recipients(
+            serializer.data,
+            to=[{"type": "followers", "target": actor}],
+        ),
+    }
+
+
+@outbox.register({"type": "Delete", "object.type": "Like"})
+def outbox_delete_favorite(context):
+    favorite = context["favorite"]
+    actor = favorite.actor
+    serializer = serializers.ActivitySerializer(
+        {"type": "Delete", "object": {"type": "Like", "id": favorite.fid}}
+    )
+    yield {
+        "type": "Delete",
+        "actor": actor,
+        "payload": with_recipients(
+            serializer.data,
+            to=[{"type": "followers", "target": actor}],
+        ),
+    }
+
+
+@inbox.register({"type": "Like", "object.type": "Track"})
+def inbox_create_favorite(payload, context):
+    serializer = serializers.TrackFavoriteSerializer(data=payload)
+    serializer.is_valid(raise_exception=True)
+    instance = serializer.save()
+    return {"object": instance}
+
+
+@inbox.register({"type": "Delete", "object.type": "Like"})
+def inbox_delete_favorite(payload, context):
+    actor = context["actor"]
+    favorite_id = payload["object"].get("id")
+
+    query = Q(fid=favorite_id) & Q(actor=actor)
+    try:
+        favorite = favorites_models.TrackFavorite.objects.get(query)
+    except favorites_models.TrackFavorite.DoesNotExist:
+        logger.debug("Discarding deletion of unkwnown favorite %s", favorite_id)
+        return
+    favorite.delete()

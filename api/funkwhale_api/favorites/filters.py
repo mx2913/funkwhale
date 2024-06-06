@@ -9,7 +9,7 @@ class TrackFavoriteFilter(moderation_filters.HiddenContentFilterSet):
     q = fields.SearchFilter(
         search_fields=["track__title", "track__artist__name", "track__album__title"]
     )
-    scope = common_filters.ActorScopeFilter(actor_field="user__actor", distinct=True)
+    scope = common_filters.ActorScopeFilter(actor_field="actor", distinct=True)
 
     class Meta:
         model = models.TrackFavorite

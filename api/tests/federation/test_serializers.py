@@ -282,6 +282,7 @@ def test_accept_follow_serializer_representation(factories):
 
 def test_accept_follow_serializer_save(factories):
     follow = factories["federation.Follow"](approved=None)
+    factories["audio.Channel"](actor=follow.target)
 
     data = {
         "@context": jsonld.get_default_context(),
@@ -352,8 +353,16 @@ def test_undo_follow_serializer_representation(factories):
     assert serializer.data == expected
 
 
-def test_undo_follow_serializer_save(factories):
-    follow = factories["federation.Follow"](approved=True)
+@pytest.mark.parametrize(
+    (
+        "followed_name",
+        "follow_factory",
+    ),
+    [("audio.Channel", "federation.Follow"), ("users.User", "federation.UserFollow")],
+)
+def test_undo_follow_serializer_save(factories, followed_name, follow_factory):
+    follow = factories[follow_factory](approved=True)
+    factories[followed_name](actor=follow.target)
 
     data = {
         "@context": jsonld.get_default_context(),
@@ -366,9 +375,12 @@ def test_undo_follow_serializer_save(factories):
     serializer = serializers.UndoFollowSerializer(data=data)
     assert serializer.is_valid(raise_exception=True)
     serializer.save()
-
-    with pytest.raises(models.Follow.DoesNotExist):
-        follow.refresh_from_db()
+    if followed_name == "audio.Channel":
+        with pytest.raises(models.Follow.DoesNotExist):
+            follow.refresh_from_db()
+    else:
+        with pytest.raises(models.UserFollow.DoesNotExist):
+            follow.refresh_from_db()
 
 
 def test_undo_follow_serializer_validates_on_context(factories):

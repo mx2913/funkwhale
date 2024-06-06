@@ -106,7 +106,7 @@ def add_lb_listenings_to_db(listens, user):
                 listen.listened_at, timezone.utc
             ),
             track=track,
-            user=user,
+            actor=user.actor,
             source="Listenbrainz",
         )
         fw_listens.append(fw_listen)
@@ -147,7 +147,7 @@ def add_lb_feedback_to_db(feedbacks, user):
 
         if feedback["score"] == 1:
             favorites_models.TrackFavorite.objects.get_or_create(
-                user=user,
+                actor=user.actor,
                 creation_date=datetime.datetime.fromtimestamp(
                     feedback["created"], timezone.utc
                 ),
@@ -157,7 +157,7 @@ def add_lb_feedback_to_db(feedbacks, user):
         elif feedback["score"] == 0:
             try:
                 favorites_models.TrackFavorite.objects.get(
-                    user=user, track=track
+                    actor=user.actor, track=track
                 ).delete()
             except favorites_models.TrackFavorite.DoesNotExist:
                 continue

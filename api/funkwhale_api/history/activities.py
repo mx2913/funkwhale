@@ -8,7 +8,7 @@ record.registry.register_serializer(serializers.ListeningActivitySerializer)
 
 @record.registry.register_consumer("history.Listening")
 def broadcast_listening_to_instance_activity(data, obj):
-    if obj.user.privacy_level not in ["instance", "everyone"]:
+    if obj.actor.privacy_level not in ["instance", "everyone"]:
         return
 
     channels.group_send(

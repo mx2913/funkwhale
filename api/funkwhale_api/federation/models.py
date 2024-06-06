@@ -14,7 +14,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 
-from funkwhale_api.common import session
+from funkwhale_api.common import session, fields
 from funkwhale_api.common import utils as common_utils
 from funkwhale_api.common import validators as common_validators
 from funkwhale_api.music import utils as music_utils
@@ -218,6 +218,7 @@ class Actor(models.Model):
         on_delete=models.SET_NULL,
         related_name="iconed_actor",
     )
+    privacy_level = fields.get_privacy_field()
 
     objects = ActorQuerySet.as_manager()
 
@@ -253,6 +254,8 @@ class Actor(models.Model):
 
     def should_autoapprove_follow(self, actor):
         if self.get_channel():
+            return True
+        if self.user.actor.privacy_level == "public":
             return True
         return False
 
@@ -638,3 +641,15 @@ def update_denormalization_follow_deleted(sender, instance, **kwargs):
         music_models.TrackActor.objects.filter(
             actor=instance.actor, upload__in=instance.target.uploads.all()
         ).delete()
+
+
+class UserFollow(AbstractFollow):
+    actor = models.ForeignKey(
+        Actor, related_name="user_follows", on_delete=models.CASCADE
+    )
+    target = models.ForeignKey(
+        Actor, related_name="received_user_follows", on_delete=models.CASCADE
+    )
+
+    class Meta:
+        unique_together = ["actor", "target"]

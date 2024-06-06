@@ -94,7 +94,7 @@ class PlaylistViewSet(
         return serializer.save(
             user=self.request.user,
             privacy_level=serializer.validated_data.get(
-                "privacy_level", self.request.user.privacy_level
+                "privacy_level", self.request.user.actor.privacy_level
             ),
         )
 

@@ -18,9 +18,7 @@ class ListeningViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = serializers.ListeningSerializer
-    queryset = models.Listening.objects.all().select_related(
-        "user__actor__attachment_icon"
-    )
+    queryset = models.Listening.objects.all().select_related("actor__attachment_icon")
 
     permission_classes = [
         oauth_permissions.ScopePermission,
@@ -29,6 +27,7 @@ class ListeningViewSet(
     required_scope = "listenings"
     anonymous_policy = "setting"
     owner_checks = ["write"]
+    owner_field = "actor.user"
     filterset_class = filters.ListeningFilter
 
     def get_serializer_class(self):
@@ -49,7 +48,9 @@ class ListeningViewSet(
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(
-            fields.privacy_level_query(self.request.user, "user__privacy_level")
+            fields.privacy_level_query(
+                self.request.user, "actor__privacy_level", "actor__user"
+            )
         )
         tracks = Track.objects.with_playable_uploads(
             music_utils.get_actor_from_request(self.request)

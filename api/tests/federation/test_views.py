@@ -642,3 +642,35 @@ def test_index_libraries_page(factories, api_client, preferences):
 
     assert response.status_code == 200
     assert response.data == expected
+
+
+def test_get_followers(factories, logged_in_api_client):
+    actor = logged_in_api_client.user.create_actor()
+    factories["federation.UserFollow"](target=actor, approved=True)
+    factories["federation.UserFollow"](target=actor, approved=True)
+    factories["federation.UserFollow"](target=actor, approved=True)
+    factories["federation.UserFollow"](target=actor, approved=True)
+    factories["federation.UserFollow"](target=actor, approved=True)
+
+    url = reverse(
+        "federation:actors-followers",
+        kwargs={"preferred_username": actor.preferred_username},
+    )
+    response = logged_in_api_client.get(url)
+    assert response.data["totalItems"] == 5
+
+
+def test_get_following(factories, logged_in_api_client):
+    actor = logged_in_api_client.user.create_actor()
+    factories["federation.UserFollow"](actor=actor, approved=True)
+    factories["federation.UserFollow"](actor=actor, approved=True)
+    factories["federation.UserFollow"](actor=actor, approved=True)
+    factories["federation.UserFollow"](actor=actor, approved=True)
+    factories["federation.UserFollow"](actor=actor, approved=True)
+
+    url = reverse(
+        "federation:actors-following",
+        kwargs={"preferred_username": actor.preferred_username},
+    )
+    response = logged_in_api_client.get(url)
+    assert response.data["totalItems"] == 5

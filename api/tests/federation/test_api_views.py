@@ -316,3 +316,120 @@ def test_library_follow_get_all(factories, logged_in_api_client):
         ],
         "count": 1,
     }
+
+
+def test_user_follow_get_all(factories, logged_in_api_client):
+    actor = logged_in_api_client.user.create_actor()
+    target_actor = factories["federation.Actor"]()
+    follow = factories["federation.UserFollow"](target=target_actor, actor=actor)
+    factories["federation.UserFollow"]()
+    url = reverse("api:v1:federation:user-follows-all")
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+    assert response.data == {
+        "results": [
+            {
+                "uuid": str(follow.uuid),
+                "actor": str(target_actor.fid),
+                "approved": follow.approved,
+            }
+        ],
+        "count": 1,
+    }
+
+
+def test_user_follow_retrieve(factories, logged_in_api_client):
+    actor = logged_in_api_client.user.create_actor()
+    target_actor = factories["federation.Actor"]()
+    follow = factories["federation.UserFollow"](target=target_actor, actor=actor)
+    factories["federation.UserFollow"]()
+    url = reverse("api:v1:federation:user-follows-detail", kwargs={"uuid": follow.uuid})
+    response = logged_in_api_client.get(url)
+
+    assert response.status_code == 200
+
+
+def test_user_can_list_their_user_follows(factories, logged_in_api_client):
+    # followed by someont else
+    factories["federation.UserFollow"]()
+    follow = factories["federation.UserFollow"](actor__user=logged_in_api_client.user)
+    url = reverse("api:v1:federation:user-follows-list")
+    response = logged_in_api_client.get(url)
+
+    assert response.data["count"] == 1
+    assert response.data["results"][0]["uuid"] == str(follow.uuid)
+
+
+def test_can_follow_user_actor(factories, logged_in_api_client, mocker):
+    dispatch = mocker.patch("funkwhale_api.federation.routes.outbox.dispatch")
+    actor = logged_in_api_client.user.create_actor()
+    target_actor = factories["federation.Actor"]()
+    url = reverse("api:v1:federation:user-follows-list")
+    response = logged_in_api_client.post(url, {"target": target_actor.fid})
+
+    assert response.status_code == 201
+
+    follow = target_actor.received_user_follows.latest("id")
+
+    assert follow.approved is None
+    assert follow.actor == actor
+
+    dispatch.assert_called_once_with({"type": "Follow"}, context={"follow": follow})
+
+
+def test_can_undo_user_follow(factories, logged_in_api_client, mocker):
+    dispatch = mocker.patch("funkwhale_api.federation.routes.outbox.dispatch")
+    actor = logged_in_api_client.user.create_actor()
+    follow = factories["federation.UserFollow"](actor=actor)
+    delete = mocker.patch.object(follow.__class__, "delete")
+    url = reverse("api:v1:federation:user-follows-detail", kwargs={"uuid": follow.uuid})
+    response = logged_in_api_client.delete(url)
+
+    assert response.status_code == 204
+
+    delete.assert_called_once_with()
+    dispatch.assert_called_once_with(
+        {"type": "Undo", "object": {"type": "Follow"}}, context={"follow": follow}
+    )
+
+
+@pytest.mark.parametrize("action", ["accept", "reject"])
+def test_user_cannot_edit_someone_else_user_follow(
+    factories, logged_in_api_client, action
+):
+    logged_in_api_client.user.create_actor()
+    follow = factories["federation.UserFollow"]()
+    url = reverse(
+        f"api:v1:federation:user-follows-{action}",
+        kwargs={"uuid": follow.uuid},
+    )
+    response = logged_in_api_client.post(url)
+
+    assert response.status_code == 404
+
+
+@pytest.mark.parametrize("action,expected", [("accept", True), ("reject", False)])
+def test_user_can_accept_or_reject_own_user_follows(
+    factories, logged_in_api_client, action, expected, mocker
+):
+    mocked_dispatch = mocker.patch(
+        "funkwhale_api.federation.activity.OutboxRouter.dispatch"
+    )
+    actor = logged_in_api_client.user.create_actor()
+    follow = factories["federation.UserFollow"](target=actor)
+    url = reverse(
+        f"api:v1:federation:user-follows-{action}",
+        kwargs={"uuid": follow.uuid},
+    )
+    response = logged_in_api_client.post(url)
+
+    assert response.status_code == 204
+
+    follow.refresh_from_db()
+
+    assert follow.approved is expected
+
+    mocked_dispatch.assert_called_once_with(
+        {"type": action.title()}, context={"follow": follow}
+    )

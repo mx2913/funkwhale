@@ -5,6 +5,7 @@ from funkwhale_api.playlists import models
 
 
 def test_can_create_playlist_via_api(logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     url = reverse("api:v1:playlists-list")
     data = {"name": "test", "privacy_level": "everyone"}
 
@@ -16,6 +17,7 @@ def test_can_create_playlist_via_api(logged_in_api_client):
 
 
 def test_serializer_includes_tracks_count(factories, logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     playlist = factories["playlists.Playlist"]()
     factories["playlists.PlaylistTrack"](playlist=playlist)
 
@@ -26,6 +28,7 @@ def test_serializer_includes_tracks_count(factories, logged_in_api_client):
 
 
 def test_serializer_includes_tracks_count_986(factories, logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     playlist = factories["playlists.Playlist"]()
     plt = factories["playlists.PlaylistTrack"](playlist=playlist)
     factories["music.Upload"].create_batch(
@@ -38,6 +41,7 @@ def test_serializer_includes_tracks_count_986(factories, logged_in_api_client):
 
 
 def test_serializer_includes_is_playable(factories, logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     playlist = factories["playlists.Playlist"]()
     factories["playlists.PlaylistTrack"](playlist=playlist)
 
@@ -48,16 +52,17 @@ def test_serializer_includes_is_playable(factories, logged_in_api_client):
 
 
 def test_playlist_inherits_user_privacy(logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     url = reverse("api:v1:playlists-list")
     user = logged_in_api_client.user
-    user.privacy_level = "me"
+    user.actor.privacy_level = "me"
     user.save()
 
     data = {"name": "test"}
 
     logged_in_api_client.post(url, data)
     playlist = user.playlists.latest("id")
-    assert playlist.privacy_level == user.privacy_level
+    assert playlist.privacy_level == user.actor.privacy_level
 
 
 @pytest.mark.parametrize(
@@ -73,6 +78,7 @@ def test_url_requires_login(name, method, factories, api_client):
 
 
 def test_only_can_add_track_on_own_playlist_via_api(factories, logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     track = factories["music.Track"]()
     playlist = factories["playlists.Playlist"]()
     url = reverse("api:v1:playlists-add", kwargs={"pk": playlist.pk})
@@ -84,6 +90,7 @@ def test_only_can_add_track_on_own_playlist_via_api(factories, logged_in_api_cli
 
 
 def test_deleting_plt_updates_indexes(mocker, factories, logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     remove = mocker.spy(models.Playlist, "remove")
     factories["music.Track"]()
     playlist = factories["playlists.Playlist"](user=logged_in_api_client.user)
@@ -115,6 +122,7 @@ def test_playlist_privacy_respected_in_list_anon(
 
 @pytest.mark.parametrize("method", ["PUT", "PATCH", "DELETE"])
 def test_only_owner_can_edit_playlist(method, factories, logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     playlist = factories["playlists.Playlist"]()
     url = reverse("api:v1:playlists-detail", kwargs={"pk": playlist.pk})
     response = getattr(logged_in_api_client, method.lower())(url)
@@ -125,6 +133,7 @@ def test_only_owner_can_edit_playlist(method, factories, logged_in_api_client):
 def test_can_add_multiple_tracks_at_once_via_api(
     factories, mocker, logged_in_api_client
 ):
+    logged_in_api_client.user.create_actor()
     playlist = factories["playlists.Playlist"](user=logged_in_api_client.user)
     tracks = factories["music.Track"].create_batch(size=5)
     track_ids = [t.id for t in tracks]
@@ -141,6 +150,7 @@ def test_can_add_multiple_tracks_at_once_via_api(
 
 
 def test_honor_max_playlist_size(factories, mocker, logged_in_api_client, preferences):
+    logged_in_api_client.user.create_actor()
     preferences["playlists__max_tracks"] = 3
     playlist = factories["playlists.Playlist"](user=logged_in_api_client.user)
     tracks = factories["music.Track"].create_batch(
@@ -155,6 +165,7 @@ def test_honor_max_playlist_size(factories, mocker, logged_in_api_client, prefer
 
 
 def test_can_clear_playlist_from_api(factories, mocker, logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     playlist = factories["playlists.Playlist"](user=logged_in_api_client.user)
     factories["playlists.PlaylistTrack"].create_batch(size=5, playlist=playlist)
     url = reverse("api:v1:playlists-clear", kwargs={"pk": playlist.pk})
@@ -165,6 +176,7 @@ def test_can_clear_playlist_from_api(factories, mocker, logged_in_api_client):
 
 
 def test_update_playlist_from_api(factories, mocker, logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     playlist = factories["playlists.Playlist"](user=logged_in_api_client.user)
     factories["playlists.PlaylistTrack"].create_batch(size=5, playlist=playlist)
     url = reverse("api:v1:playlists-detail", kwargs={"pk": playlist.pk})
@@ -176,6 +188,7 @@ def test_update_playlist_from_api(factories, mocker, logged_in_api_client):
 
 
 def test_move_plt_updates_indexes(mocker, factories, logged_in_api_client):
+    logged_in_api_client.user.create_actor()
     playlist = factories["playlists.Playlist"](user=logged_in_api_client.user)
     plt0 = factories["playlists.PlaylistTrack"](index=0, playlist=playlist)
     plt1 = factories["playlists.PlaylistTrack"](index=1, playlist=playlist)

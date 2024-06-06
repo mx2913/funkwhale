@@ -311,3 +311,107 @@ class ActorViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
             filter_uploads=lambda o, uploads: uploads.filter(library__actor=o)
         )
     )
+
+
+@extend_schema_view(
+    list=extend_schema(operation_id="get_federation_user_follows"),
+    create=extend_schema(operation_id="create_federation_user_follow"),
+)
+class UserFollowViewSet(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
+    lookup_field = "uuid"
+    queryset = (
+        models.UserFollow.objects.all()
+        .order_by("-creation_date")
+        .select_related("actor", "target")
+    )
+    serializer_class = api_serializers.UserFollowSerializer
+    permission_classes = [oauth_permissions.ScopePermission]
+    required_scope = "follows"
+    # to do :
+    # filterset_class = filters.UserFollowFilter
+    ordering_fields = ("creation_date",)
+
+    @extend_schema(operation_id="get_federation_user_follow")
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(operation_id="delete_federation_user_follow")
+    def destroy(self, request, uuid=None):
+        return super().destroy(request, uuid)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(
+            Q(target=self.request.user.actor) | Q(actor=self.request.user.actor)
+        ).exclude(approved=False)
+
+    def perform_create(self, serializer):
+        follow = serializer.save(actor=self.request.user.actor)
+        routes.outbox.dispatch({"type": "Follow"}, context={"follow": follow})
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        routes.outbox.dispatch(
+            {"type": "Undo", "object": {"type": "Follow"}}, context={"follow": instance}
+        )
+        instance.delete()
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["actor"] = self.request.user.actor
+        return context
+
+    @extend_schema(
+        operation_id="accept_federation_user_follow",
+        responses={404: None, 204: None},
+    )
+    @decorators.action(methods=["post"], detail=True)
+    def accept(self, request, *args, **kwargs):
+        try:
+            follow = self.queryset.get(
+                target=self.request.user.actor, uuid=kwargs["uuid"]
+            )
+        except models.UserFollow.DoesNotExist:
+            return response.Response({}, status=404)
+        update_follow(follow, approved=True)
+        return response.Response(status=204)
+
+    @extend_schema(operation_id="reject_federation_user_follow")
+    @decorators.action(methods=["post"], detail=True)
+    def reject(self, request, *args, **kwargs):
+        try:
+            follow = self.queryset.get(
+                target=self.request.user.actor, uuid=kwargs["uuid"]
+            )
+        except models.UserFollow.DoesNotExist:
+            return response.Response({}, status=404)
+
+        update_follow(follow, approved=False)
+        return response.Response(status=204)
+
+    @extend_schema(operation_id="get_all_federation_library_follows")
+    @decorators.action(methods=["get"], detail=False)
+    def all(self, request, *args, **kwargs):
+        """
+        Return all the subscriptions of the current user, with only limited data
+        to have a performant endpoint and avoid lots of queries just to display
+        subscription status in the UI
+        """
+        follows = list(
+            self.get_queryset().values_list("uuid", "target__fid", "approved")
+        )
+
+        payload = {
+            "results": [
+                {"uuid": str(u[0]), "actor": str(u[1]), "approved": u[2]}
+                for u in follows
+            ],
+            "count": len(follows),
+        }
+        return response.Response(payload, status=200)

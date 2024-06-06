@@ -119,6 +119,9 @@ def should_reject(fid, actor_id=None, payload={}):
 
 @transaction.atomic
 def receive(activity, on_behalf_of, inbox_actor=None):
+    """
+    Receive an activity, find his recipients and save it to the database before dispatching it
+    """
     from funkwhale_api.moderation import mrf
 
     from . import models, serializers, tasks
@@ -223,6 +226,9 @@ class InboxRouter(Router):
         """
         from . import api_serializers, models
 
+        logger.debug(
+            f"[federation] Inbox dispatch payload : {payload} with context : {context}"
+        )
         handlers = self.get_matching_handlers(payload)
         for handler in handlers:
             if call_handlers:
@@ -305,6 +311,7 @@ class OutboxRouter(Router):
 
         from . import models, tasks
 
+        logger.debug(f"[federation] Outbox dispatch context : {context}")
         allow_list_enabled = preferences.get("moderation__allow_list_enabled")
         allowed_domains = None
         if allow_list_enabled:
@@ -446,11 +453,18 @@ def prepare_deliveries_and_inbox_items(recipient_list, type, allowed_domains=Non
         elif r == PUBLIC_ADDRESS:
             urls.append(r)
         elif isinstance(r, dict) and r["type"] == "followers":
+            # to do : rename user_received_follows to received_follows ? Could clash with Follow model
             received_follows = (
                 r["target"]
                 .received_follows.filter(approved=True)
                 .select_related("actor__user")
             )
+            if not received_follows and hasattr(r["target"], "received_user_follows"):
+                received_follows = (
+                    r["target"]
+                    .received_user_follows.filter(approved=True)
+                    .select_related("actor__user")
+                )
             for follow in received_follows:
                 actor = follow.actor
                 if actor.is_local:

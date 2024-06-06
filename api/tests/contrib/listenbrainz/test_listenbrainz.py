@@ -13,6 +13,7 @@ from funkwhale_api.history import models as history_models
 
 
 def test_listenbrainz_submit_listen(logged_in_client, mocker, factories):
+    logged_in_client.user.create_actor()
     config = plugins.get_plugin_config(
         name="listenbrainz",
         description="A plugin that allows you to submit or sync your listens and favorites to ListenBrainz.",
@@ -38,7 +39,7 @@ def test_listenbrainz_submit_listen(logged_in_client, mocker, factories):
     url = reverse("api:v1:history:listenings-list")
     logged_in_client.post(url, {"track": track.pk})
     logged_in_client.get(url)
-    listening = history_models.Listening.objects.get(user=logged_in_client.user)
+    listening = history_models.Listening.objects.get(actor=logged_in_client.user.actor)
     handler.assert_called_once_with(listening=listening, conf=None)
 
 
@@ -117,14 +118,14 @@ def test_sync_favorites_from_listenbrainz(factories, mocker, caplog):
     logger = logging.getLogger("plugins")
     caplog.set_level(logging.INFO)
     logger.addHandler(caplog.handler)
-    user = factories["users.User"]()
+    user = factories["users.User"](with_actor=True)
     # track lb fav
     factories["music.Track"](mbid="195565db-65f9-4d0d-b347-5f0c85509528")
     # random track
     factories["music.Track"]()
     # track lb neutral
     track = factories["music.Track"](mbid="c5af5351-dbbf-4481-b52e-a480b6c57986")
-    favorite = factories["favorites.TrackFavorite"](track=track, user=user)
+    favorite = factories["favorites.TrackFavorite"](track=track, actor=user.actor)
     # last_sync
     track_last_sync = factories["music.Track"](
         mbid="c878ef2f-c08d-4a81-a047-f2a9f978cec7"
@@ -189,12 +190,12 @@ def test_sync_favorites_from_listenbrainz_since(factories, mocker, caplog):
     logger = logging.getLogger("plugins")
     caplog.set_level(logging.INFO)
     logger.addHandler(caplog.handler)
-    user = factories["users.User"]()
+    user = factories["users.User"](with_actor=True)
     # track lb fav
     factories["music.Track"](mbid="195565db-65f9-4d0d-b347-5f0c85509528")
     # track lb neutral
     track = factories["music.Track"](mbid="c5af5351-dbbf-4481-b52e-a480b6c57986")
-    favorite = factories["favorites.TrackFavorite"](track=track, user=user)
+    favorite = factories["favorites.TrackFavorite"](track=track, actor=user.actor)
     # track should be not synced
     factories["music.Track"](mbid="1fd02cf2-7247-4715-8862-c378ec196000")
     # last_sync
@@ -203,7 +204,7 @@ def test_sync_favorites_from_listenbrainz_since(factories, mocker, caplog):
     )
     factories["favorites.TrackFavorite"](
         track=track_last_sync,
-        user=user,
+        actor=user.actor,
         source="Listenbrainz",
         creation_date=datetime.datetime.fromtimestamp(1690775094),
     )

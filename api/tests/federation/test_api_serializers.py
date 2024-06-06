@@ -180,3 +180,17 @@ def test_fetch_serializer_unhandled_obj(factories, to_api_date):
     }
 
     assert api_serializers.FetchSerializer(fetch).data == expected
+
+
+def test_user_follow_serializer_do_not_allow_already_followed(factories):
+    actor = factories["federation.Actor"]()
+    follow = factories["federation.UserFollow"](actor=actor)
+
+    serializer = api_serializers.UserFollowSerializer(context={"actor": actor})
+    with pytest.raises(
+        api_serializers.serializers.ValidationError, match=r"You cannot follow yourself"
+    ):
+        serializer.validate_target(actor)
+
+    with pytest.raises(api_serializers.serializers.ValidationError, match=r"already"):
+        serializer.validate_target(follow.target)

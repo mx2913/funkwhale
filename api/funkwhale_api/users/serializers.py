@@ -157,7 +157,6 @@ class UserWriteSerializer(serializers.ModelSerializer):
         model = models.User
         fields = [
             "name",
-            "privacy_level",
             "avatar",
             "instance_support_message_display_date",
             "funkwhale_support_message_display_date",
@@ -204,7 +203,6 @@ class UserReadSerializer(serializers.ModelSerializer):
             "is_superuser",
             "permissions",
             "date_joined",
-            "privacy_level",
             "avatar",
         ]
 

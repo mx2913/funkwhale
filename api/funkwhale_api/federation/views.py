@@ -7,8 +7,11 @@ from django.urls import reverse
 from rest_framework import exceptions, mixins, permissions, response, viewsets
 from rest_framework.decorators import action
 
+from funkwhale_api.common import permissions as common_permissions
 from funkwhale_api.common import preferences
 from funkwhale_api.common import utils as common_utils
+from funkwhale_api.history import models as history_models
+from funkwhale_api.favorites import models as favorites_models
 from funkwhale_api.federation import utils as federation_utils
 from funkwhale_api.moderation import models as moderation_models
 from funkwhale_api.music import models as music_models
@@ -170,17 +173,83 @@ class ActorViewSet(FederationMixin, mixins.RetrieveModelMixin, viewsets.GenericV
             collection_serializer=serializers.ChannelOutboxSerializer(channel),
         )
 
-    @action(methods=["get"], detail=True)
+    @action(
+        methods=["get"],
+        detail=True,
+        permission_classes=[common_permissions.PrivacyLevelPermission],
+    )
     def followers(self, request, *args, **kwargs):
-        self.get_object()
-        # XXX to implement
-        return response.Response({})
+        actor = self.get_object()
+        followers = list(actor.get_approved_followers())
+        followers.extend(
+            actor.received_user_follows.filter(approved=True).values_list(
+                "actor", flat=True
+            )
+        )
+        actors_followers = models.Actor.objects.filter(pk__in=followers)
+        conf = {
+            "id": federation_utils.full_url(
+                reverse(
+                    "federation:actors-followers",
+                    kwargs={"preferred_username": actor.preferred_username},
+                )
+            ),
+            "items": actors_followers,
+            "item_serializer": serializers.ActorSerializer,
+            "page_size": 100,
+            "actor": None,
+        }
+        response = get_collection_response(
+            conf=conf,
+            querystring=request.GET,
+            collection_serializer=serializers.IndexSerializer(conf),
+        )
+        return response
 
-    @action(methods=["get"], detail=True)
+    @action(
+        methods=["get"],
+        detail=True,
+        permission_classes=[common_permissions.PrivacyLevelPermission],
+    )
     def following(self, request, *args, **kwargs):
-        self.get_object()
-        # XXX to implement
-        return response.Response({})
+        actor = self.get_object()
+        followings = list(
+            actor.emitted_follows.filter(approved=True).values_list("target", flat=True)
+        )
+        followings.extend(
+            actor.user_follows.filter(approved=True).values_list("target", flat=True)
+        )
+        actors_followings = models.Actor.objects.filter(pk__in=followings).order_by(
+            "preferred_username"
+        )
+        conf = {
+            "id": federation_utils.full_url(
+                reverse(
+                    "federation:actors-following",
+                    kwargs={"preferred_username": actor.preferred_username},
+                )
+            ),
+            "items": actors_followings,
+            "item_serializer": serializers.ActorSerializer,
+            "page_size": 100,
+            "actor": None,
+        }
+        response = get_collection_response(
+            conf=conf,
+            querystring=request.GET,
+            collection_serializer=serializers.IndexSerializer(conf),
+        )
+        return response
+
+    @action(
+        methods=["get"],
+        detail=True,
+        permission_classes=[common_permissions.PrivacyLevelPermission],
+    )
+    def listens(self, request, *args, **kwargs):
+        actor = self.get_object()
+        # to do : listens endpoint :
+        history_models.Listening.objects.filter(actor=actor)
 
 
 class EditViewSet(FederationMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
@@ -527,3 +596,43 @@ class IndexViewSet(FederationMixin, viewsets.GenericViewSet):
         )
 
         return response.Response({}, status=200)
+
+
+# to do : this should follow privacy_level setting
+class TrackFavoriteViewSet(
+    FederationMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+):
+    authentication_classes = [authentication.SignatureAuthentication]
+    renderer_classes = renderers.get_ap_renderers()
+    queryset = favorites_models.TrackFavorite.objects.local().select_related(
+        "track", "actor"
+    )
+    serializer_class = serializers.TrackFavoriteSerializer
+    lookup_field = "uuid"
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if utils.should_redirect_ap_to_html(request.headers.get("accept")):
+            return redirect_to_html(instance.get_absolute_url())
+
+        serializer = self.get_serializer(instance)
+        return response.Response(serializer.data)
+
+
+class ListeningsViewSet(
+    FederationMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+):
+    authentication_classes = [authentication.SignatureAuthentication]
+    renderer_classes = renderers.get_ap_renderers()
+    queryset = history_models.Listening.objects.local().select_related("track", "actor")
+    # to do :
+    # serializer_class = serializers.ListeningSerializer
+    lookup_field = "uuid"
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if utils.should_redirect_ap_to_html(request.headers.get("accept")):
+            return redirect_to_html(instance.get_absolute_url())
+
+        serializer = self.get_serializer(instance)
+        return response.Response(serializer.data)

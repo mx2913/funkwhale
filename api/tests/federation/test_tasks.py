@@ -701,3 +701,34 @@ def test_check_all_remote_instance_skips_local(settings, factories, r_mock):
     settings.FUNKWHALE_HOSTNAME = domain.name
     tasks.check_all_remote_instance_availability()
     assert not r_mock.called
+
+
+def test_fetch_webfinger_create_actor(factories, r_mock, mocker):
+    actor = factories["federation.Actor"]()
+    fetch = factories["federation.Fetch"](url=f"webfinger://{actor.full_username}")
+    payload = serializers.ActorSerializer(actor).data
+    init = mocker.spy(serializers.ActorSerializer, "__init__")
+    save = mocker.spy(serializers.ActorSerializer, "save")
+    webfinger_payload = {
+        "subject": f"acct:{actor.full_username}",
+        "aliases": ["https://test.webfinger"],
+        "links": [
+            {"rel": "self", "type": "application/activity+json", "href": actor.fid}
+        ],
+    }
+    webfinger_url = "https://{}/.well-known/webfinger?resource={}".format(
+        actor.domain_id, webfinger_payload["subject"]
+    )
+    r_mock.get(actor.fid, json=payload)
+    r_mock.get(webfinger_url, json=webfinger_payload)
+
+    tasks.fetch(fetch_id=fetch.pk)
+
+    fetch.refresh_from_db()
+
+    assert fetch.status == "finished"
+    assert fetch.object == actor
+    assert init.call_count == 1
+    assert init.call_args[0][1] == actor
+    assert init.call_args[1]["data"] == payload
+    assert save.call_count == 1
