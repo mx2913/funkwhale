@@ -9,5 +9,5 @@ funkwhale-manage migrate
 exec gunicorn config.asgi:application \
     --workers "${FUNKWHALE_WEB_WORKERS-1}" \
     --worker-class uvicorn.workers.UvicornWorker \
-    --bind 0.0.0.0:5000 \
+    --bind 0.0.0.0:"${FUNKWHALE_API_PORT}" \
     ${GUNICORN_ARGS-}
