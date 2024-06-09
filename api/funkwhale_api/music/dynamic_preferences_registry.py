@@ -58,11 +58,11 @@ class JoinPhrases(types.StringPreference):
     verbose_name = "Join Phrases"
     help_text = (
         "Used by the artist parser to create multiples artists in case the metadata "
-        "is a single string. BE WARNED, changing this can break the parser in unexpected ways. "
+        "is a single string. BE WARNED, changing the order or the values can break the parser in unexpected ways. "
         "It's MANDATORY to escape dots and to put doted variation before because the first match is used "
         r"(example : `|feat\.|ft\.|feat|` and not `feat|feat\.|ft\.|feat`.). ORDER is really important "
         "(says an anarchist). To avoid artist duplication and wrongly parsed artist data "
-        "it's recommended to tag files with Musicbrainz Picard."
+        "it's recommended to tag files with Musicbrainz Picard. "
     )
     default = (
         r"featuring | feat\. | ft\. | feat | with | and | & | vs\. | \| | \||\| |\|| , | ,|, |,|"

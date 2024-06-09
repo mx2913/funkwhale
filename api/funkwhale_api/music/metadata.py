@@ -494,52 +494,22 @@ class ArtistField(serializers.Field):
 
         return final
 
-    def to_internal_value(self, data):
+    def _get_artist_credit_tuple(self, mbids, data):
         from . import tasks
 
-        if (
-            self.context.get("strict", True)
-            and not data.get("artists", [])
-            and not data.get("names", [])
-        ):
-            raise serializers.ValidationError("This field is required.")
-
-        # we have multiple mbid values that can be separated by various separators
-        separators = [";", ",", "/"]
-        artists_credits_tuples = None
-        # we get a list like that if tagged via musicbrainz
-        # ae29aae4-abfb-4609-8f54-417b1f4d64cc; 3237b5a8-ae44-400c-aa6d-cea51f0b9074;
-        raw_mbids = data["mbids"]
-        mbids = [raw_mbids]
-        if raw_mbids:
-            for separator in separators:
-                if separator in raw_mbids:
-                    mbids = [m.strip() for m in raw_mbids.split(separator)]
-                    break
-
-        # now, we split on artist names
-
-        names_artists_credits_tuples = (
-            tasks.parse_credits(data["names"], None, None)
-            if data.get("names", False)
-            else []
-        )
-        artist_artists_credits_tuples = (
-            tasks.parse_credits(data["artists"], None, None)
-            if data.get("artists", False)
-            else []
+        names_artists_credits_tuples = tasks.parse_credits(
+            data.get("names", ""), None, None
         )
 
-        field = serializers.ListField(
-            child=ArtistSerializer(strict=self.context.get("strict", True)),
-            min_length=1,
+        artist_artists_credits_tuples = tasks.parse_credits(
+            data.get("artists", ""), None, None
         )
 
         # to do : should handle this case by manually defaulting to mbids
+        len_mbids = len(mbids)
         if (
-            raw_mbids
-            and len(names_artists_credits_tuples) != len(mbids)
-            and len(artist_artists_credits_tuples) != len(mbids)
+            len(names_artists_credits_tuples) != len_mbids
+            and len(artist_artists_credits_tuples) != len_mbids
         ):
             logger.warning(
                 "Error parsing artist data, not the same amount of mbids and parsed artists. \
@@ -547,24 +517,54 @@ class ArtistField(serializers.Field):
             )
 
         if len(names_artists_credits_tuples) > len(artist_artists_credits_tuples):
-            artists_credits_tuples = names_artists_credits_tuples
-        else:
-            artists_credits_tuples = artist_artists_credits_tuples
+            return names_artists_credits_tuples
+        return artist_artists_credits_tuples
 
-        final = []
+    def _get_mbids(self, raw_mbids):
+        # we have multiple mbid values that can be separated by various separators
+        separators = [";", ",", "/"]
+        # we get a list like that if tagged via musicbrainz
+        # ae29aae4-abfb-4609-8f54-417b1f4d64cc; 3237b5a8-ae44-400c-aa6d-cea51f0b9074;
+        mbids = [raw_mbids]
+        if raw_mbids:
+            for separator in separators:
+                if separator in raw_mbids:
+                    mbids = [m.strip() for m in raw_mbids.split(separator)]
+                    break
+        return mbids
+
+    def _format_artist_credit_list(self, artists_credits_tuples, mbids):
+        final_artist_credits = []
         for i, ac in enumerate(artists_credits_tuples):
-            artist = {
-                "name": ac[0],
+            artist_credit = {
+                "credit": ac[0],
                 "mbid": (mbids[i] if 0 <= i < len(mbids) else None),
                 "joinphrase": ac[1],
                 "index": i,
             }
-            final.append(artist)
+            final_artist_credits.append(artist_credit)
 
-        if len(artists_credits_tuples) == 0:
-            final = []
+        return final_artist_credits
 
-        return field.to_internal_value(final)
+    def to_internal_value(self, data):
+        if (
+            self.context.get("strict", True)
+            and not data.get("artists", [])
+            and not data.get("names", [])
+        ):
+            raise serializers.ValidationError("This field is required.")
+        mbids = self._get_mbids(data["mbids"])
+        # now, we split on artist names
+        artists_credits_tuples = self._get_artist_credit_tuple(mbids, data)
+        final_artist_credits = self._format_artist_credit_list(
+            artists_credits_tuples, mbids
+        )
+
+        field = serializers.ListField(
+            child=ArtistSerializer(strict=self.context.get("strict", True)),
+            min_length=1,
+        )
+        return field.to_internal_value(final_artist_credits)
 
 
 class AlbumField(serializers.Field):
@@ -583,16 +583,17 @@ class AlbumField(serializers.Field):
             "release_date": data.get("date", None),
             "mbid": data.get("musicbrainz_albumid", None),
         }
-        artists_field = ArtistField(for_album=True)
-        payload = artists_field.get_value(data)
+        artist_credit_field = ArtistField(for_album=True)
+        payload = artist_credit_field.get_value(data)
         try:
-            artists = artists_field.to_internal_value(payload)
+            artist_credit = artist_credit_field.to_internal_value(payload)
         except serializers.ValidationError as e:
-            artists = []
-            logger.debug("Ignoring validation error on album artists: %s", e)
+            artist_credit = []
+            logger.debug("Ignoring validation error on album artist_credit: %s", e)
         album_serializer = AlbumSerializer(data=final)
         album_serializer.is_valid(raise_exception=True)
-        album_serializer.validated_data["artists"] = artists
+        album_serializer.validated_data["artist_credit"] = artist_credit
+
         return album_serializer.validated_data
 
 
@@ -696,7 +697,7 @@ class MBIDField(serializers.UUIDField):
 
 
 class ArtistSerializer(serializers.Serializer):
-    name = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    credit = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     mbid = MBIDField()
     joinphrase = serializers.CharField(
         trim_whitespace=False, required=False, allow_null=True, allow_blank=True
@@ -706,7 +707,7 @@ class ArtistSerializer(serializers.Serializer):
         self.strict = kwargs.pop("strict", True)
         super().__init__(*args, **kwargs)
 
-    def validate_name(self, v):
+    def validate_credit(self, v):
         if self.strict and not v:
             raise serializers.ValidationError("This field is required.")
         return v
@@ -775,7 +776,7 @@ class TrackMetadataSerializer(serializers.Serializer):
     description = DescriptionField(allow_null=True, allow_blank=True, required=False)
 
     album = AlbumField()
-    artists = ArtistField()
+    artist_credit = ArtistField()
     cover_data = CoverDataField(required=False)
 
     remove_blank_null_fields = [

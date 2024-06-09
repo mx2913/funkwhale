@@ -23,7 +23,7 @@ def test_can_create_track_from_file_metadata_no_mbid(db, mocker):
     add_tags = mocker.patch("funkwhale_api.tags.models.add_tags")
     metadata = {
         "title": "Test track",
-        "artists": [{"name": "Test artist"}],
+        "artist_credit": [{"credit": "Test artist", "joinphrase": ""}],
         "album": {"title": "Test album", "release_date": datetime.date(2012, 8, 15)},
         "position": 4,
         "disc_number": 2,
@@ -44,7 +44,10 @@ def test_can_create_track_from_file_metadata_no_mbid(db, mocker):
     assert track.album.title == metadata["album"]["title"]
     assert track.album.mbid is None
     assert track.album.release_date == datetime.date(2012, 8, 15)
-    assert track.artist_credit.all()[0].artist.name == metadata["artists"][0]["name"]
+    assert (
+        track.artist_credit.all()[0].artist.name
+        == metadata["artist_credit"][0]["credit"]
+    )
     assert track.artist_credit.all()[0].artist.mbid is None
     assert track.artist_credit.all()[0].artist.attributed_to is None
     match_license.assert_called_once_with(metadata["license"], metadata["copyright"])
@@ -57,7 +60,7 @@ def test_can_create_track_from_file_metadata_attributed_to(factories, mocker):
     actor = factories["federation.Actor"]()
     metadata = {
         "title": "Test track",
-        "artists": [{"name": "Test artist"}],
+        "artist_credit": [{"credit": "Test artist", "joinphrase": ""}],
         "album": {"title": "Test album", "release_date": datetime.date(2012, 8, 15)},
         "position": 4,
         "disc_number": 2,
@@ -76,7 +79,10 @@ def test_can_create_track_from_file_metadata_attributed_to(factories, mocker):
     assert track.album.mbid is None
     assert track.album.release_date == datetime.date(2012, 8, 15)
     assert track.album.attributed_to == actor
-    assert track.artist_credit.all()[0].artist.name == metadata["artists"][0]["name"]
+    assert (
+        track.artist_credit.all()[0].artist.name
+        == metadata["artist_credit"][0]["credit"]
+    )
     assert track.artist_credit.all()[0].artist.mbid is None
     assert track.artist_credit.all()[0].artist.attributed_to == actor
 
@@ -91,11 +97,17 @@ def test_can_create_track_from_file_metadata_featuring(mocker):
             "title": "Guitar Heaven: The Greatest Guitar Classics of All Time",
             "mbid": "d06f2072-4148-488d-af6f-69ab6539ddb8",
             "release_date": datetime.date(2010, 9, 17),
-            "artists": [
-                {"name": "Santana", "mbid": "9a3bf45c-347d-4630-894d-7cf3e8e0b632"}
+            "artist_credit": [
+                {
+                    "credit": "Santana",
+                    "mbid": "9a3bf45c-347d-4630-894d-7cf3e8e0b632",
+                    "joinphrase": "",
+                }
             ],
         },
-        "artists": [{"name": "Santana feat Chris Cornell", "mbid": None}],
+        "artist_credit": [
+            {"credit": "Santana feat Chris Cornell", "mbid": None, "joinphrase": ""}
+        ],
     }
     mb_ac = {
         "artist-credit": [
@@ -150,7 +162,7 @@ def test_can_create_track_from_file_metadata_description(factories):
         "disc_number": 1,
         "description": {"text": "hello there", "content_type": "text/plain"},
         "album": {"title": "Test album"},
-        "artists": [{"name": "Santana"}],
+        "artist_credit": [{"credit": "Santana", "joinphrase": ""}],
     }
     track = tasks.get_track_from_import_metadata(metadata)
 
@@ -165,27 +177,34 @@ def test_can_create_track_from_file_metadata_use_featuring(factories):
         "disc_number": 1,
         "description": {"text": "hello there", "content_type": "text/plain"},
         "album": {"title": "Test album"},
-        "artists": [{"name": "Santana"}, {"name": "Anatnas"}],
+        "artist_credit": [
+            {"credit": "Santana", "joinphrase": ", ", "index": 0},
+            {"credit": "Anatnas", "joinphrase": "", "index": 1},
+        ],
     }
     track = tasks.get_track_from_import_metadata(metadata)
-
     assert track.get_artist_credit_string == "Santana, Anatnas"
 
 
 def test_can_create_track_from_file_metadata_mbid(factories, mocker):
     metadata = {
         "title": "Test track",
-        "artists": [
-            {"name": "Test artist", "mbid": "9c6bddde-6228-4d9f-ad0d-03f6fcb19e13"}
+        "artist_credit": [
+            {
+                "credit": "Test artist",
+                "mbid": "9c6bddde-6228-4d9f-ad0d-03f6fcb19e13",
+                "joinphrase": "",
+            }
         ],
         "album": {
             "title": "Test album",
             "release_date": datetime.date(2012, 8, 15),
             "mbid": "9c6bddde-6478-4d9f-ad0d-03f6fcb19e15",
-            "artists": [
+            "artist_credit": [
                 {
-                    "name": "Test album artist",
+                    "credit": "Test album artist",
                     "mbid": "9c6bddde-6478-4d9f-ad0d-03f6fcb19e13",
+                    "joinphrase": "",
                 }
             ],
         },
@@ -259,16 +278,20 @@ def test_can_create_track_from_file_metadata_mbid(factories, mocker):
     assert track.album.mbid == metadata["album"]["mbid"]
     assert (
         str(track.album.artist_credit.all()[0].artist.mbid)
-        == metadata["album"]["artists"][0]["mbid"]
+        == metadata["album"]["artist_credit"][0]["mbid"]
     )
     assert (
         track.album.artist_credit.all()[0].artist.name
-        == metadata["album"]["artists"][0]["name"]
+        == metadata["album"]["artist_credit"][0]["credit"]
     )
     assert track.album.release_date == datetime.date(2012, 8, 15)
-    assert track.artist_credit.all()[0].artist.name == metadata["artists"][0]["name"]
     assert (
-        str(track.artist_credit.all()[0].artist.mbid) == metadata["artists"][0]["mbid"]
+        track.artist_credit.all()[0].artist.name
+        == metadata["artist_credit"][0]["credit"]
+    )
+    assert (
+        str(track.artist_credit.all()[0].artist.mbid)
+        == metadata["artist_credit"][0]["mbid"]
     )
 
 
@@ -281,11 +304,19 @@ def test_can_create_track_from_file_metadata_mbid_existing_album_artist(
         "album": {
             "mbid": album.mbid,
             "title": "",
-            "artists": [{"name": "", "mbid": album.artist_credit.all()[0].mbid}],
+            "artist_credit": [
+                {
+                    "credit": "",
+                    "joinphrase": "",
+                    "mbid": album.artist_credit.all()[0].mbid,
+                }
+            ],
         },
         "title": "Hello",
         "position": 4,
-        "artists": [{"mbid": album.artist_credit.all()[0].mbid, "name": ""}],
+        "artist_credit": [
+            {"mbid": album.artist_credit.all()[0].mbid, "credit": "", "joinphrase": ""}
+        ],
         "mbid": "f269d497-1cc0-4ae4-a0c4-157ec7d73acb",
     }
     mb_ac_album = {
@@ -335,11 +366,22 @@ def test_can_create_track_from_file_metadata_fid_existing_album_artist(
     artist = factories["music.Artist"]()
     album = factories["music.Album"]()
     metadata = {
-        "artists": [{"name": "", "fid": artist.fid}],
+        "artist_credit": [
+            {"credit": "", "artist": {"fid": artist.fid}, "joinphrase": ""}
+        ],
         "album": {
             "title": "",
             "fid": album.fid,
-            "artists": [{"name": "", "fid": album.artist_credit.all()[0].artist.fid}],
+            "artist_credit": [
+                {
+                    "credit": "",
+                    "joinphrase": "",
+                    "artist": {
+                        "name": "",
+                        "fid": album.artist_credit.all()[0].artist.fid,
+                    },
+                }
+            ],
         },
         "title": "Hello",
         "position": 4,
@@ -361,8 +403,12 @@ def test_can_create_track_from_file_metadata_distinct_release_mbid(factories, mo
     album = factories["music.Album"](artist_credit=artist_credit)
     track = factories["music.Track"](album=album, artist_credit=artist_credit)
     metadata = {
-        "artists": [
-            {"name": artist_credit.artist.name, "mbid": artist_credit.artist.mbid}
+        "artist_credit": [
+            {
+                "credit": artist_credit.artist.name,
+                "mbid": artist_credit.artist.mbid,
+                "joinphrase": "",
+            }
         ],
         "album": {"title": album.title, "mbid": str(uuid.uuid4())},
         "title": track.title,
@@ -399,8 +445,12 @@ def test_can_create_track_from_file_metadata_distinct_position(factories, mocker
     album = factories["music.Album"](artist_credit=artist_credit)
     track = factories["music.Track"](album=album, artist_credit=artist_credit)
     metadata = {
-        "artists": [
-            {"name": artist_credit.artist.name, "mbid": artist_credit.artist.mbid}
+        "artist_credit": [
+            {
+                "credit": artist_credit.artist.name,
+                "joinphrase": "",
+                "mbid": artist_credit.artist.mbid,
+            }
         ],
         "album": {"title": album.title, "mbid": album.mbid},
         "title": track.title,
@@ -428,19 +478,32 @@ def test_can_create_track_from_file_metadata_distinct_position(factories, mocker
 
 def test_can_create_track_from_file_metadata_federation(factories, mocker):
     metadata = {
-        "artists": [
-            {"name": "Artist", "fid": "https://artist.fid", "fdate": timezone.now()}
+        "artist_credit": [
+            {
+                "credit": "Artist",
+                "artist": {
+                    "name": "Artist",
+                    "fid": "https://artist.fid",
+                    "fdate": timezone.now(),
+                },
+                "credit": "Artist",
+                "joinphrase": "",
+            }
         ],
         "album": {
             "title": "Album",
             "fid": "https://album.fid",
             "fdate": timezone.now(),
             "cover_data": {"url": "https://cover/hello.png", "mimetype": "image/png"},
-            "artists": [
+            "artist_credit": [
                 {
-                    "name": "Album artist",
-                    "fid": "https://album.artist.fid",
-                    "fdate": timezone.now(),
+                    "credit": "Album artist",
+                    "artist": {
+                        "name": "Album artist",
+                        "fid": "https://album.artist.fid",
+                        "fdate": timezone.now(),
+                    },
+                    "joinphrase": "",
                 }
             ],
         },
@@ -467,21 +530,27 @@ def test_can_create_track_from_file_metadata_federation(factories, mocker):
     assert track.album.creation_date == metadata["album"]["fdate"]
     assert (
         track.album.artist_credit.all()[0].artist.fid
-        == metadata["album"]["artists"][0]["fid"]
+        == metadata["album"]["artist_credit"][0]["artist"].fid
     )
     assert (
         track.album.artist_credit.all()[0].artist.name
-        == metadata["album"]["artists"][0]["name"]
+        == metadata["album"]["artist_credit"][0]["credit"]
     )
     assert (
         track.album.artist_credit.all()[0].artist.creation_date
-        == metadata["album"]["artists"][0]["fdate"]
+        == metadata["album"]["artist_credit"][0]["artist"].creation_date
     )
-    assert track.artist_credit.all()[0].artist.fid == metadata["artists"][0]["fid"]
-    assert track.artist_credit.all()[0].artist.name == metadata["artists"][0]["name"]
+    assert (
+        track.artist_credit.all()[0].artist.fid
+        == metadata["artist_credit"][0]["artist"].fid
+    )
+    assert (
+        track.artist_credit.all()[0].artist.name
+        == metadata["artist_credit"][0]["credit"]
+    )
     assert (
         track.artist_credit.all()[0].artist.creation_date
-        == metadata["artists"][0]["fdate"]
+        == metadata["artist_credit"][0]["artist"].creation_date
     )
 
 
@@ -1183,7 +1252,7 @@ def test_get_track_from_import_metadata_with_forced_values(factories, mocker, fa
     }
     metadata = {
         "title": "Test track",
-        "artists": [{"name": "Test artist"}],
+        "artist_credit": [{"name": "Test artist"}],
         "album": {"title": "Test album", "release_date": datetime.date(2012, 8, 15)},
         "position": 4,
         "disc_number": 2,
@@ -1410,12 +1479,12 @@ def test_can_import_track_with_same_mbid_in_different_albums(factories, mocker):
     assert upload.track.mbid is not None
     data = {
         "title": upload.track.title,
-        "artists": [{"name": artist.name, "mbid": artist.mbid}],
+        "artist_credit": [{"name": artist.name, "mbid": artist.mbid}],
         "album": {
             "title": "The Slip",
             "mbid": uuid.UUID("12b57d46-a192-499e-a91f-7da66790a1c1"),
             "release_date": datetime.date(2008, 5, 5),
-            "artists": [{"name": artist.name, "mbid": artist.mbid}],
+            "artist_credit": [{"name": artist.name, "mbid": artist.mbid}],
         },
         "position": 1,
         "disc_number": 1,
@@ -1476,11 +1545,11 @@ def test_import_track_with_same_mbid_in_same_albums_skipped(factories, mocker):
     assert upload.track.mbid is not None
     data = {
         "title": upload.track.title,
-        "artists": [{"name": artist.name, "mbid": artist.mbid}],
+        "artist_credit": [{"name": artist.name, "mbid": artist.mbid}],
         "album": {
             "title": upload.track.album.title,
             "mbid": upload.track.album.mbid,
-            "artists": [{"name": artist.name, "mbid": artist.mbid}],
+            "artist_credit": [{"name": artist.name, "mbid": artist.mbid}],
         },
         "position": 1,
         "disc_number": 1,
@@ -1503,18 +1572,19 @@ def test_can_import_track_with_same_position_in_different_discs(factories, mocke
     upload = factories["music.Upload"](playable=True)
     artist_data = [
         {
-            "name": upload.track.album.artist_credit.all()[0].artist.name,
+            "credit": upload.track.album.artist_credit.all()[0].artist.name,
             "mbid": upload.track.album.artist_credit.all()[0].artist.mbid,
+            "joinphrase": "",
         }
     ]
     data = {
         "title": upload.track.title,
-        "artists": artist_data,
+        "artist_credit": artist_data,
         "album": {
             "title": "The Slip",
             "mbid": upload.track.album.mbid,
             "release_date": datetime.date(2008, 5, 5),
-            "artists": artist_data,
+            "artist_credit": artist_data,
         },
         "position": upload.track.position,
         "disc_number": 2,
@@ -1552,19 +1622,20 @@ def test_can_import_track_with_same_position_in_same_discs_skipped(factories, mo
     )
     artist_data = [
         {
-            "name": upload.track.album.artist_credit.all()[0].artist.name,
+            "credit": upload.track.album.artist_credit.all()[0].artist.name,
             "mbid": upload.track.album.artist_credit.all()[0].artist.mbid,
+            "joinphrase": "",
         }
     ]
 
     data = {
         "title": upload.track.title,
-        "artists": artist_data,
+        "artist_credit": artist_data,
         "album": {
             "title": "The Slip",
             "mbid": upload.track.album.mbid,
             "release_date": datetime.date(2008, 5, 5),
-            "artists": artist_data,
+            "artist_credit": artist_data,
         },
         "position": upload.track.position,
         "disc_number": upload.track.disc_number,

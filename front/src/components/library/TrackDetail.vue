@@ -169,18 +169,21 @@ watchEffect(() => {
                   {{ $t('components.library.TrackDetail.table.release.artist') }}
                 </td>
                 <td class="right aligned">
-                  <template
-                    v-for="(credit, index) in track.artist_credit"
-                    :key="credit.artist_id"
-                  >
-                    <router-link
-                      class="discrete link"
-                      :to="{ name: 'library.artists.detail', params: { id: credit.artist.id }}"
+                  <span>
+                    <template
+                      v-for="ac in track.artist_credit"
+                      :key="ac.artist.id"
                     >
-                      {{ credit.credit }}
-                    </router-link>
-                    <span v-if="index < (track.album?.artist_credit?.length ?? 0) ">{{ credit.joinphrase }}</span>
-                  </template>
+                      <router-link
+                        class="discrete link"
+                        :to="{ name: 'library.artists.detail', params: { id: ac.artist.id }}"
+                        style="display: inline;"
+                      >
+                        {{ ac.credit }}
+                      </router-link>
+                      <span style="display: inline;">{{ ac.joinphrase }}</span>
+                    </template>
+                  </span>
                 </td>
               </tr>
               <tr v-if="track.album">

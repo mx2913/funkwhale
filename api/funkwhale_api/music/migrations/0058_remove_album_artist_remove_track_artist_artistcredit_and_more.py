@@ -11,7 +11,7 @@ def skip(apps, schema_editor):
     pass
 
 
-def save_artist_credit(obj):
+def save_artist_credit(obj, ArtistCredit):
     artist_credit, created = ArtistCredit.objects.get_or_create(
         artist=obj.artist,
         joinphrase="",
@@ -27,10 +27,10 @@ def set_all_artists_credit(apps, schema_editor):
     ArtistCredit = apps.get_model("music", "ArtistCredit")
 
     for track in Track.objects.all():
-        save_artist_credit(track)
+        save_artist_credit(track, ArtistCredit)
 
     for album in Album.objects.all():
-        save_artist_credit(album)
+        save_artist_credit(album, ArtistCredit)
 
 
 class Migration(migrations.Migration):
