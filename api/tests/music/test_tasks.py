@@ -217,30 +217,6 @@ def test_can_create_track_from_file_metadata_mbid(factories, mocker):
             {
                 "artist": {
                     "id": "9c6bddde-6228-4d9f-ad0d-03f6fcb19e13",
-                    "type": "Group",
-                    "name": "Test artist",
-                    "sort-name": "Test artist",
-                }
-            },
-        ]
-    }
-    mb_ac_album = {
-        "artist-credit": [
-            {
-                "artist": {
-                    "id": "9c6bddde-6228-4d9f-ad0d-03f6fcb19e13",
-                    "type": "Group",
-                    "name": "Test artist",
-                    "sort-name": "Test artist",
-                }
-            },
-        ]
-    }
-    mb_ac = {
-        "artist-credit": [
-            {
-                "artist": {
-                    "id": "9c6bddde-6228-4d9f-ad0d-03f6fcb19e13",
                     "name": "Test artist",
                 },
                 "joinphrase": "",
@@ -886,7 +862,7 @@ def test_federation_audio_track_to_metadata(now, mocker):
                     "joinphrase": "",
                     "id": "http://lol.fr",
                     "published": published.isoformat(),
-                    "name": "John Smith",
+                    "credit": "John Smith",
                 }
             ],
             "image": {
@@ -916,7 +892,7 @@ def test_federation_audio_track_to_metadata(now, mocker):
                 "joinphrase": "",
                 "id": "http://loli.fr",
                 "published": published.isoformat(),
-                "name": "Bob Smith",
+                "credit": "Bob Smith",
             }
         ],
     }
@@ -1479,12 +1455,12 @@ def test_can_import_track_with_same_mbid_in_different_albums(factories, mocker):
     assert upload.track.mbid is not None
     data = {
         "title": upload.track.title,
-        "artist_credit": [{"name": artist.name, "mbid": artist.mbid}],
+        "artist_credit": [{"credit": artist.name, "mbid": artist.mbid}],
         "album": {
             "title": "The Slip",
             "mbid": uuid.UUID("12b57d46-a192-499e-a91f-7da66790a1c1"),
             "release_date": datetime.date(2008, 5, 5),
-            "artist_credit": [{"name": artist.name, "mbid": artist.mbid}],
+            "artist_credit": [{"credit": artist.name, "mbid": artist.mbid}],
         },
         "position": 1,
         "disc_number": 1,
@@ -1570,7 +1546,7 @@ def test_import_track_with_same_mbid_in_same_albums_skipped(factories, mocker):
 
 def test_can_import_track_with_same_position_in_different_discs(factories, mocker):
     upload = factories["music.Upload"](playable=True)
-    artist_data = [
+    artist_credit_data = [
         {
             "credit": upload.track.album.artist_credit.all()[0].artist.name,
             "mbid": upload.track.album.artist_credit.all()[0].artist.mbid,
@@ -1579,12 +1555,12 @@ def test_can_import_track_with_same_position_in_different_discs(factories, mocke
     ]
     data = {
         "title": upload.track.title,
-        "artist_credit": artist_data,
+        "artist_credit": artist_credit_data,
         "album": {
             "title": "The Slip",
             "mbid": upload.track.album.mbid,
             "release_date": datetime.date(2008, 5, 5),
-            "artist_credit": artist_data,
+            "artist_credit": artist_credit_data,
         },
         "position": upload.track.position,
         "disc_number": 2,

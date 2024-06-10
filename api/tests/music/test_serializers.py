@@ -84,9 +84,12 @@ def test_artist_with_albums_serializer(factories, to_api_date):
 
 def test_artist_with_albums_serializer_channel(factories, to_api_date):
     actor = factories["federation.Actor"]()
-    channel = factories["audio.Channel"](attributed_to=actor, artist__with_cover=True)
+    artist = factories["music.Artist"](with_cover=True, attributed_to=actor)
+    channel = factories["audio.Channel"](attributed_to=actor, artist=artist)
     artist_credit = factories["music.ArtistCredit"](artist=channel.artist)
-    track = factories["music.Track"](album__artist_credit=artist_credit)
+    track = factories["music.Track"](
+        album__artist_credit=artist_credit, artist_credit=artist_credit
+    )
     artist = track.artist_credit.all()[0].artist
     artist = artist.__class__.objects.with_albums().get(pk=artist.pk)
     album = list(artist.artist_credit.all()[0].albums.all())[0]
@@ -114,7 +117,9 @@ def test_artist_with_albums_serializer_channel(factories, to_api_date):
         },
     }
     serializer = serializers.ArtistWithAlbumsSerializer(artist)
-    assert serializer.data == expected
+    if not serializer.data == expected:
+        "lol"
+        assert serializer.data == expected
 
 
 def test_upload_serializer(factories, to_api_date):

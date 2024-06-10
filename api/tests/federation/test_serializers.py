@@ -830,7 +830,7 @@ def test_activity_pub_album_serializer_to_ap_channel_artist(factories):
                 "image": None,
             },
             "joinphrase": "",
-            "name": album.artist_credit.all()[0].credit,
+            "credit": album.artist_credit.all()[0].credit,
             "index": None,
             "published": album.artist_credit.all()[0].creation_date.isoformat(),
         }
@@ -1079,7 +1079,7 @@ def test_activity_pub_track_serializer_from_ap(factories, r_mock, mocker):
                         },
                     },
                     "joinphrase": "",
-                    "name": "John Smith",
+                    "credit": "John Smith Credit",
                     "published": published.isoformat(),
                     "id": "http://hello.artistcredit",
                 }
@@ -1104,7 +1104,7 @@ def test_activity_pub_track_serializer_from_ap(factories, r_mock, mocker):
                     },
                 },
                 "joinphrase": "",
-                "name": "John Smith",
+                "credit": "Credit Name",
                 "published": published.isoformat(),
                 "id": "http://hello.artistcredit",
             }
@@ -1149,6 +1149,12 @@ def test_activity_pub_track_serializer_from_ap(factories, r_mock, mocker):
 
     assert artist.from_activity == activity
     assert artist.name == data["artist_credit"][0]["artist"]["name"]
+    assert track.artist_credit.all()[0].credit == data["artist_credit"][0]["credit"]
+    assert (
+        album.artist_credit.all()[0].credit
+        == data["album"]["artist_credit"][0]["credit"]
+    )
+
     assert artist.fid == data["artist_credit"][0]["artist"]["id"]
     assert str(artist.mbid) == data["artist_credit"][0]["artist"]["musicbrainzId"]
     assert artist.creation_date == published
@@ -1299,7 +1305,7 @@ def test_activity_pub_upload_serializer_from_ap(factories, mocker, r_mock):
                             "published": published.isoformat(),
                         },
                         "joinphrase": "",
-                        "name": "John Smith",
+                        "credit": "John Smith Credit",
                         "published": published.isoformat(),
                         "id": "http://hello.artistcredit",
                     }
@@ -1315,7 +1321,7 @@ def test_activity_pub_upload_serializer_from_ap(factories, mocker, r_mock):
                         "published": published.isoformat(),
                     },
                     "joinphrase": "",
-                    "name": "John Smith",
+                    "credit": "Bob Smith Credit",
                     "published": published.isoformat(),
                     "id": "http://hello.artistcredit",
                 }
@@ -2050,7 +2056,7 @@ def test_artist_credit_serializer_to_ap(factories):
             ac.artist, context={"include_ap_context": False}
         ).data,
         "joinphrase": ac.joinphrase,
-        "name": ac.credit,
+        "credit": ac.credit,
         "index": ac.index,
         "published": ac.creation_date.isoformat(),
     }

@@ -311,6 +311,7 @@ CONTEXTS = [
                     "@container": "@list",
                 },
                 "joinphrase": {"@id": "fw:joinphrase", "@type": "xsd:string"},
+                "credit": {"@id": "fw:credit", "@type": "xsd:string"},
                 "index": {"@id": "fw:index", "@type": "xsd:nonNegativeInteger"},
                 "released": {"@id": "fw:released", "@type": "xsd:date"},
                 "musicbrainzId": "fw:musicbrainzId",

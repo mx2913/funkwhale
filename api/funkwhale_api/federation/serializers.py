@@ -1324,7 +1324,7 @@ class ArtistSerializer(MusicEntitySerializer):
     create = MusicEntitySerializer.update_or_create
 
 
-class ArtistCreditSerializer(MusicEntitySerializer):
+class ArtistCreditSerializer(jsonld.JsonLdSerializer):
     artist = MultipleSerializer(allowed=[BasicActorSerializer, ArtistSerializer])
     joinphrase = serializers.CharField(
         trim_whitespace=False, required=False, allow_null=True, allow_blank=True
@@ -1332,23 +1332,24 @@ class ArtistCreditSerializer(MusicEntitySerializer):
     credit = serializers.CharField(
         trim_whitespace=False, required=False, allow_null=True, allow_blank=True
     )
+    published = serializers.DateTimeField()
+    id = serializers.URLField(max_length=500)
 
     updateable_fields = [
-        ("name", "credit"),
+        ("credit", "credit"),
         ("artist", "artist"),
         ("joinphrase", "joinphrase"),
     ]
 
     class Meta:
         model = music_models.ArtistCredit
-        jsonld_mapping = common_utils.concat_dicts(
-            MUSIC_ENTITY_JSONLD_MAPPING,
-            {
-                "artist": jsonld.first_obj(contexts.FW.artist),
-                "index": jsonld.first_val(contexts.FW.index),
-                "joinphrase": jsonld.first_val(contexts.FW.joinphrase),
-            },
-        )
+        jsonld_mapping = {
+            "artist": jsonld.first_obj(contexts.FW.artist),
+            "credit": jsonld.first_val(contexts.FW.credit),
+            "index": jsonld.first_val(contexts.FW.index),
+            "joinphrase": jsonld.first_val(contexts.FW.joinphrase),
+            "published": jsonld.first_val(contexts.AS.published),
+        }
 
     def to_representation(self, instance):
         data = {
@@ -1358,7 +1359,7 @@ class ArtistCreditSerializer(MusicEntitySerializer):
                 instance.artist, context={"include_ap_context": False}
             ).data,
             "joinphrase": instance.joinphrase,
-            "name": instance.credit,
+            "credit": instance.credit,
             "index": instance.index,
             "published": instance.creation_date.isoformat(),
         }
@@ -1566,7 +1567,9 @@ class TrackSerializer(MusicEntitySerializer):
         from_activity = self.context.get("activity")
         if from_activity:
             metadata["from_activity_id"] = from_activity.pk
-        track = music_tasks.get_track_from_import_metadata(metadata, update_cover=True)
+        track = music_tasks.get_track_from_import_metadata(
+            metadata, update_cover=True, query_mb=False
+        )
         return track
 
     def update(self, obj, validated_data):
